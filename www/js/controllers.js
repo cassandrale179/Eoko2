@@ -25,4 +25,13 @@ angular.module('starter.controllers', [])
   $scope.settings = {
     enableFriends: true
   };
+})
+
+
+.controller('LoginPageCtrl', function($scope) {
+  firebase.auth().signInWithEmailAndPassword($scope.user.email, $scope.user.password).then(
+    function(resolve){
+      console.log("Logged in"); 
+      var usr = firebase.auth().currentUser; 
+    }); 
 });
