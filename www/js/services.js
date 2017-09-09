@@ -1,50 +1,112 @@
 angular.module('eoko.services', [])
 
-.factory('Chats', function() {
-  // Might use a resource here that returns a JSON array
+  .factory('UserInfo', [function () {
+    var userData = {
+      id:"",
+      name: "",
+      email: "",
+      birthday: "",
+      points: 0,
+      eventCount: 0,
+      surveyCount: 0,
+      major: "",
+      avatar: "",
+      buildcode: "",
+      description: "",
+      friendlist: []
+    };
 
-  // Some fake testing data
-  var chats = [{
-    id: 0,
-    name: 'Ben Sparrow',
-    lastText: 'You on your way?',
-    face: 'img/ben.png'
-  }, {
-    id: 1,
-    name: 'Max Lynx',
-    lastText: 'Hey, it\'s me',
-    face: 'img/max.png'
-  }, {
-    id: 2,
-    name: 'Adam Bradleyson',
-    lastText: 'I should buy a boat',
-    face: 'img/adam.jpg'
-  }, {
-    id: 3,
-    name: 'Perry Governor',
-    lastText: 'Look at my mukluks!',
-    face: 'img/perry.png'
-  }, {
-    id: 4,
-    name: 'Mike Harrington',
-    lastText: 'This is wicked good ice cream.',
-    face: 'img/mike.png'
-  }];
+    return {
+      setUserInfo: function (info) {
+        userData = {
+          id: info.$id,
+          name: info.name,
+          email: info.email,
+          birthday: info.birthday,
+          points: info.points,
+          eventCount: info.eventCount,
+          surveyCount: info.surveyCount,
+          major: info.major,
+          avatar: info.avatar,
+          buildcode: info.buildcode,
+          description: info.description,
+          friendlist: info.friendlist
+        };
+        return true;
+      },
 
-  return {
-    all: function() {
-      return chats;
-    },
-    remove: function(chat) {
-      chats.splice(chats.indexOf(chat), 1);
-    },
-    get: function(chatId) {
-      for (var i = 0; i < chats.length; i++) {
-        if (chats[i].id === parseInt(chatId)) {
-          return chats[i];
-        }
+      getUserInfo: function () {
+        return userData;
       }
-      return null;
-    }
-  };
-});
+    };
+
+  }])
+
+
+  .factory('OtherInfo', [function () {
+    var userData = {
+       id:"",
+      name: "",
+      email: "",
+      birthday: "",
+      points: 0,
+      eventCount: 0,
+      surveyCount: 0,
+      major: "",
+      avatar: "",
+      buildcode: "",
+      description: "",
+      friendlist: []
+    };
+
+    return {
+      setOtherInfo: function (info) {
+        userData = {
+           id: info.$id,
+          name: info.name,
+          email: info.email,
+          birthday: info.birthday,
+          points: info.points,
+          eventCount: info.eventCount,
+          surveyCount: info.surveyCount,
+          major: info.major,
+          avatar: info.avatar,
+          buildcode: info.buildcode,
+          description: info.description,
+          friendlist: info.friendlist
+        };
+        return true;
+      },
+
+      getOtherInfo: function () {
+        return userData;
+      }
+    };
+
+  }])
+
+
+   .factory('ProfilePress', [function () {
+    var aprofile = false;
+
+    return {
+      setState: function (info) {
+        aprofile = info;
+        return true;
+      },
+
+      getState: function () {
+        return aprofile;
+      }
+    };
+
+  }])
+
+
+
+
+
+
+  .service('BlankService', [function () {
+
+  }]);

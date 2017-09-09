@@ -5,7 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'eoko.services' is found in services.js
 // 'eoko.controllers' is found in controllers.js
-angular.module('eoko', ['ionic', 'eoko.controllers', 'eoko.services', 'firebase', 'Facebook'])
+
+angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.services', 'eoko.directives',
+'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngInstafeed', 'ngCordova', 'firebase', 'Facebook'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -49,63 +51,203 @@ angular.module('eoko', ['ionic', 'eoko.controllers', 'eoko.services', 'firebase'
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-  // setup an abstract state for the tabs directive
-    .state('tab', {
-    url: '/tab',
-    abstract: true,
-    templateUrl: 'templates/tabs.html'
+  .state('login', {
+    url: '/loginPage',
+    nativeTransitions: {
+      type: "fade"
+    },
+    templateUrl: 'templates/login.html',
+    controller: 'loginCtrl'
   })
 
-  // Each tab has its own nav history stack:
-
-  .state('tab.dash', {
-    url: '/dash',
-    views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
-      }
-    }
-  })
-
-  .state('tab.chats', {
-      url: '/chats',
+    .state('tabsController.events', {
+      url: '/EventPage',
+      nativeTransitions: {
+        type: "fade"
+      },
       views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
-        }
-      }
-    })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
+        'tab2': {
+          templateUrl: 'templates/events.html',
+          controller: 'eventsCtrl'
         }
       }
     })
 
-    .state('login', {
-      url: '/login',
-          templateUrl: 'templates/login.html',
-          controller: 'LoginPageCtrl'
+    .state('tabsController.notifications', {
+      url: '/notificationPage',
+      nativeTransitions: {
+        type: "fade"
+      },
+       views: {
+        'tab1': {
+          templateUrl: 'templates/notificationPage.html',
+        controller: 'notificationPageCtrl'
+        }
+      }
+    })
+
+
+    .state('tabsController.connect', {
+      url: '/connectPage',
+      nativeTransitions: {
+        type: "fade"
+      },
+      views: {
+        'tab3': {
+          templateUrl: 'templates/connect.html',
+          controller: 'connectCtrl'
+        }
+      }
+    })
+
+    .state('tabsController.buildingEvents', {
+      url: '/buildingEventsPage',
+      nativeTransitions: {
+        type: "fade"
+      },
+      views: {
+        'tab4': {
+          templateUrl: 'templates/buildingEvents.html',
+          controller: 'buildingEventsCtrl'
+        }
+      }
+    })
+
+    .state('tabsController.info', {
+      url: '/infoPage',
+      nativeTransitions: {
+        type: "fade"
+      },
+      views: {
+        'tab5': {
+          templateUrl: 'templates/info.html',
+          controller: 'infoCtrl'
+        }
+      }
+    })
+
+    .state('tabsController', {
+      url: '/page1',
+      nativeTransitions: {
+        type: "fade"
+      },
+      templateUrl: 'templates/tabsController.html',
+      abstract: true
+    })
+
+    .state('home', {
+      url: '/homePage',
+      nativeTransitions: {
+        type: "fade"
+      },
+      templateUrl: 'templates/home.html',
+      controller: 'homeCtrl'
+    })
+
+    .state('profile', {
+      url: '/profilePage',
+      nativeTransitions: {
+        type: "fade"
+      },
+      params: {
+        'avatarClicked': 'false'
+      },
+      templateUrl: 'templates/profile.html',
+      controller: 'profileCtrl'
+    })
+
+    .state('signup', {
+      url: '/signupPage',
+      nativeTransitions: {
+        type: "fade"
+      },
+      templateUrl: 'templates/signup.html',
+      controller: 'signupCtrl'
     })
 
 
 
-  .state('tab.account', {
-    url: '/account',
-    views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
-      }
-    }
-  });
+    .state('getNamePage', {
+      url: '/namePage',
+      nativeTransitions: {
+        type: "fade"
+      },
+      templateUrl: 'templates/getNamePage.html',
+      controller: 'getNamePageCtrl'
+    })
+
+    .state('getCodePage', {
+      url: '/codePage',
+      nativeTransitions: {
+        type: "fade"
+      },
+      params: {
+        userinfo: {firstname: "", lastname: "", email: "", password: "", buildcode: ""}
+      },
+      templateUrl: 'templates/getCodePage.html',
+      controller: 'getCodePageCtrl'
+    })
+
+    .state('getDescriptionPage', {
+      url: '/descriptionPage',
+      nativeTransitions: {
+        type: "fade"
+      },
+      templateUrl: 'templates/getDescriptionPage.html',
+      controller: 'getDescriptionPageCtrl'
+    })
+
+    .state('getSocialPage', {
+      url: '/socialPage',
+      nativeTransitions: {
+        type: "fade"
+      },
+      templateUrl: 'templates/getSocialPage.html',
+      controller: 'getSocialPageCtrl'
+    })
+
+    .state('getPicturePage', {
+      url: '/picturePage',
+      nativeTransitions: {
+        type: "fade"
+      },
+      templateUrl: 'templates/getPicturePage.html',
+      controller: 'getPicturePageCtrl'
+    })
+
+    .state('chatTab', {
+      url: '/chatTab',
+      nativeTransitions: {
+        type: "fade"
+      },
+      templateUrl: 'templates/chatTab.html',
+      controller: 'chatTabCtrl'
+    })
+
+    .state('chatPage', {
+      url: '/chatPage',
+      nativeTransitions: {
+        type: "fade"
+      },
+      params: {
+        otherID: "",
+        convoID: ""
+      },
+      templateUrl: 'templates/chatPage.html',
+      controller: 'chatPageCtrl'
+    })
+
+    .state('settingPage', {
+      url: 'settingPage',
+      nativeTrasitions: {
+        type: "fade"
+      },
+      templateUrl: 'templates/setting.html',
+      controller: 'settingPageCtrl'
+    })
+
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/loginPage');
 
 });

@@ -1,0 +1,66 @@
+<ion-view title="Chat Tab" hide-nav-bar="true" hide-back-button="true">
+
+  <ion-content padding="false"
+               style="background: url(img/main_background.png) no-repeat center;background-size:cover;"
+               scroll="false">
+
+    <!--spacer-->
+    <div class="spacer" style="height: 20px;"></div>
+
+    <!--nav bar-->
+    <div class="button-bar">
+      <!--back button-->
+      <a ui-sref="tabsController.connect" class="eoko-button-clear ion-chevron-left" nav-transition="ios"
+         nav-direction="back"></a>
+      <!--search-->
+      <!-- <div style="margin: auto; margin-left: 40px; margin-right: 40px;">
+        <a class="eoko-icon-searchbar-small" style="margin-right: 9px; margin-top: 10px"></a>
+        <input class="eoko-nav-searchbar" type="search" placeholder="Search by name" ng-model="search.text"
+               style="border-bottom: 1px solid white; font-size: 19px; width: 62vw; text-align: center;">
+      </div> -->
+
+      <div style="margin: auto 10px auto 50px">
+        <a class="eoko-icon-searchbar-small" style="margin-top: 10px; margin-right: 4px;"></a>
+        <input class="eoko-nav-searchbar" placeholder="Search by name" ng-model="search.text">
+      </div>
+
+      <!--new message-->
+      <a style="display:none;" ng-click="newConversation()" class="eoko-button-clear eoko-icon-new-message"></a>
+    </div>
+
+
+    <!--spacer-->
+    <div class="spacer" style="height: 20px;"></div>
+
+
+    <ion-scroll style="height: calc(100%); padding: 0px;">
+      <ion-list id="actionList">
+      <div ng-if="conversations.length == 0" class="eoko-text-button-nav" style="text-align:center;"><span style="line-height: 33px;">No Conversations Started. Press and hold a friend's name to start one!</span>
+        </div>
+        <ion-item ng-repeat="convo in conversations | orderBy : 'name' | filter: {name: search.text}" ng-if="convo.name" class="item-thumbnail-left"
+                  style="background-color:rgba(0,0,0,0);border-top:1px solid rgba(255,255,255,0.3);border-bottom:1px solid rgba(255,255,255,0.3);">
+          <!--users can click the whole item to go to the chatPage-->
+          <div ui-sref="chatPage({otherID: convo.partnerID, convoID: convo.chatID})" native-transitions nav-direction="forward">
+            <div class="eoko-notification-avatar" style="background-image: url({{convo.avatar}});"></div>
+            <p class="eoko-text-thin" style="color: white;font-size: 25px">{{convo.name}}</p>
+            <span class="eoko-text-thin" style="color:white;font-size:16px">{{convo.lasttime}}</span>
+            <br>
+            <p ng-if="!convo.messages" class="eoko-text-ultralight"
+               style="color: white;display: inline; font-size: 15px;">
+              Send the first message!
+            </p>
+            <p ng-if="convo.messages" class="eoko-text-ultralight" style="color: white;display: inline; font-size: 15px;">
+              {{convo.lastmessage}}
+            </p>
+            <a ui-sref="chatPage({otherID: convo.partnerID, convoID: convo.chatID})"
+               class="eoko-button-clear ion-chevron-right" native-transitions nav-direction="forward"
+               style="float:right;margin-top: -20px;"></a>
+          </div>
+        </ion-item>
+      </ion-list>
+
+    </ion-scroll>
+
+
+  </ion-content>
+</ion-view>

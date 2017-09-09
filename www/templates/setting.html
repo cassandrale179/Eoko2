@@ -1,0 +1,25 @@
+<ion-view title="Building Events" hide-nav-bar="true" hide-back-button="true" id="page3">
+
+  <ion-content padding="false"
+               style="background: url(img/main_background.png) no-repeat center;background-size:cover;"
+               class="manual-ios-statusbar-padding eoko-content" scroll="false">
+
+
+    <!--spacer-->
+    <div class="spacer" style="height: 20px;"></div>
+
+
+    <div ng-if="alcick != true" class="button-bar">
+      <!--back button-->
+      <a ui-sref="tabsController.notifications" class="eoko-button-clear ion-chevron-left" nav-transition="ios"
+         nav-direction="back"></a>
+    </div>
+
+
+    <button class="eoko-button-block" style="margin: auto" ng-click="signoutUser()">
+      Sign out
+    </button>
+
+
+  </ion-content>
+</ion-view>

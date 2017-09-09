@@ -1,0 +1,23 @@
+<ion-view title="GetCodePage" hide-nav-bar="true" id="page12">
+  <ion-content padding="true" style="background: url(img/main_background.png) no-repeat center;background-size:cover; filter: blur({{blurry.behind}}" class="manual-ios-statusbar-padding" scroll="true">
+
+    <a ui-sref="getNamePage" class="eoko-button-clear ion-chevron-left"></a>
+
+    <div class="spacer" style="height: 25px;"></div>
+
+    <h3 id="getCodePage-markdown2" class="show-list-numbers-and-dots eoko-text-login-header">
+      <p style="color:#FFFFFF;font-size:20px;">Hello {{user.firstname}},</p>
+
+      <p style="color:#FFFFFF;font-size:20px;">Please enter the organization code.</p>
+    </h3>
+
+    <label class="item-input login-label item-floating-label eoko-text-input-form">
+      <span class="input-label lable-font-login eoko-text-input-form">Organization Code</span>
+      <input style="border: none; font-size: 25px" type="text" placeholder="Organization Code" ng-model="user.buildcode">
+    </label>
+
+    <a ng-click="signupUser()" class="eoko-button-clear" style="font-size: 25px; font-style: italic; float:right;">Next</a>
+
+  </ion-content>
+</ion-view>
+

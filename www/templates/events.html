@@ -1,0 +1,372 @@
+<ion-view title="Events" hide-nav-bar="true" hide-back-button="true" id="page6">
+
+  <ion-content padding="false"
+               style="background: url(img/main_background.png) no-repeat center;background-size:cover;filter: blur({{blurry.behind}});"
+               class="manual-ios-statusbar-padding eoko-content" scroll="false">
+
+
+    <!--spacer-->
+    <div class="spacer" style="height: 20px;" ng-if="nKeyboardActive"></div>
+
+
+    <!--top nav bar-->
+    <div class="button-bar">
+      <a id="EventButton" class="eoko-button-text-selected eoko-text-button-nav"
+         ng-click="selectEventTab()">Actions
+      </a>
+      <a id="CreateEventButton" class="eoko-button-text eoko-text-button-nav"
+         ng-click="selectCreateTab()">Create
+      </a>
+    </div>
+
+
+    <!--spacer-->
+    <div class="spacer" style="height: 20px;" ng-if="nKeyboardActive"></div>
+
+
+    <!--filter-->
+    <ion-scroll ng-if="selection.tab == 'event' " direction="x" class="eoko-horizontal-scroll" scrollbar-x="false"
+                scrollbar-y="false" style="height: 46px;">
+
+      <button ng-repeat="tags in tagList" ng-click="selectFilter('{{tags.$value}}')" id="{{tags.$value}}" class="eoko-horizontal-scroll-button eoko-text-thin">
+        {{tags.$value}}
+      </button>
+
+      <!-- <button ng-click="selectFilter('fitness')" id="fitness" class="eoko-horizontal-scroll-button eoko-text-thin">
+        Fitness
+      </button>
+      <button ng-click="selectFilter('food')" id="food" class="eoko-horizontal-scroll-button eoko-text-thin">
+        Food
+      </button>
+      <button ng-click="selectFilter('meetup')" id="meetup" class="eoko-horizontal-scroll-button eoko-text-thin">
+        Meet Up
+      </button>
+      <button ng-click="selectFilter('study')" id="study" class="eoko-horizontal-scroll-button eoko-text-thin">
+        Study
+      </button>
+      <button ng-click="selectFilter('party')" id="party" class="eoko-horizontal-scroll-button eoko-text-thin">
+        Party
+      </button> -->
+    </ion-scroll>
+
+
+    <!--spacer-->
+    <div class="spacer" style="height: 20px;" ng-if="nKeyboardActive"></div>
+
+
+    <!--list of actions-->
+    <ion-scroll ng-if="selection.tab == 'event' " style="height: calc(100% - 15.5em);" scrollbar-x="false"
+                scrollbar-y="false">
+
+      <ion-list id="actionList">
+        <div ng-if="notifications.length == 0" class="eoko-text-button-nav" style="text-align:center;">No Actions to
+          display
+        </div>
+
+        <ion-item ng-click="openPopover($event, notify)" ng-repeat="notify in notifications | filter: customEventFilter | orderBy:'-'" class="item-thumbnail-left"
+                  style="background-color:rgba(0,0,0,0);border-top:1px solid rgba(255,255,255,0.3);border-bottom:1px solid rgba(255,255,255,0.3);">
+
+          <div class="eoko-notification-avatar" style="background-image: url({{notify.info.avatar}});"></div>
+          <h2 class="eoko-text-thin" style="color: white;font-size: 25px">{{notify.info.title}}</h2>
+          <p class="eoko-text-ultralight" style="color: white;display: inline-block; font-size: 15px;">
+            {{notify.info.location}}
+            <br>{{notify.info.date}}
+            <br>{{notify.info.time}}
+          </p>
+
+          <button class="eoko-button-action-event-join eoko-text-thin eoko-button-clear ion-chevron-right arrowThing"></button>
+
+         <!--  <button class="eoko-button-action-event-join eoko-text-thin ">
+            {{notify.attend}}
+          </button> -->
+
+        </ion-item>
+      </ion-list>
+    </ion-scroll>
+
+
+
+    <!--create your action-->
+
+    <!--Public and Private button-->
+    <ion-scroll ng-if="selection.tab == 'create' && selection.privstep == 1" style="height: calc(100% - 12.5em);" scrollbar-x="false" scrollbar-y="false">
+
+      <div class="button-bar" ng-if="nKeyboardActive">
+        <button id="PublicButton" ng-click="selectedPublic()"
+                style="font-size: 25px; border-radius: 50px; margin: 0 22px;padding: 0px;"
+                class="button button-energized button-block eoko-text-thin">Public
+        </button>
+        <button id="PrivateButton" ng-click="selectedPrivate()"
+                style="font-size: 25px; border-radius: 50px;margin: 0 22px;padding: 0px;"
+                class="button button-energized button-block button-outline eoko-text-thin">Private
+        </button>
+      </div>
+
+      <!--spacer-->
+      <div class="spacer" style="height: 20px; " ng-if="nKeyboardActive"></div>
+
+      <form name="makeEventForm">
+
+        <ion-list style="overflow-y: scroll;">
+
+              <!--filter-->
+          <ion-scroll direction="x" class="eoko-horizontal-scroll" scrollbar-x="false"
+                      scrollbar-y="false" ng-if="nKeyboardActive">
+
+            <button ng-repeat="tags in tagList" ng-click="selectCategory('{{tags.$value}}')" id="{{tags.$value}}" class="eoko-horizontal-scroll-button eoko-text-thin">
+              {{tags.$value}}
+            </button>
+      
+            <!-- <button ng-click="selectCategory('fitness')" id="fitness" class="eoko-horizontal-scroll-button eoko-text-thin">
+              Fitness
+            </button>
+            <button ng-click="selectCategory('food')" id="food" class="eoko-horizontal-scroll-button eoko-text-thin">
+              Food
+            </button>
+            <button ng-click="selectCategory('meetup')" id="meetup" class="eoko-horizontal-scroll-button eoko-text-thin">
+              Meet Up
+            </button>
+            <button ng-click="selectCategory('study')" id="study" class="eoko-horizontal-scroll-button eoko-text-thin">
+              Study
+            </button>
+            <button ng-click="selectCategory('party')" id="party" class="eoko-horizontal-scroll-button eoko-text-thin">
+              Party
+            </button> -->
+          </ion-scroll>
+
+          <!--Action Catagory-->
+          <!-- <label class="item item-input " name="eventCatagory">
+            <input id="ed_labelCatagory" type="text" placeholder="Catagory" style="font-size: 1.6em"
+                   class="eoko-input eoko-text-thin" ng-model="event.catagory"
+                   required="">
+          </label> -->
+
+          <!--Action title-->
+          <label class="item item-input" name="eventTitle" ng-if="selection.nextstep == 0">
+            <input id="ed_labelTitle" type="text" placeholder="Action Name" style="font-size: 1.6em;"
+                   class="eoko-input eoko-text-thin" ng-model="event.title"
+                   required="">
+          </label>
+
+          <!--Action Location-->
+          <label class="item item-input" name="eventLocation" ng-if="selection.nextstep == 0">
+            <input id="autocomplete" type="text" placeholder="Location" style="font-size: 1.6em"
+                   class="eoko-input eoko-text-thin" value="{{event.location}}" ng-click="geolocate()" required="">
+          </label>
+
+          <!--Action Date/Time-->
+          <label class="item item-input" name="eventDate" ng-if="selection.nextstep == 0">
+            <input id="ed_labelD" type="date" placeholder="Date" style="font-size: 1.1em;"
+                   class="eoko-input eoko-text-thin" ng-model="event.date" required="">
+           </label>
+
+        <label class="item item-input" name="eventTime" ng-if="selection.nextstep == 0">
+		        <input id="ed_labelT" type="time" placeholder="Time" style="font-size: 1.1em;"
+                   class="eoko-input eoko-text-thin" style="z-index:4;" ng-model="event.time" required="">
+          </label>
+
+        </ion-list>
+
+        <!--spacer-->
+        <div class="spacer" style="height: 20px;"></div>
+
+        <button ng-if="selection.nextstep == 0" ng-click="selection.nextstep = 1" 
+        style="border-radius: 20px;
+                width: 300px;
+                margin-right: auto;
+                text-align: center;
+                margin: 0 auto;
+                font-size: 24px;"
+        class="button button-energized button-block eoko-text-thin">Next</button>
+
+
+
+        <button ng-if="selection.nextstep == 1" ng-click="selection.nextstep = 0" 
+        style="float:left;background-color: rgba(0, 0, 0, 0);"
+        class="button button-energized ion-chevron-left"></button>
+
+          
+
+        <!--Action Desciption-->
+        <textarea placeholder="What is your event about? Make it short"
+                  class="eoko-text-area"
+                  name="descBox" ng-if="selection.nextstep == 1" ng-model="event.description" required=""></textarea>
+
+
+
+        <br>  
+        <br>
+
+
+
+        <button ng-if="selection.porb == 'public' && selection.nextstep == 1" type="submit" ng-disabled="makeEventForm.$invalid" 
+        style="border-radius: 20px;
+                width: 300px;
+                margin-right: auto;
+                text-align: center;
+                margin: 0 auto;
+                font-size: 24px;"
+                ng-click="createEvent(makeEventForm)" 
+                class="button button-energized button-block eoko-text-thin">Done
+        </button>
+
+        <button ng-if="selection.porb == 'private' && selection.nextstep == 1" type="submit" ng-disabled="makeEventForm.$invalid"
+                ng-click="PrivateNextStep(); getFriendList()" style="float:right;border-radius:20px;margin-right:5px;"
+                class="button button-energized">Invite Friends
+        </button>
+      </form>
+
+    </ion-scroll>
+
+    <div ng-if="selection.tab == 'create' && selection.privstep == 2" style="height: calc(100% - 13.5em);" >
+
+      <a ng-click="selection.privstep = 1" class="button button-light  button-clear icon ion-ios-arrow-left"><span style="position: relative;top: 1px;left: 10px;">Cancel</span></a>
+
+      <ion-scroll style="height: calc(100% - 10.5em);" scrollbar-x="false" scrollbar-y="false">
+        
+
+        <ion-list >
+          <ion-item class="row" ng-repeat="rows in friendlist" >
+            <figure ng-repeat="user in rows" ng-click="selectUser(user)" class="span4 eoko-connect-avatar">
+              <ion-item style="background-image: url({{user.avatar}});margin:0px;"
+                        class="span4 eoko-connect-avatar" ng-class="privateRoll.hasOwnProperty(user.$id) ? 'userSelected' : 'userDeselected'"></ion-item>
+
+              <figcaption class="eoko-text-ultralight" style="font-size: 1em;text-align:center;">{{user.name}}
+              </figcaption>
+            </figure>
+          </ion-item>
+        </ion-list>
+
+
+        </ion-scroll>
+
+        <button ng-if="selection.porb == 'private'" ng-click="createEvent(makeEventForm)"
+                style="float:right;border-radius:20px;margin-right:5px;" class="button button-energized">Done
+        </button>
+      </div>
+
+ 
+     <!--  <ion-list>
+        <ion-item class="row" ng-repeat="rows in userList">
+          <ion-item ng-repeat="user in rows" ng-click="selectUser(user)"
+                    style="background-image: url({{user.avatar}});" class="span4 connectImg"
+                    ng-class="privateRoll.hasOwnProperty(user.$id) ? 'userSelected' : 'userDeselected'">
+          </ion-item>
+        </ion-item>
+      </ion-list> -->
+      
+
+
+    <!--action detail pop up-->
+    <script id="eventFullView.html" type="text/ng-template">
+
+      <div ng-click="checkHit($event)" class="popup-container popup-showing active" ng-class="cssClass">
+
+        <div id="actionPopUp" class="eoko-action-popup">
+          <div class="item-body" style="text-align: center">
+
+            <!--action avatar-->
+            <div class="eoko-action-avatar"
+                 style="background-image: url({{modalOpen.info.avatar}}); margin-bottom: 0">
+            </div>
+
+            <!--action title-->
+            <h2 class="eoko-text-action-popup-title eoko-text-medium" style="margin-bottom: 0%">
+              {{modalOpen.info.title}}
+            </h2>
+
+
+            <div id="actionDetail" class="eoko-show">
+              <!--action hosted by-->
+              <div>
+                <h4 class="eoko-text-action-popup-title2 eoko-text-thin" style="margin-bottom: 0">Hosted by</h4>
+                <a ng-click="openProfile(modalOpen.info)" class="eoko-button-clear eoko-text-action-popup-title eoko-text-regular"
+                   style="margin-bottom: 0">{{modalOpen.info.name}}</a>
+              </div>
+
+              <!--action location-->
+              <div>
+                <a class="eoko-icon-location"></a>
+                <h4 class="eoko-text-action-popup-title eoko-text-thin" style="margin-bottom: 0">
+                  {{modalOpen.info.location}}
+                </h4>
+
+              </div>
+
+              <!--action date/time-->
+              <div>
+                <a class="eoko-icon-date-time"></a>
+                <a class="eoko-text-action-popup-title2 eoko-text-thin" style="margin-bottom: 0; font-size: 18px">
+                  {{modalOpen.info.date}}
+                </a>
+                <a class="eoko-text-action-popup-title2 eoko-text-thin" style="margin-bottom: 15px;">
+                  @ {{modalOpen.info.time}}
+                </a>
+              </div>
+
+              <!--action descriptions-->
+              <ion-scroll class="eoko-text-thin" style="min-height: 0; max-height: 100px; font-size: 20px;"
+                          scrollbar-x="false" scrollbar-y="false">
+                {{modalOpen.info.description}}
+              </ion-scroll>
+            </div>
+
+
+            <!--type of lists button-->
+            <div>
+              <!--<a ng-click="showAttendants('goingButton')" id="goingButton"
+                 class="eoko-button-action-event-list eoko-text-thin" style="font-size:4vw;">
+                {{goingList.length}} <br/> Going
+              </a>
+             <a ng-click="showAttendants('maybeButton')" id="maybeButton"
+                 class="eoko-button-action-event-list eoko-text-thin" style="font-size:4vw;">
+                0 <br/> Maybe
+              </a>
+              <a ng-click="showAttendants('declinedButton')" id="declinedButton"
+                 class="eoko-button-action-event-list eoko-text-thin" style="padding-right: 0; padding-left: 0;font-size:4vw;">
+                0 <br/> Declined
+              </a>
+              <a ng-click="showAttendants('invitedButton')" id="invitedButton"
+                 class="eoko-button-action-event-list eoko-text-thin" style="font-size:4vw;">
+                {{modalOpen.rolenumber}} <br/> Invited
+              </a> -->
+
+            </div>
+
+            <!--show people who are going/maybe/declined/invited-->
+            <div id="attendants">
+              <ion-scroll ng-model="goingList" class="eoko-display-action-attendents">
+                <div ng-if="goingList.length == 0" class="eoko-text-medium" style="font-size: 20px;">Nobody confirmed
+                  Yet!
+                </div>
+
+                <ion-list>
+                  <ion-item class="row">
+                    <figure ng-repeat="going in goingList" class="eoko-action-attendants-avatar">
+                      <ion-item ng-click="openProfile(going.info)" on-hold="openMessagePopover($event,going)"
+                                style="background-image: url({{going.info.avatar}}});margin:0px;"
+                                class="span4 eoko-connect-avatar"></ion-item>
+
+                      <figcaption class="eoko-text-ultralight" style="font-size: 1em;text-align:center;">
+                        {{going.info.name}}
+                      </figcaption>
+                    </figure>
+
+                  </ion-item>
+                </ion-list>
+              </ion-scroll>
+            </div>
+
+          </div>
+          <!--Join button-->
+          <button ng-click="joinEvent(modalOpen)" class="eoko-button-action-event-popup-join">
+            {{modalOpen.attend}}
+          </button>
+        </div>
+      </div>
+
+    </script>
+
+
+  </ion-content>
+</ion-view>
