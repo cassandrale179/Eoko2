@@ -38,9 +38,9 @@ angular.module('eoko.controllers', [])
   obj.$bindTo($scope, "data");
 
 
-  firebase.auth().signInWithEmailAndPassword($scope.user.email, $scope.user.password).then(
-    function(resolve){
-      console.log("Logged in"); 
-      var usr = firebase.auth().currentUser; 
-    }); 
+  // firebase.auth().signInWithEmailAndPassword($scope.user.email, $scope.user.password).then(
+  //   function(resolve){
+  //     console.log("Logged in"); 
+  //     var usr = firebase.auth().currentUser; 
+  //   }); 
 });
