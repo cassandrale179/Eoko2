@@ -9,16 +9,16 @@ socialLogin.provider("social", function(){
 			fbKey = obj.appId;
 			fbApiV = obj.apiVersion;
 			var d = document, fbJs, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-			fbJs = d.createElement('script'); 
-			fbJs.id = id; 
+			fbJs = d.createElement('script');
+			fbJs.id = id;
 			fbJs.async = true;
 			fbJs.src = "//connect.facebook.net/en_US/sdk.js";
 
 			fbJs.onload = function() {
-				FB.init({ 
+				FB.init({
 					appId: fbKey,
-					status: true, 
-					cookie: true, 
+					status: true,
+					cookie: true,
 					xfbml: true,
 					version: fbApiV
 				});
@@ -126,6 +126,8 @@ socialLogin.directive("linkedIn", ['$rootScope', 'social', 'socialLoginService',
 	}
 }]);
 
+
+
 socialLogin.directive("gLogin", ['$rootScope', 'social', 'socialLoginService',
 	function($rootScope, social, socialLoginService){
 	return {
@@ -141,14 +143,14 @@ socialLogin.directive("gLogin", ['$rootScope', 'social', 'socialLoginService',
 					var accessToken = currentUser.getAuthResponse().access_token;
 					return {
 						token: accessToken,
-						idToken: idToken, 
-						name: profile.getName(), 
-						email: profile.getEmail(), 
-						uid: profile.getId(), 
-						provider: "google", 
+						idToken: idToken,
+						name: profile.getName(),
+						email: profile.getEmail(),
+						uid: profile.getId(),
+						provider: "google",
 						imageUrl: profile.getImageUrl()
-					}
-				}
+					};
+				};
 		    	if(typeof(scope.gauth) == "undefined")
 		    		scope.gauth = gapi.auth2.getAuthInstance();
 				if(!scope.gauth.isSignedIn.get()){
@@ -162,12 +164,15 @@ socialLogin.directive("gLogin", ['$rootScope', 'social', 'socialLoginService',
 					socialLoginService.setProvider("google");
 					$rootScope.$broadcast('event:social-sign-in-success', fetchUserDetails());
 				}
-	        	
+
 	        });
 		}
-	}
+	};
 }]);
 
+
+
+//------------------------------ THIS IS FOR FACEBOOK LOGIN -----------------------------------------------
 socialLogin.directive("fbLogin", ['$rootScope', 'social', 'socialLoginService', '$q',
  function($rootScope, social, socialLoginService, $q){
 	return {
@@ -178,21 +183,30 @@ socialLogin.directive("fbLogin", ['$rootScope', 'social', 'socialLoginService', 
 			ele.on('click', function(){
 				var fetchUserDetails = function(){
 					var deferred = $q.defer();
-					FB.api('/me?fields=name,email,picture', function(res){
+
+					//CHANGE PARAMETER UP HERE, THEN ADD TO THE USER OBJECT TO DISPLAY AT THE CONSOLE
+					FB.api('/me/taggable_friends?limit=5000', function(res){
 						if(!res || res.error){
 							deferred.reject('Error occured while fetching user details.');
 						}else{
 							deferred.resolve({
-								name: res.name, 
-								email: res.email, 
-								uid: res.id, 
-								provider: "facebook", 
-								imageUrl: res.picture.data.url
+								// name: res.name,
+								// email: res.email,
+								// uid: res.id,
+								// provider: "facebook",
+								// imageUrl: res.picture.data.url,
+								// gender: res.gender,
+								// birthday: res.birthday,
+								// permissions: res.permissions,
+								friends: res.data
 							});
+							console.log(res);
 						}
 					});
 					return deferred.promise;
-				}
+				};
+
+				//----------- GET FACEBOOK LOGIN STATUS ------------------------------------------
 				FB.getLoginStatus(function(response) {
 					if(response.status === "connected"){
 						fetchUserDetails().then(function(userDetails){
@@ -201,6 +215,8 @@ socialLogin.directive("fbLogin", ['$rootScope', 'social', 'socialLoginService', 
 							$rootScope.$broadcast('event:social-sign-in-success', userDetails);
 						});
 					}else{
+
+						//-------GET USER'S LOGIN INFORMATION AND ASK FOR USER'S PERMISSION -------
 						FB.login(function(response) {
 							if(response.status === "connected"){
 								fetchUserDetails().then(function(userDetails){
@@ -209,7 +225,7 @@ socialLogin.directive("fbLogin", ['$rootScope', 'social', 'socialLoginService', 
 									$rootScope.$broadcast('event:social-sign-in-success', userDetails);
 								});
 							}
-						}, {scope: 'email', auth_type: 'rerequest'});
+						}, {scope: 'user_friends', auth_type: 'rerequest'});
 					}
 				});
 			});
