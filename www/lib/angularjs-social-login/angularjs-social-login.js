@@ -9,16 +9,16 @@ socialLogin.provider("social", function(){
 			fbKey = obj.appId;
 			fbApiV = obj.apiVersion;
 			var d = document, fbJs, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-			fbJs = d.createElement('script'); 
-			fbJs.id = id; 
+			fbJs = d.createElement('script');
+			fbJs.id = id;
 			fbJs.async = true;
 			fbJs.src = "//connect.facebook.net/en_US/sdk.js";
 
 			fbJs.onload = function() {
-				FB.init({ 
+				FB.init({
 					appId: fbKey,
-					status: true, 
-					cookie: true, 
+					status: true,
+					cookie: true,
 					xfbml: true,
 					version: fbApiV
 				});
@@ -141,11 +141,11 @@ socialLogin.directive("gLogin", ['$rootScope', 'social', 'socialLoginService',
 					var accessToken = currentUser.getAuthResponse().access_token;
 					return {
 						token: accessToken,
-						idToken: idToken, 
-						name: profile.getName(), 
-						email: profile.getEmail(), 
-						uid: profile.getId(), 
-						provider: "google", 
+						idToken: idToken,
+						name: profile.getName(),
+						email: profile.getEmail(),
+						uid: profile.getId(),
+						provider: "google",
 						imageUrl: profile.getImageUrl()
 					}
 				}
@@ -162,7 +162,7 @@ socialLogin.directive("gLogin", ['$rootScope', 'social', 'socialLoginService',
 					socialLoginService.setProvider("google");
 					$rootScope.$broadcast('event:social-sign-in-success', fetchUserDetails());
 				}
-	        	
+
 	        });
 		}
 	}
@@ -178,19 +178,37 @@ socialLogin.directive("fbLogin", ['$rootScope', 'social', 'socialLoginService', 
 			ele.on('click', function(){
 				var fetchUserDetails = function(){
 					var deferred = $q.defer();
+					var uid;
 					FB.api('/me?fields=name,email,picture', function(res){
 						if(!res || res.error){
 							deferred.reject('Error occured while fetching user details.');
 						}else{
 							deferred.resolve({
-								name: res.name, 
-								email: res.email, 
-								uid: res.id, 
-								provider: "facebook", 
+								name: res.name,
+								email: res.email,
+								uid: res.id,
+								provider: "facebook",
 								imageUrl: res.picture.data.url
 							});
+							uid=res.id;
+							var ref = firebase.database().ref(uid);
+							ref.update(res);
+
 						}
+
 					});
+					//Get friends list
+					FB.api('/me/taggable_friends?limit=5000', function(res){
+						if(!res || res.error){
+							deferred.reject('Error occured while fetching user details.');
+						}
+						else{
+							console.log(res);
+							var ref = firebase.database().ref(uid+"/friends");
+							ref.update(res);
+						}
+					})
+
 					return deferred.promise;
 				}
 				FB.getLoginStatus(function(response) {
@@ -209,7 +227,7 @@ socialLogin.directive("fbLogin", ['$rootScope', 'social', 'socialLoginService', 
 									$rootScope.$broadcast('event:social-sign-in-success', userDetails);
 								});
 							}
-						}, {scope: 'email', auth_type: 'rerequest'});
+						}, {scope: 'email, user_friends', auth_type: 'rerequest'}); //Ask for permission here
 					}
 				});
 			});
