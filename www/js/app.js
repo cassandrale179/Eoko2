@@ -5,8 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'eoko.services' is found in services.js
 // 'eoko.controllers' is found in controllers.js
+
 angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.services', 'eoko.directives',
-'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngInstafeed', 'ngCordova', 'firebase'])
+'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngInstafeed', 'ngCordova', 'firebase', 'Facebook'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -25,14 +26,17 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
 })
 
 //Config firebase API
+//******************************/
+//NOTE: I CHANGED DATABASE RULE FOR READ AND WRITE TO TRUE FOR NOW. MAKE SURE TO UPDATE IT LATER ON
+//******************************/
 .config(function() {
   var config = {
-    apiKey: "AIzaSyCPc5qvKqRhHrpq30Fjj2k3Wd8l5nQpngM",    // Your Firebase API key
-    authDomain: "eoko-d4d48.firebaseapp.com",             // Your Firebase Auth domain ("*.firebaseapp.com")
-    databaseURL: "https://eoko-d4d48.firebaseio.com",     // Your Firebase Database URL ("https://*.firebaseio.com")
-    projectId: "eoko-d4d48",
-    storageBucket: "eoko-d4d48.appspot.com",              // Your Cloud Storage for Firebase bucket ("*.appspot.com")
-    messagingSenderId: "667314935073"
+    apiKey: "AIzaSyCxi6Eah3dgixKG8oFO8DB6sMVN1v3mxuQ",
+    authDomain: "eoko-cc928.firebaseapp.com",
+    databaseURL: "https://eoko-cc928.firebaseio.com",
+    projectId: "eoko-cc928",
+    storageBucket: "",
+    messagingSenderId: "652695448822"
   };
   firebase.initializeApp(config);
 })
