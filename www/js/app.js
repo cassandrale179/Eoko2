@@ -7,7 +7,7 @@
 // 'eoko.controllers' is found in controllers.js
 
 angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.services', 'eoko.directives',
-'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngInstafeed', 'ngCordova', 'firebase', 'Facebook'])
+'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngInstafeed', 'ngCordova', 'firebase', 'socialLogin'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -40,6 +40,11 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
   };
   firebase.initializeApp(config);
 })
+
+.config(function(socialProvider){
+socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
+})
+
 
 
 //Config app states
