@@ -1,20 +1,21 @@
 app.controller('loginCtrl', function($scope, $firebaseObject) {
   console.log("login page!");
 
-  var ref = firebase.database().ref();
-
-  var obj = $firebaseObject(ref);
-
-  // For three-way data bindings, bind it to the scope instead
-  obj.$bindTo($scope, "data");
 
 
-  // firebase.auth().signInWithEmailAndPassword($scope.user.email, $scope.user.password).then(
-  //   function(resolve){
-  //     console.log("Logged in");
-  //     var usr = firebase.auth().currentUser;
-  //   });
+
+
 });
+
+
+/*
+var ref = firebase.database().ref();
+
+var obj = $firebaseObject(ref);
+
+// For three-way data bindings, bind it to the scope instead
+obj.$bindTo($scope, "data");
+*/ 
 
 //Old version
 // app.controller('loginCtrl', ['$scope', '$stateParams', '$state', 'UserInfo', '$ionicPopup',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
