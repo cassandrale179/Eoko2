@@ -1,0 +1,47 @@
+<ion-view title="Signup" id="page9" hide-nav-bar="true" style="background: url(img/main_background.png) no-repeat center;background-size:cover;">
+  <ion-content padding="true" class="has-header">
+
+    <a ui-sref="home" class="eoko-button-clear ion-chevron-left"></a>
+
+
+    <form id="signup-form2" class="list">
+      <ion-list id="signup-list1">
+        <label class="item-input login-label item-floating-label" id="signup-input1">
+          <span class="input-label lable-font-login">First Name</span>
+          <input type="text" placeholder="First Name" ng-model="user.firstname">
+        </label>
+
+        <label class="item-input login-label item-floating-label" id="signup-input2">
+          <span class="input-label lable-font-login">Last Name</span>
+          <input type="text" placeholder="Last Name" ng-model="user.lastname">
+        </label>
+
+        <label class="item-input login-label item-floating-label" id="signup-input7">
+          <span class="input-label lable-font-login">Email</span>
+          <input type="email" placeholder="Email" ng-model="user.email">
+        </label>
+
+        <label class="item-input login-label item-floating-label" id="signup-input3">
+          <span class="input-label lable-font-login">Password</span>
+          <input type="password" placeholder="Password" ng-model="user.password">
+        </label>
+
+        <label class="item-input login-label item-floating-label" id="signup-input8">
+          <span class="input-label lable-font-login">Birthday</span>
+          <input type="date" placeholder="Birthday" ng-model="user.birthday">
+        </label>
+
+        <label class="item-input login-label item-floating-label" id="signup-input9">
+          <span class="input-label lable-font-login">Building Code</span>
+          <input type="text" placeholder="Building Code" ng-model="user.buildcode">
+        </label>
+      </ion-list>
+
+      <div class="spacer" style="height: 25px;"></div>
+
+      <ion-input ng-click="signupUser()" id="signup-button4" class="eoko-button-block">Sign up</ion-input>
+
+    </form>
+
+  </ion-content>
+</ion-view>

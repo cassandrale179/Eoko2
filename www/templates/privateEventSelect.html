@@ -1,0 +1,18 @@
+<ion-view title="privateEventSelect" hide-nav-bar="true">
+   <ion-content padding="true" class="has-header eoko-content" style="background: url(img/main_background.png) no-repeat center;background-size:cover;">
+    <a ui-sref="tabsController.events" class="button button-light  button-clear icon ion-ios-arrow-left"></a>
+    <div>
+      <!--spacer-->
+      <div class="spacer" style="height: 60px;"></div>
+
+
+      <ion-list ng-model="userList" ng-repeat="user in userList">
+
+        <ion-item ng-if="user.avatar" ng-click="openProfile(user)" style="background-image: url({{user.avatar}});" class="connectImg">
+
+        </ion-item>
+      </ion-list>
+    </div>
+    <button ng-click="createEvent(makeEventForm)" style="float:right;border-radius:20px;margin-right:5px;" class="button button-energized">Make Private Event</button>
+  </ion-content>
+</ion-view>

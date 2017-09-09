@@ -1,0 +1,284 @@
+ <ion-view title="Building Events" hide-nav-bar="true" hide-back-button="true" id="page3">
+
+  <ion-content padding="true"
+               style="background: url(img/main_background.png) no-repeat center;background-size:cover; filter: blur({{blurry.behind}});"
+               class="manual-ios-statusbar-padding eoko-content" scroll="false">
+
+
+    <!--spacer-->
+    <div class="spacer" style="height: 33px;"></div>
+
+    <div class="button-bar">
+      <a id="BuildingEventButton" class="eoko-button-text-selected eoko-text-button-nav"
+              ng-click="selectBuildingEventTab()">Event</a>
+
+      <a id="FeedBackButton" class="eoko-button-text eoko-text-button-nav"
+              ng-click="selectFeedbackTab()">Feedback</a>
+
+      <a id="RankingButton" class="eoko-button-text eoko-text-button-nav"
+              ng-click="selectRankingTab()">Ranking</a>
+    </div>
+
+
+
+    <ion-scroll ng-if="selection.tab == 'bevents' " style="height: calc(100% - 15.5em);" scrollbar-x="false"
+                scrollbar-y="false">
+
+      <ion-list id="actionList">
+        <div ng-if="buildingEventList.length == 0" class="eoko-text-button-nav" style="text-align:center;">No Actions to
+          display
+        </div>
+
+        <ion-item ng-click="showDetails = ! showDetails" ng-repeat="(key, dropdown) in buildingEventList" class="item-thumbnail-left"
+                      style="background-color:rgba(0,0,0,0);border-top:1px solid rgba(255,255,255,0.3);border-bottom:1px solid rgba(255,255,255,0.3);padding-left: 33px;">
+        <h2 class="eoko-text-thin" style="color: white;font-size: 25px;text-transform:capitalize;">{{key}}</h2>
+        <p class="eoko-text-ultralight" style="color: white;display: inline; font-size: 15px;">{{dropdown.length}} Listed
+                    </p>
+
+          <div  ng-show="showDetails" >
+            <ion-item ng-repeat="notify in dropdown | filter: customEventFilter" " class="item-thumbnail-left"
+                      style="background-color:rgba(0,0,0,0);border-top:1px solid rgba(255,255,255,0.3);border-bottom:1px solid rgba(255,255,255,0.3);padding-left:40px;">
+
+          <h2 class="eoko-text-thin" style="color: white;font-size: 25px">{{notify.title}}</h2>
+          <p class="eoko-text-ultralight" style="color: white;display: inline; font-size: 15px;">
+            {{notify.location}}
+            <br>{{notify.date}}
+            <br>{{notify.time}}
+          </p>
+          	<button class="eoko-button-action-event-join eoko-text-thin eoko-button-clear ion-chevron-right arrowThing" ng-click="openPopover($event, notify)"></button>
+              </button>
+
+            </ion-item>
+          </div>
+        </ion-item>
+
+      </ion-list>
+    </ion-scroll>
+
+
+     <ion-scroll ng-if="selection.tab == 'feedback' " style="height: calc(100% - 10em);" scrollbar-x="false" scrollbar-y="false">
+
+       <ion-list ng-if="feedbackSelector.tab == 'selector'">
+         <ion-item ng-click="feebackChoose('survey'); checkSurveys()"  class="item-thumbnail-left"
+                          style="background-color:rgba(0,0,0,0);border-top:1px solid rgba(255,255,255,0.3);border-bottom:1px solid rgba(255,255,255,0.3);padding-left: 33px;">
+                          <h2 class="eoko-text-thin" style="color: white;font-size: 25px;text-transform:capitalize;">Surveys</h2>
+                          <div ng-repeat="survey in filteredList = (surveyList | filter: surveysNotDone)" style="display:none;"></div>
+                    <p class="eoko-text-ultralight" style="color: white;display: inline; font-size: 15px;">{{filteredList.length}} Available
+                    </p>
+
+        </ion-item>
+        <ion-item ng-click="feebackChoose('comment')"  class="item-thumbnail-left"
+                          style="background-color:rgba(0,0,0,0);border-top:1px solid rgba(255,255,255,0.3);border-bottom:1px solid rgba(255,255,255,0.3);padding-left: 33px;">
+                          <h2 class="eoko-text-thin" style="color: white;font-size: 25px;text-transform:capitalize;">Comment</h2>
+                          <p class="eoko-text-ultralight" style="color: white;display: inline; font-size: 15px;">Give us your feedback
+                    </p>
+
+        </ion-item>
+      </ion-list>
+
+
+      <ion-list ng-if="feedbackSelector.tab == 'survey'" >
+        <h2 class="eoko-text-thin" style="color: white;font-size: 25px;text-transform:capitalize;">Surveys</h2>
+        <ion-item ng-repeat="survey in filteredList = (surveyList | filter: surveysNotDone)" class="item-thumbnail-left"
+                            style="background-color:rgba(0,0,0,0);border-top:1px solid rgba(255,255,255,0.3);border-bottom:1px solid rgba(255,255,255,0.3);padding-left: 33px;">
+              <h2 class="eoko-text-thin" style="color: white;font-size: 25px;text-transform:capitalize;">{{survey.title}}</h2>
+              <p class="eoko-text-ultralight" style="color: white;display: inline; font-size: 15px;">
+              {{survey.description}}
+              </p>
+              <button ng-click="takeSurvey(survey)" class="eoko-button-action-event-join eoko-text-thin">Begin
+              </button>
+        </ion-item>
+        <div ng-hide="filteredList.length" class="eoko-text-button-nav" style="text-align:center;">No surveys at this time
+        </div>
+      </ion-list>
+
+      <ion-list ng-if="feedbackSelector.tab == 'questions'" style="height: calc(100% - 10em);margin-top:10px;">
+      <h2 class="eoko-text-thin" style="color:white;text-align:center;">Survey: {{survey.title}}</h2>
+        <hr>
+        <ion-slide-box style="height: 61vh;color:white;" >
+          <ion-slide ng-repeat="q in survey.questions" style="height: calc(100% - 10em);">
+
+            <h2 class="eoko-text-thin" style="color: white;font-size: 33px;text-transform:capitalize;">Question {{$index+ 1}}</h2>
+            <h3 class="eoko-text-thin" style="color: white;font-size: 30px;text-transform:capitalize;">{{q.title}}</h3>
+
+            <ul>
+
+              <li ng-repeat="choice in q.choices" style="margin-left: 33px;">
+                <input type="radio" name="selector" ng-click="recordAnswer($parent.$index,choice.answer)">
+                <label class="eoko-text-thin" style="font-size: 28px;">{{choice.answer}}</label>
+                <div></div>
+              </li>
+
+
+            </ul>
+
+            <a ng-if="!($last)" ng-click="next()" class="eoko-button-clear ion-chevron-right" style="float: right;position: relative;top: 33px;">
+            <span style="font-size: 33px;float: left;position: relative;top: 7px;right: 10px;">Next </span>
+            </a>
+
+            <a ng-if="$last" ng-click="submitSurvey(survey)" class="eoko-button-clear ion-chevron-right" style="float: right;position: relative;top: 33px;">
+            <span style="font-size: 33px;float: left;position: relative;top: 7px;right: 10px;">Done </span>
+            </a>
+
+          </ion-slide>
+        </ion-slide-box>
+      </ion-list>
+
+
+      <ion-list ng-if="feedbackSelector.tab == 'comment'" >
+        <h2 class="eoko-text-thin" style="color: white;font-size: 25px;text-transform:capitalize;margin-top:33px;">Leave a Comment</h2>
+
+ 
+        <textarea placeholder="We value your feedback, please be descriptive" ng-model="comment.text" class="eoko-text-area eoko-text-input-form" style="height:50vh;font-size:18px"></textarea>
+
+        <ion-toggle ng-model="comment.anonymous" toggle-class="toggle-energized" style="float: left;color: white;font-size: 18px;">Anonymous?</ion-toggle>
+
+
+
+      <a ng-click="submitComment()" class="eoko-button-clear ion-chevron-right" style="float: right;position: relative;top: 33px;">
+            <span style="font-size: 33px;float: left;position: relative;top: 7px;right: 10px;">Done </span>
+            </a>
+
+      </ion-list>
+      
+    </ion-scroll>
+
+
+
+     <ion-scroll ng-if="selection.tab == 'ranking' " style="height: calc(100% - 10em);" scrollbar-x="false" scrollbar-y="false">
+
+     <div ng-if="userData.length == 0" class="eoko-text-button-nav" style="text-align:center;">No Users signed up!</div>
+
+     <ion-item ng-repeat="user in userData | orderBy : '-points' " class="item-thumbnail-left"
+                    style="background-color:rgba(0,0,0,0);border:1px solid #aaa3a8;border-radius:33px;margin:33px;">
+
+
+        <div class="eoko-notification-avatar" style="background-image: url({{user.avatar}});"></div>
+        <h2 class="eoko-text-thin" style="color: white;font-size: 25px">{{user.name}}</h2>
+        <p class="eoko-text-ultralight" style="color: white;display: inline; font-size: 15px;">
+          <br><span style="font-size: 18px;">Points: {{user.points}}</span>  
+        </p>
+      </ion-item>
+
+    </ion-scroll>
+
+
+    
+    <!--action detail pop up-->
+    <script id="eventFullView.html" type="text/ng-template">
+
+      <div ng-click="checkHit($event)" class="popup-container popup-showing active" ng-class="cssClass">
+
+        <div id="actionPopUp" class="eoko-action-popup">
+          <div class="item-body" style="text-align: center">
+
+            <!--action avatar-->
+            <!-- <div class="eoko-action-avatar"
+                 style="background-image: url({{modalOpen.info.avatar}}); margin-bottom: 0">
+            </div> -->
+            <div class="eoko-text-button-nav" style="text-align:center;text-transform:capitalize;font-size:33px;margin:33px auto;">
+            {{modalOpen.info.category}}
+            </div>
+
+            <!--action title-->
+            <h2 class="eoko-text-action-popup-title eoko-text-medium" style="margin-bottom: 0%">
+              {{modalOpen.info.title}}
+            </h2>
+
+
+            <div id="actionDetail" class="eoko-show" style="margin-top:33px;">
+              <!--action hosted by-->
+              <!-- <div>
+                <h4 class="eoko-text-action-popup-title2 eoko-text-thin" style="margin-bottom: 0">Hosted by</h4>
+                <a ng-click="openProfile(modalOpen.info)" class="eoko-button-clear eoko-text-action-popup-title eoko-text-regular"
+                   style="margin-bottom: 0">{{modalOpen.info.name}}</a>
+              </div> -->
+
+              <!--action location-->
+              <div>
+                <a class="eoko-icon-location"></a>
+                <h4 class="eoko-text-action-popup-title eoko-text-thin" style="margin-bottom: 0">
+                  {{modalOpen.info.location}}
+                </h4>
+
+              </div>
+
+              <!--action date/time-->
+              <div>
+                <a class="eoko-icon-date-time"></a>
+                <a class="eoko-text-action-popup-title2 eoko-text-thin" style="margin-bottom: 0; font-size: 18px">
+                  {{modalOpen.info.date}}
+                </a>
+                <a class="eoko-text-action-popup-title2 eoko-text-thin" style="margin-bottom: 15px;">
+                  @ {{modalOpen.info.time}}
+                </a>
+              </div>
+
+              <!--action descriptions-->
+              <ion-scroll class="eoko-text-thin" style="min-height: 0; max-height: 25vh; font-size: 20px;margin-top: 33px;"
+                          scrollbar-x="false" scrollbar-y="false">
+                {{modalOpen.info.description}}
+              </ion-scroll>
+            </div>
+
+
+            <!--type of lists button-->
+            <!-- <div>
+              <a ng-click="showAttendants('goingButton')" id="goingButton"
+                 class="eoko-button-action-event-list eoko-text-thin" style="font-size:4vw;">
+                {{goingList.length}} <br/> Going
+              </a>
+              <a ng-click="showAttendants('maybeButton')" id="maybeButton"
+                 class="eoko-button-action-event-list eoko-text-thin" style="font-size:4vw;">
+                0 <br/> Maybe
+              </a>
+              <a ng-click="showAttendants('declinedButton')" id="declinedButton"
+                 class="eoko-button-action-event-list eoko-text-thin" style="padding-right: 0; padding-left: 0;font-size:4vw;">
+                0 <br/> Declined
+              </a>
+              <a ng-click="showAttendants('invitedButton')" id="invitedButton"
+                 class="eoko-button-action-event-list eoko-text-thin" style="font-size:4vw;">
+                {{modalOpen.rolenumber}} <br/> Invited
+              </a>
+
+            </div> -->
+
+            <!--show people who are going/maybe/declined/invited-->
+            <div id="attendants" class="eoko-hide">
+              <ion-scroll ng-model="goingList" class="eoko-display-action-attendents">
+                <div ng-if="goingList.length == 0" class="eoko-text-medium" style="font-size: 20px;">Nobody confirmed
+                  Yet!
+                </div>
+
+                <ion-list>
+                  <ion-item class="row">
+                    <figure ng-repeat="going in goingList" class="eoko-action-attendants-avatar">
+                      <ion-item ng-click="openProfile(going.info)" on-hold="openMessagePopover($event,going)"
+                                style="background-image: url({{going.info.avatar}}});margin:0px;"
+                                class="span4 eoko-connect-avatar"></ion-item>
+
+                      <figcaption class="eoko-text-ultralight" style="font-size: 1em;text-align:center;">
+                        {{going.info.name}}
+                      </figcaption>
+                    </figure>
+
+                  </ion-item>
+                </ion-list>
+              </ion-scroll>
+            </div>
+
+          </div>
+          <!--Join button-->
+          <button ng-click="joinEvent(modalOpen)" class="eoko-button-action-event-popup-join">
+            Close
+          </button>
+        </div>
+      </div>
+
+    </script>
+
+
+
+  </ion-content>
+
+</ion-view>
