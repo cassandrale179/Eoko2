@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('eoko.controllers', [])
 
 .controller('DashCtrl', function($scope) {})
 
@@ -28,7 +28,16 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('LoginPageCtrl', function($scope) {
+.controller('LoginPageCtrl', function($scope, $firebaseObject) {
+
+  var ref = firebase.database().ref();
+
+  var obj = $firebaseObject(ref);
+
+  // For three-way data bindings, bind it to the scope instead
+  obj.$bindTo($scope, "data");
+
+
   firebase.auth().signInWithEmailAndPassword($scope.user.email, $scope.user.password).then(
     function(resolve){
       console.log("Logged in"); 

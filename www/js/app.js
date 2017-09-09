@@ -1,11 +1,11 @@
-// Ionic Starter App
+// Ionic Eoko App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
+// 'eoko' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services.js
-// 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+// 'eoko.services' is found in services.js
+// 'eoko.controllers' is found in controllers.js
+angular.module('eoko', ['ionic', 'eoko.controllers', 'eoko.services', 'firebase'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -23,6 +23,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   });
 })
 
+//Config firebase API
+.config(function() {
+  var config = {
+    apiKey: "AIzaSyCPc5qvKqRhHrpq30Fjj2k3Wd8l5nQpngM",    // Your Firebase API key
+    authDomain: "eoko-d4d48.firebaseapp.com",             // Your Firebase Auth domain ("*.firebaseapp.com")
+    databaseURL: "https://eoko-d4d48.firebaseio.com",     // Your Firebase Database URL ("https://*.firebaseio.com")
+    projectId: "eoko-d4d48",
+    storageBucket: "eoko-d4d48.appspot.com",              // Your Cloud Storage for Firebase bucket ("*.appspot.com")
+    messagingSenderId: "667314935073"
+  };
+  firebase.initializeApp(config);
+})
+
+
+//Config app states
 .config(function($stateProvider, $urlRouterProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
@@ -88,6 +103,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/login');
 
 });
