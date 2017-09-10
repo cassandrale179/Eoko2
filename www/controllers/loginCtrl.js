@@ -1,4 +1,4 @@
-app.controller('loginCtrl', function($scope, $firebaseObject, $http) {
+app.controller('loginCtrl', function($scope, $state, $firebaseObject, $http) {
 
 
     $scope.$on('event:social-sign-in-success', function(event, userDetails){
@@ -6,6 +6,8 @@ app.controller('loginCtrl', function($scope, $firebaseObject, $http) {
       console.log("User UID" + userDetails.uid);
       console.log(userDetails);
       console.log(userDetails.friends);
+
+      $state.go('tabsController.events')
     // $http({
     // method: 'GET',
     // url: 'http:://v2.10/' + userUID + '/permissions/'
