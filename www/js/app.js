@@ -78,7 +78,7 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
     },
       views: {
       'tab1': {
-        templateUrl: 'templates/notificationPage.html',
+        templateUrl: 'templates/notification.html',
       controller: 'notificationCtrl'
       }
     }
@@ -137,7 +137,7 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
       otherID: "",
       convoID: ""
     },
-    templateUrl: 'templates/chatPage.html',
+    templateUrl: 'templates/chatTab.html',
     controller: 'chatPageCtrl'
   })
 
