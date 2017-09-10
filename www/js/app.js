@@ -52,7 +52,7 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
   $stateProvider
 
   .state('login', {
-    url: '/loginPage',
+    url: '/login',
     nativeTransitions: {
       type: "fade"
     },
@@ -60,74 +60,10 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
     controller: 'loginCtrl'
   })
 
-  .state('tabsController.events', {
-    url: '/EventPage',
-    nativeTransitions: {
-      type: "fade"
-    },
-    views: {
-      'tab2': {
-        templateUrl: 'templates/events.html',
-        controller: 'eventsCtrl'
-      }
-    }
-  })
 
-  .state('tabsController.notifications', {
-    url: '/notificationPage',
-    nativeTransitions: {
-      type: "fade"
-    },
-      views: {
-      'tab1': {
-        templateUrl: 'templates/notificationPage.html',
-      controller: 'notificationPageCtrl'
-      }
-    }
-  })
-
-
-  .state('tabsController.connect', {
-    url: '/connectPage',
-    nativeTransitions: {
-      type: "fade"
-    },
-    views: {
-      'tab3': {
-        templateUrl: 'templates/connect.html',
-        controller: 'connectCtrl'
-      }
-    }
-  })
-
-  .state('tabsController.buildingEvents', {
-    url: '/buildingEventsPage',
-    nativeTransitions: {
-      type: "fade"
-    },
-    views: {
-      'tab4': {
-        templateUrl: 'templates/buildingEvents.html',
-        controller: 'buildingEventsCtrl'
-      }
-    }
-  })
-
-  .state('tabsController.info', {
-    url: '/infoPage',
-    nativeTransitions: {
-      type: "fade"
-    },
-    views: {
-      'tab5': {
-        templateUrl: 'templates/info.html',
-        controller: 'infoCtrl'
-      }
-    }
-  })
-
+  //home page. each tab
   .state('tabsController', {
-    url: '/page1',
+    url: '/home',
     nativeTransitions: {
       type: "fade"
     },
@@ -135,94 +71,62 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
     abstract: true
   })
 
-  .state('home', {
-    url: '/homePage',
+  .state('tabsController.notifications', {
+    url: '/notification',
     nativeTransitions: {
       type: "fade"
     },
-    templateUrl: 'templates/home.html',
-    controller: 'homeCtrl'
+      views: {
+      'tab1': {
+        templateUrl: 'templates/notificationPage.html',
+      controller: 'notificationCtrl'
+      }
+    }
   })
 
-  .state('profile', {
-    url: '/profilePage',
+  .state('tabsController.action', {
+    url: '/action',
     nativeTransitions: {
       type: "fade"
     },
-    params: {
-      'avatarClicked': 'false'
-    },
-    templateUrl: 'templates/profile.html',
-    controller: 'profileCtrl'
+    views: {
+      'tab2': {
+        templateUrl: 'templates/actions.html',
+        controller: 'actionsCtrl'
+      }
+    }
   })
 
-  .state('signup', {
-    url: '/signupPage',
+  .state('tabsController.people', {
+    url: '/people',
     nativeTransitions: {
       type: "fade"
     },
-    templateUrl: 'templates/signup.html',
-    controller: 'signupCtrl'
+    views: {
+      'tab3': {
+        templateUrl: 'templates/people.html',
+        controller: 'peopleCtrl'
+      }
+    }
   })
 
-
-
-  .state('getNamePage', {
-    url: '/namePage',
+  .state('tabsController.chat', {
+    url: '/chat',
     nativeTransitions: {
       type: "fade"
     },
-    templateUrl: 'templates/getNamePage.html',
-    controller: 'getNamePageCtrl'
+    views: {
+      'tab4': {
+        templateUrl: 'templates/chat.html',
+        controller: 'chatCtrl'
+      }
+    }
   })
 
-  .state('getCodePage', {
-    url: '/codePage',
-    nativeTransitions: {
-      type: "fade"
-    },
-    params: {
-      userinfo: {firstname: "", lastname: "", email: "", password: "", buildcode: ""}
-    },
-    templateUrl: 'templates/getCodePage.html',
-    controller: 'getCodePageCtrl'
-  })
 
-  .state('getDescriptionPage', {
-    url: '/descriptionPage',
-    nativeTransitions: {
-      type: "fade"
-    },
-    templateUrl: 'templates/getDescriptionPage.html',
-    controller: 'getDescriptionPageCtrl'
-  })
 
-  .state('getSocialPage', {
-    url: '/socialPage',
-    nativeTransitions: {
-      type: "fade"
-    },
-    templateUrl: 'templates/getSocialPage.html',
-    controller: 'getSocialPageCtrl'
-  })
 
-  .state('getPicturePage', {
-    url: '/picturePage',
-    nativeTransitions: {
-      type: "fade"
-    },
-    templateUrl: 'templates/getPicturePage.html',
-    controller: 'getPicturePageCtrl'
-  })
 
-  .state('chatTab', {
-    url: '/chatTab',
-    nativeTransitions: {
-      type: "fade"
-    },
-    templateUrl: 'templates/chatTab.html',
-    controller: 'chatTabCtrl'
-  })
 
   .state('chatPage', {
     url: '/chatPage',
@@ -248,6 +152,6 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
 
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/loginPage');
+  $urlRouterProvider.otherwise('/login');
 
 });

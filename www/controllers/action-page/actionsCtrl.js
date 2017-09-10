@@ -1,4 +1,4 @@
-app.controller('eventsCtrl', ['$scope', '$stateParams', 'UserInfo', 'OtherInfo', '$firebaseArray', '$firebaseObject', '$ionicPopover', '$timeout', '$state','$ionicPopup',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+app.controller('actionsCtrl', ['$scope', '$stateParams', 'UserInfo', 'OtherInfo', '$firebaseArray', '$firebaseObject', '$ionicPopover', '$timeout', '$state','$ionicPopup',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
   function ($scope, $stateParams, UserInfo, OtherInfo, $firebaseArray, $firebaseObject, $ionicPopover, $timeout, $state,$ionicPopup) {
