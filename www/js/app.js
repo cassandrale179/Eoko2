@@ -7,7 +7,7 @@
 // 'eoko.controllers' is found in controllers.js
 
 angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.services', 'eoko.directives',
-'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngCordova', 'firebase'])
+'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngCordova', 'firebase', 'socialLogin'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
