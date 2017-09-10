@@ -5,7 +5,7 @@ app.controller('loginCtrl', function($scope, $firebaseObject, $http) {
       var userUID = userDetails.uid;
       console.log("User UID" + userDetails.uid);
       console.log(userDetails);
-      console.log(userDetails.friends); 
+      console.log(userDetails.friends);
     // $http({
     // method: 'GET',
     // url: 'http:://v2.10/' + userUID + '/permissions/'
@@ -14,7 +14,6 @@ app.controller('loginCtrl', function($scope, $firebaseObject, $http) {
     // }, function errorCallback(response) {
     //
     // });
-
 
 
     });

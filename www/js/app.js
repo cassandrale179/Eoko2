@@ -42,7 +42,7 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
 })
 
 .config(function(socialProvider){
-socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
+socialProvider.setFbKey({appId: "119015562095866", apiVersion: "v2.10"});
 })
 
 
