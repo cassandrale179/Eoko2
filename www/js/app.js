@@ -41,6 +41,11 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
   firebase.initializeApp(config);
 })
 
+.config(function(socialProvider){
+socialProvider.setFbKey({appId: "119015562095866", apiVersion: "v2.10"});
+})
+
+
 
 //Config app states
 .config(function($stateProvider, $urlRouterProvider) {

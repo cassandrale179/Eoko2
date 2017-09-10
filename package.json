@@ -11,6 +11,7 @@
   "dependencies": {
     "@ionic-native/facebook": "^4.2.1",
     "angularfire": "^2.3.0",
+    "angularjs-social-login": "^2.6.1",
     "cordova-plugin-facebook4": "^1.9.1",
     "gul": "^1.0.0"
   },

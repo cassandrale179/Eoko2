@@ -84,7 +84,7 @@
     <plugin name="cordova-plugin-device" spec="1.1.4" />
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.1" />
     <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
-        <variable name="APP_ID" value="1842131039434258" />
-        <variable name="APP_NAME" value="eoko" />
+        <variable name="APP_ID" value="119015562095866" />
+        <variable name="APP_NAME" value="Eoko" />
     </plugin>
 </widget>
