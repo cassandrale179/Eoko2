@@ -225,8 +225,10 @@ socialLogin.directive("fbLogin", ['$rootScope', 'social', 'socialLoginService', 
 									userDetails["token"] = response.authResponse.accessToken;
 									socialLoginService.setProvider("facebook");
 									$rootScope.$broadcast('event:social-sign-in-success', userDetails);
+
 								});
 							}
+
 						}, {scope: 'email, user_friends', auth_type: 'rerequest'}); //Ask for permission here
 					}
 				});
