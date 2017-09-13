@@ -2,35 +2,22 @@ angular.module('eoko.services', [])
 
   .factory('UserInfo', [function () {
     var userData = {
-      id:"",
-      name: "",
       email: "",
+      uid: "",
+      name: "",
       birthday: "",
-      points: 0,
-      eventCount: 0,
-      surveyCount: 0,
-      major: "",
-      avatar: "",
-      buildcode: "",
-      description: "",
-      friendlist: []
+      friendsList: ""
     };
 
     return {
       setUserInfo: function (info) {
         userData = {
-          id: info.$id,
+          uid: info.uid,
           name: info.name,
           email: info.email,
           birthday: info.birthday,
-          points: info.points,
-          eventCount: info.eventCount,
-          surveyCount: info.surveyCount,
-          major: info.major,
-          avatar: info.avatar,
-          buildcode: info.buildcode,
-          description: info.description,
-          friendlist: info.friendlist
+          imageUrl: info.imageUrl,
+          token: info.token
         };
         return true;
       },
