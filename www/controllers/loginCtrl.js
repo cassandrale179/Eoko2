@@ -1,5 +1,5 @@
 
-app.controller('loginCtrl', function($scope, $firebaseObject, $state) {
+app.controller('loginCtrl', function($scope, $firebaseObject, $state, $http) {
   $scope.$on('event:social-sign-in-success', function(event, userDetails){
     console.log(userDetails);
     $state.go('profile');
@@ -9,33 +9,41 @@ app.controller('loginCtrl', function($scope, $firebaseObject, $state) {
   $scope.fbLogin = function() {
     console.log("logging in...");
     var provider = new firebase.auth.FacebookAuthProvider();
-    //Permissions
+
+    //Asking for user's permissions
     provider.addScope('user_birthday, user_friends');
 
+    //Login into Facebook successfully
     firebase.auth().signInWithPopup(provider).then(function(result) {
-    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-    var token = result.credential.accessToken;
-
-    // The signed-in user info.
-    var user = result.user;
-    console.log(user);
-
+      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+      var token = result.credential.accessToken;
+      //Display user's profile
+      var user = result.user;
+      console.log(user);
 
 
-    // ...
+
+      //Making a HTTP request
+      $http({
+        method: 'GET',
+        url: '/v2.10/me?fields=id,name'
+      }).then(function successCallback(response) {
+        console.log(response);
+    }, function errorCallback(response) {
+    // called asynchronously if an error occurs
+    // or server returns response with an error status.
+    });
+
+
+
+
   }).catch(function(error) {
-    // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;
-    // The email of the user's account used.
     var email = error.email;
-    // The firebase.auth.AuthCredential type that was used.
     var credential = error.credential;
-    // ...
   });
   }
-
-
 
 
 });
