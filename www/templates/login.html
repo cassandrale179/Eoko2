@@ -1,30 +1,12 @@
 <ion-view view-title="Login" hide-nav-bar="true" >
-  <ion-content padding="true" style="background: url(./img/background.png) no-repeat center;background-size:cover;" scroll="false">
-
-    <!-- eoko logo -->
-    <div>
-      <img src="./img/Eoko-logo.svg" style="display: block; width: 100%; height: 100%; margin-left: auto; margin-right: auto; padding-top: 170px; ">
+  <ion-content padding="true" class="background" scroll="false">
+    <div id="A">
+      <img src="./img/Eoko-logo.svg">
+      
+      <button fb-login type="button">LOGIN WITH FACEBOOK</button>
+      <p>
+        Or <b>CREATE</b> a Facebook account
+      </p>
+      <!--<button ng-click="logout()">LOGOUT</button>-->
     </div>
-
-    <!--spacer-->
-    <div class="spacer" style="margin-top: 28%;"></div>
-
-    <!-- connect to facebook -->
-    <div>
-      <img src="./img/connect-to-facebook.svg" style="display: block; width: 60%; height: 60%; margin-left: auto; margin-right: auto; padding-top: 30px; ">
-    </div>
-<!--
-    <fb:login-button
-  scope="public_profile,email"
-  onlogin="checkLoginState();">
-</fb:login-button>
-
-<button ng-click="login()">Login Facebook</button>
-
-<br>
-
-<button ng-click="logout()">Logout from Facebook</button> -->
-<button fb-login type="button">facebook Login</button>
-
-  </ion-content>
 </ion-view>
