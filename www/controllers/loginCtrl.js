@@ -28,7 +28,7 @@ app.controller('loginCtrl', function($scope, $firebaseObject, $state, $http) {
       if (user) {
         console.log("user is logged in!");
         $scope.getUserInfo(user);
-        $state.go('profile'); 
+        $state.go('actionCreate'); 
       }
       else {
         console.log("No user is signed in.");
