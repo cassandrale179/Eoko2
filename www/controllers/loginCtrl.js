@@ -1,4 +1,3 @@
-
 app.controller('loginCtrl', function($scope, $firebaseObject, $state, $http) {
 
 

@@ -12,8 +12,8 @@
 
 
 <ion-view hide-nav-bar="true">
-  <ion-content padding="true" class="background" scroll="false">
-    <div id="B">
+  <ion-content padding="true" class="innerbackground" scroll="false">
+    <div id="B" ng-show="description==0">
       <h1> WHAT ARE YOU CURRENTLY DOING? </h1>
       <form>
         <div id="B2">
@@ -27,11 +27,17 @@
           <button> Meetup </button>
         </div>
         <input type="text" placeholder="Title (e.g Coffee at Saxby)"/>
-        <textarea placeholder="Description (Currently drinking coffee at Saxby. Anyone want to hangout?)"></textarea>
+        <input type="text" placeholder="Location"/>
+        <input type="text" placeholder="Time"/>
         <div id="B3">
-          <button> SUBMIT </button>
+          <button ng-click="description=1"> NEXT </button>
         </div>
       </form>
-    <h4> Skip >> </h4>
+    <h4> Skip <i class="fa fa-chevron-right" aria-hidden="true"></i></h4>
+    </div>
+    <div id="B" ng-show="description==1">
+      <button id="back" ng-click="goback()"> <i class="fa fa-chevron-left" aria-hidden="true"></i> Back </button>
+      <textarea placeholder="Description (Currently drinking coffee at Saxby. Anyone want to hangout?)"></textarea>
+      <button id="submit"> SUBMIT </button>
     </div>
 </ion-view>
