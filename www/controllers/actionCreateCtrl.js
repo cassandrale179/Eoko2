@@ -1,4 +1,4 @@
-app.controller('profileCtrl', ['$scope', '$state','$firebaseArray',
+app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray',
 
   function ($scope, $state, $firebaseArray) {
 
