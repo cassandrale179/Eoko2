@@ -5,15 +5,41 @@ A: LOGIN PAGE
 
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
-.background{
-   /*background: url(../img/background.png) no-repeat center;*/
+/*.background{
    background: linear-gradient(
                      rgba(20,20,20, .5),
                      rgba(20,20,20, .5)), url(https://images.pexels.com/photos/168453/pexels-photo-168453.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb);
    background-size:cover;
+}*/
+
+.background{
+   background: linear-gradient(
+                     rgba(20,20,20, .6),
+                     rgba(20,20,20, .6)),
+  url(../img/outerbackground.png);
+   background-size:cover;
+   background-position: center;
+
 }
 
+.innerbackground{
+  background: linear-gradient(
+                    rgba(20,20,20, .6),
+                    rgba(20,20,20, .6)),
+ url(../img/background.png);
+  background-size:cover;
+  background-position: center;
+}
 
+input::placeholder, textarea::placeholder{
+  color: white;
+}
+
+select{
+  border: 0.5px white solid;
+}
+
+/* ---------------------------- LOGIN SCREEN ------------------------ */
 #A img{
   display: block;
   margin: auto;
@@ -21,7 +47,7 @@ A: LOGIN PAGE
   width: 70%;
 }
 
-#A button{
+#A button, #B3 button, #submit{
   display: block;
   margin: auto;
   margin-top: 10%;
@@ -42,4 +68,79 @@ A: LOGIN PAGE
   text-align: center;
   font-size: 18px;
   margin-top: 5%;
+}
+
+
+/* ---------------------------- INITIAL ACTION SCREEN ------------------------ */
+
+#B {
+  padding-top: 30%;
+}
+#B h1{
+  color: white;
+  font-family: 'Roboto';
+  text-align: center;
+}
+
+#B h4{
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+#B input, #B textarea{
+  width: 90%;
+  border: none;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  display: block;
+  margin: auto;
+  padding: 5%;
+  margin-bottom: 10px;
+}
+
+#B textarea{
+  margin-top: 10px;
+  height: 200px;
+}
+
+
+#B2{
+  margin-top: 5%;
+  margin-right: 7%;
+  margin-bottom: 5%;
+  height: 40px;
+  overflow-x: auto;
+  width: 1000px;
+  display: flex;
+}
+#B2 button{
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  border: 0.1px rgba(255,255,255,0.2) solid;
+  background: none;
+  margin-bottom: 5px;
+  font-size: 18px;
+  margin-right: 10px;
+  border-radius: 7px;
+  padding-bottom: 10px;
+}
+
+#B3 button, #submit{
+  margin-top: 5%;
+  width: 90%;
+  background: rgba(255,255,255,0.8);
+  color: black;
+  border-radius: 5px;
+}
+
+#back{
+  color: white;
+  font-family: 'Robot', sans-serif;
+  position: fixed;
+  top: 10px;
+  font-size: 20px;
 }

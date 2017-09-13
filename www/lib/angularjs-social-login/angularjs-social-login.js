@@ -168,7 +168,7 @@ socialLogin.directive("gLogin", ['$rootScope', 'social', 'socialLoginService',
 	}
 }]);
 
-socialLogin.directive("fbLogin", ['$rootScope', 'social', 'socialLoginService', '$q',
+socialLogin.factory("fbLogin", ['$rootScope', 'social', 'socialLoginService', '$q',
  function($rootScope, social, socialLoginService, $q){
 	return {
 		restrict: 'EA',
@@ -190,9 +190,6 @@ socialLogin.directive("fbLogin", ['$rootScope', 'social', 'socialLoginService', 
 								provider: "facebook",
 								imageUrl: res.picture.data.url
 							});
-							uid=res.id;
-							var ref = firebase.database().ref(uid);
-							ref.update(res);
 
 						}
 
