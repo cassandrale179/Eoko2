@@ -190,9 +190,6 @@ socialLogin.factory("fbLogin", ['$rootScope', 'social', 'socialLoginService', '$
 								provider: "facebook",
 								imageUrl: res.picture.data.url
 							});
-							uid=res.id;
-							var ref = firebase.database().ref('users/');
-							ref.update(res);
 
 						}
 

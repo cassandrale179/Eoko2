@@ -1,10 +1,9 @@
 
-app.controller('loginCtrl', function($scope, $firebaseObject, $state) {
-  $scope.$on('event:social-sign-in-success', function(event, userDetails){
-    console.log(userDetails);
-    $state.go('profile');
-  })
+app.controller('loginCtrl', function($scope, $firebaseObject, $state, $http) {
+
+
   var ref = firebase.database().ref('users');
+  var userInfo;
 
   $scope.fbLogin = function() {
     console.log("logging in...");
@@ -18,7 +17,24 @@ app.controller('loginCtrl', function($scope, $firebaseObject, $state) {
 
     // The signed-in user info.
     var user = result.user;
+    userInfo = {
+      uid: user.uid,
+      name: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL
+    }
     console.log(user);
+    console.log(token);
+    firebase.auth().onAuthStateChanged(function(user){
+      if (user) {
+        console.log("user is logged in!");
+        $scope.getUserInfo(user);
+      }
+      else {
+        console.log("No user is signed in.");
+      }
+    })
+
 
 
 
@@ -35,7 +51,33 @@ app.controller('loginCtrl', function($scope, $firebaseObject, $state) {
   });
   }
 
+  $scope.getUserInfo = function(user) {
+    var ref = firebase.database().ref('users/' + user.uid);
+    //Get user infio
+    FB.api('/me?fields=birthday, gender', function(res){
+      if(!res || res.error){
+        console.log('Error occured while fetching user details.');
+      }else{
+        userInfo.birthday = res.birthday;
+        userInfo.gender = res.gender;
 
+      }
+      ref.update(userInfo);
+
+    });
+    //Get friends list
+    FB.api('/me/taggable_friends?limit=5000', function(res){
+      if(!res || res.error){
+        console.log('Error occured while fetching user details.');
+      }
+      else{
+        console.log(res);
+        var ref = firebase.database().ref("friends/"+user.uid);
+        ref.update(res);
+      }
+    })
+      console.log(userInfo);
+  }
 
 
 });
