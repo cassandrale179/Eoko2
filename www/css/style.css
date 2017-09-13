@@ -6,7 +6,6 @@ A: LOGIN PAGE
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 .background{
-   /*background: url(../img/background.png) no-repeat center;*/
    background: linear-gradient(
                      rgba(20,20,20, .5),
                      rgba(20,20,20, .5)), url(https://images.pexels.com/photos/168453/pexels-photo-168453.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb);
@@ -14,6 +13,15 @@ A: LOGIN PAGE
 }
 
 
+input::placeholder, textarea::placeholder{
+  color: white;
+}
+
+select{
+  border: 0.5px white solid;
+}
+
+/* ---------------------------- LOGIN SCREEN ------------------------ */
 #A img{
   display: block;
   margin: auto;
@@ -21,7 +29,7 @@ A: LOGIN PAGE
   width: 70%;
 }
 
-#A button{
+#A button, #B3 button{
   display: block;
   margin: auto;
   margin-top: 10%;
@@ -42,4 +50,64 @@ A: LOGIN PAGE
   text-align: center;
   font-size: 18px;
   margin-top: 5%;
+}
+
+
+/* ---------------------------- INITIAL ACTION SCREEN ------------------------ */
+
+#B {
+  padding-top: 30%;
+}
+#B h1{
+  color: white;
+  font-family: 'Roboto';
+  text-align: center;
+}
+
+#B h4{
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+#B input, #B textarea{
+  width: 90%;
+  border: none;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  display: block;
+  margin: auto;
+  padding: 5%;
+}
+
+#B textarea{
+  margin-top: 10px;
+  height: 100px;
+}
+
+
+#B2{
+  margin-top: 5%;
+  margin-left: 7%;
+  margin-right: 7%;
+  margin-bottom: 5%; 
+}
+#B2 button{
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  border: 0.1px rgba(255,255,255,0.2) solid;
+  background: none;
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+
+#B3 button{
+  margin-top: 5%;
+  width: 90%;
+  background: rgba(255,255,255,0.8);
+  color: black;
+  border-radius: 5px;
 }
