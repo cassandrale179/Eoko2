@@ -24,8 +24,8 @@ A: LOGIN PAGE
 
 .innerbackground{
   background: linear-gradient(
-                    rgba(20,20,20, .6),
-                    rgba(20,20,20, .6)),
+                    rgba(20,20,20, .4),
+                    rgba(20,20,20, .4)),
  url(../img/background.png);
   background-size:cover;
   background-position: center;
@@ -143,4 +143,19 @@ select{
   position: fixed;
   top: 10px;
   font-size: 20px;
+}
+
+#C{
+  margin-top: 50px;
+  padding-left: 10%;
+  padding-right: 10%; 
+}
+
+#C1A{
+  position: relative;
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+  background: rgba(255,255,255,0.5);
+  margin-bottom: 5px;
+  padding: 3%;
 }

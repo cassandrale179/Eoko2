@@ -1,14 +1,5 @@
 angular.module('eoko.services', [])
 
-.factory('EventsFactory', [function(){
-  var EventsFactory = {
-    print: function(){
-      console.log("hello world");
-    }
-  }
-  return EventsFactory; 
-}])
-
   .factory('UserInfo', [function () {
     var userData = {
       email: "",

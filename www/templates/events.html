@@ -116,7 +116,7 @@
             <button ng-repeat="tags in tagList" ng-click="selectCategory('{{tags.$value}}')" id="{{tags.$value}}" class="eoko-horizontal-scroll-button eoko-text-thin">
               {{tags.$value}}
             </button>
-      
+
             <!-- <button ng-click="selectCategory('fitness')" id="fitness" class="eoko-horizontal-scroll-button eoko-text-thin">
               Fitness
             </button>
@@ -170,7 +170,7 @@
         <!--spacer-->
         <div class="spacer" style="height: 20px;"></div>
 
-        <button ng-if="selection.nextstep == 0" ng-click="selection.nextstep = 1" 
+        <button ng-if="selection.nextstep == 0" ng-click="selection.nextstep = 1"
         style="border-radius: 20px;
                 width: 300px;
                 margin-right: auto;
@@ -181,11 +181,11 @@
 
 
 
-        <button ng-if="selection.nextstep == 1" ng-click="selection.nextstep = 0" 
+        <button ng-if="selection.nextstep == 1" ng-click="selection.nextstep = 0"
         style="float:left;background-color: rgba(0, 0, 0, 0);"
         class="button button-energized ion-chevron-left"></button>
 
-          
+
 
         <!--Action Desciption-->
         <textarea placeholder="What is your event about? Make it short"
@@ -194,19 +194,19 @@
 
 
 
-        <br>  
+        <br>
         <br>
 
 
 
-        <button ng-if="selection.porb == 'public' && selection.nextstep == 1" type="submit" ng-disabled="makeEventForm.$invalid" 
+        <button ng-if="selection.porb == 'public' && selection.nextstep == 1" type="submit" ng-disabled="makeEventForm.$invalid"
         style="border-radius: 20px;
                 width: 300px;
                 margin-right: auto;
                 text-align: center;
                 margin: 0 auto;
                 font-size: 24px;"
-                ng-click="createEvent(makeEventForm)" 
+                ng-click="createEvent(makeEventForm)"
                 class="button button-energized button-block eoko-text-thin">Done
         </button>
 
@@ -223,7 +223,7 @@
       <a ng-click="selection.privstep = 1" class="button button-light  button-clear icon ion-ios-arrow-left"><span style="position: relative;top: 1px;left: 10px;">Cancel</span></a>
 
       <ion-scroll style="height: calc(100% - 10.5em);" scrollbar-x="false" scrollbar-y="false">
-        
+
 
         <ion-list >
           <ion-item class="row" ng-repeat="rows in friendlist" >
@@ -244,18 +244,6 @@
                 style="float:right;border-radius:20px;margin-right:5px;" class="button button-energized">Done
         </button>
       </div>
-
- 
-     <!--  <ion-list>
-        <ion-item class="row" ng-repeat="rows in userList">
-          <ion-item ng-repeat="user in rows" ng-click="selectUser(user)"
-                    style="background-image: url({{user.avatar}});" class="span4 connectImg"
-                    ng-class="privateRoll.hasOwnProperty(user.$id) ? 'userSelected' : 'userDeselected'">
-          </ion-item>
-        </ion-item>
-      </ion-list> -->
-      
-
 
     <!--action detail pop up-->
     <script id="eventFullView.html" type="text/ng-template">

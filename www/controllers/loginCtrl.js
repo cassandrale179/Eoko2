@@ -28,7 +28,7 @@ app.controller('loginCtrl', function($scope, $firebaseObject, $state, $http) {
       if (user) {
         console.log("user is logged in!");
         $scope.getUserInfo(user);
-        $state.go('actionCreate'); 
+        $state.go('actionCreate');
       }
       else {
         console.log("No user is signed in.");
@@ -66,14 +66,14 @@ app.controller('loginCtrl', function($scope, $firebaseObject, $state, $http) {
 
     });
     //Get friends list
-    FB.api('/me/taggable_friends?limit=5000', function(res){
+    FB.api('/me/friends?limit=5000', function(res){
       if(!res || res.error){
         console.log('Error occured while fetching user details.');
       }
       else{
         console.log(res);
-        var ref = firebase.database().ref("friends/"+user.uid);
-        ref.update(res);
+        // var ref = firebase.database().ref("friends/"+user.uid);
+        // ref.update(res);
       }
     })
       console.log(userInfo);

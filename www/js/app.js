@@ -49,13 +49,9 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
 
 //Config app states
 .config(function($stateProvider, $urlRouterProvider) {
-
-  // Ionic uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  // Each state's controller can be found in controllers.js
   $stateProvider
 
+  /* ------- LOGIN PAGE CONTROLLER ------- */
   .state('login', {
     url: '/loginPage',
     nativeTransitions: {
@@ -64,6 +60,8 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
     templateUrl: 'templates/login.html',
     controller: 'loginCtrl'
   })
+
+
 
     .state('tabsController.events', {
       url: '/EventPage',
@@ -78,7 +76,7 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
       }
     })
 
-  
+
     .state('tabsController.buildingEvents', {
       url: '/buildingEventsPage',
       nativeTransitions: {
@@ -114,6 +112,8 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
       abstract: true
     })
 
+
+      /* ------- ACTION CREATE PAGE CONTROLLER ------- */
     .state('actionCreate', {
       url: '/actionCreate',
       nativeTransitions: {
@@ -124,6 +124,19 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
       },
       templateUrl: 'templates/actionCreate.html',
       controller: 'actionCreateCtrl'
+    })
+
+      /* ------- ACTION LIST CONTROLLER ------- */
+    .state('actionList', {
+      url: '/actionList',
+      nativeTransitions: {
+        type: "fade"
+      },
+      params: {
+        'avatarClicked': 'false'
+      },
+      templateUrl: 'templates/actionList.html',
+      controller: 'actionListCtrl'
     })
 
     .state('signup', {
@@ -143,6 +156,7 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
       templateUrl: 'templates/setting.html',
       controller: 'settingPageCtrl'
     })
+
 
 
   // if none of the above states are matched, use this as the fallback
