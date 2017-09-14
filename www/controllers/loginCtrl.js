@@ -13,9 +13,11 @@ app.controller('loginCtrl', function($scope, $firebaseObject, $state, $http) {
     firebase.auth().signInWithPopup(provider).then(function(result) {
     // This gives you a Facebook Access Token. You can use it to access the Facebook API.
     var token = result.credential.accessToken;
+    console.log('User token' + token);
 
     // The signed-in user info.
     var user = result.user;
+    console.log(user);
     userInfo = {
       uid: user.uid,
       name: user.displayName,
@@ -53,31 +55,45 @@ app.controller('loginCtrl', function($scope, $firebaseObject, $state, $http) {
 
   $scope.getUserInfo = function(user) {
     var ref = firebase.database().ref('users/' + user.uid);
-    //Get user infio
-    FB.api('/me?fields=birthday, gender', function(res){
+    FB.api('/me?fields=birthday, gender, id', function(res){
       if(!res || res.error){
         console.log('Error occured while fetching user details.');
       }else{
         userInfo.birthday = res.birthday;
         userInfo.gender = res.gender;
+        userInfo.fbid = res.id;
 
       }
       ref.update(userInfo);
 
     });
-    //Get friends list
-    FB.api('/me/friends?limit=5000', function(res){
+
+
+    //GET FRIEND LIST (EVEN IF THEY DO NOT USE THE APP )
+    FB.api('/me/taggable_friends?limit=5000', function(res){
       if(!res || res.error){
-        console.log('Error occured while fetching user details.');
+        console.log('Error occured while fetching user friends who are not on the app.');
       }
       else{
         console.log(res);
         var ref = firebase.database().ref("friends/"+user.uid);
         ref.update(res);
       }
-    })
+    });
+
+
+    //GET FRIEND LIST (ONLY THE ONE THAT HAD USED THE APP )
+    FB.api('/me/friends?limit=5000', function(res){
+      if(!res || res.error){
+        console.log('Error occured while fetching user friends who use the app.');
+      }
+      else{
+        console.log(res);
+        var ref = firebase.database().ref("users/"+user.uid+"/friendsinapp");
+        ref.update(res);
+      }
+    });
+
       console.log(userInfo);
   }
-
-
 });
