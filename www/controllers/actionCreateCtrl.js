@@ -34,9 +34,4 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
     $scope.submit = function(){
       console.log($scope.action);
     }
-
-
-
-
-
   }])

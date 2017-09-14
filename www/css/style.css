@@ -5,12 +5,6 @@ A: LOGIN PAGE
 
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
-/*.background{
-   background: linear-gradient(
-                     rgba(20,20,20, .5),
-                     rgba(20,20,20, .5)), url(https://images.pexels.com/photos/168453/pexels-photo-168453.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb);
-   background-size:cover;
-}*/
 
 .background{
    background: linear-gradient(
@@ -37,6 +31,13 @@ input::placeholder, textarea::placeholder{
 
 select{
   border: 0.5px white solid;
+}
+
+.logo{
+  width: 150px;
+  display: block;
+  margin: auto;
+  margin-top: 20px;
 }
 
 /* ---------------------------- LOGIN SCREEN ------------------------ */
@@ -151,11 +152,42 @@ select{
   padding-right: 10%;
 }
 
+#C1{
+  background: rgba(255,255,255,0.8);
+  height: 80px;
+  margin-bottom: 20px;
+  border-radius: 7px;
+  box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);
+  display: flex;
+  padding: 3%;
+}
+
+#C1 img{
+  object-fit: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+#C2 img{
+  width: 25px !important;
+  height: 25px !important;
+  margin-right: 7%;
+}
+
+#C2{
+  margin-left: 7%;
+}
+
+
+
 #C1A{
   position: relative;
   width: 100%;
   font-family: 'Roboto', sans-serif;
-  background: rgba(255,255,255,0.5);
   margin-bottom: 5px;
   padding: 3%;
+  font-size: 20px;
 }
