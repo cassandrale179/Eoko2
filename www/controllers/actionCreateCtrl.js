@@ -22,9 +22,4 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray',
         console.log("Successfully pushed");
     }
 
-
-
-
-
-
   }])
