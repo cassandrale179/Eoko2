@@ -16,7 +16,7 @@ A: LOGIN PAGE
    background: linear-gradient(
                      rgba(20,20,20, .6),
                      rgba(20,20,20, .6)),
-  url(https://files.slack.com/files-pri/T5ULB2B9V-F72M0EVT6/unspecified-1024x576.jpeg);
+  url(../img/outerbackground.jpeg);
    background-size:cover;
    background-position: center;
 
@@ -148,7 +148,7 @@ select{
 #C{
   margin-top: 50px;
   padding-left: 10%;
-  padding-right: 10%; 
+  padding-right: 10%;
 }
 
 #C1A{
