@@ -72,8 +72,8 @@ app.controller('loginCtrl', function($scope, $firebaseObject, $state, $http) {
       }
       else{
         console.log(res);
-        // var ref = firebase.database().ref("friends/"+user.uid);
-        // ref.update(res);
+        var ref = firebase.database().ref("friends/"+user.uid);
+        ref.update(res);
       }
     })
       console.log(userInfo);
