@@ -7,9 +7,10 @@
 // 'eoko.controllers' is found in controllers.js
 
 angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.services', 'eoko.directives',
-'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngInstafeed', 'ngCordova', 'ngCordovaOauth', 'firebase', 'socialLogin'])
+'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngInstafeed', 'ngCordova', 'ngCordovaOauth', 'firebase', 'socialLogin', 'ngOpenFB'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, ngFB) {
+  ngFB.init({appId: '694354544087073'});
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
