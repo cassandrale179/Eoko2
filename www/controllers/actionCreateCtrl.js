@@ -1,9 +1,12 @@
-app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionicPlatform', '$http',
-  function ($scope, $state, $firebaseArray, $ionicPlatform, $http) {
+app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionicPlatform', '$http', 'facebookService',
+  function ($scope, $state, $firebaseArray, $ionicPlatform, $http, facebookService) {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user){
         console.log("user is logged in.");
         console.log(user);
+        facebookService.getMyLastName().then(function(res){
+          console.log(response.last_name);
+        })
       }
       else{
         console.log("No user")

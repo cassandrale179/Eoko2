@@ -1,5 +1,39 @@
-app.controller('loginCtrl', function($scope, $firebaseObject, $state, $http) {
+app.controller('loginCtrl', function($scope, $cordovaOauth, $firebaseAuth, $state, $http) {
+  var fbAppId = '694354544087073';
+  $scope.authObj = $firebaseAuth();
 
+  $scope.authObj.$onAuthStateChanged(function(firebaseUser){
+    if (firebaseUser){
+      console.log("Signed in as: " + firebaseUser.uid);
+      $scope.getUserInfo(firebaseUser.uid);
+    }
+    else {
+      console.log("Signed out");
+    }
+  })
+  $scope.login = function() {
+    var uid;
+
+    //Cordova OAuth Facebook Login
+    $cordovaOauth.facebook(fbAppId,["email", "user_birthday", "user_friends"]).then(function(result){
+      console.log("User is logged in: " + result.access_token);
+
+      // Facebook authentication with credential
+      var credential = firebase.auth.FacebookAuthProvider.credential(
+        result.access_token
+      );
+
+      $scope.authObj.$signInWithCredential(credential).then(function(firebaseUser) {
+        console.log("Credential signed in as:", firebaseUser.uid);
+        uid = firebaseUser.uid;
+
+      }).catch(function(error) {
+        console.error("Authentication failed:", error);
+      });
+      $scope.getUserInfo(uid);
+      $state.go('actionCreate');
+    })
+  }
 
   var ref = firebase.database().ref('users');
   var userInfo;
@@ -54,15 +88,23 @@ app.controller('loginCtrl', function($scope, $firebaseObject, $state, $http) {
     });
   }
 
-  $scope.getUserInfo = function(user) {
-    var ref = firebase.database().ref('users/' + user.uid);
-    FB.api('/me?fields=birthday, gender, id', function(res){
+  $scope.getUserInfo = function(uid) {
+    var ref = firebase.database().ref('users/' + uid);
+    FB.api('/me?fields=birthday, gender, id, name, picture', function(res){
       if(!res || res.error){
         console.log('Error occured while fetching user details.');
       }else{
         userInfo.birthday = res.birthday;
         userInfo.gender = res.gender;
         userInfo.fbid = res.id;
+        userInfo = {
+          birthday: res.birthday,
+          gender: res.gender,
+          fbid: res.id,
+          name: res.name,
+          email: res.email,
+          photoURL: res.picture.data.url
+        }
 
       }
       ref.update(userInfo);
@@ -74,6 +116,7 @@ app.controller('loginCtrl', function($scope, $firebaseObject, $state, $http) {
     FB.api('/me/taggable_friends?limit=5000', function(res){
       if(!res || res.error){
         console.log('Error occured while fetching user friends who are not on the app.');
+        console.log(res.error.text);
       }
       else{
         console.log(res);

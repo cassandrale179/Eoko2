@@ -1,5 +1,6 @@
 angular.module('eoko.services', [])
 
+
   .factory('UserInfo', [function () {
     var userData = {
       email: "",
