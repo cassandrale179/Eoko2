@@ -23,6 +23,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
       $scope.photos = [];
       var friendsRef = firebase.database().ref("users/");
 
+
       $scope.friends = $firebaseArray(friendsRef);
       $scope.friends.$loaded().then(function(x) {
         console.log("gotlist", $scope.friends);
@@ -91,6 +92,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
         };
 
 
+
     //--------------------- REVERSE GEO-ENCODING ------------------------------
     function reverseGeo(geocoder){
       var latlng = "39.9551991,-75.1885332";
@@ -107,6 +109,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
     {
       $ionicPlatform.ready(function()
       {
+
         var watchId = navigator.geolocation.watchPosition(onSuccess);
         function onSuccess(position) 
         {
@@ -123,8 +126,10 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
 
 
           $scope.myloc = latlng;  //actual current location
+
         }
       });
+
 
       }
 
