@@ -11,46 +11,47 @@ app.controller('loginCtrl', function($scope, $firebaseObject, $state, $http) {
     provider.addScope('user_birthday, user_friends');
 
     firebase.auth().signInWithPopup(provider).then(function(result) {
+      console.log("Log in successful!");
     // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-    var token = result.credential.accessToken;
-    console.log('User token' + token);
+      var token = result.credential.accessToken;
+      console.log('User token' + token);
 
-    // The signed-in user info.
-    var user = result.user;
-    console.log(user);
-    userInfo = {
-      uid: user.uid,
-      name: user.displayName,
-      email: user.email,
-      photoURL: user.photoURL
-    }
-    console.log(user);
-    console.log(token);
-    firebase.auth().onAuthStateChanged(function(user){
-      if (user) {
-        console.log("user is logged in!");
-        $scope.getUserInfo(user);
-        $state.go('actionCreate');
+      // The signed-in user info.
+      var user = result.user;
+      console.log(user);
+      userInfo = {
+        uid: user.uid,
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL
       }
-      else {
-        console.log("No user is signed in.");
-      }
-    })
+      console.log(user);
+      console.log(token);
+      firebase.auth().onAuthStateChanged(function(user){
+        if (user) {
+          console.log("user is logged in!");
+          $scope.getUserInfo(user);
+          $state.go('actionCreate');
+        }
+        else {
+          console.log("No user is signed in.");
+        }
+      })
 
 
 
 
-    // ...
-  }).catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    // The email of the user's account used.
-    var email = error.email;
-    // The firebase.auth.AuthCredential type that was used.
-    var credential = error.credential;
-    // ...
-  });
+      // ...
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+    });
   }
 
   $scope.getUserInfo = function(user) {
