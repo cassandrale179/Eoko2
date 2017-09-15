@@ -1,26 +1,33 @@
-app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionicPlatform',
-  function ($scope, $state, $firebaseArray, $ionicPlatform) {
+app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionicPlatform', '$http',
+  function ($scope, $state, $firebaseArray, $ionicPlatform, $http) {
+    var currentUser;
     firebase.auth().onAuthStateChanged(function(user) {
       if (user){
-        console.log("user is logged in.");
-        console.log(user);
+        console.log("user is logged in." + user);
+        currentUser = user;
       }
       else{
         console.log("No user")
       }
     })
 
-    $ionicPlatform.ready(function(){
+    function ionicPlatform(){
 
+    }
+    $ionicPlatform.ready(function(){
       var watchId = navigator.geolocation.watchPosition(onSuccess);
       function onSuccess(position) {
-        $scope.action.location = "Latitude" + position.coords.latitude + " Longitude: " + position.coords.longitude;
-        $state.go('actionCreate');
+        var latlng = position.coords.latitude + "," + position.coords.longitude;
+        var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&sensor=false";
+        $http.get(url).then(function(response){
+          $scope.action.location = response.data.results[0].formatted_address;
+        });
 
-        console.log('Latitude: '  + position.coords.latitude      + '<br />' +
-                              'Longitude: ' + position.coords.longitude     + '<br />' +
-                              '<hr />')
-                            }
+        //UPDATE USER'S LOCATION ON FIREBASE
+        var obj = {
+          location: latlng
+        }
+      }
 
     })
 
