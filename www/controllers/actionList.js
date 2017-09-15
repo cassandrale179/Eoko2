@@ -40,7 +40,6 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
           friendsRef.orderByChild("fbid").equalTo(friendsTable[i].id).on("child_added", function(snap) {
             friendsTable[i].photo = snap.val().photoURL;
             friendsTable[i].location = snap.val().location;
-            friendsTable[i].distance = snap.val().distance;
             friendsTable[i].uid = snap.key;
           });
         }
@@ -48,16 +47,6 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
     }
 
 
-
-
-    //--------------------- REVERSE GEO-ENCODING ------------------------------
-    function reverseGeo(geocoder){
-      var latlng = "39.9551991,-75.1885332";
-      var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&sensor=false";
-      $http.get(url).then(function(response){
-        console.log("Formatted Address: " + response.data.results[0].formatted_address);
-      });
-    }
 
     //--------------------- ALWAYS WATCHING USER MOVEMENT AND PUSH IT TO FIREBASE ------
     function ionicPlatform(){
@@ -95,10 +84,12 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
             var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
             var d = earthRadius * c; // Distance in km
             var miles = d * 0.621371;
-            console.log($scope.friends[i].uid + ": " + miles);
+            $scope.friends[i].distance = miles;
           }
+          console.log($scope.friends);
         }
       });
+
 
       }
 

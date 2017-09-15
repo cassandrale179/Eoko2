@@ -195,6 +195,11 @@ select{
   border-radius: 3px !important;
 }
 
+#C3{
+  padding-top: 10px;
+  padding-right: 10px;
+}
+
 /* ---------------------------- EOKO NUDGE ------------------------ */
 #D{
   height: 210px;
