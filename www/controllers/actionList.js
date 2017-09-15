@@ -13,7 +13,6 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http',
       getLocation();
       reverseGeo();
 
-
     });
 
 
@@ -23,17 +22,16 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http',
       $scope.friends =  []
       $scope.photos = []
       var friendsRef = firebase.database().ref("users/");
-
       friendsRef.on("value", function(snapshot){
         var friendsTable  = snapshot.child(currentUser.uid+"/friendsinapp").val().data;
         console.log(friendsTable);
 
+        //CREATING A USER OBJECT FOR THE FRIENDS
         for (var i = 0; i < friendsTable.length; i++){
           $scope.friends.push(friendsTable[i]);
 
           //FIND USER IN THE TABLE WHO HAS FB ID SIMILAR TO CURRENT USER'S FRIEND FBID
           friendsRef.orderByChild("fbid").equalTo(friendsTable[i].id).on("child_added", function(snap) {
-            // $scope.photos.push(snap.val().photoURL);
             friendsTable[i].photo = snap.val().photoURL;
           });
         }
@@ -58,18 +56,18 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http',
 
 
 
-    //--------- REVERSE GEO-ENCODING ------------------------------------------
+    //--------------------- REVERSE GEO-ENCODING ------------------------------
     function reverseGeo(geocoder){
-
-
       var latlng = "39.9551991,-75.1885332";
       var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&sensor=false";
       $http.get(url).then(function(response){
-        console.log(response.data.results[0].formatted_address); 
+        console.log(response.data.results[0].formatted_address);
       });
 
 
     }
+
+    //---------------- GET CURRENT USER'S INFORMATION --------------------------
 
 
 
