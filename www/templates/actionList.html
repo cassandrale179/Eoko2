@@ -6,8 +6,9 @@
     <!-- ____________________  DISPLAY USER FRIENDS WITHIN 10 MILES  _________________  -->
 
     <div id="C">
-      <div id="C1" ng-repeat="x in friends">
-        <img ng-src="{{x.photo}}"/>
+
+      <div id="C1" ng-repeat="x in friends | orderBy: distSorter">
+        <img ng-src="{{x.photoURL}}"/>
         <div id="C1A">
           {{x.name}}
           <br />
@@ -16,7 +17,8 @@
             <img id="two" src="http://freevector.co/wp-content/uploads/2014/06/facebook-messenger-white.png" />
           </div>
           <div id="C3">
-          
+            <span>{{distFromPlayer(x.location)}}</span>
+            <span>miles</span>
           </div>
         </div>
 
@@ -45,6 +47,7 @@
           </div>
         </div>
       </div>
+
     </div>
 
 
