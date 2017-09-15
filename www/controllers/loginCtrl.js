@@ -38,6 +38,8 @@ app.controller('loginCtrl', function($scope, $cordovaOauth, $firebaseAuth, $stat
   var ref = firebase.database().ref('users');
   var userInfo;
 
+
+//Not using this anymore
   $scope.fbLogin = function() {
     console.log("logging in...");
     var provider = new firebase.auth.FacebookAuthProvider();
