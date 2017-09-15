@@ -1,6 +1,9 @@
 app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http',
 
   function ($scope, $state, $firebaseArray, $http) {
+    $scope.nudge = 0
+    console.log($scope.nudge); 
+
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     var currentUser;
@@ -13,6 +16,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http',
       getLocation();
       reverseGeo();
 
+
     });
 
 
@@ -23,6 +27,13 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http',
       $scope.photos = []
       var friendsRef = firebase.database().ref("users/");
       friendsRef.on("value", function(snapshot){
+
+        //GET CURRENT USER'S INFORMATION (NAME AND PHOTO)
+        var userInfo = snapshot.child(currentUser.uid).val();
+        $scope.userPictureURL = userInfo.photoURL;
+        $scope.userName = userInfo.name;
+
+        //GET USER FRIEND'S INFORMATION UNDER THE USER'S SNAPSHOT
         var friendsTable  = snapshot.child(currentUser.uid+"/friendsinapp").val().data;
         console.log(friendsTable);
 
@@ -67,7 +78,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http',
 
     }
 
-    //---------------- GET CURRENT USER'S INFORMATION --------------------------
+    //---------------- CLOSING EOKO NUDGE --------------------------
 
 
 

@@ -40,7 +40,7 @@ select{
   margin-top: 20px;
 }
 
-/* ---------------------------- LOGIN SCREEN ------------------------ */
+/* -------------------------------- LOGIN SCREEN ----------------------------- */
 #A img{
   display: block;
   margin: auto;
@@ -146,6 +146,7 @@ select{
   font-size: 20px;
 }
 
+/* ---------------------------- PEOPLE WITHIN 10 MILES ------------------------ */
 #C{
   margin-top: 50px;
   padding-left: 10%;
@@ -181,8 +182,6 @@ select{
   margin-left: 7%;
 }
 
-
-
 #C1A{
   position: relative;
   width: 100%;
@@ -192,19 +191,80 @@ select{
   font-size: 20px;
 }
 
+#one, #two{
+  border-radius: 3px !important;
+}
 
+/* ---------------------------- EOKO NUDGE ------------------------ */
 #D{
   height: 200px;
   width: 260px;
-  background: rgba(230, 126, 34, 0.8);
+  background: rgba(230, 126, 34, 0.9);
   left:60px;
   top: 200px;
   position: fixed;
-  padding-top: 3%; 
+  padding-top: 3%;
+  z-index: 10;
 }
 
 #D h3{
   color: white;
   font-family: 'Roboto', sans-serif;
   text-align: center;
+  font-size: 20px;
+}
+
+#D h4{
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  margin-left: 8%;
+  margin-right: 8%;
+  margin-top: 0px;
+}
+
+#D1 p{
+  font-size: 15px;
+  position: absolute;
+  color: white;
+  top: 5px;
+  right: 5px;
+}
+
+#D2{
+  display: flex;
+}
+
+#D2A, #D2C{
+  width: 40%;
+  text-align: center;
+}
+
+#D2A img{
+  border-radius: 50px;
+  object-fit: cover;
+  margin-left: 10%;
+}
+
+
+#D2B{
+  width: 20%;
+}
+
+#D2B i{
+  color: white;
+  font-size: 30px;
+  margin-top: 50%;
+  position: relative;
+  padding-left: 20px;
+}
+
+#D3 button{
+  display: block;
+  margin: auto;
+  background: white;
+  border: none;
+  color: rgb(230, 126, 34);
+  font-size: 20px;
+  margin-top: -10px;
+  border-radius: 10px;
 }
