@@ -6,7 +6,6 @@
     <!-- ____________________  DISPLAY USER FRIENDS WITHIN 10 MILES  _________________  -->
 
     <div id="C">
-
       <div id="C1" ng-repeat="x in friends | orderBy: distSorter">
         <img ng-src="{{x.photoURL}}"/>
         <div id="C1A">
@@ -17,14 +16,14 @@
             <img id="two" src="http://freevector.co/wp-content/uploads/2014/06/facebook-messenger-white.png" />
           </div>
         </div>
+
+        <!-- _________________ DISPLAY THE DISTANCE BETWEEN THE USER AND FRIENDS ___________ -->
         <div id="C3">
         {{distFromPlayer(x.location)}} <br />
         miles
         </div>
 
-
-
-      <!-- ____________________  EOKO NUDGE ____________________  -->
+      <!-- ____________________________  EOKO NUDGE _______________________________________  -->
         <div id="D" ng-show="nudge">
           <div id="D1">
             <h3>People Near You</h3>
@@ -48,10 +47,6 @@
           </div>
         </div>
       </div>
-
     </div>
-
-
-
 </ion-content>
 </ion-view>
