@@ -12,7 +12,6 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
     console.log(currentUser.uid);
     ionicPlatform();
       getFriends();
-      //ionicPlatform();
     });
 
 
@@ -22,8 +21,6 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
       $scope.friends =  [];
       $scope.photos = [];
       var friendsRef = firebase.database().ref("users/");
-
-
       $scope.friends = $firebaseArray(friendsRef);
       $scope.friends.$loaded().then(function(x) {
         console.log("gotlist", $scope.friends);
@@ -33,8 +30,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
 
 
     //------------------distance calculation--------------------
-
-    function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {   
+    function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
             var R = 6371; // Radius of the earth in km
             var dLat = deg2rad(lat2 - lat1); // deg2rad below
             var dLon = deg2rad(lon2 - lon1);
@@ -51,7 +47,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
             return deg * (Math.PI / 180);
         }
 
-        $scope.distFromPlayer = function(locationdata) {      
+        $scope.distFromPlayer = function(locationdata) {
 
           if($scope.myloc == undefined || $scope.myloc == null)
           {
@@ -74,7 +70,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
                 var result = getDistanceFromLatLonInKm(mylat, mylong, lat, long) * 0.621371;
                 return Math.round(result * 10) / 10;
             }
-          } 
+          }
         };
 
         $scope.distSorter = function(x)
@@ -111,7 +107,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
       {
 
         var watchId = navigator.geolocation.watchPosition(onSuccess);
-        function onSuccess(position) 
+        function onSuccess(position)
         {
           var latlng = position.coords.latitude + "," + position.coords.longitude;
           console.log("Latlng under ionic platform: " + latlng);
@@ -122,17 +118,8 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
             location: latlng
           };
           userRef.update(obj);
-
-
-
           $scope.myloc = latlng;  //actual current location
-
         }
       });
-
-
       }
-
-
-
   }]);

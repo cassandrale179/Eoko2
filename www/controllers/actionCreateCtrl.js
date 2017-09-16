@@ -1,5 +1,7 @@
 app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionicPlatform', '$http',
   function ($scope, $state, $firebaseArray, $ionicPlatform, $http) {
+
+    //------ CHECK IF USER IS CURRENTLY LOGGING IN ------
     var currentUser;
     firebase.auth().onAuthStateChanged(function(user) {
       if (user){
@@ -11,9 +13,8 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
       }
     })
 
-    function ionicPlatform(){
 
-    }
+    //------------------- GET USER CURRENT LOCATION -------------------------------------- 
     $ionicPlatform.ready(function(){
       var watchId = navigator.geolocation.watchPosition(onSuccess);
       function onSuccess(position) {
