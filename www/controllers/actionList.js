@@ -1,6 +1,6 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', '$ionicPlatform',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
 
-  function ($scope, $state, $firebaseArray, $http, $ionicPlatform) {
+  function ($scope, $state, $firebaseArray, $http) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
@@ -9,7 +9,6 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
         $scope.currentUser = user;
     }
     console.log($scope.currentUser.uid);
-    ionicPlatform();
       getFriends();
     });
 
@@ -66,7 +65,8 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
                 return "N/A";
             } else {
                 var result = getDistanceFromLatLonInKm(mylat, mylong, lat, long) * 0.621371;
-                return Math.round(result * 10) / 10;
+                //return Math.round(result * 10) / 10;
+                return result;
             }
           }
         };
@@ -86,9 +86,8 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
         };
 
     //--------------------- ALWAYS WATCHING USER MOVEMENT AND PUSH IT TO FIREBASE ------
-    function ionicPlatform()  //get geolocation data for current user
-    {
-      $ionicPlatform.ready(function()
+
+      $scope.$on('$ionicView.beforeEnter', function () //before anything runs
       {
 
         var watchId = navigator.geolocation.watchPosition(onSuccess);
@@ -106,5 +105,5 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
           $scope.myloc = latlng;  //actual current location
         }
       });
-      }
+
   }]);

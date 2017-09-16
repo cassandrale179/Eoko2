@@ -1,4 +1,5 @@
-<ion-view hide-nav-bar="true">
+<ion-view title="Connect" hide-nav-bar="true" hide-back-button="true" id="page5">
+
   <ion-content padding="true" class="innerbackground">
     <div id="E">
       <!-- _____________ NAVIGATION BAR _______ -->
@@ -15,8 +16,14 @@
           <div id="E2A1">
             <h4>{{x.name}}</h4>
             <h5>{{x.startTime}}</h5>
-            {{myloc}}
-            <h5>{{distFromPlayer(x.location)}} miles</h5>
+             <div ng-if="distFromPlayer(x.location) >= 0.1">
+              {{distFromPlayer(x.location) | number:1}} <br />
+              miles
+              </div>
+              <div ng-if="distFromPlayer(x.location) < 0.1">
+              {{distFromPlayer(x.location) * 5280  | number:1 }} <br />
+              feet
+              </div>
           </div>
         </div>
       </div>

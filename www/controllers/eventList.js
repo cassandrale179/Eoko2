@@ -1,5 +1,5 @@
-app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$ionicPlatform', '$http', '$timeout',
-  function ($scope, $state, $firebaseArray, $ionicPlatform, $http, $timeout) {
+app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '$timeout',
+  function ($scope, $state, $firebaseArray, $http, $timeout) {
 
     //-------------- GET THE CURRENT USER WHO ARE USING THE APP--------------
     firebase.auth().onAuthStateChanged(function(user) {
@@ -7,7 +7,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$ionicPla
         $scope.currentUser = user;
     }
     console.log($scope.currentUser.uid);
-      ionicPlatform();
+
       getEvents();
     });
 
@@ -23,15 +23,14 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$ionicPla
           var userRef = firebase.database().ref("users/" + event.userID);
           userRef.on("value", function(snapshot){
             event.photoURL = snapshot.val().photoURL;
-          })
-        })
+          });
+        });
       });
     }
 
     //--------------------- IONIC PLATFORM FUNCTION -----------------
-    function ionicPlatform()
-    {
-      $ionicPlatform.ready(function()
+    
+      $scope.$on('$ionicView.beforeEnter', function () //before anything runs
       {
 
         var watchId = navigator.geolocation.watchPosition(onSuccess);
@@ -47,9 +46,10 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$ionicPla
           };
           userRef.update(obj);
           $scope.myloc = latlng;  //actual current location
+          console.log("myloc = ", $scope.myloc);
         }
       });
-    }
+
 
     //--------------------- CALCULATE DISTANCE FOR USERS -----------------
     function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
@@ -90,7 +90,8 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$ionicPla
             } else {
                 var result = getDistanceFromLatLonInKm(mylat, mylong, lat, long) * 0.621371;
                 $timeout(function(){$scope.$apply();});
-                return Math.round(result * 10) / 10;
+                //return Math.round(result * 10) / 10;
+                return result;
             }
           }
         };
@@ -121,4 +122,4 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$ionicPla
           console.log("Formatted Address: " + response.data.results[0].formatted_address);
         });
       }
-  }])
+  }]);

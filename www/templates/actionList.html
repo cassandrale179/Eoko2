@@ -18,9 +18,13 @@
         </div>
 
         <!-- _________________ DISPLAY THE DISTANCE BETWEEN THE USER AND FRIENDS ___________ -->
-        <div id="C3">
-        {{distFromPlayer(x.location)}} <br />
+        <div ng-if="distFromPlayer(x.location) >= 0.1" id="C3">
+        {{distFromPlayer(x.location) | number:1}} <br />
         miles
+        </div>
+        <div ng-if="distFromPlayer(x.location) < 0.1" id="C3">
+        {{distFromPlayer(x.location) * 5280  | number:1 }} <br />
+        feet 
         </div>
 
       <!-- ____________________________  EOKO NUDGE _______________________________________  -->

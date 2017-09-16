@@ -63,29 +63,55 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
   })
 
 
-  .state('eventList', {
+  /*.state('eventList', {
     url: '/eventList',
     nativeTransitions: {
       type: "fade"
     },
     templateUrl: 'templates/eventList.html',
     controller: 'eventListCtrl'
-  })
+  })*/
 
 
 
-    // .state('tabsController.events', {
-    //   url: '/EventPage',
-    //   nativeTransitions: {
-    //     type: "fade"
-    //   },
-    //   views: {
-    //     'tab2': {
-    //       templateUrl: 'templates/events.html',
-    //       controller: 'eventsCtrl'
-    //     }
-    //   }
-    // })
+     .state('tabsController.eventList', {
+       url: '/eventList',
+       nativeTransitions: {
+         type: "fade"
+       },
+       views: {
+         'tab2': {
+           templateUrl: 'templates/eventList.html',
+          controller: 'eventListCtrl'
+         }
+       }
+     })
+
+     .state('tabsController.actionList', {
+        url: '/actionList',
+        nativeTransitions: {
+          type: "fade"
+        },
+        views: {
+          'tab3': {
+            templateUrl: 'templates/actionList.html',
+            controller: 'actionListCtrl'
+          }
+        }
+      })
+
+
+      /*.state('actionList', {
+      url: '/actionList',
+      nativeTransitions: {
+        type: "fade"
+      },
+      params: {
+        'avatarClicked': 'false'
+      },
+      templateUrl: 'templates/actionList.html',
+      controller: 'actionListCtrl'
+    })*/
 
 
     .state('tabsController.buildingEvents', {
@@ -138,17 +164,7 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
     })
 
       /* ------- ACTION LIST CONTROLLER ------- */
-    .state('actionList', {
-      url: '/actionList',
-      nativeTransitions: {
-        type: "fade"
-      },
-      params: {
-        'avatarClicked': 'false'
-      },
-      templateUrl: 'templates/actionList.html',
-      controller: 'actionListCtrl'
-    })
+   
 
     .state('signup', {
       url: '/signupPage',
