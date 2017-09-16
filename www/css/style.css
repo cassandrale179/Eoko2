@@ -324,48 +324,12 @@ select{
   margin-top: 0%;
 }
 
-#E2 h5{
-  display: inline-block;
-  margin-top: 0px; 
+#E2A1{
+  width: 100%;
 }
 
-
-
-
-/*---------------Michael's trash navbar css------------------*/
-.action-icon-on {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url("../img/action_icon_on.png");
-  -webkit-transform: .5s;
-  padding-bottom: 50px; }
-
-  .action-icon-off {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url("../img/action_icon_off.png");
-  -webkit-transform: .5s;
-  padding-bottom: 40px; }
-
-
-
-
-
-.people-icon-on {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url("../img/people_icon_on.png");
-  -webkit-transform: .5s;
-  padding-bottom: 50px; }
-
-
-  .people-icon-off {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url("../img/people_icon_off.png");
-  -webkit-transform: .5s;
-  padding-bottom: 40px; }
+#E2 h5{
+  display: inline-block;
+  margin-top: 0px;
+  padding-left: 20%;
+}

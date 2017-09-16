@@ -1,5 +1,4 @@
-<ion-view title="Connect" hide-nav-bar="true" hide-back-button="true" id="page5">
-
+<ion-view hide-nav-bar="true">
   <ion-content padding="true" class="innerbackground">
     <div id="E">
       <!-- _____________ NAVIGATION BAR _______ -->
@@ -15,20 +14,10 @@
           <img ng-src="{{x.photoURL}}" />
           <div id="E2A1">
             <h4>{{x.name}}</h4>
-            <h5>{{x.startTime}}</h5>
-             <div ng-if="distFromPlayer(x.location) >= 0.1">
-              {{distFromPlayer(x.location) | number:1}} <br />
-              miles
-              </div>
-              <div ng-if="distFromPlayer(x.location) < 0.1">
-              {{distFromPlayer(x.location) * 5280  | number:1 }} <br />
-              feet
-              </div>
+            <h5>{{x.startTime}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{distFromPlayer(x.location) | number:1}} miles</h5>
           </div>
         </div>
       </div>
-
-
     </div>
 </ion-content>
 </ion-view>
