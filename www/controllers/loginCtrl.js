@@ -9,8 +9,6 @@ app.controller('loginCtrl', function($scope, $cordovaOauth, $firebaseAuth, $stat
     if (firebaseUser){
       console.log("Signed in as: " + firebaseUser.uid);
       currentUserUid = firebaseUser.uid;
-
-      $scope.getUserInfo();
     }
     else {
       console.log("Signed out");
@@ -32,7 +30,8 @@ app.controller('loginCtrl', function($scope, $cordovaOauth, $firebaseAuth, $stat
                     $scope.authObj.$signInWithCredential(credential).then(function(firebaseUser) {
                       console.log("Credential signed in as:", firebaseUser.uid);
                       currentUserUid = firebaseUser.uid;
-                      $scope.getUserInfo();
+                      // $scope.getUserInfo();
+                      $state.go('actionCreate');
 
                     }).catch(function(error) {
                       console.error("Authentication failed:", error);
@@ -48,63 +47,6 @@ app.controller('loginCtrl', function($scope, $cordovaOauth, $firebaseAuth, $stat
 
   var ref = firebase.database().ref('users');
   var userInfo;
-
-$scope.getUserInfo = function() {
-  //Initialize FACEBOOK SDK
-  $window.fbAsyncInit = function() {
-      FB.init({
-        appId: '694354544087073',
-        status: true,
-        cookie: true,
-        xfbml: true,
-        version: 'v2.10'
-      });
-      FB.getLoginStatus(function(response){
-        if (response.status === "connected")
-        {
-          console.log(response);
-
-          FB.api('/me/?fields=id,name,gender,birthday,email,picture', function(res){
-            if (!res || res.error) {
-              console.log(error);
-
-            }
-            else {
-              console.log(res);
-              userInfo = {
-                fbid: res.id,
-                name: res.name,
-                gender: res.gender,
-                birthday: res.birthday,
-                email: res.email,
-                photoURL: res.picture.data.url
-              }
-              var ref = firebase.database().ref("users/" + currentUserUid);
-              console.log(userInfo);
-              ref.update(userInfo);
-            }
-          })
-          //GET ALL FRIENDS
-          FB.api('/me/friends?limit=5000', function(res){
-            if(!res || res.error){
-              console.log('Error occured while fetching user friends who use the app.');
-            }
-            else{
-              console.log(res);
-
-              var ref = firebase.database().ref('users/' + currentUserUid + "/friendsinapp");
-              ref.update(res);
-              // var ref = firebase.database().ref("users/"+user.uid+"/friendsinapp");
-              // ref.update(res);
-              }
-            })
-        }
-        else {
-          console.log("No Facebook user is connected.");
-        }
-      });
-    }
-  }
 
 
 
