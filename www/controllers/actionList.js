@@ -3,13 +3,12 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
   function ($scope, $state, $firebaseArray, $http, $ionicPlatform) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
-    var currentUser;
     $scope.nudge = 0;
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        currentUser = user;
+        $scope.currentUser = user;
     }
-    console.log(currentUser.uid);
+    console.log($scope.currentUser.uid);
     ionicPlatform();
       getFriends();
     });
@@ -48,7 +47,6 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
         }
 
         $scope.distFromPlayer = function(locationdata) {
-
           if($scope.myloc == undefined || $scope.myloc == null)
           {
             console.log("not yet");
@@ -87,20 +85,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
           }
         };
 
-
-
-    //--------------------- REVERSE GEO-ENCODING ------------------------------
-    function reverseGeo(geocoder){
-      var latlng = "39.9551991,-75.1885332";
-      var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&sensor=false";
-      $http.get(url).then(function(response){
-        console.log("Formatted Address: " + response.data.results[0].formatted_address);
-      });
-    }
-
-    //--------------------- ALWAYS WATCHING USER MOVEMENT AND PUSH IT TO FIREBASE ------\
-
-
+    //--------------------- ALWAYS WATCHING USER MOVEMENT AND PUSH IT TO FIREBASE ------
     function ionicPlatform()  //get geolocation data for current user
     {
       $ionicPlatform.ready(function()
@@ -113,7 +98,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http', 
           console.log("Latlng under ionic platform: " + latlng);
 
           //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
-          var userRef = firebase.database().ref("users/" + currentUser.uid);
+          var userRef = firebase.database().ref("users/" + $scope.currentUser.uid);
           var obj = {
             location: latlng
           };

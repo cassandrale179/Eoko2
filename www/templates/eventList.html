@@ -11,8 +11,13 @@
       <!-- _____________ CARDS OF EVENTS _______ -->
       <div id="E2">
         <div id="E2A" ng-repeat="x in events">
-          {{x.name}}
-
+          <img ng-src="{{x.photoURL}}" />
+          <div id="E2A1">
+            <h4>{{x.name}}</h4>
+            <h5>{{x.startTime}}</h5>
+            {{myloc}}
+            <h5>{{distFromPlayer(x.location)}} miles</h5>
+          </div>
         </div>
       </div>
 

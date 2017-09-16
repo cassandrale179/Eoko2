@@ -163,7 +163,7 @@ select{
   padding: 3%;
 }
 
-#C1 img{
+#C1 img, #E2A img{
   object-fit: cover;
   width: 65px;
   height: 65px;
@@ -315,5 +315,16 @@ select{
 /* ---------- DISPLAY CARDS OF CURRENT ACTIONS ------- */
 #E2{
   padding-left: 5%;
-  padding-right: 5%; 
+  padding-right: 5%;
+}
+
+#E2 h4{
+  font-family: 'Roboto', sans-serif;
+  margin-left: 5%;
+  margin-top: 0%;
+}
+
+#E2 h5{
+  display: inline-block;
+  margin-top: 0px; 
 }
