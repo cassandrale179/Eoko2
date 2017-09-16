@@ -32,7 +32,12 @@
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="js/ng-cordova.min.js"></script>
+    <!--cordova plugins-->
+    <script src="lib/ng-cordova-oauth/dist/ng-cordova-oauth.min.js"></script>
+
     <script src="cordova.js"></script>
+
+
 
     <script>
 
@@ -49,6 +54,8 @@
     <script src="js/instafeed.min.js"></script>
     <script src="js/ng-instafeed.js"></script>
     <script src="lib/angularjs-social-login/angularjs-social-login.js"></script>
+    <script src="lib/angular-openfb/dist/openfb.js"></script>
+    <script src="lib/angular-openfb/dist/ngopenfb.js"></script>
 
     <!--  _____________________________ all controller js  _____________________________ -->
     <script src="controllers/loginCtrl.js"></script>
@@ -73,15 +80,9 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCy5RuM4Fq4ZP7N282jpAk89iEf4ThIx7k">
     </script>
 
-    <!--Facebook API-->
-    <script src="http://connect.facebook.net/en_US/all.js"></script>
-    <script>
-        FB.init({
-          appId      : '694354544087073',
-          status     : true,
-          xfbml      : true
-        });
-    </script>
+
+
+
   </head>
 
 
