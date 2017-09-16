@@ -1,0 +1,22 @@
+<ion-view hide-nav-bar="true">
+  <ion-content padding="true" class="innerbackground">
+    <div id="E">
+      <!-- _____________ NAVIGATION BAR _______ -->
+      <div id="E1">
+        <i class="fa fa-search"></i>
+        <button id="E1A">Action</button>
+        <button id="E1B">Create </button>
+      </div>
+
+      <!-- _____________ CARDS OF EVENTS _______ -->
+      <div id="E2">
+        <div id="E2A" ng-repeat="x in events">
+          {{x.name}}
+
+        </div>
+      </div>
+
+
+    </div>
+</ion-content>
+</ion-view>

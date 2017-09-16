@@ -1,25 +1,33 @@
 app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionicPlatform', '$http',
   function ($scope, $state, $firebaseArray, $ionicPlatform, $http) {
+
+    //------ CHECK IF USER IS CURRENTLY LOGGING IN ------
+    var currentUser;
     firebase.auth().onAuthStateChanged(function(user) {
       if (user){
-        console.log("user is logged in.");
-        console.log(user);
+        console.log("user is logged in." + user);
+        currentUser = user;
       }
       else{
         console.log("No user")
       }
     })
 
-    $ionicPlatform.ready(function(){
 
+    //------------------- GET USER CURRENT LOCATION -------------------------------------- 
+    $ionicPlatform.ready(function(){
       var watchId = navigator.geolocation.watchPosition(onSuccess);
       function onSuccess(position) {
-
         var latlng = position.coords.latitude + "," + position.coords.longitude;
         var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&sensor=false";
         $http.get(url).then(function(response){
           $scope.action.location = response.data.results[0].formatted_address;
         });
+
+        //UPDATE USER'S LOCATION ON FIREBASE
+        var obj = {
+          location: latlng
+        }
       }
 
     })
@@ -34,9 +42,4 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
     $scope.submit = function(){
       console.log($scope.action);
     }
-
-
-
-
-
   }])
