@@ -91,7 +91,40 @@ angular.module('eoko.services', [])
   }])
 
 
+.factory('geoPos', [function () {
 
+    var myloc;
+   var watchId = navigator.geolocation.watchPosition(function(position)
+    {
+      var latlng = position.coords.latitude + "," + position.coords.longitude;
+          console.log("Latlng under ionic platform: " + latlng);
+
+          //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
+
+          myloc = latlng;  //actual current location
+    });
+
+
+  
+
+
+    return {
+     
+      updateFirebase: function(usrID)
+      {
+        var userRef = firebase.database().ref("users").child(usrID);
+          var obj = {
+            location: myloc
+          };
+          userRef.update(obj);
+      },
+      getUserPosition: function () 
+      {
+        return myloc;
+      }
+    };
+
+  }])
 
 
 

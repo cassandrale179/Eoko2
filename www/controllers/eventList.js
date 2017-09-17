@@ -1,56 +1,107 @@
-app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '$timeout',
-  function ($scope, $state, $firebaseArray, $http, $timeout) {
+app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter',
+  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter) {
 
     //-------------- GET THE CURRENT USER WHO ARE USING THE APP--------------
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        $scope.currentUser = user;
+    
+       function geoLoop(id)
+    {
+      try{
+              geoPos.updateFirebase(id);
+              console.log("position set on firebase");
+              $scope.myloc = geoPos.getUserPosition();
+              getEvents();
+            }
+            catch(error)
+            {
+              $timeout(function(){
+                geoLoop(id);
+              },1000);
+            }
     }
-    console.log($scope.currentUser.uid);
 
-      getEvents();
-    });
 
+
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            $scope.currentUser = user;
+            geoLoop(user.uid);
+        }
+        console.log($scope.currentUser.uid);
+          
+        });
+
+
+  
 
     //--------------------- GET ALL THE EVENTS OF THE USER -----------------
     function getEvents()
     {
       var eventsRef = firebase.database().ref("activities/");
       $scope.events = $firebaseArray(eventsRef);
-      $scope.events.$loaded().then(function(x) {
+      $scope.events.$loaded().then(function(x) 
+      {
         console.log("Event List: ", $scope.events);
         angular.forEach($scope.events, function(event){
           var userRef = firebase.database().ref("users/" + event.userID);
           userRef.on("value", function(snapshot){
             event.photoURL = snapshot.val().photoURL;
+
+
           });
         });
+
+
+        $scope.distList = [];
+        $scope.eventList = [];
+        angular.forEach(x, function(value,key)
+        {
+          this.push({
+            'id': value.id,
+            'dist': $scope.distFromPlayer(value.location)
+          });
+        },$scope.distList);
+
+       console.log("SCOPEFRIENDS",  $scope.distList);
+
+         $scope.events.$watch(function(event) 
+         { //watch the database for changes
+          console.log(event);
+
+          if(event.event == "child_changed")
+          {
+            $scope.eventList = [];
+            angular.forEach($scope.distList, function(value,key)
+            {
+              if(value.id == event.key)
+              {
+                console.log("updating location");
+                value.dist = $scope.distFromPlayer($scope.events.$getRecord(event.key).location);
+              }
+            },$scope.distList);
+
+           $scope.distList = $filter('orderBy')($scope.distList, 'dist', false);
+          angular.forEach($scope.distList, function(value,key)
+          {
+            var rec = $scope.events.$getRecord(value.id);
+            this.push(rec);
+          },$scope.eventList);
+          }
+
+        });
+
+         $scope.distList = $filter('orderBy')($scope.distList, 'dist', false);
+          angular.forEach($scope.distList, function(value,key)
+          {
+            var rec = $scope.events.$getRecord(value.id);
+            this.push(rec);
+          },$scope.eventList);
+
+
       });
     }
 
-    //--------------------- IONIC PLATFORM FUNCTION -----------------
     
-      $scope.$on('$ionicView.beforeEnter', function () //before anything runs
-      {
-
-        var watchId = navigator.geolocation.watchPosition(onSuccess);
-        function onSuccess(position)
-        {
-          var latlng = position.coords.latitude + "," + position.coords.longitude;
-          console.log("Latlng of the current user: " + latlng);
-
-          //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
-          var userRef = firebase.database().ref("users/" + $scope.currentUser.uid);
-          var obj = {
-            location: latlng
-          };
-          userRef.update(obj);
-          $scope.myloc = latlng;  //actual current location
-          console.log("myloc = ", $scope.myloc);
-        }
-      });
-
-
+      
     //--------------------- CALCULATE DISTANCE FOR USERS -----------------
     function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
             var R = 6371; // Radius of the earth in km
@@ -67,6 +118,8 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
         function deg2rad(deg) {
             return deg * (Math.PI / 180);
         }
+
+       // $scope.distList = [];
 
         //---------------------- DISTANCE FROM THE CURRENT USER ------------------
         $scope.distFromPlayer = function(locationdata) {
@@ -91,6 +144,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
                 var result = getDistanceFromLatLonInKm(mylat, mylong, lat, long) * 0.621371;
                 $timeout(function(){$scope.$apply();});
                 //return Math.round(result * 10) / 10;
+                //$scope.distList.push(result);
                 return result;
             }
           }
@@ -98,7 +152,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
 
 
         //--------------------- SORTING THE DISTANCE FROM THE USER ------------------
-        $scope.distSorter = function(x)
+        /*$scope.distSorter = function(x)
         {
           if($scope.myloc == undefined || $scope.myloc == null)
           {
@@ -110,7 +164,13 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
             console.log("got it, its: ", result);
             return result;
           }
-        };
+        };*/
+
+
+        /*$scope.distSorter = function(x)
+        {
+            return $scope.distList[x.$index];
+        };*/
 
 
       //--------------------- REVERSE GEO-ENCODING ------------------------------
