@@ -62,18 +62,6 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
     controller: 'loginCtrl'
   })
 
-
-  /*.state('eventList', {
-    url: '/eventList',
-    nativeTransitions: {
-      type: "fade"
-    },
-    templateUrl: 'templates/eventList.html',
-    controller: 'eventListCtrl'
-  })*/
-
-
-
      .state('tabsController.eventList', {
        url: '/eventList',
        nativeTransitions: {
@@ -99,19 +87,6 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
           }
         }
       })
-
-
-      /*.state('actionList', {
-      url: '/actionList',
-      nativeTransitions: {
-        type: "fade"
-      },
-      params: {
-        'avatarClicked': 'false'
-      },
-      templateUrl: 'templates/actionList.html',
-      controller: 'actionListCtrl'
-    })*/
 
 
     .state('tabsController.buildingEvents', {
@@ -164,7 +139,7 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
     })
 
       /* ------- ACTION LIST CONTROLLER ------- */
-   
+
 
     .state('signup', {
       url: '/signupPage',
@@ -176,7 +151,7 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
     })
 
     .state('settingPage', {
-      url: 'settingPage',
+      url: '/settingPage',
       nativeTrasitions: {
         type: "fade"
       },

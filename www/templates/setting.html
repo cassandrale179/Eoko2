@@ -1,25 +1,47 @@
 <ion-view title="Building Events" hide-nav-bar="true" hide-back-button="true" id="page3">
+  <ion-content padding="true" class="innerbackground">
+      <img class="logo" src="./img/Eoko-logo.svg">
+      <img class="tagline" src="./img/peoplenearyou.png"></img>
 
-  <ion-content padding="false"
-               style="background: url(img/main_background.png) no-repeat center;background-size:cover;"
-               class="manual-ios-statusbar-padding eoko-content" scroll="false">
+      <div id="H">
+        <!-- THIS IS THE SETTINGS VIEW FOR THE VIEW PART -->
+        <div id="H1A" ng-show="view">
+
+          <!-- NAVIGATION BAR -->
+          <div id="H1">
+            <div id="container">
+              <button ng-click="view=true" class="active"> VIEW </button>
+            </div>
+            <div id="container">
+              <button ng-click="view=false"> PRIVACY </button>
+            </div>
+          </div>
+
+          <!-- OPTION BUTTONS -->
+          <p>View public events, private events or both</p>
+          <div id="H2">
+            <button ng-click="setPublic()" ng-style="public"> PUBLIC </button>
+            <button ng-click="setPrivate()" ng-style="private"> PRIVATE </button>
+            <button ng-click="setBoth()" ng-style="both"> BOTH </button>
+          </div>
+        </div>
 
 
-    <!--spacer-->
-    <div class="spacer" style="height: 20px;"></div>
-
-
-    <div ng-if="alcick != true" class="button-bar">
-      <!--back button-->
-      <a ui-sref="tabsController.notifications" class="eoko-button-clear ion-chevron-left" nav-transition="ios"
-         nav-direction="back"></a>
-    </div>
-
-
-    <button class="eoko-button-block" style="margin: auto" ng-click="signoutUser()">
-      Sign out
-    </button>
-
-
+        <div id="H1B" ng-hide="view">
+          <div id="H1">
+            <div id="container">
+              <button ng-click="view=true"> VIEW </button>
+            </div>
+            <div id="container">
+              <button ng-click="view=false" class="active"> PRIVACY </button>
+            </div>
+          </div>
+          <div id="H3" ng-hide="view">
+            <p>Set your location to public or private (viewable by friends only)</p>
+            <button ng-click="displayPublic()" ng-style="public2"> SHOW ME TO EVERYONE </button>
+            <button ng-click="displayPrivate()" ng-style="private2"> SHOW ME TO FRIENDS ONLY</button>
+          </div>
+        </div>
+      </div>
   </ion-content>
 </ion-view>

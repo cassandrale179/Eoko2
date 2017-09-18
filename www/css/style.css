@@ -33,12 +33,36 @@ select{
   border: 0.5px white solid;
 }
 
-.logo{
+.logo, .tagline{
   width: 150px;
   display: block;
   margin: auto;
   margin-top: 20px;
 }
+
+.tagline{
+  margin-top: 10px;
+}
+
+ion-content{
+  position: absolute;
+  border: 1px white solid;
+}
+
+
+/* -------------------------------- NAVIGATION BAR --------------------------- */
+#navbar{
+  width: 100%;
+  display: flex;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+
+}
+#navbar button{
+  color: white;
+}
+
 
 /* -------------------------------- LOGIN SCREEN ----------------------------- */
 #A img{
@@ -332,4 +356,77 @@ select{
   display: inline-block;
   margin-top: 0px;
   padding-left: 20%;
+}
+
+
+/* -------------------------- SETTINGS PAGE --------------------------------- */
+#H p{
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  text-align: center;
+  padding-left: 10%;
+  padding-right: 10%;
+  margin-top: 20px;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.active{
+  border-bottom: 0.1px solid rgba(255,255,255,0.3) !important;
+}
+
+#container{
+  width: 50%;
+}
+
+#H1{
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+}
+
+
+/* VIEW AND PRIVACY BUTTONS */
+#H1 button{
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  font-size: 18px;
+  width: auto;
+  margin-top: 15px;
+  background: transparent;
+  border: none;
+  display: block;
+  margin: auto;
+}
+
+#H2{
+  display: flex;
+  width: 100%;
+}
+
+/* public, private or both buttons */
+#H2 button, #H3 button{
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  font-size: 15px;
+  border: none;
+  background: none;
+  border: 0.1px rgba(255, 255, 255, 0.3) solid;
+  border-radius: 5px;
+  height: 50px;
+}
+
+/*public, private, or both buttons */
+#H2 button{
+  width: 30%;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+#H3 button{
+  display: block;
+  margin: auto;
+  width: 70%;
+  margin-bottom: 20px;
 }
