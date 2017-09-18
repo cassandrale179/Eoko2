@@ -6,7 +6,7 @@
     <!-- ____________________  DISPLAY USER FRIENDS WITHIN 10 MILES  _________________  -->
 
     <div id="C">
-      <div id="C1" ng-repeat="x in friends | orderBy: distSorter">
+      <div id="C1" ng-repeat="x in peopleList" ng-if="currentUser.uid != x.uid">
         <img ng-src="{{x.photoURL}}"/>
         <div id="C1A">
           {{x.name}}
@@ -18,12 +18,21 @@
         </div>
 
         <!-- _________________ DISPLAY THE DISTANCE BETWEEN THE USER AND FRIENDS ___________ -->
-        <div ng-if="distFromPlayer(x.location) >= 0.1" id="C3">
+        <!-- <div ng-if="distFromPlayer(x.location) >= 0.1" id="C3">
         {{distFromPlayer(x.location) | number:1}} <br />
         miles
         </div>
         <div ng-if="distFromPlayer(x.location) < 0.1" id="C3">
         {{distFromPlayer(x.location) * 5280  | number:1 }} <br />
+        feet 
+        </div> -->
+
+        <div ng-if="distList[$index].dist >= 0.1" id="C3">
+        {{distList[$index].dist | number:1}} <br />
+        miles
+        </div>
+        <div ng-if="distList[$index].dist < 0.1" id="C3">
+        {{distList[$index].dist * 5280  | number:1 }} <br /> 
         feet 
         </div>
 
