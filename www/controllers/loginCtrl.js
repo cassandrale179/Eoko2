@@ -1,4 +1,8 @@
-app.controller('loginCtrl', function($scope, $cordovaOauth, $firebaseAuth, $state, $http, ngFB, $window) {
+app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state', '$http', 'ngFB', '$window','geoPos',
+  function ($scope, $cordovaOauth, $firebaseAuth, $state, $http, ngFB, $window,geoPos) {
+
+
+//app.controller('loginCtrl', function($scope, $cordovaOauth, $firebaseAuth, $state, $http, ngFB, $window,) {
   var fbAppId = '694354544087073';
   $scope.authObj = $firebaseAuth();
   var userInfo;
@@ -13,7 +17,7 @@ app.controller('loginCtrl', function($scope, $cordovaOauth, $firebaseAuth, $stat
     else {
       console.log("Signed out");
     }
-  })
+  });
 
   $scope.login = function() {
     ngFB.login({scope: 'email, user_birthday, user_friends'}).then(
@@ -31,7 +35,7 @@ app.controller('loginCtrl', function($scope, $cordovaOauth, $firebaseAuth, $stat
                       console.log("Credential signed in as:", firebaseUser.uid);
                       currentUserUid = firebaseUser.uid;
                       // $scope.getUserInfo();
-                      $state.go('actionCreate');
+                      $state.go('tabsController.actionList');
 
                     }).catch(function(error) {
                       console.error("Authentication failed:", error);
@@ -50,4 +54,4 @@ app.controller('loginCtrl', function($scope, $cordovaOauth, $firebaseAuth, $stat
 
 
 
-});
+  }]);
