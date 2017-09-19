@@ -7,7 +7,7 @@
 // 'eoko.controllers' is found in controllers.js
 
 angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.services', 'eoko.directives',
-'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngInstafeed', 'ngCordova', 'ngCordovaOauth', 'firebase', 'socialLogin', 'ngOpenFB'])
+'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngInstafeed', 'ngCordova', 'ngCordovaOauth', 'firebase', 'socialLogin', 'ngOpenFB','angularRangeSlider'])
 
 .run(function($ionicPlatform, ngFB) {
   ngFB.init({appId: '694354544087073'});
@@ -175,8 +175,8 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
       controller: 'signupCtrl'
     })
 
-    .state('settingPage', {
-      url: 'settingPage',
+    .state('settings', {
+      url: '/settingPage',
       nativeTrasitions: {
         type: "fade"
       },

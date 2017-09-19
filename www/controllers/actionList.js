@@ -30,6 +30,18 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
             geoLoop(user.uid);
         }
         console.log($scope.currentUser.uid);
+
+        //--------
+        var url = "http://www.facebook.com/1512790438744188";
+        
+        $http.get(url).success(function(data)
+        {
+          console.log("what do we get?", data);
+        });
+        /*var r = request(url, function (e, response) {
+          console.log("firstone, ", r.uri);
+          console.log("secondone", response.request.uri);
+        });*/
           
         });
 
@@ -95,6 +107,14 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         
 
           });
+
+
+       openFB.api({
+              path: '/me',
+              params: {fields: 'username'},
+            success: function(res){
+                console.log("infogot back", res);
+              }});
 
     }
 
