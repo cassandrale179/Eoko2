@@ -152,7 +152,7 @@ ion-content{
   margin-bottom: 5px;
   font-size: 15px;
   border-radius: 15px;
-  padding: 2%; 
+  padding: 2%;
 }
 
 #B3 button, #submit{
@@ -437,10 +437,11 @@ ion-content{
   margin: auto;
 }
 
-#H2{
+#H2, #H3{
   display: flex;
   width: 100%;
 }
+
 
 /* public, private or both buttons */
 #H2 button, #H3 button{
@@ -455,15 +456,8 @@ ion-content{
 }
 
 /*public, private, or both buttons */
-#H2 button{
-  width: 30%;
+#H2 button, #H3 button{
+  width: 45%;
   margin-right: 10px;
   margin-left: 10px;
-}
-
-#H3 button{
-  display: block;
-  margin: auto;
-  width: 70%;
-  margin-bottom: 20px;
 }

@@ -1,5 +1,5 @@
 <ion-view title="Building Events" hide-nav-bar="true" hide-back-button="true" id="page3">
-  <ion-content padding="true" class="background">
+  <ion-content padding="true" class="innerbackground">
       <img class="logo" src="./img/Eoko-logo.svg">
       <img class="tagline" src="./img/peoplenearyou.png"></img>
 
@@ -8,26 +8,30 @@
         <div id="H1A" ng-show="view">
 
           <!-- NAVIGATION BAR -->
-          <div id="H1">
+          <!-- <div id="H1">
             <div id="container">
               <button ng-click="view=true" class="active"> VIEW </button>
             </div>
             <div id="container">
               <button ng-click="view=false"> PRIVACY </button>
             </div>
-          </div>
+          </div> -->
 
           <!-- OPTION BUTTONS -->
           <p>View public events, private events or both</p>
           <div id="H2">
             <button ng-click="setPublic()" ng-style="public"> PUBLIC </button>
             <button ng-click="setPrivate()" ng-style="private"> PRIVATE </button>
-            <button ng-click="setBoth()" ng-style="both"> BOTH </button>
+          </div>
+          <p>Set your location to public or private (viewable by friends only)</p>
+          <div id="H3">
+            <button ng-click="displayPublic()" ng-style="public2"> PUBLIC </button>
+            <button ng-click="displayPrivate()" ng-style="private2"> PRIVATE </button>
           </div>
         </div>
 
 
-        <div id="H1B" ng-hide="view">
+        <!-- <div id="H1B" ng-hide="view">
           <div id="H1">
             <div id="container">
               <button ng-click="view=true"> VIEW </button>
@@ -41,7 +45,7 @@
             <button ng-click="displayPublic()" ng-style="public2"> SHOW ME TO EVERYONE </button>
             <button ng-click="displayPrivate()" ng-style="private2"> SHOW ME TO FRIENDS ONLY</button>
           </div>
-        </div>
+        </div> -->
       </div>
   </ion-content>
 </ion-view>
