@@ -26,19 +26,43 @@ A: LOGIN PAGE
 }
 
 input::placeholder, textarea::placeholder{
-  color: white;
+  color: grey;
 }
 
 select{
   border: 0.5px white solid;
 }
 
-.logo{
+.logo, .tagline{
   width: 150px;
   display: block;
   margin: auto;
   margin-top: 20px;
 }
+
+.tagline{
+  margin-top: 10px;
+}
+
+ion-content{
+  position: absolute;
+  border: 1px white solid;
+}
+
+
+/* -------------------------------- NAVIGATION BAR --------------------------- */
+#navbar{
+  width: 100%;
+  display: flex;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+
+}
+#navbar button{
+  color: white;
+}
+
 
 /* -------------------------------- LOGIN SCREEN ----------------------------- */
 #A img{
@@ -74,9 +98,7 @@ select{
 
 /* ---------------------------- INITIAL ACTION SCREEN ------------------------ */
 
-#B {
-  padding-top: 30%;
-}
+
 #B h1{
   color: white;
   font-family: 'Roboto';
@@ -94,29 +116,33 @@ select{
 #B input, #B textarea{
   width: 90%;
   border: none;
-  background: rgba(255,255,255,0.2);
-  color: white;
+  background: rgba(255,255,255,0.9);
+  color: grey;
   font-family: 'Roboto', sans-serif;
   display: block;
   margin: auto;
   padding: 5%;
   margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);
+
 }
 
 #B textarea{
   margin-top: 10px;
-  height: 200px;
+  height: 100px;
 }
 
+#B p{
+  color: rgba(255,255,255,0.8);
+  font-style: italic;
+}
 
 #B2{
   margin-top: 5%;
   margin-right: 7%;
   margin-bottom: 5%;
-  height: 40px;
-  overflow-x: auto;
-  width: 1000px;
-  display: flex;
+  margin-left: 7%;
 }
 #B2 button{
   color: white;
@@ -124,18 +150,17 @@ select{
   border: 0.1px rgba(255,255,255,0.2) solid;
   background: none;
   margin-bottom: 5px;
-  font-size: 18px;
-  margin-right: 10px;
-  border-radius: 7px;
-  padding-bottom: 10px;
+  font-size: 15px;
+  border-radius: 15px;
+  padding: 2%;
 }
 
 #B3 button, #submit{
   margin-top: 5%;
   width: 90%;
-  background: rgba(255,255,255,0.8);
-  color: black;
-  border-radius: 5px;
+  color: white;
+  border-radius: 20px;
+  background: rgba(230, 126, 34, 0.6);
 }
 
 #back{
@@ -145,6 +170,25 @@ select{
   top: 10px;
   font-size: 20px;
 }
+
+
+#B4 button{
+  margin-top: 5%;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  background: transparent;
+  border: none;
+  border: 0.1px rgba(255,255,255,0.2) solid;
+  width: 70px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+#B4{
+  margin-left: 30%;
+
+}
+
 
 /* ---------------------------- PEOPLE WITHIN 10 MILES ------------------------ */
 #C{
@@ -304,12 +348,29 @@ select{
 }
 
 #E1A{
-  padding-left: 15%;
+  width: 50%;
+  border: none;
+}
+
+#E1A button, #E1B button{
+  text-align: center;
+  display: block;
+  margin: auto;
+  border: none;
+  background: transparent;
+  width: 100px;
+
 }
 
 #E1B{
   padding-left: 7%;
+  width: 50%;
 }
+
+#E1{
+  margin-bottom: 20px;
+}
+
 
 
 /* ---------- DISPLAY CARDS OF CURRENT ACTIONS ------- */
@@ -324,48 +385,79 @@ select{
   margin-top: 0%;
 }
 
+#E2A1{
+  width: 100%;
+}
+
 #E2 h5{
   display: inline-block;
-  margin-top: 0px; 
+  margin-top: 0px;
+  padding-left: 20%;
 }
 
 
+/* -------------------------- SETTINGS PAGE --------------------------------- */
+#H p{
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  text-align: center;
+  padding-left: 10%;
+  padding-right: 10%;
+  margin-top: 20px;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.active{
+  border-bottom: 0.1px solid rgba(255,255,255,0.3) !important;
+}
+
+#container{
+  width: 50%;
+}
+
+#H1{
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+}
 
 
-/*---------------Michael's trash navbar css------------------*/
-.action-icon-on {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url("../img/action_icon_on.png");
-  -webkit-transform: .5s;
-  padding-bottom: 50px; }
+/* VIEW AND PRIVACY BUTTONS */
+#H1 button{
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  font-size: 18px;
+  width: auto;
+  margin-top: 15px;
+  background: transparent;
+  border: none;
+  display: block;
+  margin: auto;
+}
 
-  .action-icon-off {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url("../img/action_icon_off.png");
-  -webkit-transform: .5s;
-  padding-bottom: 40px; }
-
-
-
+#H2, #H3{
+  display: flex;
+  width: 100%;
+}
 
 
-.people-icon-on {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url("../img/people_icon_on.png");
-  -webkit-transform: .5s;
-  padding-bottom: 50px; }
+/* public, private or both buttons */
+#H2 button, #H3 button{
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  font-size: 15px;
+  border: none;
+  background: none;
+  border: 0.1px rgba(255, 255, 255, 0.3) solid;
+  border-radius: 5px;
+  height: 50px;
+}
 
-
-  .people-icon-off {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url("../img/people_icon_off.png");
-  -webkit-transform: .5s;
-  padding-bottom: 40px; }
+/*public, private, or both buttons */
+#H2 button, #H3 button{
+  width: 45%;
+  margin-right: 10px;
+  margin-left: 10px;
+}
