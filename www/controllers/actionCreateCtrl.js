@@ -3,7 +3,8 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
 
     //------ CHECK IF USER IS CURRENTLY LOGGING IN ------
     var currentUser = firebase.auth().currentUser;
-    $scope.action;
+    $scope.action = {};
+
 
     //--------TAGS -------------------------------------
     var tagsRef = firebase.database().ref('actions');
@@ -13,6 +14,11 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
 
     clicked = {"background": "rgba(230, 126, 34, 0.9)", "color": "white"};
     unclicked = {};
+
+    $scope.publicStyle = clicked;
+    $scope.action.privacy = 'public';
+
+
     $scope.selectedTags = [];
     $scope.addTag = function(tag) {
       var index = $scope.selectedTags.indexOf(tag);
