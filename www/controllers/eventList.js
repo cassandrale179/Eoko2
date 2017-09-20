@@ -2,7 +2,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
   function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter) {
 
     //-------------- GET THE CURRENT USER WHO ARE USING THE APP--------------
-    
+
        function geoLoop(id)
     {
       try{
@@ -27,19 +27,19 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
             geoLoop(user.uid);
         }
         console.log("userID is:",$scope.currentUser.uid);
-          
+
         });
 
 
 
-  
+
 
     //--------------------- GET ALL THE EVENTS OF THE USER -----------------
     function getEvents()
     {
       var eventsRef = firebase.database().ref("activities/");
       $scope.events = $firebaseArray(eventsRef);
-      $scope.events.$loaded().then(function(x) 
+      $scope.events.$loaded().then(function(x)
       {
         console.log("Event List: ", $scope.events);
         angular.forEach($scope.events, function(event){
@@ -64,7 +64,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
 
        console.log("SCOPEFRIENDS",  $scope.distList);
 
-         $scope.events.$watch(function(event) 
+         $scope.events.$watch(function(event)
          { //watch the database for changes
           console.log(event);
 
@@ -101,8 +101,8 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
       });
     }
 
-    
-      
+
+
     //--------------------- CALCULATE DISTANCE FOR USERS -----------------
     function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
             var R = 6371; // Radius of the earth in km
@@ -152,28 +152,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
         };
 
 
-        //--------------------- SORTING THE DISTANCE FROM THE USER ------------------
-        /*$scope.distSorter = function(x)
-        {
-          if($scope.myloc == undefined || $scope.myloc == null)
-          {
-            return 0;
-          }
-          else
-          {
-            var result = $scope.distFromPlayer(x.location);
-            console.log("got it, its: ", result);
-            return result;
-          }
-        };*/
-
-
-        /*$scope.distSorter = function(x)
-        {
-            return $scope.distList[x.$index];
-        };*/
-
-
+  
       //--------------------- REVERSE GEO-ENCODING ------------------------------
       function reverseGeo(geocoder)
       {

@@ -18,8 +18,8 @@ A: LOGIN PAGE
 
 .innerbackground{
   background: linear-gradient(
-                    rgba(20,20,20, .4),
-                    rgba(20,20,20, .4)),
+                    rgba(0,0,0,0.4),
+                    rgba(255,255,255,0.85)),
  url(../img/background.png);
   background-size:cover;
   background-position: center;
@@ -199,6 +199,7 @@ ion-content{
 
 #C1, #E2A{
   background: rgba(255,255,255,0.8);
+  opacity: 0.9;
   height: 85px;
   margin-bottom: 20px;
   border-radius: 7px;
@@ -256,7 +257,7 @@ ion-content{
   top: 200px;
   position: fixed;
   padding-top: 3%;
-  z-index: 10;
+  z-index: 900;
 }
 
 #D h3{
@@ -395,12 +396,83 @@ ion-content{
   padding-left: 20%;
 }
 
+
+
+/* --------------------------- EVENT NUDGE -------------------------------- */
+#F{
+  position: fixed;
+  left: 40px !important;
+  width: 290px;
+  height: 400px;
+  background: rgba(230,125,34,0.8);
+  color: white;
+  font-family: "Roboto", sans-serif;
+  padding: 3%;
+}
+
+#F img{
+  display: block;
+  margin: auto;
+}
+
+#F h1{
+  color: white;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  margin-top: 5px;
+}
+
+#F h2{
+  text-align: center;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+#F h3{
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  display: inline-block;
+  margin-right: 25px;
+  margin-left: 35px;
+  margin-top: 0px;
+}
+
+#F h5{
+  position: fixed;
+  color: white;
+  right: 50px;
+}
+
+#F p{
+  padding-left: 3%;
+  padding-right: 3%;
+}
+
+#F button{
+  display: block;
+  margin: auto;
+  width: 70%;
+  background: rgba(255,255,255,0.9);
+  color: rgba(230, 126, 34, 0.9);
+  border: none;
+  height: 30px;
+  border-radius: 15px;
+
+}
+
+
+/*----------- */
+
 #G p{
   color: white;
   font-family: 'Roboto', sans-serif;
   padding-left: 5%;
   font-size: 16px;
-  margin-bottom: -10px; 
+  margin-bottom: -10px;
 }
 
 

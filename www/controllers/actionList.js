@@ -4,7 +4,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
-    
+
 
     function geoLoop(id)
     {
@@ -31,18 +31,6 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         }
         console.log($scope.currentUser.uid);
 
-        //--------
-        var url = "http://www.facebook.com/1512790438744188";
-        
-        $http.get(url).success(function(data)
-        {
-          console.log("what do we get?", data);
-        });
-        /*var r = request(url, function (e, response) {
-          console.log("firstone, ", r.uri);
-          console.log("secondone", response.request.uri);
-        });*/
-          
         });
 
 
@@ -71,7 +59,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
        console.log("SCOPEFRIENDS",  $scope.friends);
 
-         $scope.friends.$watch(function(event) 
+         $scope.friends.$watch(function(event)
          { //watch the database for changes
           console.log(event);
 
@@ -104,17 +92,9 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
             this.push(rec);
           },$scope.peopleList);
 
-        
+
 
           });
-
-
-       openFB.api({
-              path: '/me',
-              params: {fields: 'username'},
-            success: function(res){
-                console.log("infogot back", res);
-              }});
 
     }
 
@@ -180,10 +160,10 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
                   result = key;
                 }
               },$scope.distList);
-             
+
              return result;
           };
 
-      
+
 
   }]);
