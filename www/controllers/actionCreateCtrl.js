@@ -2,12 +2,14 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
   function ($scope, $state, $firebaseArray, $ionicPlatform, $http, $window, ngFB) {
 
     //------ CHECK IF USER IS CURRENTLY LOGGING IN ------
-    var currentUser;
+    var currentUser = firebase.auth().currentUser;
+    $scope.action;
 
     firebase.auth().onAuthStateChanged(function(user) {
       if (user){
         console.log("user is logged in." + user.uid);
         currentUser = user;
+        $scope.action.creatorID = user.uid;
         var ref = firebase.database().ref('users/'+user.uid);
 
         //Get user info
@@ -68,29 +70,6 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
           }
         });
 
-
-
-        // console.log(facebookService.getUserInfo());
-
-
-        // openFB.getLoginStatus(function(response){
-        //   if (response.status=="connected"){
-        //     console.log("response",  response.status);
-        //     openFB.api({
-        //       path: '/me',
-        //       params: {fields: 'id, name,email, friends'},
-        //     success: function(res){
-        //       console.log("Success!");
-        //       console.log(res.email);
-        //     },
-        //     error: function(error){
-        //       console.log("Error while using open FB");
-        //       console.log(error);
-        //     }});
-        //   }
-        // })
-
-        // $scope.getUserInfo();
       }
       else{
         console.log("No user")
@@ -103,9 +82,10 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
       var watchId = navigator.geolocation.watchPosition(onSuccess);
       function onSuccess(position) {
         var latlng = position.coords.latitude + "," + position.coords.longitude;
+        $scope.action.location = latlng;
         var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&sensor=false";
         $http.get(url).then(function(response){
-          $scope.action.location = response.data.results[0].formatted_address;
+          $scope.action.address = response.data.results[0].formatted_address;
         });
 
         //UPDATE USER'S LOCATION ON FIREBASE
@@ -122,10 +102,61 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
     $scope.action={};
 
 
+    //------------- THIS ALLOW USER TO SET PRIVACY OF ACTION ---------------------
+    $scope.setPrivacy = function(value) {
+      $scope.action.privacy = value;
+    }
+
     // ------------ WHEN USER CLICK SUBMIT, THIS FUNCTION WILL HAPPEN --------
     $scope.submit = function(){
-      var ref = firebase.database().ref('activities');
-      console.log($scope.action);
+      console.log("current user uid: ", currentUser.uid);
+      var activitiesRef = firebase.database().ref('activities');
+      var userActionsRef = firebase.database().ref('users/' + currentUser.uid + '/actions/myActions');
+
+
+      //List of friends for private Events
+      var friendsRef = firebase.database().ref('users/' + currentUser.uid + '/friends');
+      var friendsArray = $firebaseArray(friendsRef);
+
+      //Submit the event and get the event ID
+      eventRef = activitiesRef.push($scope.action);
+      eventID = eventRef.key;
+
+      //Push the event under the user database
+      var obj = {};
+      obj[eventID] = $scope.action.location;
+      userActionsRef.update(obj)
+
+
+
+
+      if ($scope.action.privacy == "public")
+      {
+        console.log($scope.action);
+        $state.go('tabsController.eventList');
+        //Push event into firebase
+
+        ;
+      }
+
+      if ($scope.action.privacy == "private")
+      {
+        console.log($scope.action);
+        friendsArray.$loaded(function(friendsArray){
+          console.log(friendsArray);
+          angular.forEach(friendsArray, function(friend){
+            console.log("friend ID:", friend.$id);
+            var ref = firebase.database().ref('users/' + friend.$id + '/actions/friendActions');
+            var obj = {};
+            obj[eventID] = $scope.action.location;
+            ref.update(obj);
+
+          })
+          $state.go('tabsController.eventList');
+        })
+
+      }
+
     }
 
 
