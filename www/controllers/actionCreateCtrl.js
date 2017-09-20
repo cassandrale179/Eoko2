@@ -9,7 +9,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
       if (user){
         console.log("user is logged in." + user.uid);
         currentUser = user;
-        $scope.action.creatorID = user.uid;
+        $scope.action.userID = user.uid;
         var ref = firebase.database().ref('users/'+user.uid);
 
         //Get user info
