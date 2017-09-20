@@ -20,15 +20,16 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
     }
 
 
-
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
+            console.log("auth changed");
             $scope.currentUser = user;
             geoLoop(user.uid);
         }
-        console.log($scope.currentUser.uid);
+        console.log("userID is:",$scope.currentUser.uid);
           
         });
+
 
 
   
