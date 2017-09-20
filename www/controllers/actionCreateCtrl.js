@@ -28,7 +28,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
                 gender: res.gender,
                 photoURL: res.picture.data.url,
                 birthday: res.birthday
-              }
+              };
 
               //Get firebase ID of friends who are in app
               var ref = firebase.database().ref("users");
@@ -43,7 +43,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
                   obj[snapshot.key] = snapshot.val().name;
 
                   userFriendsRef.update(obj);
-                })
+                });
 
               });
 

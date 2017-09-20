@@ -26,7 +26,7 @@ A: LOGIN PAGE
 }
 
 input::placeholder, textarea::placeholder{
-  color: white;
+  color: grey;
 }
 
 select{
@@ -98,9 +98,7 @@ ion-content{
 
 /* ---------------------------- INITIAL ACTION SCREEN ------------------------ */
 
-#B {
-  padding-top: 30%;
-}
+
 #B h1{
   color: white;
   font-family: 'Roboto';
@@ -118,29 +116,33 @@ ion-content{
 #B input, #B textarea{
   width: 90%;
   border: none;
-  background: rgba(255,255,255,0.2);
-  color: white;
+  background: rgba(255,255,255,0.9);
+  color: grey;
   font-family: 'Roboto', sans-serif;
   display: block;
   margin: auto;
   padding: 5%;
   margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);
+
 }
 
 #B textarea{
   margin-top: 10px;
-  height: 200px;
+  height: 100px;
 }
 
+#B p{
+  color: rgba(255,255,255,0.8);
+  font-style: italic;
+}
 
 #B2{
   margin-top: 5%;
   margin-right: 7%;
   margin-bottom: 5%;
-  height: 40px;
-  overflow-x: auto;
-  width: 1000px;
-  display: flex;
+  margin-left: 7%;
 }
 #B2 button{
   color: white;
@@ -148,18 +150,17 @@ ion-content{
   border: 0.1px rgba(255,255,255,0.2) solid;
   background: none;
   margin-bottom: 5px;
-  font-size: 18px;
-  margin-right: 10px;
-  border-radius: 7px;
-  padding-bottom: 10px;
+  font-size: 15px;
+  border-radius: 15px;
+  padding: 2%;
 }
 
 #B3 button, #submit{
   margin-top: 5%;
   width: 90%;
-  background: rgba(255,255,255,0.8);
-  color: black;
-  border-radius: 5px;
+  color: white;
+  border-radius: 20px;
+  background: rgba(230, 126, 34, 0.6);
 }
 
 #back{
@@ -169,6 +170,25 @@ ion-content{
   top: 10px;
   font-size: 20px;
 }
+
+
+#B4 button{
+  margin-top: 5%;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  background: transparent;
+  border: none;
+  border: 0.1px rgba(255,255,255,0.2) solid;
+  width: 70px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+#B4{
+  margin-left: 30%;
+
+}
+
 
 /* ---------------------------- PEOPLE WITHIN 10 MILES ------------------------ */
 #C{
@@ -328,12 +348,29 @@ ion-content{
 }
 
 #E1A{
-  padding-left: 15%;
+  width: 50%;
+  border: none;
+}
+
+#E1A button, #E1B button{
+  text-align: center;
+  display: block;
+  margin: auto;
+  border: none;
+  background: transparent;
+  width: 100px;
+
 }
 
 #E1B{
   padding-left: 7%;
+  width: 50%;
 }
+
+#E1{
+  margin-bottom: 20px;
+}
+
 
 
 /* ---------- DISPLAY CARDS OF CURRENT ACTIONS ------- */
@@ -400,10 +437,11 @@ ion-content{
   margin: auto;
 }
 
-#H2{
+#H2, #H3{
   display: flex;
   width: 100%;
 }
+
 
 /* public, private or both buttons */
 #H2 button, #H3 button{
@@ -418,15 +456,23 @@ ion-content{
 }
 
 /*public, private, or both buttons */
-#H2 button{
-  width: 30%;
+#H2 button, #H3 button{
+  width: 45%;
   margin-right: 10px;
   margin-left: 10px;
 }
 
-#H3 button{
+#H4 button{
+  border: none;
+  width: 70%;
   display: block;
   margin: auto;
-  width: 70%;
-  margin-bottom: 20px;
+  margin-top: 10%;
+  background: rgba(230, 126, 34, 0.9);
+  text-align: center;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  height: 50px;
+  font-size: 18px;
+  border-radius: 10px; 
 }
