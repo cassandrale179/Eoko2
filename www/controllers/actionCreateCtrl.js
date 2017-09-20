@@ -5,6 +5,43 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
     var currentUser = firebase.auth().currentUser;
     $scope.action;
 
+    //--------TAGS -------------------------------------
+    var tagsRef = firebase.database().ref('actions');
+    $scope.tagsArray = $firebaseArray(tagsRef);
+    $scope.tagsArray.$loaded(function(arr){
+    })
+
+    clicked = {"background": "rgba(230, 126, 34, 0.9)", "color": "white"};
+    unclicked = {};
+    $scope.selectedTags = [];
+    $scope.addTag = function(tag) {
+      var index = $scope.selectedTags.indexOf(tag);
+      if (index!=-1){
+        $scope.selectedTags.splice(index, 1);
+      }
+      else{
+        $scope.selectedTags.push(tag);
+      }
+      console.log($scope.selectedTags);
+
+    }
+
+    $scope.setStyle = function(tag) {
+      if ($scope.selectedTags.indexOf(tag)==-1){
+        return unclicked;
+      }
+      else {
+        return clicked;
+      }
+    }
+
+
+
+
+
+
+
+
     firebase.auth().onAuthStateChanged(function(user) {
       if (user){
         console.log("user is logged in." + user.uid);
@@ -103,12 +140,34 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
 
 
     //------------- THIS ALLOW USER TO SET PRIVACY OF ACTION ---------------------
-    $scope.setPrivacy = function(value) {
-      $scope.action.privacy = value;
+    $scope.setPrivacy = function(privacy) {
+
+
+
+      if (privacy == "public")
+      {
+        $scope.publicStyle = clicked;
+        $scope.privateStyle = unclicked;
+      }
+
+      if (privacy == "private")
+      {
+        $scope.privateStyle = clicked;
+        $scope.publicStyle = unclicked;
+      }
+      $scope.action.privacy = privacy;
+
+
     }
 
     // ------------ WHEN USER CLICK SUBMIT, THIS FUNCTION WILL HAPPEN --------
     $scope.submit = function(){
+      //Store the tags
+      $scope.action.tags = "";
+      for (var i = 0; i<$scope.selectedTags; i++){
+        $scope.action.tags+=$scope.selectedTags[i];
+      }
+      console.log($scope.action.tags);
       console.log("current user uid: ", currentUser.uid);
       var activitiesRef = firebase.database().ref('activities');
       var userActionsRef = firebase.database().ref('users/' + currentUser.uid + '/actions/myActions');
