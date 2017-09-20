@@ -461,3 +461,18 @@ ion-content{
   margin-right: 10px;
   margin-left: 10px;
 }
+
+#H4 button{
+  border: none;
+  width: 70%;
+  display: block;
+  margin: auto;
+  margin-top: 10%;
+  background: rgba(230, 126, 34, 0.9);
+  text-align: center;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  height: 50px;
+  font-size: 18px;
+  border-radius: 10px; 
+}
