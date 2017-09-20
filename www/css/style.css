@@ -26,7 +26,7 @@ A: LOGIN PAGE
 }
 
 input::placeholder, textarea::placeholder{
-  color: white;
+  color: grey;
 }
 
 select{
@@ -98,9 +98,7 @@ ion-content{
 
 /* ---------------------------- INITIAL ACTION SCREEN ------------------------ */
 
-#B {
-  padding-top: 10%;
-}
+
 #B h1{
   color: white;
   font-family: 'Roboto';
@@ -118,29 +116,33 @@ ion-content{
 #B input, #B textarea{
   width: 90%;
   border: none;
-  background: rgba(255,255,255,0.2);
-  color: white;
+  background: rgba(255,255,255,0.9);
+  color: grey;
   font-family: 'Roboto', sans-serif;
   display: block;
   margin: auto;
   padding: 5%;
   margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);
+
 }
 
 #B textarea{
   margin-top: 10px;
-  height: 200px;
+  height: 100px;
 }
 
+#B p{
+  color: rgba(255,255,255,0.8);
+  font-style: italic;
+}
 
 #B2{
   margin-top: 5%;
   margin-right: 7%;
   margin-bottom: 5%;
-  height: 40px;
-  overflow-x: auto;
-  width: 1000px;
-  display: flex;
+  margin-left: 7%;
 }
 #B2 button{
   color: white;
@@ -148,8 +150,7 @@ ion-content{
   border: 0.1px rgba(255,255,255,0.2) solid;
   background: none;
   margin-bottom: 5px;
-  font-size: 18px;
-  margin-right: 10px;
+  font-size: 15px;
   border-radius: 7px;
   padding-bottom: 10px;
 }
@@ -157,9 +158,9 @@ ion-content{
 #B3 button, #submit{
   margin-top: 5%;
   width: 90%;
-  background: rgba(255,255,255,0.8);
-  color: black;
-  border-radius: 5px;
+  color: white;
+  border-radius: 10px;
+  background: rgba(230, 126, 34, 0.6);
 }
 
 #back{
@@ -172,11 +173,13 @@ ion-content{
 
 
 #B4 button{
+  margin-top: 5%;
   font-family: 'Roboto', sans-serif;
   color: white;
-  background: rgba(230, 126, 34, 0.6);
-  width: 70px;
+  background: transparent;
   border: none;
+  border: 0.1px rgba(255,255,255,0.2) solid;
+  width: 70px;
   height: 40px;
   border-radius: 5px;
 }
