@@ -190,6 +190,7 @@ ion-content{
 }
 
 
+
 /* ---------------------------- PEOPLE WITHIN 10 MILES ------------------------ */
 #C{
   margin-top: 50px;
@@ -474,5 +475,5 @@ ion-content{
   font-family: 'Roboto', sans-serif;
   height: 50px;
   font-size: 18px;
-  border-radius: 10px; 
+  border-radius: 10px;
 }
