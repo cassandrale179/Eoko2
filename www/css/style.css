@@ -151,15 +151,15 @@ ion-content{
   background: none;
   margin-bottom: 5px;
   font-size: 15px;
-  border-radius: 7px;
-  padding-bottom: 10px;
+  border-radius: 15px;
+  padding: 2%; 
 }
 
 #B3 button, #submit{
   margin-top: 5%;
   width: 90%;
   color: white;
-  border-radius: 10px;
+  border-radius: 20px;
   background: rgba(230, 126, 34, 0.6);
 }
 
@@ -181,7 +181,7 @@ ion-content{
   border: 0.1px rgba(255,255,255,0.2) solid;
   width: 70px;
   height: 40px;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 #B4{
