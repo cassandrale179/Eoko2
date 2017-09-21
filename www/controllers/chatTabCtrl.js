@@ -1,5 +1,5 @@
-app.controller('chatTabCtrl', ['$scope', '$stateParams', '$firebaseObject', 'UserInfo', '$firebaseArray', '$timeout','chatFactory',
-  function ($scope, $stateParams, $firebaseObject, UserInfo, $firebaseArray, $timeout,chatFactory) {
+app.controller('chatTabCtrl', ['$scope', '$firebaseArray', '$timeout','chatFactory',
+  function ($scope, $firebaseArray, $timeout,chatFactory) {
 
         
 

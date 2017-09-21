@@ -9,10 +9,31 @@ app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state'
   var currentUserUid;
 
 
+  /*$scope.$on("$ionicView.beforeEnter", function(event) {
+           if(firebase.auth().currentUser)
+           {
+            console.log(firebase.user().uid);
+           }
+});*/
+
+
+   $scope.authObj.$onAuthStateChanged(function(firebaseUser){
+            if (firebaseUser){
+              console.log("Signed in as: " + firebaseUser.uid);
+              currentUserUid = firebaseUser.uid;
+              $state.go('tabsController.actionList');
+            }
+            else {
+              console.log("Signed out");
+            }
+          });
+
+
   $scope.authObj.$onAuthStateChanged(function(firebaseUser){
     if (firebaseUser){
       console.log("Signed in as: " + firebaseUser.uid);
       currentUserUid = firebaseUser.uid;
+      $state.go('tabsController.actionList');
     }
     else {
       console.log("Signed out");

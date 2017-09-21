@@ -1,6 +1,6 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory',
 
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter) {
+  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
