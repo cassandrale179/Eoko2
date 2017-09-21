@@ -88,6 +88,19 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
         }
       })
 
+     .state('tabsController.chatTab', {
+        url: '/chatTab',
+        nativeTransitions: {
+          type: "fade"
+        },
+        views: {
+          'tab4': {
+            templateUrl: 'templates/chatTab.html',
+            controller: 'chatTabCtrl'
+          }
+        }
+      })
+
 
     .state('tabsController.buildingEvents', {
       url: '/buildingEventsPage',

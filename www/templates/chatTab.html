@@ -1,0 +1,66 @@
+<ion-view hide-nav-bar="true">
+  <ion-content padding="true" class="innerbackground">
+    <img class="logo" src="./img/eoko-logo.svg" />
+    <img class="tagline" src="./img/peoplenearyou.png"></img>
+    CHAT TAB
+
+    <!-- ____________________  DISPLAY USER FRIENDS WITHIN 10 MILES  _________________  -->
+
+    <div id="C">
+      <div id="C1" ng-repeat="x in peopleList" ng-if="currentUser.uid != x.uid">
+        <img ng-src="{{x.photoURL}}"/>
+        <div id="C1A">
+          {{x.name}}
+          <br />
+          <div id="C2">
+            <img id="one" src="../img/eoko-login.png" ng-click="nudge=true"/>
+            <img id="two" src="http://freevector.co/wp-content/uploads/2014/06/facebook-messenger-white.png" />
+          </div>
+        </div>
+
+        <!-- _________________ DISPLAY THE DISTANCE BETWEEN THE USER AND FRIENDS ___________ -->
+        <!-- <div ng-if="distFromPlayer(x.location) >= 0.1" id="C3">
+        {{distFromPlayer(x.location) | number:1}} <br />
+        miles
+        </div>
+        <div ng-if="distFromPlayer(x.location) < 0.1" id="C3">
+        {{distFromPlayer(x.location) * 5280  | number:1 }} <br />
+        feet
+        </div> -->
+
+        <div ng-if="distList[$index].dist >= 0.1" id="C3">
+        {{distList[$index].dist | number:1}} <br />
+        miles
+        </div>
+        <div ng-if="distList[$index].dist < 0.1" id="C3">
+        {{distList[$index].dist * 5280  | number:1 }} <br />
+        feet
+        </div>
+
+      <!-- ____________________________  EOKO NUDGE _______________________________________  -->
+        <div id="D" ng-show="nudge">
+          <div id="D1">
+            <h3>People Near You</h3>
+            <p ng-click="nudge=false">X</p>
+          </div>
+          <div id="D2">
+            <div id="D2A">
+              <img ng-src="{{userPictureURL}}" />
+              <h4> {{userName}} </h4>
+            </div>
+            <div id="D2B">
+              <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </div>
+            <div id="D2C">
+              <img ng-src="{{x.photo}}" />
+              <h4> {{x.name}}</h4>
+            </div>
+          </div>
+          <div id="D3">
+            <button> Send </button>
+          </div>
+        </div>
+      </div>
+    </div>
+</ion-content>
+</ion-view>

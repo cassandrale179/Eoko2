@@ -1,10 +1,8 @@
-app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject',
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject) {
-    $scope.eventNudge = false;
-
+app.controller('chatTabCtrl', ['$scope', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter',
+  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter) {
 
     //-------------- GET THE CURRENT USER WHO ARE USING THE APP--------------
-
+    
        function geoLoop(id)
     {
       try{
@@ -27,57 +25,32 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
             console.log("auth changed");
             $scope.currentUser = user;
             geoLoop(user.uid);
-
         }
         console.log("userID is:",$scope.currentUser.uid);
-
-      });
-
-
-      $scope.joinAction = function(ownerid, eventid){
-
-        var ref = firebase.database().ref("activities").child(eventid).child("participants");
-        var checkDone = $firebaseArray(ref);
-        checkDone.$loaded().then(function(x){
-          console.log("loaded event stuff",checkDone);
-
-          for(var i in checkDone)
-          {
-            if(checkDone[i].id == $scope.currentUser.uid)
-            {
-              console.log("already joined, returning");
-              return;
-            }
-          }
-         
-          checkDone.$add({id: $scope.currentUser.uid}).then(function(success)
-          {
-            console.log("successfully added");
-          });
-       
-
+          
         });
-       
-      };
 
 
+
+  
 
     //--------------------- GET ALL THE EVENTS OF THE USER -----------------
     function getEvents()
     {
       var eventsRef = firebase.database().ref("activities/");
       $scope.events = $firebaseArray(eventsRef);
-      $scope.events.$loaded().then(function(x)
+      $scope.events.$loaded().then(function(x) 
       {
         console.log("Event List: ", $scope.events);
         angular.forEach($scope.events, function(event){
           var userRef = firebase.database().ref("users/" + event.userID);
           userRef.on("value", function(snapshot){
             event.photoURL = snapshot.val().photoURL;
-            event.owner = snapshot.val().name;
+
 
           });
         });
+
 
         $scope.distList = [];
         $scope.eventList = [];
@@ -91,7 +64,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
 
        console.log("SCOPEFRIENDS",  $scope.distList);
 
-         $scope.events.$watch(function(event)
+         $scope.events.$watch(function(event) 
          { //watch the database for changes
           console.log(event);
 
@@ -125,14 +98,11 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
           },$scope.eventList);
 
 
-          //--------- WHEN THE USER CLICK JOIN AN ACTION ----------
-
-
       });
     }
 
-
-
+    
+      
     //--------------------- CALCULATE DISTANCE FOR USERS -----------------
     function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
             var R = 6371; // Radius of the earth in km
@@ -181,6 +151,27 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
           }
         };
 
+
+        //--------------------- SORTING THE DISTANCE FROM THE USER ------------------
+        /*$scope.distSorter = function(x)
+        {
+          if($scope.myloc == undefined || $scope.myloc == null)
+          {
+            return 0;
+          }
+          else
+          {
+            var result = $scope.distFromPlayer(x.location);
+            console.log("got it, its: ", result);
+            return result;
+          }
+        };*/
+
+
+        /*$scope.distSorter = function(x)
+        {
+            return $scope.distList[x.$index];
+        };*/
 
 
       //--------------------- REVERSE GEO-ENCODING ------------------------------
