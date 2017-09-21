@@ -88,6 +88,19 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
         }
       })
 
+     .state('tabsController.chatTab', {
+        url: '/chatTab',
+        nativeTransitions: {
+          type: "fade"
+        },
+        views: {
+          'tab4': {
+            templateUrl: 'templates/chatTab.html',
+            controller: 'chatTabCtrl'
+          }
+        }
+      })
+
 
     .state('tabsController.buildingEvents', {
       url: '/buildingEventsPage',
@@ -160,6 +173,14 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
       controller: 'settingPageCtrl'
     })
 
+    .state('messagePage', {
+      url: '/messagePage',
+      nativeTrasitions: {
+        type: "fade"
+      },
+      templateUrl: 'templates/messagePage.html',
+      controller: 'messagePageCtrl'
+    })
 
 
   // if none of the above states are matched, use this as the fallback

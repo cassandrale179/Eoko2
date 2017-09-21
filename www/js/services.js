@@ -127,6 +127,55 @@ angular.module('eoko.services', [])
   }])
 
 
+.factory('chatFactory', ['$firebaseArray',function ($firebaseArray) {
+
+    var ref = firebase.database().ref("Chats");
+    var chatData = $firebaseArray(ref);
+    var myChatLists = [];
+    var ready = false;
+    chatData.$loaded(function(x)
+    {
+      console.log("Chats Loaded",x);
+      ready = true;
+      
+        
+    });
+
+  
+
+
+    return {
+
+      checkReady: function()
+      {
+        return ready;
+      },
+     
+      getChats: function(usrID)
+      {
+        angular.forEach(chatData, function(value,key)
+        {
+          for(var i in value.ids)
+          {
+            if(value.ids[i].id == usrID)
+            {
+              myChatLists.push(value.$id);
+              break;
+            }
+          }
+       
+        },chatData);
+        return myChatLists;
+      },
+
+      loadChatData: function (chatKey) 
+      {
+        return chatData.$getRecord(chatKey);
+      }
+    };
+
+  }])
+
 
   .service('BlankService', [function () {
 

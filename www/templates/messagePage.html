@@ -1,0 +1,47 @@
+<ion-view hide-nav-bar="true">
+  <ion-content padding="false" class="innerbackground">
+      <!--spacer-->
+    <div class="spacer" style="height: 20px;"></div>
+
+    <div class="button-bar">
+      <a ui-sref="chatTab" class="eoko-button-clear ion-chevron-left" native-transitions nav-direction="back" ng-click="dynamicChatBarTap()"></a>
+      <a class="eoko-button-text eoko-text-button-nav eoko-text-regular">{{partner.name}}</a>
+      <a ui-sref="chatTab" class="eoko-button-clear"></a>
+    </div>
+
+    <div>
+      <ion-scroll style="height: calc(100% - 11em)" on-swipe-down="onSwipeDown()" ng-click="dynamicChatBarTap()">
+        <div ng-repeat="message in messages track by $index" ng-class="{other: message.userId == myId}" class="messages">
+
+          <div class="message" ng-class="{'slide-right': hideTime, '': !hideTime}" style="height:auto;">
+
+            <!--other user's message-->
+            <span ng-if="message.userId != myId" class="eoko-text-light" style="font-size: 17px; margin-bottom: 1px; margin-right: 120px;">
+              {{ message.text }}
+            </span>
+            <div ng-if="message.userId != myId" class="eoko-text-ultralight time" ng-class="{'slide-right': hideTime, '': !hideTime}"
+                style="margin-left: 10px; margin-bottom: 5px;">
+              {{message.time}}
+            </div>
+
+            <!--current user's message-->
+            <span ng-if="message.userId == myId" class="eoko-text-light" style="font-size: 17px; margin-bottom: 1px; margin-left: 120px;">
+              {{ message.text }}
+            </span>
+            <div ng-if="message.userId == myId" class="eoko-text-ultralight time" ng-class="{'slide-right': hideTime, '': !hideTime}"
+                style="margin-right: 10px; margin-bottom: 5px;">
+              {{message.time}}
+            </div>
+          </div>
+
+        </div>
+      </ion-scroll>
+
+
+      <div class="chatBar" id="chatBar">
+        <input class="eoko-text-area" style="background-color: transparent; border-bottom: transparent; font-size: 17px; width: calc(100% - 3em)" type="text" placeholder="Text here..." ng-model="data.messageText" ng-click="dynamicChatBar()">
+        <a class="eoko-button-clear eoko-icon-send-message" style="margin-top: 6px;" ng-click="sendMessage()"></a>
+      </div>
+    </div>
+</ion-content>
+</ion-view>

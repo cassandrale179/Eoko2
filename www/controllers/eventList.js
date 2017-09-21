@@ -1,5 +1,7 @@
-app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter',
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter) {
+app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject',
+  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject) {
+    $scope.eventNudge = false;
+
 
     //-------------- GET THE CURRENT USER WHO ARE USING THE APP--------------
 
@@ -25,12 +27,38 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
             console.log("auth changed");
             $scope.currentUser = user;
             geoLoop(user.uid);
+
         }
         console.log("userID is:",$scope.currentUser.uid);
 
+      });
+
+
+      $scope.joinAction = function(ownerid, eventid){
+
+        var ref = firebase.database().ref("activities").child(eventid).child("participants");
+        var checkDone = $firebaseArray(ref);
+        checkDone.$loaded().then(function(x){
+          console.log("loaded event stuff",checkDone);
+
+          for(var i in checkDone)
+          {
+            if(checkDone[i].id == $scope.currentUser.uid)
+            {
+              console.log("already joined, returning");
+              return;
+            }
+          }
+         
+          checkDone.$add({id: $scope.currentUser.uid}).then(function(success)
+          {
+            console.log("successfully added");
+          });
+       
+
         });
-
-
+       
+      };
 
 
 
@@ -46,11 +74,10 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
           var userRef = firebase.database().ref("users/" + event.userID);
           userRef.on("value", function(snapshot){
             event.photoURL = snapshot.val().photoURL;
-
+            event.owner = snapshot.val().name;
 
           });
         });
-
 
         $scope.distList = [];
         $scope.eventList = [];
@@ -96,6 +123,9 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
             var rec = $scope.events.$getRecord(value.id);
             this.push(rec);
           },$scope.eventList);
+
+
+          //--------- WHEN THE USER CLICK JOIN AN ACTION ----------
 
 
       });
@@ -152,7 +182,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
         };
 
 
-  
+
       //--------------------- REVERSE GEO-ENCODING ------------------------------
       function reverseGeo(geocoder)
       {
