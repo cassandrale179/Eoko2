@@ -9,14 +9,7 @@ app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state'
   var currentUserUid;
 
 
-  /*$scope.$on("$ionicView.beforeEnter", function(event) {
-           if(firebase.auth().currentUser)
-           {
-            console.log(firebase.user().uid);
-           }
-});*/
-
-
+  //------- CHECK IF USER IS LOGIN, IF SO REDIRECT OT ACTION LIST PAGE --------
    $scope.authObj.$onAuthStateChanged(function(firebaseUser){
             if (firebaseUser){
               console.log("Signed in as: " + firebaseUser.uid);
@@ -29,17 +22,7 @@ app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state'
           });
 
 
-  $scope.authObj.$onAuthStateChanged(function(firebaseUser){
-    if (firebaseUser){
-      console.log("Signed in as: " + firebaseUser.uid);
-      currentUserUid = firebaseUser.uid;
-      $state.go('tabsController.actionList');
-    }
-    else {
-      console.log("Signed out");
-    }
-  });
-
+  // ----------- GET THEIR EMAIL, BIRTHDAY AND FRIENDS USING OPEN FACEBOOK API ---------------
   $scope.login = function() {
     ngFB.login({scope: 'email, user_birthday, user_friends'}).then(
         function (response) {
@@ -51,7 +34,7 @@ app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state'
                       response.authResponse.accessToken
                     );
 
-
+                    //------------- LOGIN INTO FIREBASE WITH FACEBOOK ACCESS TOKEN ---------------- 
                     $scope.authObj.$signInWithCredential(credential).then(function(firebaseUser) {
                       console.log("Credential signed in as:", firebaseUser.uid);
                       currentUserUid = firebaseUser.uid;
