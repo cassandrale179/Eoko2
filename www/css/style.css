@@ -44,10 +44,7 @@ select{
   margin-top: 10px;
 }
 
-ion-content{
-  position: absolute;
-  border: 1px white solid;
-}
+
 
 
 /* -------------------------------- NAVIGATION BAR --------------------------- */
@@ -60,7 +57,9 @@ ion-content{
 
 }
 #navbar button{
-  color: white;
+  color: #626567;
+  width: 25%;
+  font-size: 45px;
 }
 
 

@@ -52,7 +52,8 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
-  /* ------- LOGIN PAGE CONTROLLER ------- */
+
+  /* ---------- LOGIN PAGE ---------- */
   .state('login', {
     url: '/loginPage',
     nativeTransitions: {
@@ -62,125 +63,65 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
     controller: 'loginCtrl'
   })
 
-     .state('tabsController.eventList', {
-       url: '/eventList',
-       nativeTransitions: {
-         type: "fade"
-       },
-       views: {
-         'tab2': {
-           templateUrl: 'templates/eventList.html',
-          controller: 'eventListCtrl'
-         }
-       }
-     })
+  /* --------- ACTION LIST PAGE ------- */
+  .state('actionList', {
+    url: '/actionListPage',
+    nativeTransitions: {
+      type: "fade"
+    },
+    templateUrl: 'templates/actionList.html',
+    controller: 'actionListCtrl'
+  })
 
-     .state('tabsController.actionList', {
-        url: '/actionList',
-        nativeTransitions: {
-          type: "fade"
-        },
-        views: {
-          'tab3': {
-            templateUrl: 'templates/actionList.html',
-            controller: 'actionListCtrl'
-          }
-        }
-      })
+  /* --------- EVENT LIST PAGE ------- */
+  .state('eventList', {
+    url: '/eventListPage',
+    nativeTransitions: {
+      type: "fade"
+    },
+    templateUrl: 'templates/eventList.html',
+    controller: 'eventListCtrl'
+  })
 
-     .state('tabsController.chatTab', {
-        url: '/chatTab',
-        nativeTransitions: {
-          type: "fade"
-        },
-        views: {
-          'tab4': {
-            templateUrl: 'templates/chatTab.html',
-            controller: 'chatTabCtrl'
-          }
-        }
-      })
+/* --------- SETTING PAGE ------- */
+  .state('setting', {
+    url: '/settingPage',
+    nativeTransitions: {
+      type: "fade"
+    },
+    templateUrl: 'templates/setting.html',
+    controller: 'settingCtrl'
+  })
 
+  /* --------- NOTIFICATION PAGE ------- */
+    // .state('notifyList', {
+    //   url: '/notifyListPage',
+    //   nativeTransitions: {
+    //     type: "fade"
+    //   },
+    //   templateUrl: 'templates/notifyList.html',
+    //   controller: 'notifyListCtrl'
+    // })
 
-    .state('tabsController.buildingEvents', {
-      url: '/buildingEventsPage',
-      nativeTransitions: {
-        type: "fade"
-      },
-      views: {
-        'tab4': {
-          templateUrl: 'templates/buildingEvents.html',
-          controller: 'buildingEventsCtrl'
-        }
-      }
-    })
-
-    .state('tabsController.info', {
-      url: '/infoPage',
-      nativeTransitions: {
-        type: "fade"
-      },
-      views: {
-        'tab5': {
-          templateUrl: 'templates/info.html',
-          controller: 'infoCtrl'
-        }
-      }
-    })
-
-    .state('tabsController', {
-      url: '/page1',
-      nativeTransitions: {
-        type: "fade"
-      },
-      templateUrl: 'templates/tabsController.html',
-      abstract: true
-    })
+    /* --------- NOTIFICATION PAGE ------- */
+      // .state('chatList', {
+      //   url: '/chatListPage',
+      //   nativeTransitions: {
+      //     type: "fade"
+      //   },
+      //   templateUrl: 'templates/chatList.html',
+      //   controller: 'chatListCtrl'
+      // })
 
 
-      /* ------- ACTION CREATE PAGE CONTROLLER ------- */
-    .state('actionCreate', {
-      url: '/actionCreate',
-      nativeTransitions: {
-        type: "fade"
-      },
-      params: {
-        'avatarClicked': 'false'
-      },
-      templateUrl: 'templates/actionCreate.html',
-      controller: 'actionCreateCtrl'
-    })
-
-      /* ------- ACTION LIST CONTROLLER ------- */
 
 
-    .state('signup', {
-      url: '/signupPage',
-      nativeTransitions: {
-        type: "fade"
-      },
-      templateUrl: 'templates/signup.html',
-      controller: 'signupCtrl'
-    })
 
 
-    .state('settingPage', {
-      url: '/settingPage',
-      nativeTrasitions: {
-        type: "fade"
-      },
-      templateUrl: 'templates/setting.html',
-      controller: 'settingPageCtrl'
-    })
 
-    .state('messagePage', {
-      url: '/messagePage',
-      nativeTrasitions: {
-        type: "fade"
-      },
-      templateUrl: 'templates/messagePage.html',
-      controller: 'messagePageCtrl'
-    })
+
+
+
 
 
   // if none of the above states are matched, use this as the fallback
