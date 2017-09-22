@@ -43,12 +43,6 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
     }
 
 
-
-
-
-
-
-
     firebase.auth().onAuthStateChanged(function(user) {
       if (user){
         console.log("user is logged in." + user.uid);
@@ -194,13 +188,10 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
       obj[eventID] = $scope.action.location;
       userActionsRef.update(obj)
 
-
-
-
       if ($scope.action.privacy == "public")
       {
         console.log($scope.action);
-        $state.go('tabsController.eventList');
+        $state.go('eventList');
         //Push event into firebase
 
         ;
@@ -219,7 +210,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
             ref.update(obj);
 
           })
-          $state.go('tabsController.eventList');
+          $state.go('eventList');
         })
 
       }

@@ -55,6 +55,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
 
 
 
+      //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
       $scope.joinAction = function(ownerid, eventid){
 
 
@@ -84,7 +85,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
 
 
 
-    //--------------------- GET ALL THE EVENTS OF THE USER -----------------
+    //--------------------- GET ALL THE EVENTS FOR THE USER -----------------
     function getEvents()
     {
       var eventsRef = firebase.database().ref("activities/");
@@ -147,9 +148,6 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
           },$scope.eventList);
 
 
-          //--------- WHEN THE USER CLICK JOIN AN ACTION ----------
-
-
       });
     }
 
@@ -202,7 +200,9 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
                 var result = getDistanceFromLatLonInKm(mylat, mylong, lat, long) * 0.621371;
                 $timeout(function(){
                   $scope.$apply();
+
                 },1000);
+
                 //return Math.round(result * 10) / 10;
                 //$scope.distList.push(result);
                 return result;
