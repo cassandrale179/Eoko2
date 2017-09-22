@@ -1,6 +1,6 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory','backcallFactory',
 
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory) {
+  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory,backcallFactory) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
@@ -8,6 +8,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
     function geoLoop(id)
     {
+      console.log("started geoLoop");
       try{
               geoPos.updateFirebase(id);
               console.log("position set on firebase");
@@ -27,9 +28,10 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
             $scope.currentUser = user;
+            console.log($scope.currentUser.uid);
             geoLoop(user.uid);
         }
-        console.log($scope.currentUser.uid);
+        
 
         });
 

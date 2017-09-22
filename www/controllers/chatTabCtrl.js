@@ -28,9 +28,11 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray', '$timeout','chatFacto
         $scope.chatData = [];
         for(var i in chatList)
         {
-          console.log("value of that thing is", chatFactory.loadChatData(chatList[i]));
+          //console.log("value of that thing is", chatFactory.loadChatData(chatList[i]));
           $scope.chatData.push(chatFactory.loadChatData(chatList[i]));
         }
+        console.log("chatData",$scope.chatData);
+        $timeout(function(){$scope.$apply();});
         
    }
 
@@ -43,6 +45,28 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray', '$timeout','chatFacto
       chatLoop();
       }
   });
+
+  $scope.newConversation = function()
+  {
+    var rec = firebase.database().ref("Chats");
+    rec.push({
+      name: ""
+
+    }).then(function(success){
+        console.log("lets see", success);
+        rec.child(success.key).child("ids").push({
+          id: $scope.currentUser.uid
+        }).then(function(baby)
+        {
+          console.log( "my baby!");
+          populateChats();
+          //$state.go('messagePage'); //with params
+        });
+    });
+
+  };
+
+
 
       /*function getInfo(x) {
         var rec = firebase.database().ref("Buildings").child(authUser.displayName + "/Users");

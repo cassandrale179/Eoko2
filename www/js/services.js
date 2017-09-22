@@ -93,16 +93,19 @@ angular.module('eoko.services', [])
 
 .factory('geoPos', [function () {
 
-    var myloc;
-   var watchId = navigator.geolocation.watchPosition(function(position)
-    {
-      var latlng = position.coords.latitude + "," + position.coords.longitude;
-          console.log("Latlng under ionic platform: " + latlng);
+    var myloc, watchId;
+    
+    watchId = navigator.geolocation.watchPosition(function(position)
+          {
+            var latlng = position.coords.latitude + "," + position.coords.longitude;
+                console.log("Latlng under ionic platform: " + latlng);
 
-          //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
+                //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
 
-          myloc = latlng;  //actual current location
-    });
+                myloc = latlng;  //actual current location
+          });
+   
+    
 
 
   
@@ -141,6 +144,12 @@ angular.module('eoko.services', [])
         
     });
 
+
+    /*list.$watch(function(event)
+    {
+
+    });*/
+
   
 
 
@@ -153,28 +162,65 @@ angular.module('eoko.services', [])
      
       getChats: function(usrID)
       {
-        angular.forEach(chatData, function(value,key)
-        {
-          for(var i in value.ids)
-          {
-            if(value.ids[i].id == usrID)
-            {
-              myChatLists.push(value.$id);
-              break;
+        myChatLists = [];
+        for(var i in chatData){
+          for(var j in chatData[i].ids){
+            if(chatData[i].ids[j].id == usrID){
+              var quals = false;
+              for(var k in myChatLists){
+                if(myChatLists[k] == chatData[i].$id){
+                  console.log("same", myChatLists[k],chatData[i].$id);
+                  quals = true;
+                }
+              }
+              if(quals == false){
+                 myChatLists.push(chatData[i].$id);
+              }            
             }
           }
-       
-        },chatData);
+        }
         return myChatLists;
       },
 
       loadChatData: function (chatKey) 
       {
         return chatData.$getRecord(chatKey);
-      }
+      },
+
+      //setWatcher: 
     };
 
   }])
+
+
+.factory('backcallFactory', ['$state','$ionicPlatform','$ionicHistory','$timeout',
+  function($state,$ionicPlatform,$ionicHistory,$timeout){
+ 
+var obj={};
+    obj.backcallfun=function(){
+    var backbutton=0;
+       $ionicPlatform.registerBackButtonAction(function () {
+          if ($state.current.name == "tabsController.actionList") {
+      
+      if(backbutton==0){
+            backbutton++;
+              window.plugins.toast.showShortCenter('Press again to exit');
+            $timeout(function(){backbutton=0;},5000);
+        }else{
+            navigator.app.exitApp();
+        }
+      
+      }else{
+            $ionicHistory.nextViewOptions({
+                 disableBack: true
+                });
+        $state.go('tabsController.actionList');
+        //go to home page
+     }
+        }, 100);//registerBackButton
+};//backcallfun
+return obj;
+}])
 
 
   .service('BlankService', [function () {
