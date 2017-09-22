@@ -2,9 +2,16 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
   function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject) {
     $scope.eventNudge = false;
 
-    getEvents();
-    $scope.myloc = geoPos.getUserPosition();
-    console.log($scope.myloc);
+
+    firebase.auth().onAuthStateChanged(function(user){
+      if (user){
+        geoPos.updateFirebase(user.uid);
+        getEvents();
+
+
+      }
+    })
+
 
 
 
@@ -49,6 +56,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
 
 
       $scope.joinAction = function(ownerid, eventid){
+
 
         var ref = firebase.database().ref("activities").child(eventid).child("participants");
         var checkDone = $firebaseArray(ref);
@@ -169,6 +177,10 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
         //---------------------- DISTANCE FROM THE CURRENT USER ------------------
         $scope.distFromPlayer = function(locationdata) {
 
+
+
+          $scope.myloc = geoPos.getUserPosition();
+
           if($scope.myloc == undefined || $scope.myloc == null)
           {
             console.log("not yet");
@@ -188,7 +200,9 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
                 return "N/A";
             } else {
                 var result = getDistanceFromLatLonInKm(mylat, mylong, lat, long) * 0.621371;
-                $timeout(function(){$scope.$apply();});
+                $timeout(function(){
+                  $scope.$apply();
+                },1000);
                 //return Math.round(result * 10) / 10;
                 //$scope.distList.push(result);
                 return result;

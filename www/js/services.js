@@ -90,77 +90,47 @@ angular.module('eoko.services', [])
 
   }])
 
-//
-// .factory('geoPos', [function () {
-//   var myloc;
-//   return {
-//     updateFirebase: function(usrID) {
-//         return navigator.geolocation.watchPosition(onSuccess(position){
-//           //  var latlng = position.coords.latitude + "," + position.coords.longitude;
-//           //  console.log("Latlng under ionic platform: " + latlng);
-//            //
-//           //  //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
-//            //
-//           //  myloc = latlng;  //actual current location
-//           //  console.log('myloc', myloc);
-//           //  alert(myloc);
-//            //
-//            //
-//           //  var userRef = firebase.database().ref("users").child(usrID);
-//           //    var obj = {
-//           //      location: myloc
-//           //    };
-//           //  userRef.update(obj);
-//           //  return myloc;
-//
-//
-//        }, onError(error) {
-//           console.log('error getting location', error);
-//       });
-//     },
-//
-//
-//     getUserPosition: function ()
-//     {
-//       return myloc;
-//     }
-//   };
+
+.factory('geoPos', [function () {
+  var myloc = "location has not been found";
+  return {
+    updateFirebase: function(usrID) {
+        return navigator.geolocation.watchPosition(onSuccess, onError);
+        function onSuccess(position){
+           var latlng = position.coords.latitude + "," + position.coords.longitude;
+           console.log("Latlng under ionic platform: " + latlng);
+
+           //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
+
+           myloc = latlng;  //actual current location
+           console.log('myloc', myloc);
 
 
-  // }])
 
-
-  .factory('geoPos', [function () {
-
-      var myloc, watchId;
-
-       firebase.auth().onAuthStateChanged(function(user) {
-        watchId = navigator.geolocation.watchPosition(function(position)
-              {
-                var latlng = position.coords.latitude + "," + position.coords.longitude;
-                    console.log("Latlng under ionic platform: " + latlng);
-                    myloc = latlng;  //actual current location
-          if (user)
-          {
-               var userRef = firebase.database().ref("users").child(user.uid);
-                var obj = {
-                  location: myloc
-                };
-                userRef.update(obj);
-            }
-            });
-
-        });
-
-      return {
-
-        getUserPosition: function ()
-        {
-          return myloc;
-        }
+           var userRef = firebase.database().ref("users").child(usrID);
+             var obj = {
+               location: myloc
+             };
+           userRef.update(obj);
+           return myloc;
+       };
+       function onError(error) {
+          console.log('error getting location', error);
       };
+    },
 
-    }])
+
+    getUserPosition: function ()
+    {
+      return myloc;
+    }
+  };
+
+
+  }])
+
+
+
 
 .factory('chatFactory', ['$firebaseArray',function ($firebaseArray) {
 
