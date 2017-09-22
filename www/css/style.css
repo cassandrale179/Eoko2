@@ -473,7 +473,19 @@ ion-content{
   font-family: 'Roboto', sans-serif;
   padding-left: 5%;
   font-size: 16px;
-  margin-bottom: -10px;
+  margin-bottom: 10px;
+}
+
+#G button{
+  display: block;
+  background: rgba(255,255,255,0.7);
+  color: black;
+  border: none;
+  margin: auto;
+  font-family: 'Roboto', sans-serif;
+  padding: 3%;
+  border-radius: 5px;
+  width: 100px;
 }
 
 
