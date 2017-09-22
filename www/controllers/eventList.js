@@ -3,8 +3,8 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
     $scope.eventNudge = false;
 
 
-    //-------------- GET THE CURRENT USER WHO ARE USING THE APP--------------
 
+    //-------------- GET USER CURRENT LOCATION LOOP --------------
        function geoLoop(id)
     {
       try{
@@ -21,7 +21,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
             }
     }
 
-
+    //-------------- GET THE CURRENT USER WHO ARE USING THE APP--------------
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
             console.log("auth changed");
@@ -49,15 +49,15 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
               return;
             }
           }
-         
+
           checkDone.$add({id: $scope.currentUser.uid}).then(function(success)
           {
             console.log("successfully added");
           });
-       
+
 
         });
-       
+
       };
 
 

@@ -2,6 +2,14 @@ app.controller('settingPageCtrl', ['$scope', '$state', 'UserInfo', function($sco
 
   //---------- SET INITIAL MODE TO VIEW SETTINGS --------------
   $scope.view = true;
+  $scope.age = {
+    low: 20,
+    high: 80
+  }
+
+
+
+
 
   //-------- CHECK IF CURRENT USER IS LOGGING IN --------------
   firebase.auth().onAuthStateChanged(function(user) {
@@ -30,6 +38,10 @@ app.controller('settingPageCtrl', ['$scope', '$state', 'UserInfo', function($sco
       userRef.update({privacy: 'both'})
       console.log("No preferences");
       $state.go('settingPage');
+    }
+    $scope.submitAge = function(){
+      userRef.update($scope.age);
+      console.log("successfully update age");
     }
 
     //------------------ SET PRIVATE / PUBLIC SETTINGS FOR THE USER --------------------
