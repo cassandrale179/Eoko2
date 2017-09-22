@@ -90,42 +90,77 @@ angular.module('eoko.services', [])
 
   }])
 
+//
+// .factory('geoPos', [function () {
+//   var myloc;
+//   return {
+//     updateFirebase: function(usrID) {
+//         return navigator.geolocation.watchPosition(onSuccess(position){
+//           //  var latlng = position.coords.latitude + "," + position.coords.longitude;
+//           //  console.log("Latlng under ionic platform: " + latlng);
+//            //
+//           //  //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
+//            //
+//           //  myloc = latlng;  //actual current location
+//           //  console.log('myloc', myloc);
+//           //  alert(myloc);
+//            //
+//            //
+//           //  var userRef = firebase.database().ref("users").child(usrID);
+//           //    var obj = {
+//           //      location: myloc
+//           //    };
+//           //  userRef.update(obj);
+//           //  return myloc;
+//
+//
+//        }, onError(error) {
+//           console.log('error getting location', error);
+//       });
+//     },
+//
+//
+//     getUserPosition: function ()
+//     {
+//       return myloc;
+//     }
+//   };
 
-.factory('geoPos', [function () {
 
-    var myloc;
-   var watchId = navigator.geolocation.watchPosition(function(position)
-    {
-      var latlng = position.coords.latitude + "," + position.coords.longitude;
-          console.log("Latlng under ionic platform: " + latlng);
-
-          //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
-
-          myloc = latlng;  //actual current location
-    });
+  // }])
 
 
-  
+  .factory('geoPos', [function () {
 
+      var myloc, watchId;
 
-    return {
-     
-      updateFirebase: function(usrID)
-      {
-        var userRef = firebase.database().ref("users").child(usrID);
-          var obj = {
-            location: myloc
-          };
-          userRef.update(obj);
-      },
-      getUserPosition: function () 
-      {
-        return myloc;
-      }
-    };
+       firebase.auth().onAuthStateChanged(function(user) {
+        watchId = navigator.geolocation.watchPosition(function(position)
+              {
+                var latlng = position.coords.latitude + "," + position.coords.longitude;
+                    console.log("Latlng under ionic platform: " + latlng);
+                    myloc = latlng;  //actual current location
+          if (user)
+          {
+               var userRef = firebase.database().ref("users").child(user.uid);
+                var obj = {
+                  location: myloc
+                };
+                userRef.update(obj);
+            }
+            });
 
-  }])
+        });
 
+      return {
+
+        getUserPosition: function ()
+        {
+          return myloc;
+        }
+      };
+
+    }])
 
 .factory('chatFactory', ['$firebaseArray',function ($firebaseArray) {
 
@@ -137,11 +172,11 @@ angular.module('eoko.services', [])
     {
       console.log("Chats Loaded",x);
       ready = true;
-      
-        
+
+
     });
 
-  
+
 
 
     return {
@@ -150,7 +185,7 @@ angular.module('eoko.services', [])
       {
         return ready;
       },
-     
+
       getChats: function(usrID)
       {
         angular.forEach(chatData, function(value,key)
@@ -163,12 +198,12 @@ angular.module('eoko.services', [])
               break;
             }
           }
-       
+
         },chatData);
         return myChatLists;
       },
 
-      loadChatData: function (chatKey) 
+      loadChatData: function (chatKey)
       {
         return chatData.$getRecord(chatKey);
       }

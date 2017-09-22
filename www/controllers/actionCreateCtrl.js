@@ -2,7 +2,8 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
   function ($scope, $state, $firebaseArray, $ionicPlatform, $http, $window, ngFB) {
 
     //------ CHECK IF USER IS CURRENTLY LOGGING IN ------
-    var currentUser = firebase.auth().currentUser;
+    
+
     $scope.action = {};
 
 
