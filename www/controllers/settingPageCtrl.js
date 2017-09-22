@@ -7,10 +7,6 @@ app.controller('settingPageCtrl', ['$scope', '$state', 'UserInfo', function($sco
     high: 80
   }
 
-
-
-
-
   //-------- CHECK IF CURRENT USER IS LOGGING IN --------------
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {

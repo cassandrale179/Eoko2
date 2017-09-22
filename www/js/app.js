@@ -63,15 +63,16 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
     controller: 'loginCtrl'
   })
 
-  /* --------- ACTION LIST PAGE ------- */
-  .state('actionList', {
-    url: '/actionListPage',
-    nativeTransitions: {
-      type: "fade"
-    },
-    templateUrl: 'templates/actionList.html',
-    controller: 'actionListCtrl'
-  })
+  /* --------- JOIN LIST PAGE ------- */
+    .state('joinList', {
+      url: '/joinListPage',
+      nativeTransitions: {
+        type: "fade"
+      },
+      templateUrl: 'templates/joinList.html',
+      controller: 'joinListCtrl'
+    })
+
 
   /* --------- EVENT LIST PAGE ------- */
   .state('eventList', {
@@ -83,6 +84,28 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
     controller: 'eventListCtrl'
   })
 
+
+  /* --------- ACTION LIST PAGE ------- */
+  .state('actionList', {
+    url: '/actionListPage',
+    nativeTransitions: {
+      type: "fade"
+    },
+    templateUrl: 'templates/actionList.html',
+    controller: 'actionListCtrl'
+  })
+
+  /* --------- ACTION LIST PAGE ------- */
+  .state('actionCreate', {
+    url: '/actionCreatePage',
+    nativeTransitions: {
+      type: "fade"
+    },
+    templateUrl: 'templates/actionCreate.html',
+    controller: 'actionCreateCtrl'
+  })
+
+
 /* --------- SETTING PAGE ------- */
   .state('setting', {
     url: '/settingPage',
@@ -90,37 +113,8 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
       type: "fade"
     },
     templateUrl: 'templates/setting.html',
-    controller: 'settingCtrl'
+    controller: 'settingPageCtrl'
   })
-
-  /* --------- NOTIFICATION PAGE ------- */
-    // .state('notifyList', {
-    //   url: '/notifyListPage',
-    //   nativeTransitions: {
-    //     type: "fade"
-    //   },
-    //   templateUrl: 'templates/notifyList.html',
-    //   controller: 'notifyListCtrl'
-    // })
-
-    /* --------- NOTIFICATION PAGE ------- */
-      // .state('chatList', {
-      //   url: '/chatListPage',
-      //   nativeTransitions: {
-      //     type: "fade"
-      //   },
-      //   templateUrl: 'templates/chatList.html',
-      //   controller: 'chatListCtrl'
-      // })
-
-
-
-
-
-
-
-
-
 
 
 
