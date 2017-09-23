@@ -14,7 +14,7 @@ app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state'
             if (firebaseUser){
               console.log("Signed in as: " + firebaseUser.uid);
               currentUserUid = firebaseUser.uid;
-              $state.go('tabsController.actionList');
+              $state.go('actionList');
             }
             else {
               console.log("Signed out");
@@ -38,7 +38,7 @@ app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state'
                     $scope.authObj.$signInWithCredential(credential).then(function(firebaseUser) {
                       console.log("Credential signed in as:", firebaseUser.uid);
                       currentUserUid = firebaseUser.uid;
-                      $state.go('tabsController.actionList');
+                      $state.go('actionList');
                     }).catch(function(error) {
                       console.error("Authentication failed:", error);
                     });
