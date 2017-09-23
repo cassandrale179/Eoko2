@@ -36,8 +36,8 @@
         </div>
 
           <ion-item ng-repeat="chat in chatData">
-            <h3 ng-if="chat.name == ''"></h3>
-            <h3 ng-if="chat.name != ''">{{chat.name}}</h3>
+            <h3 ng-if="chat.info.name == ''">{{chat.title}}</h3>
+            <h3 ng-if="chat.info.name != ''">{{chat.info.name}}</h3>
           </ion-item>
        
       </ion-list>

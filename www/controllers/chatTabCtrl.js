@@ -30,24 +30,21 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
         }
    }
 
-    $scope.chatNameFunc = function(ids)
-    {
-      var names = [];
-      
-        for(var i in ids)
+
+   function makeName(ids)
+   {
+      var nameList = [];
+      for(var i in ids)
+      {
+        if(ids[i].id != $scope.currentUser.uid)
         {
-          if(ids[i].id != $scope.currentUser.uid)
-          {
-            var ref = firebase.database().ref('users').child(ids[i].id);
-              var name = $firebaseObject(ref);
-            names.push(name.name);
-          }
+            nameList.push(ids[i].name);
         }
-      
-        return names.join();
-    };
+      }
+      return nameList.join(", ");
+   }
 
-
+    
    function populateChats()
    {
     
@@ -56,8 +53,17 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
         $scope.chatData = [];
         for(var i in chatList)
         {
-          //console.log("value of that thing is", chatFactory.loadChatData(chatList[i]));
-          $scope.chatData.push(chatFactory.loadChatData(chatList[i]));
+          var chatdata = chatFactory.loadChatData(chatList[i]);
+          var chattitle = makeName(chatdata.ids);
+            
+          console.log(chatdata, chattitle);
+          var obj = {
+            info: chatdata,
+            title: chattitle};
+          $scope.chatData.push(obj);
+          
+          
+
           
         }
         console.log("chatData",$scope.chatData);
@@ -69,7 +75,9 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
   firebase.auth().onAuthStateChanged(function(user) 
   {
     if (user){
-
+      var rez = firebase.database().ref("users").child(user.uid);
+      $scope.userInfo = $firebaseObject(rez);
+      $scope.userInfo.$loaded();
       $scope.currentUser = user;
       chatLoop();
       }
@@ -84,7 +92,8 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
     }).then(function(success){
         console.log("lets see", success);
         rec.child(success.key).child("ids").push({
-          id: $scope.currentUser.uid
+          id: $scope.currentUser.uid,
+          name: $scope.userInfo.name
         }).then(function(baby)
         {
           console.log( "my baby!");
