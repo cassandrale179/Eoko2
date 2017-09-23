@@ -34,7 +34,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         userRef.on("value", function(snapshot){
           $scope.low = snapshot.val().low;
           $scope.high = snapshot.val().high;
-          console.log("Age Range: " + $scope.low + "," + $scope.high); 
+          console.log("Age Range: " + $scope.low + "," + $scope.high);
 
         })
 
@@ -141,6 +141,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         //$scope.distList = [];
 
         $scope.distFromPlayer = function(locationdata) {
+          console.log("distFromPlayer executed");
           if($scope.myloc == undefined || $scope.myloc == null)
           {
             console.log("not yet");

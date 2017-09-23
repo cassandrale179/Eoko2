@@ -4,9 +4,6 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
 
     $scope.action = {};
 
-
-
-
     //--------TAGS -------------------------------------
     var tagsRef = firebase.database().ref('actions');
     $scope.tagsArray = $firebaseArray(tagsRef);
@@ -113,8 +110,8 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
     $scope.submit = function(){
       //Store the tags
       $scope.action.tags = "";
-      for (var i = 0; i<$scope.selectedTags; i++){
-        $scope.action.tags+=$scope.selectedTags[i];
+      for (var i = 0; i<$scope.selectedTags.length; i++){
+        $scope.action.tags+=$scope.selectedTags[i].$value;
       }
       console.log($scope.action.tags);
       console.log("current user uid: ", currentUser.uid);
@@ -131,9 +128,12 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
       eventID = eventRef.key;
 
       //Push the event under the user database
-      var obj = {};
-      obj[eventID] = $scope.action.location;
-      userActionsRef.update(obj)
+      var event = {
+        eventID: eventID,
+        location: $scope.action.location
+      };
+
+      userActionsRef.child(eventID).update(event);
 
       if ($scope.action.privacy == "public")
       {
@@ -152,12 +152,11 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
           angular.forEach(friendsArray, function(friend){
             console.log("friend ID:", friend.$id);
             var ref = firebase.database().ref('users/' + friend.$id + '/actions/friendActions');
-            var obj = {};
-            obj[eventID] = $scope.action.location;
-            ref.update(obj);
+
+            ref.child(eventID).update(event);
 
           })
-          $state.go('eventList');
+        $state.go('eventList');
         })
 
       }

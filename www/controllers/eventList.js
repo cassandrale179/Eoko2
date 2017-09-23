@@ -152,6 +152,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
 
         //---------------------- DISTANCE FROM THE CURRENT USER ------------------
         $scope.distFromPlayer = function(locationdata) {
+          console.log("distFromPlayer executed");
           if($scope.myloc == undefined || $scope.myloc == null)
           {
             console.log("not yet");
@@ -173,7 +174,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
                 var result = getDistanceFromLatLonInKm(mylat, mylong, lat, long) * 0.621371;
                 $timeout(function(){
                   $scope.$apply();
-                }, 1000);
+                }, 500);
                 //return Math.round(result * 10) / 10;
                 //$scope.distList.push(result);
                 return result;
