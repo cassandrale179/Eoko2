@@ -65,7 +65,7 @@ select{
 #error{
   color: white;
   font-family: 'Roboto', sans-serif;
-  text-align: center; 
+  text-align: center;
 }
 
 /* -------------------------------- LOGIN SCREEN ----------------------------- */
@@ -618,4 +618,14 @@ select{
   margin-top: 5px;
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
+}
+
+#I2B button{
+  background-color: rgba(230, 126, 34, 0.9);
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  width: 70px;
+  border: none;
+  margin-right: 20px;
+  margin-top: 5px; 
 }
