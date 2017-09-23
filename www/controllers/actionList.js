@@ -1,6 +1,7 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory', 'UserInfo',
 
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory) {
+  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory, UserInfo) {
+
 
     //A LOOP TO CHECK IF THE CU
     $scope.nudge = 0;
@@ -20,10 +21,16 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
             }
     }
 
-        //CHECKING IF USER IS LOGIN THROUGH ONAUTH STATE CHANGE
+
+
+        //------------------------CHECKING IF USER IS LOGIN THROUGH ONAUTH STATE CHANGE---------------------------
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
             $scope.currentUser = user;
+            UserInfo.getInfo(user, ['photoURL', 'name']);
+
+
+
 
             geoLoop(user.uid);
         }
@@ -34,7 +41,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         userRef.on("value", function(snapshot){
           $scope.low = snapshot.val().low;
           $scope.high = snapshot.val().high;
-          console.log("Age Range: " + $scope.low + "," + $scope.high); 
+          console.log("Age Range: " + $scope.low + "," + $scope.high);
 
         })
 
@@ -141,6 +148,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         //$scope.distList = [];
 
         $scope.distFromPlayer = function(locationdata) {
+          console.log("distFromPlayer executed");
           if($scope.myloc == undefined || $scope.myloc == null)
           {
             console.log("not yet");
@@ -181,4 +189,20 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
              return result;
           };
+
+
+
+          $scope.eokoNudge = function(x) {
+            $scope.nudge=true;
+            console.log("nudge: ", $scope.nudge);
+            console.log("Photo of other person: ", x.photoURL);
+            $scope.xPhotoURL = x.photoURL;
+            $scope.xName = x.name;
+            $scope.user = UserInfo.getUser();
+          }
+          $scope.hideEokoNudge = function() {
+            $scope.nudge = false;
+            console.log("nudge: ", $scope.nudge);
+
+          }
   }]);

@@ -1,4 +1,5 @@
-app.controller('settingPageCtrl', ['$scope', '$state', 'UserInfo', function($scope, $state, UserInfo){
+app.controller('settingPageCtrl', ['$scope', '$state', '$firebaseAuth',
+function($scope, $state, $firebaseAuth){
 
   //---------- SET INITIAL MODE TO VIEW SETTINGS --------------
   $scope.view = true;
@@ -102,6 +103,12 @@ app.controller('settingPageCtrl', ['$scope', '$state', 'UserInfo', function($sco
       }
     })
   });
+
+  $scope.signoutUser = function() {
+    firebase.auth().signOut().then(function(){
+      $state.go('login');
+    })
+  }
 
 
 

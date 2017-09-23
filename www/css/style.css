@@ -288,6 +288,15 @@ select{
   right: 5px;
 }
 
+#D1 i{
+  font-size: 15px;
+  position: absolute;
+  color: white;
+  top: 5px;
+  right: 5px;
+}
+
+
 #D2{
   display: flex;
 }

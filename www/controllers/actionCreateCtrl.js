@@ -1,11 +1,8 @@
 app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionicPlatform', '$http', '$window', 'ngFB',
   function ($scope, $state, $firebaseArray, $ionicPlatform, $http, $window, ngFB) {
 
-    //------ CHECK IF USER IS CURRENTLY LOGGING IN ------
-
 
     $scope.action = {};
-
 
     //--------TAGS -------------------------------------
     var tagsRef = firebase.database().ref('actions');
@@ -42,71 +39,18 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
       }
     }
 
-
+//------ CHECK IF USER IS CURRENTLY LOGGING IN ------
     firebase.auth().onAuthStateChanged(function(user) {
       if (user){
         console.log("user is logged in." + user.uid);
         currentUser = user;
-        $scope.action.userID = user.uid;
-        var ref = firebase.database().ref('users/'+user.uid);
 
-        //Get user info
-        //TODO: put this in action List page
-        openFB.getLoginStatus(function(response){
-          if (response.status=="connected"){
-            console.log("response",  response.status);
-            openFB.api({
-              path: '/me',
-              params: {fields: 'id, name, gender, picture, birthday, friends'},
-            success: function(res){
-              console.log("Success!");
-              var userInfo = {
-                fbid: res.id,
-                name: res.name,
-                gender: res.gender,
-                photoURL: res.picture.data.url,
-                birthday: res.birthday
-              };
-
-              //Get firebase ID of friends who are in app
-              var ref = firebase.database().ref("users");
-              var friendsList = {};
-
-              userFriendsRef = firebase.database().ref('users/'+user.uid+"/friends");
-              angular.forEach(res.friends.data, function(friend){
-                var friendID = friend.id;
-                console.log(friendID);
-                ref.orderByChild('fbid').equalTo(friendID).on("child_added", function(snapshot){
-                  var obj = {};
-                  obj[snapshot.key] = snapshot.val().name;
-
-                  userFriendsRef.update(obj);
-                });
-
-              });
-
-
-              //Update all info to Firebase
-              console.log("user info");
-              console.log('friends list', friendsList);
-              console.log(userInfo);
-              userRef = firebase.database().ref('users/'+user.uid);
-
-              userRef.update(userInfo);
-              console.log("friends list below");
-              console.log(friendsList);
-              // userFriendsRef.update(friendsList);
-
-
-
-
-            },
-            error: function(error){
-              console.log("Error while using open FB");
-              console.log(error);
-            }});
-          }
-        });
+        //Get Photo URL of owner of activity
+        var userRef = firebase.database().ref('users/' + user.uid);
+        userRef.on('value', function(snapshot){
+          $scope.action.photoURL = snapshot.val().photoURL;
+          console.log("photo URL acquired: ", $scope.action.photoURL);
+        })
 
       }
       else{
@@ -124,6 +68,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
         $scope.action.location = latlng;
         var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&sensor=false";
         $http.get(url).then(function(response){
+          console.log("Google maps response", response);
           $scope.action.address = response.data.results[0].formatted_address;
         });
 
@@ -166,8 +111,8 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
     $scope.submit = function(){
       //Store the tags
       $scope.action.tags = "";
-      for (var i = 0; i<$scope.selectedTags; i++){
-        $scope.action.tags+=$scope.selectedTags[i];
+      for (var i = 0; i<$scope.selectedTags.length; i++){
+        $scope.action.tags+=$scope.selectedTags[i].$value;
       }
       console.log($scope.action.tags);
       console.log("current user uid: ", currentUser.uid);
@@ -184,9 +129,12 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
       eventID = eventRef.key;
 
       //Push the event under the user database
-      var obj = {};
-      obj[eventID] = $scope.action.location;
-      userActionsRef.update(obj)
+      var event = {
+        eventID: eventID,
+        location: $scope.action.location
+      };
+
+      userActionsRef.child(eventID).update(event);
 
       if ($scope.action.privacy == "public")
       {
@@ -205,12 +153,11 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
           angular.forEach(friendsArray, function(friend){
             console.log("friend ID:", friend.$id);
             var ref = firebase.database().ref('users/' + friend.$id + '/actions/friendActions');
-            var obj = {};
-            obj[eventID] = $scope.action.location;
-            ref.update(obj);
+
+            ref.child(eventID).update(event);
 
           })
-          $state.go('eventList');
+        $state.go('eventList');
         })
 
       }

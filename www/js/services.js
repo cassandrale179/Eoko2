@@ -1,33 +1,101 @@
 angular.module('eoko.services', [])
 
 
-  .factory('UserInfo', [function () {
-    var userData = {
-      email: "",
-      uid: "",
-      name: "",
-      birthday: "",
-      friendsList: ""
-    };
+  .factory('facebookService', [function () {
+    var facebookService = {
+      getUserInfo: function(user){
 
-    return {
-      setUserInfo: function (info) {
-        userData = {
-          uid: info.uid,
-          name: info.name,
-          email: info.email,
-          birthday: info.birthday,
-          imageUrl: info.imageUrl,
-          token: info.token
-        };
-        return true;
+        //Get user info
+        //TODO: put this in action List page
+        openFB.getLoginStatus(function(response){
+          if (response.status=="connected"){
+            console.log("response",  response.status);
+            openFB.api({
+              path: '/me',
+              params: {fields: 'id, name, gender, picture, birthday, friends'},
+            success: function(res){
+              console.log("Success!");
+              var userInfo = {
+                fbid: res.id,
+                name: res.name,
+                gender: res.gender,
+                photoURL: res.picture.data.url,
+                birthday: res.birthday
+              };
+
+              //Get firebase ID of friends who are in app
+              var ref = firebase.database().ref("users");
+              var friendsList = {};
+
+              userFriendsRef = firebase.database().ref('users/'+user.uid+"/friends");
+              angular.forEach(res.friends.data, function(friend){
+                var friendID = friend.id;
+                console.log(friendID);
+                ref.orderByChild('fbid').equalTo(friendID).on("child_added", function(snapshot){
+                  var obj = {};
+                  obj[snapshot.key] = snapshot.val().name;
+
+                  userFriendsRef.update(obj);
+                });
+
+              });
+
+
+              //Update all info to Firebase
+              console.log("user info");
+              console.log('friends list', friendsList);
+              console.log(userInfo);
+              userRef = firebase.database().ref('users/'+user.uid);
+
+              userRef.update(userInfo);
+              console.log("friends list below");
+              console.log(friendsList);
+
+              console.log("Finished getting user info!!!");
+              // userFriendsRef.update(friendsList);
+
+            },
+            error: function(error){
+              console.log("Error while using open FB");
+              console.log(error);
+            }});
+          }
+        });
+      }
+
+
+    }
+
+    return facebookService;
+
+  }])
+
+  .factory('UserInfo', [function() {
+    var user = {};
+
+    var UserInfo = {
+
+      //fields: what you want e.g. [birthday, photoURL, name] etc.
+      //THis will then be stored in UserInfo.user;
+      getInfo: function(firebaseUser, fields) {
+        var ref = firebase.database().ref('users/'+firebaseUser.uid);
+
+        ref.on("value", function(snapshot){
+          for (var i = 0; i<fields.length;i++){
+            user[fields[i]] = snapshot.child(fields[i]).val();
+            console.log("Got the user's " + fields[i]);
+          }
+
+        })
+
       },
 
-      getUserInfo: function () {
-        return userData;
+      getUser: function() {
+        return user;
       }
     };
 
+    return UserInfo;
   }])
 
 
