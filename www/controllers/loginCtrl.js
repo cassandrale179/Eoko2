@@ -1,6 +1,6 @@
-app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state', '$http', 'ngFB', '$window','geoPos', 'facebookService', '$ionicPlatform',
+app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state', '$http', 'ngFB', '$window','geoPos', 'facebookService', '$ionicPlatform', 'UserInfo',
 
-  function ($scope, $cordovaOauth, $firebaseAuth, $state, $http, ngFB, $window, geoPos, facebookService, $ionicPlatform) {
+  function ($scope, $cordovaOauth, $firebaseAuth, $state, $http, ngFB, $window, geoPos, facebookService, $ionicPlatform, UserInfo) {
 
   var fbAppId = '694354544087073';
   $scope.authObj = $firebaseAuth();
@@ -18,6 +18,9 @@ app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state'
               //GET USER INFO
               //facebookService can be found in js/service.js
               facebookService.getUserInfo(firebaseUser);
+
+              //GET the current user's photo URL
+              UserInfo.getInfo(firebaseUser, ['photoURL', 'name', 'birthday']);
 
 
               $state.go('actionList');

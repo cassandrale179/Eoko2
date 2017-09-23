@@ -70,6 +70,34 @@ angular.module('eoko.services', [])
 
   }])
 
+  .factory('UserInfo', [function() {
+    var user = {};
+
+    var UserInfo = {
+
+      //fields: what you want e.g. [birthday, photoURL, name] etc.
+      //THis will then be stored in UserInfo.user;
+      getInfo: function(firebaseUser, fields) {
+        var ref = firebase.database().ref('users/'+firebaseUser.uid);
+
+        ref.on("value", function(snapshot){
+          for (var i = 0; i<fields.length;i++){
+            user[fields[i]] = snapshot.child(fields[i]).val();
+            console.log("Got the user's " + fields[i]);
+          }
+
+        })
+
+      },
+
+      getUser: function() {
+        return user;
+      }
+    };
+
+    return UserInfo;
+  }])
+
 
   .factory('OtherInfo', [function () {
     var userData = {
