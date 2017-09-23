@@ -1,10 +1,40 @@
 <ion-view hide-nav-bar="true">
   <ion-content padding="true" class="innerbackground">
-    <img class="logo" src="./img/eoko-logo.svg" />
-    <img class="tagline" src="./img/peoplenearyou.png"></img>
 
-    <div id="I">
-      
+    <!-- ___________________ THIS DIV WILL DISPLAY THE EVENTS THAT YOU HAVE CREATED ----------->
+    <div id="I" ng-show="create==true">
+      <div id="I1">
+        <button style="border-bottom: 0.1px rgba(230, 126, 34, 0.9) solid" ng-click="create"> Created </button>
+        <button ng-click="create=false"> Joined </button>
+        <i class="fa fa-trash-o" aria-hidden="true"></i>
+      </div>
+      <div id="error" ng-if="errorMessage != ''">
+        {{errorMessage}}
+      </div>
+      <div id="I2" ng-repeat="event in myEvents">
+        <img ng-src="{{event.photoURL}}" />
+        <div id="I2A">
+          {{event.name}}
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ___________________ THIS DIV WILL DISPLAY THE EVENTS THAT YOU HAVE JOINED ----------->
+    <div id="J" ng-show="create==false">
+      <div id="I1">
+        <button ng-click="create=true"> Created </button>
+        <button style="border-bottom: 0.1px rgba(230, 126, 34, 0.9) solid" ng-click="create=false"> Joined </button>
+      </div>
+      <div id="error" ng-if="errorMessage2 != ''">
+        {{errorMessage2}}
+      </div>
+      <div id="I2" ng-repeat="join in joinEvents">
+        <img ng-src="{{join.photoURL}}" />
+        <div id="I2A">
+          {{join.name}}
+        </div>
+      </div>
     </div>
 </ion-content>
 <!-- NAVIGATION BAR -->

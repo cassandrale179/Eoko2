@@ -1,40 +1,63 @@
 app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebaseObject',
   function ($scope, $state, $firebaseArray, $firebaseObject) {
-  firebase.auth().onAuthStateChanged(function(user){
+
+    //--------- PRESET SOME VARIBALES---------
+    $scope.create = true;
+    $scope.errorMessage = ""
+
+
+
+    //--------- CHECK IF USER IS LOG IN ---------
+    firebase.auth().onAuthStateChanged(function(user){
     if (user){
       $scope.currentUser = user;
     }
 
-    var actionRef = firebase.database().ref("users/" + "0X1d3eosD8MyaUyvd8B5e92fiVo2/" + "actions/myActions");
+    //--------------------------- ACTION THAT YOU HAVE CREATE WILL BE CAPTURE HERE --------------------
+    var actionRef = firebase.database().ref("users/" + "0X1d3eosD8MyaUyvd8B5e92fiVo2" + "/actions");
     actionRef.on("value", function(snapshot){
-      var actionList = snapshot.val();
+      var createAction = snapshot.val().myActions;
+      var joinActions = snapshot.val().joinActions;
+      if (createAction == undefined){
+        $scope.errorMessage = "You have not creatd any action";
+      }
+      if (joinActions == undefined){
+        $scope.errorMessage2 = "You have not joined any action";
+      }
+      else{
+      $scope.myEventID = []
+      $scope.myEvents = []
+      $scope.photos = []
 
-      //--------- IF USER HASN'T CREATE AN EVENT YET, OUTPUT THAT THEY HAVE NOT CREATE ANY EVENT
-      if (actionList == undefined){
-        console.log("You have not created any event yet");
+      $scope.joinEventID = []
+      $scope.joinEvents = []
+      $scope.photos2 = []
+
+      for (var key in createAction){
+        $scope.myEventID.push(key)
+      }
+      for (var key2 in joinActions){
+        $scope.joinEventID.push(key2)
       }
 
-      //-------- IF USER HAS CREATE AN EVENT, THEN PUSH IT TO THE EVENT LIST ----------
-      else{
-        $scope.myEventID = []
-        $scope.myEvents = []
-        for (var key in actionList){
-          $scope.myEventID.push(key)
-        }
+      var activitiesRef = firebase.database().ref("activities/");
+      activitiesRef.on("value", function(activitySnap){
+        var activityTable = activitySnap.val();
 
-
-        //------ LOOP THROUGH THE ALL THE EVENTS AND EXTRACT EVENT I CREATE ------------
-        var activitiesRef = firebase.database().ref("activities/");
-        activitiesRef.on("value", function(snapshot){
-          var activityTable = snapshot.val()
-          for (var i = 0; i < $scope.myEventID.length; i++){
+        //-------------------- ACTIVITY TABLE ----------------------
+        for (var i = 0; i < $scope.myEventID.length; i++){
             if (activityTable.hasOwnProperty($scope.myEventID[i])){
               $scope.myEvents.push(activityTable[$scope.myEventID[i]]);
             }
+            if (activityTable.hasOwnProperty($scope.joinEventID[i])){
+              $scope.joinEvents.push(activityTable[$scope.joinEventID[i]]);
+            }
           }
-        })
+
+      })
       }
     })
+
   })
 
   }]);
