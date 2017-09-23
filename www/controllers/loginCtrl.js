@@ -1,7 +1,6 @@
-app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state', '$http', 'ngFB', '$window','geoPos',
-  '$ionicPlatform',
+app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state', '$http', 'ngFB', '$window','geoPos', 'facebookService', '$ionicPlatform',
 
-  function ($scope, $cordovaOauth, $firebaseAuth, $state, $http, ngFB, $window, geoPos, $ionicPlatform) {
+  function ($scope, $cordovaOauth, $firebaseAuth, $state, $http, ngFB, $window, geoPos, facebookService, $ionicPlatform) {
 
   var fbAppId = '694354544087073';
   $scope.authObj = $firebaseAuth();
@@ -14,6 +13,13 @@ app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state'
             if (firebaseUser){
               console.log("Signed in as: " + firebaseUser.uid);
               currentUserUid = firebaseUser.uid;
+
+
+              //GET USER INFO
+              //facebookService can be found in js/service.js
+              facebookService.getUserInfo(firebaseUser);
+
+
               $state.go('actionList');
             }
             else {
@@ -38,6 +44,12 @@ app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state'
                     $scope.authObj.$signInWithCredential(credential).then(function(firebaseUser) {
                       console.log("Credential signed in as:", firebaseUser.uid);
                       currentUserUid = firebaseUser.uid;
+
+                      //GET USER INFO
+                      //facebookService can be found in js/service.js
+                      facebookService.getUserInfo(firebaseUser);
+
+
                       $state.go('actionList');
                     }).catch(function(error) {
                       console.error("Authentication failed:", error);
