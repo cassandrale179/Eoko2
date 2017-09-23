@@ -3,39 +3,61 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
     $scope.eventNudge = false;
 
 
+    firebase.auth().onAuthStateChanged(function(user){
+      if (user){
+        geoPos.updateFirebase(user.uid);
+        getEvents();
+
+
+      }
+    })
+
+
+
 
     //-------------- GET USER CURRENT LOCATION LOOP --------------
-       function geoLoop(id)
-    {
-      try{
-              geoPos.updateFirebase(id);
-              console.log("position set on firebase");
-              $scope.myloc = geoPos.getUserPosition();
-              getEvents();
-            }
-            catch(error)
-            {
-              $timeout(function(){
-                geoLoop(id);
-              },1000);
-            }
-    }
+    //    function geoLoop(id)
+    // {
+    //   try{
+    //           geoPos.updateFirebase(id);
+    //           console.log("position set on firebase");
+    //           $scope.myloc = geoPos.getUserPosition();
+    //           getEvents();
+    //         }
+    //         catch(error)
+    //         {
+    //           $timeout(function(){
+    //             geoLoop(id);
+    //           },1000);
+    //         }
+    // }
 
     //-------------- GET THE CURRENT USER WHO ARE USING THE APP--------------
-        firebase.auth().onAuthStateChanged(function(user) {
-          if (user) {
-            console.log("auth changed");
-            $scope.currentUser = user;
-            geoLoop(user.uid);
+      //   firebase.auth().onAuthStateChanged(function(user) {
+      //     if (user) {
+      //       console.log("auth changed");
+      //       $scope.currentUser = user;
+      //       // geoLoop(user.uid);
+      //       $scope.myloc = geoPos.updateFirebase($scope.currentUser.uid);
+      //       // geoPos.updateFirebase($scope.currentUser.uid).then(function(data){
+      //       //   $scope.myloc = data;
+      //       // });
+      //
+      //       console.log('$scope.myloc', $scope.myloc);
+      //       getEvents();
+      //
+      //   }
+      //   console.log("userID is:",$scope.currentUser.uid);
+      //
+      // });
 
-        }
-        console.log("userID is:",$scope.currentUser.uid);
 
-      });
+
 
 
       //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
       $scope.joinAction = function(ownerid, eventid){
+
 
         var ref = firebase.database().ref("activities").child(eventid).child("participants");
         var checkDone = $firebaseArray(ref);
@@ -152,6 +174,10 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
 
         //---------------------- DISTANCE FROM THE CURRENT USER ------------------
         $scope.distFromPlayer = function(locationdata) {
+
+
+          $scope.myloc = geoPos.getUserPosition();
+
           console.log("distFromPlayer executed");
           if($scope.myloc == undefined || $scope.myloc == null)
           {

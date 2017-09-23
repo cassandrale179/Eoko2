@@ -64,6 +64,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
       var watchId = navigator.geolocation.watchPosition(onSuccess);
       function onSuccess(position) {
         var latlng = position.coords.latitude + "," + position.coords.longitude;
+        console.log(latlng);
         $scope.action.location = latlng;
         var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&sensor=false";
         $http.get(url).then(function(response){

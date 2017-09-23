@@ -62,6 +62,11 @@ select{
   font-size: 45px;
 }
 
+#error{
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+}
 
 /* -------------------------------- LOGIN SCREEN ----------------------------- */
 #A img{
@@ -197,7 +202,7 @@ select{
   padding-right: 5%;
 }
 
-#C1, #E2A{
+#C1, #E2A, #I2{
   background: rgba(255,255,255,0.8);
   opacity: 0.9;
   height: 85px;
@@ -208,10 +213,10 @@ select{
   padding: 3%;
 }
 
-#C1 img, #E2A img{
+#C1 img, #E2A img, #I2 img{
   object-fit: cover;
-  width: 65px;
-  height: 65px;
+  width: 70px;
+  height: 55px;
   border-radius: 40px;
   margin-left: 10px;
   margin-top: 2px;
@@ -228,7 +233,7 @@ select{
   margin-left: 10%;
 }
 
-#C1A{
+#C1A, #I2A{
   position: relative;
   width: 100%;
   font-family: 'Roboto', sans-serif;
@@ -576,4 +581,60 @@ select{
   height: 50px;
   font-size: 18px;
   border-radius: 10px;
+}
+
+
+/* ---------------------------- STYLING FOR JOIN LIST PAGE --------------------- */
+#I{
+  padding-left: 5%;
+  padding-right: 5%;
+}
+#I1{
+  width: 100%;
+  display: flex;
+  margin-bottom: 20px;
+}
+
+#I1 button{
+  width: 49%;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-size: 23px;
+  padding-bottom: 20px;
+  background: none;
+  border: none;
+  height: 40px !important;
+}
+
+#I1 i{
+  color: white;
+  font-size: 20px;
+  margin-top: 8px;
+  margin-right: 2px;
+}
+
+#I2{
+  border-right: 10px solid rgba(230, 126, 34, 0.9);
+}
+
+
+#I2A {
+  padding-left: 5%;
+  font-size: 18px;
+}
+
+#I2 h3{
+  margin-top: 5px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+}
+
+#I2B button{
+  background-color: rgba(230, 126, 34, 0.9);
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  width: 70px;
+  border: none;
+  margin-right: 20px;
+  margin-top: 5px; 
 }
