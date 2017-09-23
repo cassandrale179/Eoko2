@@ -8,20 +8,22 @@
 
 
       <div id="G" style="margin:2%;padding:2%">
-        <p>Age Range</p>
+        <p>Age Range (filter people by age)</p>
         <div range-slider
-         floor="18"
+         floor="0"
          ceiling="120"
          dragstop="true"
-         ng-model-low="18"
-         ng-model-high="100">
+         ng-model-low="age.low"
+         ng-model-high="age.high">
        </div>
+       <button ng-click="submitAge()">SET AGE </button>
       </div>
 
 
       <div id="H">
         <!-- THIS IS THE SETTINGS VIEW FOR THE VIEW PART -->
         <div id="H1A" ng-show="view">
+
           <!-- OPTION BUTTONS -->
           <p>View public events, private events or both</p>
           <div id="H2">
@@ -39,4 +41,11 @@
         </div>
       </div>
   </ion-content>
+  <!-- NAVIGATIO BAR -->
+    <div id="navbar">
+      <button><i ui-sref="settings" class="fa fa-bell" aria-hidden="true"></i></button>
+      <button><i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true"></i></button>
+      <button><i ui-sref="actionList" class="fa fa-users" aria-hidden="true"></i></button>
+      <button><i class="fa fa-comment" aria-hidden="true"></i></button>
+    </div>
 </ion-view>

@@ -44,10 +44,7 @@ select{
   margin-top: 10px;
 }
 
-ion-content{
-  position: absolute;
-  border: 1px white solid;
-}
+
 
 
 /* -------------------------------- NAVIGATION BAR --------------------------- */
@@ -60,7 +57,9 @@ ion-content{
 
 }
 #navbar button{
-  color: white;
+  color: rgba(0,0,0,0.3);
+  width: 25%;
+  font-size: 45px;
 }
 
 
@@ -473,7 +472,19 @@ ion-content{
   font-family: 'Roboto', sans-serif;
   padding-left: 5%;
   font-size: 16px;
-  margin-bottom: -10px;
+  margin-bottom: 10px;
+}
+
+#G button{
+  display: block;
+  background: rgba(255,255,255,0.7);
+  color: black;
+  border: none;
+  margin: auto;
+  font-family: 'Roboto', sans-serif;
+  padding: 3%;
+  border-radius: 5px;
+  width: 100px;
 }
 
 

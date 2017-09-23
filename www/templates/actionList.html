@@ -7,7 +7,7 @@
     <!-- ____________________  DISPLAY USER FRIENDS WITHIN 10 MILES  _________________  -->
 
     <div id="C">
-      <div id="C1" ng-repeat="x in peopleList" ng-if="currentUser.uid != x.uid">
+      <div id="C1" ng-repeat="x in peopleList" ng-if="currentUser.uid != x.uid" ng-show="distList[$index].age > low && distList[$index].age < high">
         <img ng-src="{{x.photoURL}}"/>
         <div id="C1A">
           {{x.name}}
@@ -27,6 +27,7 @@
         {{distList[$index].dist * 5280  | number:1 }} <br />
         feet
         </div>
+
 
       <!-- ____________________________  EOKO NUDGE _______________________________________  -->
         <div id="D" ng-show="nudge">
@@ -54,4 +55,12 @@
       </div>
     </div>
 </ion-content>
+
+<!-- NAVIGATIO BAR -->
+  <div id="navbar">
+    <button><i ui-sref="joinList" class="fa fa-bell" aria-hidden="true"></i></button>
+    <button><i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true"></i></button>
+    <button><i ui-sref="actionList" class="fa fa-users" aria-hidden="true"></i></button>
+    <button><i class="fa fa-comment" aria-hidden="true"></i></button>
+  </div>
 </ion-view>

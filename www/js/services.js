@@ -90,43 +90,130 @@ angular.module('eoko.services', [])
 
   }])
 
+//
+// .factory('geoPos', [function () {
+//
+//     var myloc;
+//    var watchId = navigator.geolocation.watchPosition(function(position)
+//     {
+//       var latlng = position.coords.latitude + "," + position.coords.longitude;
+//           console.log("Latlng under ionic platform: " + latlng);
+//
+//           //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
+//
+//           myloc = latlng;  //actual current location
+//     });
+//
+//
+//
+//
+//
+//     return {
+//
+//       updateFirebase: function(usrID)
+//       {
+//         var userRef = firebase.database().ref("users").child(usrID);
+//           var obj = {
+//             location: myloc
+//           };
+//           userRef.update(obj);
+//       },
+//       getUserPosition: function ()
+//       {
+//         return myloc;
+//       }
+//     };
+//
+//   }])
+//
+//
+.factory('chatFactory', ['$firebaseArray',function ($firebaseArray) {
 
-.factory('geoPos', [function () {
-
-    var myloc;
-   var watchId = navigator.geolocation.watchPosition(function(position)
+    var ref = firebase.database().ref("Chats");
+    var chatData = $firebaseArray(ref);
+    var myChatLists = [];
+    var ready = false;
+    chatData.$loaded(function(x)
     {
-      var latlng = position.coords.latitude + "," + position.coords.longitude;
-          console.log("Latlng under ionic platform: " + latlng);
+      console.log("Chats Loaded",x);
+      ready = true;
 
-          //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
 
-          myloc = latlng;  //actual current location
     });
 
 
-  
 
 
     return {
-     
-      updateFirebase: function(usrID)
+
+      checkReady: function()
       {
-        var userRef = firebase.database().ref("users").child(usrID);
-          var obj = {
-            location: myloc
-          };
-          userRef.update(obj);
+        return ready;
       },
-      getUserPosition: function () 
+
+      getChats: function(usrID)
       {
-        return myloc;
+        angular.forEach(chatData, function(value,key)
+        {
+          for(var i in value.ids)
+          {
+            if(value.ids[i].id == usrID)
+            {
+              myChatLists.push(value.$id);
+              break;
+            }
+          }
+
+        },chatData);
+        return myChatLists;
+      },
+
+      loadChatData: function (chatKey)
+      {
+        return chatData.$getRecord(chatKey);
       }
     };
 
   }])
 
 
+.factory('geoPos', [function () {
+  var myloc = "location has not been found";
+  return {
+    updateFirebase: function(usrID) {
+        return navigator.geolocation.watchPosition(onSuccess, onError);
+        function onSuccess(position){
+           var latlng = position.coords.latitude + "," + position.coords.longitude;
+           console.log("Latlng under ionic platform: " + latlng);
+
+           //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
+
+           myloc = latlng;  //actual current location
+           console.log('myloc', myloc);
+
+
+
+           var userRef = firebase.database().ref("users").child(usrID);
+             var obj = {
+               location: myloc
+             };
+           userRef.update(obj);
+           return myloc;
+       };
+       function onError(error) {
+          console.log('error getting location', error);
+      };
+    },
+
+
+    getUserPosition: function ()
+    {
+      return myloc;
+    }
+  };
+
+
+  }])
 
   .service('BlankService', [function () {
 
