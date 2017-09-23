@@ -35,7 +35,7 @@
       <div ng-if="chatData.length == 0" class="eoko-text-button-nav" style="text-align:center;"><span style="line-height: 33px;">No Conversations Started. Press and hold a friend's name to start one!</span>
         </div>
 
-          <ion-item ng-repeat="chat in chatData">
+          <ion-item ng-repeat="chat in chatData" ng-if="chat.title != ''">
             <h3 ng-if="chat.info.name == ''">{{chat.title}}</h3>
             <h3 ng-if="chat.info.name != ''">{{chat.info.name}}</h3>
           </ion-item>

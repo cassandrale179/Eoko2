@@ -61,10 +61,6 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
             info: chatdata,
             title: chattitle};
           $scope.chatData.push(obj);
-          
-          
-
-          
         }
         console.log("chatData",$scope.chatData);
         $timeout(function(){$scope.$apply();});
@@ -103,43 +99,5 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
     });
 
   };
-
-
-
-      /*function getInfo(x) {
-        var rec = firebase.database().ref("Buildings").child(authUser.displayName + "/Users");
-        rec.once('value').then(function (snap) {
-          for (var i = 0; i < $scope.conversations.length; i++) {
-            //console.log();
-            if (x[i].chatIDs.indexOf(authUser.uid) > -1)   //one of my convos
-            {
-
-              if (x[i].chatTitle == "")   //two way talk
-              {
-                console.log("innerfor");
-                var lastmessage = "";
-                var lasttime = "";
-                for (var j in x[i].messages) {
-                  lastmessage = x[i].messages[j].text;
-                  lasttime = x[i].messages[j].time;
-                }
-
-                partner = (x[i].chatIDs.indexOf(authUser.uid) == 0) ? x[i].chatIDs[1] : x[i].chatIDs[0];
-
-                $scope.conversations[i].avatar = snap.val()[partner].avatar;
-                $scope.conversations[i].name = snap.val()[partner].name;
-                $scope.conversations[i].partnerID = partner;
-                $scope.conversations[i].chatID = x[i].$id;
-                $scope.conversations[i].lastmessage = lastmessage;
-                $scope.conversations[i].lasttime = lasttime;
-              }
-            }
-          }
-          $timeout(function () {
-            $scope.$apply();
-          });
-        });
-      }*/
-
-
+  
   }]);

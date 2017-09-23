@@ -1,7 +1,7 @@
 app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 'UserInfo', '$firebaseArray', '$ionicScrollDelegate',
   function ($scope, $stateParams, $firebaseObject, UserInfo, $firebaseArray, $ionicScrollDelegate) {
 
-   var authUser = firebase.auth().currentUser;
+    var authUser = firebase.auth().currentUser;
       $scope.myId = authUser.uid;
       var ref = firebase.database().ref("Buildings").child(authUser.displayName);
       var partnerID = $stateParams.otherID;
@@ -63,7 +63,6 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
       $scope.closeKeyboard = function () {
 
       };
-
 
 
   }]);
