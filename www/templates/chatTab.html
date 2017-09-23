@@ -17,11 +17,12 @@
       <div>
         <a class="eoko-icon-searchbar-small"></a>
         <input class="eoko-nav-searchbar" placeholder="Search by name" ng-model="search.text">
-      </div>
+        <a ng-click="newConversation()" class="eoko-button-clear eoko-icon-new-message"></a>
+    </div>
+    
 
       <!--new message-->
-      <a ng-click="newConversation()" class="eoko-button-clear eoko-icon-new-message"></a>
-    </div>
+      
 
 
     <!--spacer-->
@@ -35,7 +36,8 @@
         </div>
 
           <ion-item ng-repeat="chat in chatData">
-            THIS ONE IS 
+            <h3 ng-if="chat.name == ''"></h3>
+            <h3 ng-if="chat.name != ''">{{chat.name}}</h3>
           </ion-item>
        
       </ion-list>

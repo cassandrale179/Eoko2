@@ -138,7 +138,7 @@ angular.module('eoko.services', [])
     var ready = false;
     chatData.$loaded(function(x)
     {
-      console.log("Chats Loaded",x);
+      //console.log("Chats Loaded",x);
       ready = true;
       
         
@@ -169,7 +169,7 @@ angular.module('eoko.services', [])
               var quals = false;
               for(var k in myChatLists){
                 if(myChatLists[k] == chatData[i].$id){
-                  console.log("same", myChatLists[k],chatData[i].$id);
+                  //console.log("same", myChatLists[k],chatData[i].$id);
                   quals = true;
                 }
               }
@@ -187,7 +187,10 @@ angular.module('eoko.services', [])
         return chatData.$getRecord(chatKey);
       },
 
-      //setWatcher: 
+      getChatData: function()
+      {
+        return chatData;
+      } 
     };
 
   }])

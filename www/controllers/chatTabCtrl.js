@@ -1,5 +1,5 @@
-app.controller('chatTabCtrl', ['$scope', '$firebaseArray', '$timeout','chatFactory',
-  function ($scope, $firebaseArray, $timeout,chatFactory) {
+app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactory','$firebaseObject',
+  function ($scope, $firebaseArray, $timeout,chatFactory,$firebaseObject) {
 
         
 
@@ -16,20 +16,49 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray', '$timeout','chatFacto
        }
        else
         {
+          $scope.rawChatInfo = chatFactory.getChatData();
+          $scope.rawChatInfo.$watch(function(event)
+          {
+            if(event.event == "child_removed")
+            {
+              console.log("event",event.event);
+                populateChats();
+            }
+            
+          });
           populateChats();
         }
    }
 
+    $scope.chatNameFunc = function(ids)
+    {
+      var names = [];
+      
+        for(var i in ids)
+        {
+          if(ids[i].id != $scope.currentUser.uid)
+          {
+            var ref = firebase.database().ref('users').child(ids[i].id);
+              var name = $firebaseObject(ref);
+            names.push(name.name);
+          }
+        }
+      
+        return names.join();
+    };
+
 
    function populateChats()
    {
+    
       var chatList = chatFactory.getChats($scope.currentUser.uid);
-        console.log("the chat list",chatList);
+        //console.log("the chat list",chatList);
         $scope.chatData = [];
         for(var i in chatList)
         {
           //console.log("value of that thing is", chatFactory.loadChatData(chatList[i]));
           $scope.chatData.push(chatFactory.loadChatData(chatList[i]));
+          
         }
         console.log("chatData",$scope.chatData);
         $timeout(function(){$scope.$apply();});
