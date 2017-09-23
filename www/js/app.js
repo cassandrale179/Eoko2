@@ -107,7 +107,7 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
 
 
 /* --------- SETTING PAGE ------- */
-  .state('setting', {
+  .state('settingPage', {
     url: '/settingPage',
     nativeTransitions: {
       type: "fade"
