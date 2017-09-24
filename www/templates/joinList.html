@@ -16,11 +16,16 @@
         <div id="I2A">
           {{event.name}}
           <div id="I2B">
-            <button> Edit </button>
-            <button> Delete </button>
+            <button ng-click="Edit(event.id); edit=true"> Edit </button>
+            <button ng-click="deleteAction(event.id)"> Delete </button>
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- ________________________ IF USER WANT TO EDIT THEIR EVENT, THEY CAN GO HERE ________________ -->
+    <div id="K">
+      <input type="" />
     </div>
 
 

@@ -7,14 +7,30 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
 
 
 
+
+
     //--------- CHECK IF USER IS LOG IN ---------
     firebase.auth().onAuthStateChanged(function(user){
-    if (user){
-      $scope.currentUser = user;
-    }
+      if (user){
+        $scope.currentUser = user;
+      }
+
+
+      //------- DELETE AN ACTION -----------------
+      $scope.deleteAction = function(x){
+        var activitiesRef = firebase.database().ref("users/" + $scope.currentUser.uid + "/actions/myActions");
+        activitiesRef.child(x).remove();
+        console.log("Successfully delete event");
+
+      }
+
+      //------- EDIT AN ACTION -------------------
+
+
+
 
     //--------------------------- ACTION THAT YOU HAVE CREATE WILL BE CAPTURE HERE --------------------
-    var actionRef = firebase.database().ref("users/" + "0X1d3eosD8MyaUyvd8B5e92fiVo2" + "/actions");
+    var actionRef = firebase.database().ref("users/" + $scope.currentUser.uid + "/actions");
     actionRef.on("value", function(snapshot){
       var createAction = snapshot.val().myActions;
       var joinActions = snapshot.val().joinActions;
@@ -25,6 +41,7 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
         $scope.errorMessage2 = "You have not joined any action";
       }
       else{
+      $scope.errorMessage = "";
       $scope.myEventID = []
       $scope.myEvents = []
       $scope.photos = []
@@ -52,12 +69,13 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
             if (activityTable.hasOwnProperty($scope.joinEventID[i])){
               $scope.joinEvents.push(activityTable[$scope.joinEventID[i]]);
             }
-          }
-
-      })
+        }
+          console.log("List of created events");
+          console.log($scope.myEvents);
+          console.log("List of joined events");
+          console.log($scope.joinEvents)
+        })
       }
     })
-
   })
-
-  }]);
+}]);

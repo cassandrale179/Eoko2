@@ -636,5 +636,15 @@ select{
   width: 70px;
   border: none;
   margin-right: 20px;
-  margin-top: 5px; 
+  margin-top: 5px;
+  border-radius: 5px;
+}
+
+
+#K{
+  left: 10%;
+  position: absolute;
+  width: 80%;
+  height: 50%;
+  background-color: rgba(230, 126, 34, 0.9);
 }

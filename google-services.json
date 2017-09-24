@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "652695448822",
+    "firebase_url": "https://eoko-cc928.firebaseio.com",
+    "project_id": "eoko-cc928",
+    "storage_bucket": "eoko-cc928.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:652695448822:android:eb45d728281f2a9c",
+        "android_client_info": {
+          "package_name": "com.eoko.team"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "652695448822-utgmj25gol44isdsjlfu18qi8gmt8lbj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrqj2rFxuGZOgQOlSkmm1O2_d0bCzUioM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
