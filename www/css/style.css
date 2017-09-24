@@ -648,3 +648,16 @@ select{
   height: 50%;
   background-color: rgba(230, 126, 34, 0.9);
 }
+
+#K input{
+  background: none;
+  border: none;
+  border-bottom: 0.1px white solid;
+  display: block;
+  margin: auto;
+  color: white;
+}
+
+#K input::placeholder{
+  color: white; 
+}
