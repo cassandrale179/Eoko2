@@ -2,12 +2,10 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
   function ($scope, $state, $firebaseArray, $firebaseObject) {
 
     //--------- PRESET SOME VARIBALES---------
-    $scope.create = true;
+    $scope.show = 1;
     $scope.errorMessage = ""
-
-
-
-
+    var input = document.getElementById('pac-input');
+    var autocomplete = new google.maps.places.Autocomplete(input);
 
     //--------- CHECK IF USER IS LOG IN ---------
     firebase.auth().onAuthStateChanged(function(user){
@@ -25,7 +23,56 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
       }
 
       //------- EDIT AN ACTION -------------------
+      $scope.editAction = function(x){
+        $scope.show = 2;
+        var activity = firebase.database().ref("activities/" + x);
+        activity.on("value", function(snapshot){
+          var activityTable = snapshot.val();
+          $scope.action = activityTable;
+        })
 
+        //------------ TAGS -----------------
+        var tagsRef = firebase.database().ref('actions');
+        $scope.tagsArray = $firebaseArray(tagsRef);
+        $scope.tagsArray.$loaded(function(arr){
+        })
+
+        clicked = {"background": "rgba(230, 126, 34, 0.9)", "color": "white"};
+        unclicked = {};
+
+        $scope.publicStyle = clicked;
+        $scope.action.privacy = 'public';
+        $scope.selectedTags = [];
+        $scope.addTag = function(tag) {
+          var index = $scope.selectedTags.indexOf(tag);
+          if (index!=-1){
+            $scope.selectedTags.splice(index, 1);
+          }
+          else{
+            $scope.selectedTags.push(tag);
+          }
+          console.log($scope.selectedTags);
+
+        }
+
+        $scope.setStyle = function(tag) {
+          if ($scope.selectedTags.indexOf(tag)==-1){
+            return unclicked;
+          }
+          else {
+            return clicked;
+          }
+        }
+
+        //--------- EDIT BUTTON ---------------
+        $scope.submit = function(){
+          activity.update($scope.action);
+          console.log("Update action");
+          console.log($scope.action);
+          $state.go('joinList');
+          $scope.show = 1;
+        }
+      }
 
 
 

@@ -13,7 +13,6 @@ A: LOGIN PAGE
   url(../img/outerbackground.jpeg);
    background-size:cover;
    background-position: center;
-
 }
 
 .innerbackground{
@@ -640,24 +639,19 @@ select{
   border-radius: 5px;
 }
 
-
-#K{
-  left: 10%;
-  position: absolute;
-  width: 80%;
-  height: 50%;
-  background-color: rgba(230, 126, 34, 0.9);
-}
-
-#K input{
-  background: none;
-  border: none;
-  border-bottom: 0.1px white solid;
-  display: block;
-  margin: auto;
+/* --------------------- EDIT PAGE --------------- */ 
+#K i{
   color: white;
+  margin-bottom: 0px;
+  font-size: 30px;
+  margin-top: 5px;
+  margin-left: 5px;
 }
 
-#K input::placeholder{
-  color: white; 
+#K h2{
+  margin-top: -10px;
+  padding-bottom: 5%;
+  text-align: center;
+  color: white;
+  font-family: 'Roboto', sans-serif;
 }

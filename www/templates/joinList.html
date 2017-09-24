@@ -1,8 +1,7 @@
 <ion-view hide-nav-bar="true">
   <ion-content padding="true" class="innerbackground">
-
     <!-- ___________________ THIS DIV WILL DISPLAY THE EVENTS THAT YOU HAVE CREATED ----------->
-    <div id="I" ng-show="create==true">
+    <div id="I" ng-show="show==1">
       <div id="I1">
         <button style="border-bottom: 0.1px rgba(230, 126, 34, 0.9) solid" ng-click="create"> Created </button>
         <button ng-click="create=false"> Joined </button>
@@ -16,20 +15,43 @@
         <div id="I2A">
           {{event.name}}
           <div id="I2B">
-            <button ng-click="Edit(event.id); edit=true"> Edit </button>
+            <button ng-click="editAction(event.id)"> Edit </button>
             <button ng-click="deleteAction(event.id)"> Delete </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ________________________ IF USER WANT TO EDIT THEIR EVENT, THEY CAN GO HERE ________________ -->
+    <div id="K" ng-show="show==2">
+      <i ng-click="show=1" class="fa fa-chevron-left" aria-hidden="true"></i>
+      <h2>Edit Your Action </h2>
+      <div id="B">
+        <input ng-model="action.name" type="text" placeholder="Title (e.g Coffee at Saxby)"/>
+        <div id="B4">
+          <button ng-click="setPrivacy('public')" ng-style="publicStyle"> Public </button>
+          <button ng-click="setPrivacy('private')" ng-style="privateStyle"> Private </button>
+        </div>
+        <form>
+          <!-- ____________ TAGS ___________ -->
+          <div id="B2">
+            <p>Category:</p>
+            <div id="B5">
+              <button id="{{tag.$value}}" ng-repeat="tag in tagsArray" ng-style="setStyle(tag)" ng-click="addTag(tag)">{{tag.$value}}</button>
+            </div>
+          </div>
 
-
-
+          <!-- _____________________________ INPUT FIELD ___________________________________ -->
+          <input id="pac-input" ng-model="action.address" type="text" placeholder="Location"/>
+          <input ng-model="action.date" type="date" placeholder="Date"/ />
+          <input ng-model="action.startTime" type="time" placeholder="Time"/>
+          <textarea ng-model="action.description" placeholder="Description (Currently drinking coffee at Saxby. Anyone want to hangout?)"></textarea>
+        </form>
+          <button id="submit" ng-click="submit()"> EDIT </button>
+      </div>
+    </div>
 
     <!-- ___________________ THIS DIV WILL DISPLAY THE EVENTS THAT YOU HAVE JOINED ----------->
-    <div id="J" ng-show="create==false">
+    <div id="J" ng-show="show==3">
       <div id="I1">
         <button ng-click="create=true"> Created </button>
         <button style="border-bottom: 0.1px rgba(230, 126, 34, 0.9) solid" ng-click="create=false"> Joined </button>
@@ -46,7 +68,7 @@
     </div>
 </ion-content>
 <!-- NAVIGATION BAR -->
-<div id="navbar">
+<div id="navbar" ng-hide="show==2">
   <button><i ui-sref="joinList" class="fa fa-bell" aria-hidden="true"></i></button>
   <button><i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true"></i></button>
   <button><i ui-sref="actionList" class="fa fa-users" aria-hidden="true"></i></button>

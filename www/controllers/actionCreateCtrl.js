@@ -19,8 +19,6 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
 
     $scope.publicStyle = clicked;
     $scope.action.privacy = 'public';
-
-
     $scope.selectedTags = [];
     $scope.addTag = function(tag) {
       var index = $scope.selectedTags.indexOf(tag);

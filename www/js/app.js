@@ -95,7 +95,7 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
     controller: 'actionListCtrl'
   })
 
-  /* --------- ACTION LIST PAGE ------- */
+  /* --------- ACTION CREATE PAGE ------- */
   .state('actionCreate', {
     url: '/actionCreatePage',
     nativeTransitions: {
