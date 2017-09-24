@@ -1,9 +1,15 @@
-app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactory','$firebaseObject',
-  function ($scope, $firebaseArray, $timeout,chatFactory,$firebaseObject) {
+app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactory','$firebaseObject', '$state',
+  function ($scope, $firebaseArray, $timeout,chatFactory,$firebaseObject,$state) {
 
         
 
       $scope.currentUser = firebase.auth().currentUser;
+
+
+      $scope.$on('$ionicView.afterEnter', function () //before anything runs
+      {
+        populateChats();
+      });
 
   function chatLoop()
     {
@@ -86,18 +92,19 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
       name: ""
 
     }).then(function(success){
-        console.log("lets see", success);
         rec.child(success.key).child("ids").push({
           id: $scope.currentUser.uid,
-          name: $scope.userInfo.name
+          name: $scope.userInfo.name,
+          avatar: $scope.userInfo.photoURL
         }).then(function(baby)
         {
           console.log( "my baby!");
           populateChats();
-          //$state.go('messagePage'); //with params
+
+          $state.go('messagePage',{otherID: "", convoID: success.key}); //with params
         });
     });
 
   };
-  
+
   }]);

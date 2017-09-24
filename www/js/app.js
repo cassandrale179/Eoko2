@@ -178,6 +178,10 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
       nativeTrasitions: {
         type: "fade"
       },
+      params: {
+          otherID: "",
+          convoID: ""
+        },
       templateUrl: 'templates/messagePage.html',
       controller: 'messagePageCtrl'
     })

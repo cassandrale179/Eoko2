@@ -38,6 +38,10 @@
           <ion-item ng-repeat="chat in chatData" ng-if="chat.title != ''">
             <h3 ng-if="chat.info.name == ''">{{chat.title}}</h3>
             <h3 ng-if="chat.info.name != ''">{{chat.info.name}}</h3>
+
+            <a ui-sref="messagePage({otherID: chat.info.ids, convoID: chat.info.$id})"
+               class="eoko-button-clear ion-chevron-right" native-transitions nav-direction="forward"
+               style="float:right;margin-top: -20px;color:black;"></a>
           </ion-item>
        
       </ion-list>

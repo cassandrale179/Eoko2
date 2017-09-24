@@ -3,12 +3,14 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
 
     var authUser = firebase.auth().currentUser;
       $scope.myId = authUser.uid;
-      var ref = firebase.database().ref("Buildings").child(authUser.displayName);
+      var ref = firebase.database().ref();
       var partnerID = $stateParams.otherID;
       var convoID = $stateParams.convoID;
       var currentnum = 0;
 
-      $scope.$on('$ionicView.beforeEnter', function () //before anything runs
+      console.log("partnerObj", partnerID, "convoID", convoID);
+
+      /*$scope.$on('$ionicView.beforeEnter', function () //before anything runs
       {
         ref.child('Chats').child(convoID).once("value").then(function (snap) {
           console.log("the whole chat", snap.val());
@@ -20,7 +22,7 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
           $scope.partner = snap.val();
         });
 
-      });
+      });*/
 
       $scope.$on('$ionicView.afterEnter', function () //before anything runs
       {
@@ -29,7 +31,7 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
         $scope.messages = $firebaseArray(ref.child('Chats').child(convoID + '/messages'));
         $scope.messages.$loaded()
           .then(function (x) {
-            console.log("messages are loaded", x)
+            console.log("messages are loaded", x);
             currentnum = Object.keys($scope.messages).length;
           })
           .catch(function (error) {

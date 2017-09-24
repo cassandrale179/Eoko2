@@ -1,6 +1,6 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory','backcallFactory',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory','backcallFactory','$firebaseObject',
 
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory,backcallFactory) {
+  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory,backcallFactory,$firebaseObject) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
@@ -27,6 +27,9 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
+            var rez = firebase.database().ref("users").child(user.uid);
+            $scope.userInfo = $firebaseObject(rez);
+            $scope.userInfo.$loaded();
             $scope.currentUser = user;
             console.log($scope.currentUser.uid);
             geoLoop(user.uid);
@@ -34,6 +37,34 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         
 
         });
+
+
+
+        $scope.newConversation = function(other)
+        {
+          console.log(other);
+          var rec = firebase.database().ref("Chats");
+          rec.push({
+            name: ""
+
+          }).then(function(success){
+              rec.child(success.key).child("ids").push({
+                id: $scope.currentUser.uid,
+                name: $scope.userInfo.name,
+                avatar: $scope.userInfo.photoURL
+              }).then(function(baby)
+              {
+                rec.child(success.key).child("ids").push({
+                id: other.$id,
+                name: other.name,
+                avatar: other.photoURL
+              });
+
+                $state.go('messagePage',{otherID: other.$id, convoID: success.key}); //with params
+              });
+          });
+
+        };
 
 
 
