@@ -38,31 +38,63 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
         });
 
+  
 
 
         $scope.newConversation = function(other)
         {
+          console.log("started newconvo");
+
+            for(var i in $scope.userInfo.chat)
+            {
+              var info = chatFactory.loadChatData($scope.userInfo.chat[i].chatID);
+              console.log("length is ", Object.keys(info.ids).length);
+              if(Object.keys(info.ids).length < 3)
+              {
+                for(var j in info.ids)
+                {
+                  console.log("j interate", j, info.ids[j]);
+                  if(info.ids[j].id == other.$id)
+                  {
+                    console.log("FOUDN!!", $scope.userInfo.chat[i].chatID);
+                    $state.go('messagePage',{otherID: other.$id, convoID: $scope.userInfo.chat[i].chatID});
+                    return;
+                  }
+                }
+              }
+       
+            }
+          
+      
           console.log(other);
           var rec = firebase.database().ref("Chats");
           rec.push({
             name: ""
 
-          }).then(function(success){
-              rec.child(success.key).child("ids").push({
-                id: $scope.currentUser.uid,
-                name: $scope.userInfo.name,
-                avatar: $scope.userInfo.photoURL
-              }).then(function(baby)
-              {
+            }).then(function(success){
                 rec.child(success.key).child("ids").push({
-                id: other.$id,
-                name: other.name,
-                avatar: other.photoURL
-              });
-
-                $state.go('messagePage',{otherID: other.$id, convoID: success.key}); //with params
-              });
-          });
+                  id: $scope.currentUser.uid,
+                  name: $scope.userInfo.name,
+                  avatar: $scope.userInfo.photoURL
+                }).then(function(baby)
+                {
+                  rec.child(success.key).child("ids").push({
+                  id: other.$id,
+                  name: other.name,
+                  avatar: other.photoURL
+                });
+                      firebase.database().ref("users").child($scope.currentUser.uid).child('chat').push({
+                  'chatID' : success.key
+                  }).then(function(ddd)
+                  {
+                     $state.go('messagePage',{otherID: other.$id, convoID: success.key}); //with params
+                  });
+                   
+                });
+            });
+          
+          
+          
 
         };
 

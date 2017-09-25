@@ -54,12 +54,13 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
    function populateChats()
    {
     
-      var chatList = chatFactory.getChats($scope.currentUser.uid);
+      //var chatList = chatFactory.getChats($scope.currentUser.uid);
         //console.log("the chat list",chatList);
         $scope.chatData = [];
-        for(var i in chatList)
+        for(var i in $scope.userInfo.chat)
         {
-          var chatdata = chatFactory.loadChatData(chatList[i]);
+          console.log("ids is", $scope.userInfo.chat[i].chatID);
+          var chatdata = chatFactory.loadChatData($scope.userInfo.chat[i].chatID);
           var chattitle = makeName(chatdata.ids);
             
           console.log(chatdata, chattitle);
@@ -85,7 +86,7 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
       }
   });
 
-  $scope.newConversation = function()
+  /*$scope.newConversation = function()
   {
     var rec = firebase.database().ref("Chats");
     rec.push({
@@ -99,12 +100,15 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
         }).then(function(baby)
         {
           console.log( "my baby!");
+          firebase.database().ref("users").child($scope.currentUser.uid).child('chat').push({
+            'chatID' : success.key
+          });
           populateChats();
 
           $state.go('messagePage',{otherID: "", convoID: success.key}); //with params
         });
     });
 
-  };
+  };*/
 
   }]);

@@ -7,7 +7,7 @@
     <!-- ____________________  DISPLAY USER FRIENDS WITHIN 10 MILES  _________________  -->
 
     <div id="C">
-      <div id="C1" ng-repeat="x in peopleList" ng-if="currentUser.uid != x.uid">
+      <div id="C1" ng-repeat="x in peopleList track by $index" ng-if="currentUser.uid != x.uid">
         <img ng-src="{{x.photoURL}}"/>
         <div id="C1A">
           {{x.name}}

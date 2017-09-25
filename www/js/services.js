@@ -144,15 +144,6 @@ angular.module('eoko.services', [])
         
     });
 
-
-    /*list.$watch(function(event)
-    {
-
-    });*/
-
-  
-
-
     return {
 
       checkReady: function()
@@ -160,7 +151,7 @@ angular.module('eoko.services', [])
         return ready;
       },
      
-      getChats: function(usrID)
+      /*getChats: function(usrID)
       {
         myChatLists = [];
         for(var i in chatData){
@@ -180,7 +171,7 @@ angular.module('eoko.services', [])
           }
         }
         return myChatLists;
-      },
+      },*/
 
       loadChatData: function (chatKey) 
       {
