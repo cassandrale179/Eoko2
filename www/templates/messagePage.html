@@ -14,7 +14,7 @@
         <div ng-repeat="message in messages track by $index" ng-class="{other: message.userId == myId}" class="messages">
 
           <div class="message" ng-class="{'slide-right': hideTime, '': !hideTime}" style="height:auto;">
-
+          <img src="{{message.avatar}}">
             <!--other user's message-->
             <span ng-if="message.userId != myId" class="eoko-text-light" style="font-size: 17px; margin-bottom: 1px; margin-right: 120px;">
               {{ message.text }}

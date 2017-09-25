@@ -10,19 +10,10 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
 
       console.log("partnerObj", partnerID, "convoID", convoID);
 
-      /*$scope.$on('$ionicView.beforeEnter', function () //before anything runs
-      {
-        ref.child('Chats').child(convoID).once("value").then(function (snap) {
-          console.log("the whole chat", snap.val());
-          $scope.chatObj = snap.val();
-        });
+    $scope.getAvatar = function(id)
+    {
 
-        ref.child('Users').child(partnerID).once("value").then(function (snap) {
-          console.log("the partner", snap.val());
-          $scope.partner = snap.val();
-        });
-
-      });*/
+    };
 
       $scope.$on('$ionicView.afterEnter', function () //before anything runs
       {
@@ -37,6 +28,8 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
           .catch(function (error) {
             console.log("Error:", error);
           });
+
+        
       });
 
 
@@ -53,7 +46,8 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
         $scope.messages.$add({
           userId: authUser.uid,
           text: $scope.data.messageText,
-          time: d
+          time: d,
+          avatar: authUser.photoURL
 
         });
         $scope.data.messageText = "";
