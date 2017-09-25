@@ -3,9 +3,6 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
 
 
     $scope.action = {};
-    var token = "e-ZjyQnvS1Y:APA91bG8a-fOoM-u-t6gRwS62wBvJNr6Rn0vzY2fBlWZoXX4DMg1dyj34CyosHTX_4adNBoiGm8_aKQKePmIEPcQ8FGjWrW7PmrOGHWqu-AgkCPcnndnGtjR8OUEewzhFcKj3WHvjHPW";
-    var serverKey = "AAAAl_euLPY:APA91bHt6edP2S-rzIT_KzBIg1bhY-IBUrefmm6NNON1fNsyRTFdDjiDZO-vdI9eGlRbbXvusOJriTKePPbAoLAQ-SMsJSs2XvhUej4n3DXyz6_tnkLTfsquDM4gltsRhe1jz7ggemAB";
-    
 
     //--------TAGS -------------------------------------
     var tagsRef = firebase.database().ref('actions');
