@@ -1,33 +1,16 @@
 <ion-view hide-nav-bar="true">
   <ion-content padding="true" class="innerbackground">
-   <!--spacer-->
     <div class="spacer" style="height: 20px;"></div>
-
-    <!--nav bar-->
     <div >
-      <!--back button-->
-    
-      <!--search-->
-      <!-- <div style="margin: auto; margin-left: 40px; margin-right: 40px;">
-        <a class="eoko-icon-searchbar-small" style="margin-right: 9px; margin-top: 10px"></a>
-        <input class="eoko-nav-searchbar" type="search" placeholder="Search by name" ng-model="search.text"
-               style="border-bottom: 1px solid white; font-size: 19px; width: 62vw; text-align: center;">
-      </div> -->
-
       <div>
         <a class="eoko-icon-searchbar-small"></a>
         <input class="eoko-nav-searchbar" placeholder="Search by name" ng-model="search.text">
         <a ng-click="newConversation()" class="eoko-button-clear eoko-icon-new-message"></a>
     </div>
-    
-
-      <!--new message-->
-      
 
 
     <!--spacer-->
     <div class="spacer" style="height: 20px;"></div>
-
 
     <ion-scroll style="height: calc(100%); padding: 0px;">
       <ion-list id="actionList">
@@ -43,9 +26,7 @@
                class="eoko-button-clear ion-chevron-right" native-transitions nav-direction="forward"
                style="float:right;margin-top: -20px;color:black;"></a>
           </ion-item>
-       
       </ion-list>
-
     </ion-scroll>
-</ion-content>
+  </ion-content>
 </ion-view>

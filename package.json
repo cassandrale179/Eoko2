@@ -49,7 +49,7 @@
             "cordova-plugin-whitelist": {},
             "ionic-plugin-keyboard": {},
             "de.appplant.cordova.plugin.local-notification": {},
-            "cordova-plugin-inappbrowser": {}
+            "cordova-plugin-inappbrowser": {},
             "cordova-plugin-firebase": {}
         },
         "platforms": [
