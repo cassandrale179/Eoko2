@@ -1,6 +1,6 @@
 <ion-view hide-nav-bar="true">
   <ion-content padding="true" class="innerbackground">
-    <img class="logo" src="./img/eoko-logo.svg" />
+    <img class="logo" src="./img/eoko-logo.svg" ui-sref="settingPage" />
     <img class="tagline" src="./img/peoplenearyou.png"></img>
 
 
@@ -44,12 +44,12 @@
               <i class="fa fa-chevron-right" aria-hidden="true"></i>
             </div>
             <div id="D2C">
-              <img ng-src="{{xPhotoURL}}" />
-              <h4> {{xName}}</h4>
+              <img ng-src="{{otherUser.photoURL}}" />
+              <h4> {{otherUser.name}}</h4>
             </div>
           </div>
           <div id="D3">
-            <button> Send </button>
+            <button ng-click=sendNudge()> Send </button>
           </div>
         </div>
       </div>

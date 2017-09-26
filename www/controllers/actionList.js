@@ -1,6 +1,6 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory', 'UserInfo',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory', 'UserInfo', '$ionicPlatform',
 
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory, UserInfo) {
+  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory, UserInfo, $ionicPlatform) {
 
 
     //A LOOP TO CHECK IF THE CU
@@ -27,7 +27,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
             $scope.currentUser = user;
-            UserInfo.getInfo(user, ['photoURL', 'name']);
+            UserInfo.getInfo(user, ['photoURL', 'name', 'uid', 'location']);
 
 
 
@@ -191,18 +191,74 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
           };
 
 
-
+//--------------------------------NUDGE FUNCTIONS-----------------------------------
           $scope.eokoNudge = function(x) {
             $scope.nudge=true;
             console.log("nudge: ", $scope.nudge);
-            console.log("Photo of other person: ", x.photoURL);
-            $scope.xPhotoURL = x.photoURL;
-            $scope.xName = x.name;
+
+            $scope.otherUser = x;
+            console.log("the other person is: ", $scope.otherUser.uid);
             $scope.user = UserInfo.getUser();
           }
+
+
           $scope.hideEokoNudge = function() {
             $scope.nudge = false;
             console.log("nudge: ", $scope.nudge);
 
           }
+
+          $scope.sendNudge = function() {
+            var uid = $scope.user.uid;
+            console.log("current user uid:", uid);
+
+            var ref = firebase.database().ref('nudge/'+uid+"/"+$scope.otherUser.uid);
+            var time = Date.now();
+            ref.update({
+              location: $scope.user.location,
+              name: $scope.user.name,
+              senderUid: uid,
+              receiverUid: $scope.otherUser.uid,
+              latestTime: time
+            })
+          }
+
+      //---------------REQUEST MESSAGING PERMISSIONS------------------------------
+      // Retrieve Firebase Messaging object.
+
+        document.addEventListener('deviceReady', function() {
+          var ref = firebase.database().ref('users/'+firebase.auth().currentUser.uid);
+
+          window.FirebasePlugin.getToken(function(token) {
+        // save this server-side and use it to push notifications to this device
+              console.log("This is the token", token);
+              ref.update({
+                messageToken: token
+              })
+              alert("token", token);
+          }, function(error) {
+              console.error(error);
+          });
+
+          //Used whenever message token is deleted, in order to get new token
+          window.FirebasePlugin.onTokenRefresh(function(token) {
+              // save this server-side and use it to push notifications to this device
+              console.log("This is the token", token);
+              ref.update({
+                messageToken: token
+              })
+              alert("token", token);
+
+          }, function(error) {
+              console.error(error);
+
+          });
+
+        })
+
+
+
+
+
+
   }]);

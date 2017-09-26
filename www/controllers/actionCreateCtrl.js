@@ -2,6 +2,10 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
   function ($scope, $state, $firebaseArray, $ionicPlatform, $http, $window, ngFB) {
 
 
+    //------- AUTOCOMPLETE LOCATION ----------
+    var input = document.getElementById('pac-input');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+
     $scope.action = {};
 
     //--------TAGS -------------------------------------
@@ -15,8 +19,6 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
 
     $scope.publicStyle = clicked;
     $scope.action.privacy = 'public';
-
-
     $scope.selectedTags = [];
     $scope.addTag = function(tag) {
       var index = $scope.selectedTags.indexOf(tag);

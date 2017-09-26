@@ -13,7 +13,6 @@ A: LOGIN PAGE
   url(../img/outerbackground.jpeg);
    background-size:cover;
    background-position: center;
-
 }
 
 .innerbackground{
@@ -636,5 +635,23 @@ select{
   width: 70px;
   border: none;
   margin-right: 20px;
-  margin-top: 5px; 
+  margin-top: 5px;
+  border-radius: 5px;
+}
+
+/* --------------------- EDIT PAGE --------------- */ 
+#K i{
+  color: white;
+  margin-bottom: 0px;
+  font-size: 30px;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
+#K h2{
+  margin-top: -10px;
+  padding-bottom: 5%;
+  text-align: center;
+  color: white;
+  font-family: 'Roboto', sans-serif;
 }

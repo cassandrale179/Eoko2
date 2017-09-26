@@ -42,6 +42,15 @@
     <script src="cordova.js"></script>
     <script src="js/angular-range-slider.min.js"></script>
 
+    <!-- Service worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(() => console.log('service worker installed'))
+          .catch(err => console.log('Error', err));
+      }
+    </script>
+
 
 
     <script>
@@ -80,8 +89,10 @@
 
 
     <!-- _____________________________ GOOGLE MAPS API ____________________________ -->
-    <script async defer
+    <!-- <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCy5RuM4Fq4ZP7N282jpAk89iEf4ThIx7k">
+    </script> -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCy5RuM4Fq4ZP7N282jpAk89iEf4ThIx7k&libraries=places">
     </script>
 
 
