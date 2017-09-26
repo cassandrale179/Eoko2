@@ -33,8 +33,8 @@ exports.sendNotification = functions.database.ref('/nudge/{userId}/{otherId}/')
             const payload = {
                 notification: {
                     title: "You have an Eoko nudge!",
-                    body: body
-                    // icon: receiver.photoURL
+                    body: body,
+                    icon: sender.photoURL
                 }
             };
 
