@@ -1,11 +1,10 @@
 <ion-view hide-nav-bar="true">
   <ion-content padding="true" class="innerbackground">
     <div class="spacer" style="height: 20px;"></div>
-    <div >
       <div>
         <a class="eoko-icon-searchbar-small"></a>
         <input class="eoko-nav-searchbar" placeholder="Search by name" ng-model="search.text">
-        <a ng-click="newConversation()" class="eoko-button-clear eoko-icon-new-message"></a>
+        <!-- <a ng-click="newConversation()" class="eoko-button-clear eoko-icon-new-message"></a> -->
     </div>
 
 
@@ -28,5 +27,13 @@
           </ion-item>
       </ion-list>
     </ion-scroll>
-  </ion-content>
+</ion-content>
+
+<!-- NAVIGATIO BAR -->
+  <div id="navbar">
+    <button><i ui-sref="joinList" class="fa fa-bell" aria-hidden="true"></i></button>
+    <button><i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true"></i></button>
+    <button><i ui-sref="actionList" class="fa fa-users" aria-hidden="true"></i></button>
+    <button><i ui-sref="chatTab" class="fa fa-comment" aria-hidden="true"></i></button>
+  </div>
 </ion-view>

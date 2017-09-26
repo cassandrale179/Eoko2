@@ -6,11 +6,11 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
     firebase.auth().onAuthStateChanged(function(user){
       if (user){
         geoPos.updateFirebase(user.uid);
-        getEvents();
+        //getEvents();
 
 
       }
-    })
+    });
 
 
 
