@@ -7,14 +7,15 @@
     <!-- ____________________  DISPLAY USER FRIENDS WITHIN 10 MILES  _________________  -->
 
     <div id="C">
-      <div id="C1" ng-repeat="x in peopleList" ng-if="currentUser.uid != x.uid" ng-show="distList[$index].age > low && distList[$index].age < high">
+      <div id="C1" ng-repeat="x in peopleList track by $index" ng-if="currentUser.uid != x.uid" ng-show="distList[$index].age > low && distList[$index].age < high">
         <img ng-src="{{x.photoURL}}"/>
         <div id="C1A">
           {{x.name}}
           <br />
           <div id="C2">
-            <img id="one" src="../img/eoko-login.png" ng-click="eokoNudge(x)"/>
-            <img id="two" src="http://freevector.co/wp-content/uploads/2014/06/facebook-messenger-white.png" />
+            <img id="one" src="../img/eoko-login.png" ng-click="nudge=true"/>
+            <img id="two" src="http://freevector.co/wp-content/uploads/2014/06/facebook-messenger-white.png"
+            ng-click="newConversation(x)" />
           </div>
         </div>
 

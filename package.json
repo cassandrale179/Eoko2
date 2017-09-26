@@ -22,6 +22,7 @@
         "cordova-plugin-facebook4": "^1.9.1",
         "cordova-plugin-firebase": "^0.1.24",
         "cordova-plugin-geolocation": "^2.4.3",
+        "cordova-plugin-inappbrowser": "^1.7.1",
         "cordova-plugin-local-notifications": "git+https://github.com/katzer/cordova-plugin-local-notifications.git",
         "cordova-plugin-splashscreen": "^4.0.3",
         "cordova-plugin-statusbar": "^2.2.1",
@@ -48,6 +49,7 @@
             "cordova-plugin-whitelist": {},
             "ionic-plugin-keyboard": {},
             "de.appplant.cordova.plugin.local-notification": {},
+            "cordova-plugin-inappbrowser": {}
             "cordova-plugin-firebase": {}
         },
         "platforms": [

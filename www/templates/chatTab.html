@@ -4,7 +4,7 @@
     <div class="spacer" style="height: 20px;"></div>
 
     <!--nav bar-->
-    <div class="button-bar">
+    <div >
       <!--back button-->
     
       <!--search-->
@@ -17,11 +17,12 @@
       <div>
         <a class="eoko-icon-searchbar-small"></a>
         <input class="eoko-nav-searchbar" placeholder="Search by name" ng-model="search.text">
-      </div>
+        <a ng-click="newConversation()" class="eoko-button-clear eoko-icon-new-message"></a>
+    </div>
+    
 
       <!--new message-->
-      <a style="display:none;" ng-click="newConversation()" class="eoko-button-clear eoko-icon-new-message"></a>
-    </div>
+      
 
 
     <!--spacer-->
@@ -30,28 +31,19 @@
 
     <ion-scroll style="height: calc(100%); padding: 0px;">
       <ion-list id="actionList">
-      <div ng-if="conversations.length == 0" class="eoko-text-button-nav" style="text-align:center;"><span style="line-height: 33px;">No Conversations Started. Press and hold a friend's name to start one!</span>
+
+      <div ng-if="chatData.length == 0" class="eoko-text-button-nav" style="text-align:center;"><span style="line-height: 33px;">No Conversations Started. Press and hold a friend's name to start one!</span>
         </div>
-        <ion-item ng-repeat="convo in conversations | orderBy : 'name' | filter: {name: search.text}" ng-if="convo.name" class="item-thumbnail-left"
-                  style="background-color:rgba(0,0,0,0);border-top:1px solid rgba(255,255,255,0.3);border-bottom:1px solid rgba(255,255,255,0.3);">
-          <!--users can click the whole item to go to the chatPage-->
-          <div ui-sref="chatPage({otherID: convo.partnerID, convoID: convo.chatID})" native-transitions nav-direction="forward">
-            <div class="eoko-notification-avatar" style="background-image: url({{convo.avatar}});"></div>
-            <p class="eoko-text-thin" style="color: white;font-size: 25px">{{convo.name}}</p>
-            <span class="eoko-text-thin" style="color:white;font-size:16px">{{convo.lasttime}}</span>
-            <br>
-            <p ng-if="!convo.messages" class="eoko-text-ultralight"
-               style="color: white;display: inline; font-size: 15px;">
-              Send the first message!
-            </p>
-            <p ng-if="convo.messages" class="eoko-text-ultralight" style="color: white;display: inline; font-size: 15px;">
-              {{convo.lastmessage}}
-            </p>
-            <a ui-sref="chatPage({otherID: convo.partnerID, convoID: convo.chatID})"
+
+          <ion-item ng-repeat="chat in chatData" ng-if="chat.title != ''">
+            <h3 ng-if="chat.info.name == ''">{{chat.title}}</h3>
+            <h3 ng-if="chat.info.name != ''">{{chat.info.name}}</h3>
+
+            <a ui-sref="messagePage({otherID: chat.info.ids, convoID: chat.info.$id})"
                class="eoko-button-clear ion-chevron-right" native-transitions nav-direction="forward"
-               style="float:right;margin-top: -20px;"></a>
-          </div>
-        </ion-item>
+               style="float:right;margin-top: -20px;color:black;"></a>
+          </ion-item>
+       
       </ion-list>
 
     </ion-scroll>

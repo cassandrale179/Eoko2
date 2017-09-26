@@ -117,6 +117,20 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
   })
 
 
+    .state('messagePage', {
+      url: '/messagePage',
+      nativeTrasitions: {
+        type: "fade"
+      },
+      params: {
+          otherID: "",
+          convoID: ""
+        },
+      templateUrl: 'templates/messagePage.html',
+      controller: 'messagePageCtrl'
+    })
+
+
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/loginPage');

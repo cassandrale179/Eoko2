@@ -1,12 +1,14 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory', 'UserInfo', '$ionicPlatform',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory','backcallFactory','$firebaseObject',
 
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory, UserInfo, $ionicPlatform) {
+  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory,backcallFactory,$firebaseObject) {
 
-
-    //A LOOP TO CHECK IF THE CU
+    //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
+
+
     function geoLoop(id)
     {
+      console.log("started geoLoop");
       try{
               geoPos.updateFirebase(id);
               console.log("position set on firebase");
@@ -23,29 +25,81 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
 
 
-        //------------------------CHECKING IF USER IS LOGIN THROUGH ONAUTH STATE CHANGE---------------------------
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
+            var rez = firebase.database().ref("users").child(user.uid);
+            $scope.userInfo = $firebaseObject(rez);
+            $scope.userInfo.$loaded();
             $scope.currentUser = user;
-            UserInfo.getInfo(user, ['photoURL', 'name', 'uid', 'location']);
-
-
-
-
+            console.log($scope.currentUser.uid);
             geoLoop(user.uid);
         }
-        console.log($scope.currentUser.uid);
-
-        //GET CURRENT USERID
-        var userRef = firebase.database().ref("users/" + $scope.currentUser.uid);
-        userRef.on("value", function(snapshot){
-          $scope.low = snapshot.val().low;
-          $scope.high = snapshot.val().high;
-          console.log("Age Range: " + $scope.low + "," + $scope.high);
-
-        })
+        
 
         });
+
+  
+
+
+        $scope.newConversation = function(other)
+        {
+          console.log("started newconvo");
+
+            for(var i in $scope.userInfo.chat)
+            {
+              var info = chatFactory.loadChatData($scope.userInfo.chat[i].chatID);
+              console.log("length is ", Object.keys(info.ids).length);
+              if(Object.keys(info.ids).length < 3)
+              {
+                for(var j in info.ids)
+                {
+                  console.log("j interate", j, info.ids[j]);
+                  if(info.ids[j].id == other.$id)
+                  {
+                    console.log("FOUDN!!", $scope.userInfo.chat[i].chatID);
+                    $state.go('messagePage',{otherID: other.$id, convoID: $scope.userInfo.chat[i].chatID});
+                    return;
+                  }
+                }
+              }
+       
+            }
+          
+      
+          console.log(other);
+          var rec = firebase.database().ref("Chats");
+          rec.push({
+            name: ""
+
+            }).then(function(success){
+                rec.child(success.key).child("ids").push({
+                  id: $scope.currentUser.uid,
+                  name: $scope.userInfo.name,
+                  avatar: $scope.userInfo.photoURL
+                }).then(function(baby)
+                {
+                  rec.child(success.key).child("ids").push({
+                  id: other.$id,
+                  name: other.name,
+                  avatar: other.photoURL
+                });
+                      firebase.database().ref("users").child($scope.currentUser.uid).child('chat').push({
+                  'chatID' : success.key
+                  }).then(function(ddd)
+                  {
+                     $state.go('messagePage',{otherID: other.$id, convoID: success.key}); //with params
+                  });
+                   
+                });
+            });
+          
+          
+          
+
+        };
+
+
+
 
     //GET THE CURRENT USER'S FRIEND LIST
     function getFriends()
@@ -57,32 +111,16 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
       $scope.friends.$loaded().then(function(x) {
         console.log("gotlist", $scope.friends);
+
         $scope.distList = [];
         $scope.peopleList = [];
-
-
         angular.forEach(x, function(value,key)
         {
-
-          //CALCULATE THE USER'S AGE FRIENDS
-          var currentTime = new Date()
-          $scope.year = currentTime.getFullYear();
-          var birthyear = value.birthday;
-          var substring = birthyear.substring(birthyear.length - 4);
-          $scope.birthnum = parseFloat(substring);
-          $scope.age = $scope.year - $scope.birthnum
-
-
-          //PUSHING ALL THE NECESSARY INFORMATION INTO THE DISTANCE LIST OBJECT
           this.push({
             'id': value.uid,
-            'dist': $scope.distFromPlayer(value.location),
-            'age': $scope.age
+            'dist': $scope.distFromPlayer(value.location)
           });
         },$scope.distList);
-
-
-
 
        console.log("SCOPEFRIENDS",  $scope.friends);
 
@@ -103,12 +141,11 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
             },$scope.distList);
 
            $scope.distList = $filter('orderBy')($scope.distList, 'dist', false);
-           angular.forEach($scope.distList, function(value,key)
-            {
-              var rec = $scope.friends.$getRecord(value.id);
-              this.push(rec);
-
-            },$scope.peopleList);
+          angular.forEach($scope.distList, function(value,key)
+          {
+            var rec = $scope.friends.$getRecord(value.id);
+            this.push(rec);
+          },$scope.peopleList);
           }
 
         });
@@ -116,15 +153,16 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
          $scope.distList = $filter('orderBy')($scope.distList, 'dist', false);
           angular.forEach($scope.distList, function(value,key)
           {
-            console.log(value.age);
             var rec = $scope.friends.$getRecord(value.id);
             this.push(rec);
           },$scope.peopleList);
-          console.log("people")
-          console.log($scope.peopleList);
+
+
+
           });
 
     }
+
 
 
     //------------------distance calculation--------------------
@@ -148,7 +186,6 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         //$scope.distList = [];
 
         $scope.distFromPlayer = function(locationdata) {
-          console.log("distFromPlayer executed");
           if($scope.myloc == undefined || $scope.myloc == null)
           {
             console.log("not yet");
@@ -175,6 +212,8 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
           }
         };
 
+
+
          $scope.distSorter = function(x)
           {
             var result;
@@ -189,75 +228,6 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
              return result;
           };
-
-
-//--------------------------------NUDGE FUNCTIONS-----------------------------------
-          $scope.eokoNudge = function(x) {
-            $scope.nudge=true;
-            console.log("nudge: ", $scope.nudge);
-
-            $scope.otherUser = x;
-            console.log("the other person is: ", $scope.otherUser.uid);
-            $scope.user = UserInfo.getUser();
-          }
-
-
-          $scope.hideEokoNudge = function() {
-            $scope.nudge = false;
-            console.log("nudge: ", $scope.nudge);
-
-          }
-
-          $scope.sendNudge = function() {
-            var uid = $scope.user.uid;
-            console.log("current user uid:", uid);
-
-            var ref = firebase.database().ref('nudge/'+uid+"/"+$scope.otherUser.uid);
-            var time = Date.now();
-            ref.update({
-              location: $scope.user.location,
-              name: $scope.user.name,
-              senderUid: uid,
-              receiverUid: $scope.otherUser.uid,
-              latestTime: time
-            })
-          }
-
-      //---------------REQUEST MESSAGING PERMISSIONS------------------------------
-      // Retrieve Firebase Messaging object.
-
-        document.addEventListener('deviceReady', function() {
-          var ref = firebase.database().ref('users/'+firebase.auth().currentUser.uid);
-
-          window.FirebasePlugin.getToken(function(token) {
-        // save this server-side and use it to push notifications to this device
-              console.log("This is the token", token);
-              ref.update({
-                messageToken: token
-              })
-              alert("token", token);
-          }, function(error) {
-              console.error(error);
-          });
-
-          //Used whenever message token is deleted, in order to get new token
-          window.FirebasePlugin.onTokenRefresh(function(token) {
-              // save this server-side and use it to push notifications to this device
-              console.log("This is the token", token);
-              ref.update({
-                messageToken: token
-              })
-              alert("token", token);
-
-          }, function(error) {
-              console.error(error);
-
-          });
-
-        })
-
-
-
 
 
 

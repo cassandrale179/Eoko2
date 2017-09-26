@@ -1,7 +1,7 @@
 angular.module('eoko.services', [])
 
-
-  .factory('facebookService', [function () {
+/* ------------------------------- FACEBOOK FACTORY --------------------------- */ 
+.factory('facebookService', [function () {
     var facebookService = {
       getUserInfo: function(user){
 
@@ -70,6 +70,7 @@ angular.module('eoko.services', [])
 
   }])
 
+/* ------------------------------- USER INFO FACTORY --------------------------- */ 
   .factory('UserInfo', [function() {
     var user = {};
 
@@ -99,6 +100,7 @@ angular.module('eoko.services', [])
   }])
 
 
+/* ------------------------------- OTHER INFO FACTORY --------------------------- */ 
   .factory('OtherInfo', [function () {
     var userData = {
        id:"",
@@ -141,7 +143,7 @@ angular.module('eoko.services', [])
 
   }])
 
-
+/* ------------------------------- PROFILE PRESS FACTORY --------------------------- */ 
    .factory('ProfilePress', [function () {
     var aprofile = false;
 
@@ -159,47 +161,43 @@ angular.module('eoko.services', [])
   }])
 
 
+/* ------------------------------- GEO POS FACTORY --------------------------- */ 
 .factory('geoPos', [function () {
-  var myloc = "location has not been found";
-  return {
-    updateFirebase: function(usrID) {
-        return navigator.geolocation.watchPosition(onSuccess, onError);
-        function onSuccess(position){
-           var latlng = position.coords.latitude + "," + position.coords.longitude;
-           console.log("Latlng under ionic platform: " + latlng);
 
-           //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
+    var myloc, watchId;
+    
+    watchId = navigator.geolocation.watchPosition(function(position)
+          {
+            var latlng = position.coords.latitude + "," + position.coords.longitude;
+                console.log("Latlng under ionic platform: " + latlng);
 
-           myloc = latlng;  //actual current location
-           console.log('myloc', myloc);
+                //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
 
+                myloc = latlng;  //actual current location
+          });
 
-
-           var userRef = firebase.database().ref("users").child(usrID);
-             var obj = {
-               location: myloc
-             };
-           userRef.update(obj);
-           return myloc;
-       };
-       function onError(error) {
-          console.log('error getting location', error);
-      };
-    },
-
-
-    getUserPosition: function ()
-    {
-      return myloc;
-    }
-  };
-
+    return {
+     
+      updateFirebase: function(usrID)
+      {
+        var userRef = firebase.database().ref("users").child(usrID);
+          var obj = {
+            location: myloc
+          };
+          userRef.update(obj);
+      },
+      getUserPosition: function () 
+      {
+        return myloc;
+      }
+    };
 
   }])
 
 
 
 
+/* ---------------------------------- CHAT FACTORY ------------------------------- */ 
 .factory('chatFactory', ['$firebaseArray',function ($firebaseArray) {
 
     var ref = firebase.database().ref("Chats");
@@ -208,14 +206,11 @@ angular.module('eoko.services', [])
     var ready = false;
     chatData.$loaded(function(x)
     {
-      console.log("Chats Loaded",x);
+      //console.log("Chats Loaded",x);
       ready = true;
-
-
+      
+        
     });
-
-
-
 
     return {
 
@@ -223,70 +218,73 @@ angular.module('eoko.services', [])
       {
         return ready;
       },
-
-      getChats: function(usrID)
+     
+      /*getChats: function(usrID)
       {
-        angular.forEach(chatData, function(value,key)
-        {
-          for(var i in value.ids)
-          {
-            if(value.ids[i].id == usrID)
-            {
-              myChatLists.push(value.$id);
-              break;
+        myChatLists = [];
+        for(var i in chatData){
+          for(var j in chatData[i].ids){
+            if(chatData[i].ids[j].id == usrID){
+              var quals = false;
+              for(var k in myChatLists){
+                if(myChatLists[k] == chatData[i].$id){
+                  //console.log("same", myChatLists[k],chatData[i].$id);
+                  quals = true;
+                }
+              }
+              if(quals == false){
+                 myChatLists.push(chatData[i].$id);
+              }            
             }
           }
-
-        },chatData);
+        }
         return myChatLists;
-      },
+      },*/
 
-      loadChatData: function (chatKey)
+      loadChatData: function (chatKey) 
       {
         return chatData.$getRecord(chatKey);
-      }
+      },
+
+      getChatData: function()
+      {
+        return chatData;
+      } 
     };
 
   }])
 
 
-.factory('geoPos', [function () {
-  var myloc = "location has not been found";
-  return {
-    updateFirebase: function(usrID) {
-        return navigator.geolocation.watchPosition(onSuccess, onError);
-        function onSuccess(position){
-           var latlng = position.coords.latitude + "," + position.coords.longitude;
-           console.log("Latlng under ionic platform: " + latlng);
+/* ------------------------------- BACK CALL FACTORY --------------------------- */ 
+.factory('backcallFactory', ['$state','$ionicPlatform','$ionicHistory','$timeout',
+  function($state,$ionicPlatform,$ionicHistory,$timeout){
+ 
+var obj={};
+    obj.backcallfun=function(){
+    var backbutton=0;
+       $ionicPlatform.registerBackButtonAction(function () {
+          if ($state.current.name == "tabsController.actionList") {
+      
+      if(backbutton==0){
+            backbutton++;
+              window.plugins.toast.showShortCenter('Press again to exit');
+            $timeout(function(){backbutton=0;},5000);
+        }else{
+            navigator.app.exitApp();
+        }
+      
+      }else{
+            $ionicHistory.nextViewOptions({
+                 disableBack: true
+                });
+        $state.go('tabsController.actionList');
+        //go to home page
+     }
+        }, 100);//registerBackButton
+};//backcallfun
+return obj;
+}])
 
-           //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
-
-           myloc = latlng;  //actual current location
-           console.log('myloc', myloc);
-
-
-
-           var userRef = firebase.database().ref("users").child(usrID);
-             var obj = {
-               location: myloc
-             };
-           userRef.update(obj);
-           return myloc;
-       };
-       function onError(error) {
-          console.log('error getting location', error);
-      };
-    },
-
-
-    getUserPosition: function ()
-    {
-      return myloc;
-    }
-  };
-
-
-  }])
 
   .service('BlankService', [function () {
 
