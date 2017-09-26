@@ -1,13 +1,13 @@
 <ion-view hide-nav-bar="true">
   <ion-content padding="true" class="innerbackground">
-    <img class="logo" src="./img/Eoko-logo.svg" />
+    <img class="logo" src="./img/eoko-logo.svg" ui-sref="settingPage" />
     <img class="tagline" src="./img/peoplenearyou.png"></img>
 
 
     <!-- ____________________  DISPLAY USER FRIENDS WITHIN 10 MILES  _________________  -->
 
     <div id="C">
-      <div id="C1" ng-repeat="x in peopleList track by $index" ng-if="currentUser.uid != x.uid">
+      <div id="C1" ng-repeat="x in peopleList track by $index" ng-if="currentUser.uid != x.uid" ng-show="distList[$index].age > low && distList[$index].age < high">
         <img ng-src="{{x.photoURL}}"/>
         <div id="C1A">
           {{x.name}}
@@ -29,30 +29,39 @@
         feet
         </div>
 
+
       <!-- ____________________________  EOKO NUDGE _______________________________________  -->
-        <div id="D" ng-show="nudge">
+        <div id="D" ng-show="nudge==true">
           <div id="D1">
             <h3>People Near You</h3>
-            <p ng-click="nudge=false">X</p>
+            <i class="fa fa-times" aria-hidden="true" ng-click="hideEokoNudge()"></i>
           </div>
           <div id="D2">
             <div id="D2A">
-              <img ng-src="{{userPictureURL}}" />
-              <h4> {{userName}} </h4>
+              <img ng-src="{{user.photoURL}}" />
+              <h4> {{user.name}} </h4>
             </div>
             <div id="D2B">
               <i class="fa fa-chevron-right" aria-hidden="true"></i>
             </div>
             <div id="D2C">
-              <img ng-src="{{x.photo}}" />
-              <h4> {{x.name}}</h4>
+              <img ng-src="{{otherUser.photoURL}}" />
+              <h4> {{otherUser.name}}</h4>
             </div>
           </div>
           <div id="D3">
-            <button> Send </button>
+            <button ng-click=sendNudge()> Send </button>
           </div>
         </div>
       </div>
     </div>
 </ion-content>
+
+<!-- NAVIGATIO BAR -->
+  <div id="navbar">
+    <button><i ui-sref="joinList" class="fa fa-bell" aria-hidden="true"></i></button>
+    <button><i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true"></i></button>
+    <button><i ui-sref="actionList" class="fa fa-users" aria-hidden="true"></i></button>
+    <button><i class="fa fa-comment" aria-hidden="true"></i></button>
+  </div>
 </ion-view>
