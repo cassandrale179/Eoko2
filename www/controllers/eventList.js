@@ -2,63 +2,31 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
   function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject) {
     $scope.eventNudge = false;
 
-
+    //start the thing in case it starts here
     firebase.auth().onAuthStateChanged(function(user){
       if (user){
-        geoPos.updateFirebase(user.uid);
-        //getEvents();
-
-
+        startLoop();
       }
     });
 
-
-
-
-    //-------------- GET USER CURRENT LOCATION LOOP --------------
-    //    function geoLoop(id)
-    // {
-    //   try{
-    //           geoPos.updateFirebase(id);
-    //           console.log("position set on firebase");
-    //           $scope.myloc = geoPos.getUserPosition();
-    //           getEvents();
-    //         }
-    //         catch(error)
-    //         {
-    //           $timeout(function(){
-    //             geoLoop(id);
-    //           },1000);
-    //         }
-    // }
-
-    //-------------- GET THE CURRENT USER WHO ARE USING THE APP--------------
-      //   firebase.auth().onAuthStateChanged(function(user) {
-      //     if (user) {
-      //       console.log("auth changed");
-      //       $scope.currentUser = user;
-      //       // geoLoop(user.uid);
-      //       $scope.myloc = geoPos.updateFirebase($scope.currentUser.uid);
-      //       // geoPos.updateFirebase($scope.currentUser.uid).then(function(data){
-      //       //   $scope.myloc = data;
-      //       // });
-      //
-      //       console.log('$scope.myloc', $scope.myloc);
-      //       getEvents();
-      //
-      //   }
-      //   console.log("userID is:",$scope.currentUser.uid);
-      //
-      // });
-
-
-
-
+    //just checks if ready
+    function startLoop()
+    {
+       if(geoPos.isReady() == false)
+       {
+        console.log("geoLoc not ready Yet");
+        $timeout(function(){
+                startLoop();
+              },1000);
+       }
+       else
+       {
+        getEvents();
+       }
+     }
 
       //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
       $scope.joinAction = function(ownerid, eventid){
-
-
         var ref = firebase.database().ref("activities").child(eventid).child("participants");
         var checkDone = $firebaseArray(ref);
         checkDone.$loaded().then(function(x){
@@ -83,75 +51,63 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
 
       };
 
-
-
     //--------------------- GET ALL THE EVENTS FOR THE USER -----------------
-    function getEvents()
+
+    function loadActions()      //loading the actions from the start
     {
-      var eventsRef = firebase.database().ref("activities/");
-      $scope.events = $firebaseArray(eventsRef);
-      $scope.events.$loaded().then(function(x)
-      {
-        console.log("Event List: ", $scope.events);
-        angular.forEach($scope.events, function(event){
-          var userRef = firebase.database().ref("users/" + event.userID);
-          userRef.on("value", function(snapshot){
-            event.photoURL = snapshot.val().photoURL;
-            event.owner = snapshot.val().name;
-
-          });
-        });
-
-        $scope.distList = [];
-        $scope.eventList = [];
-        angular.forEach(x, function(value,key)
+      var result = {};
+      for(var i in $scope.eventInfo)
         {
-          this.push({
-            'id': value.id,
-            'dist': $scope.distFromPlayer(value.location)
-          });
-        },$scope.distList);
-
-       console.log("SCOPEFRIENDS",  $scope.distList);
-
-         $scope.events.$watch(function(event)
-         { //watch the database for changes
-          console.log(event);
-
-          if(event.event == "child_changed")
+          console.log("i is", $scope.eventInfo[i].$id);
+          var index = $scope.eventInfo[i].$id;
+          var dist = $scope.distFromPlayer($scope.eventInfo[i].location);
+          if(dist != false)
           {
-            $scope.eventList = [];
-            angular.forEach($scope.distList, function(value,key)
-            {
-              if(value.id == event.key)
-              {
-                console.log("updating location");
-                value.dist = $scope.distFromPlayer($scope.events.$getRecord(event.key).location);
-              }
-            },$scope.distList);
-
-           $scope.distList = $filter('orderBy')($scope.distList, 'dist', false);
-          angular.forEach($scope.distList, function(value,key)
-          {
-            var rec = $scope.events.$getRecord(value.id);
-            this.push(rec);
-          },$scope.eventList);
+            result[index] = {info: $scope.eventInfo[i], distance: dist};
           }
+        }
+        return result;
+    }
 
-        });
-
-         $scope.distList = $filter('orderBy')($scope.distList, 'dist', false);
-          angular.forEach($scope.distList, function(value,key)
+    function changeAction(actionID)    //change individual actions depending on how it is
+    {
+      console.log("before events", $scope.events);
+      for(var i in $scope.eventInfo)
+      {
+        if($scope.eventInfo[i].$id == actionID)
+        {
+          var dist = $scope.distFromPlayer($scope.eventInfo[i].location);
+          if(dist != false)
           {
-            var rec = $scope.events.$getRecord(value.id);
-            this.push(rec);
-          },$scope.eventList);
-
-
-      });
+            $scope.events[actionID] = {info: $scope.eventInfo[i], distance: dist};
+          }
+        }
+      }
+      console.log("after events", $scope.events);
     }
 
 
+    function getEvents()  //called in the beginning, thats all
+    {
+      var eventsRef = firebase.database().ref("activities/");
+      $scope.eventInfo = $firebaseArray(eventsRef);
+       $scope.eventInfo.$loaded().then(function(x)
+      {
+        console.log("event loaded");
+        $scope.events = loadActions();
+        console.log("total events", $scope.events);
+      });
+
+       $scope.eventInfo.$watch(function(event){
+
+        if(event.event == "child_changed")
+        {
+          console.log("run result", event);
+          changeAction(event.key);
+        }
+
+       });
+    }
 
     //--------------------- CALCULATE DISTANCE FOR USERS -----------------
     function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
@@ -174,7 +130,10 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
 
         //---------------------- DISTANCE FROM THE CURRENT USER ------------------
         $scope.distFromPlayer = function(locationdata) {
-
+          if(locationdata == undefined)
+          {
+            return false;
+          }
 
           $scope.myloc = geoPos.getUserPosition();
 

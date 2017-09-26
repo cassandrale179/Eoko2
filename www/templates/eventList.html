@@ -10,19 +10,25 @@
 
       <!-- _____________ CARDS OF EVENTS _______ -->
       <div id="E2">
-        <div id="E2A" ng-repeat="x in events">
-          <img ng-src="{{x.photoURL}}" />
+        <div id="E2A" ng-repeat="(key,x) in events | orderObjectBy:'distance'">
+          <img ng-src="{{x.info.photoURL}}" />
           <div id="E2A1" ng-click="eventNudge=true">
-            <h4>{{x.name}}</h4>
-            <h5>{{x.startTime}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{distFromPlayer(x.location) | number:1}} miles</h5>
+            <h4>{{x.info.name}}</h4>
+            <h5>
+              <span>{{x.info.startTime}}</span>
+              <span id="spacer" style="padding: 0 1.618em;"></span>
+              <span ng-if="x.distance >= 0.1">{{x.distance | number:1}} miles</span>
+              <span ng-if="x.distance < 0.1">{{x.distance * 5280 | number:1}} feet</span>
+            </h5>
+            <!-- <h5>{{x.startTime}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{distFromPlayer(x.location) | number:1}} miles</h5> -->
             <div id="F" ng-show="eventNudge">
               <h5 ng-click="eventNudge=false">X</h5>
               <img ng-src={{x.photoURL}} />
-              <h2>{{x.owner}}</h2>
-              <h1>{{x.name}}</h1>
-              <h3>{{x.startTime}}</h3>
-              <h3>{{distFromPlayer(x.location) | number:1}} miles</h3>
-              <p>{{x.description}}</p>
+              <h2>{{x.info.owner}}</h2>
+              <h1>{{x.info.name}}</h1>
+              <h3>{{x.info.startTime}}</h3>
+              <!-- <h3>{{distFromPlayer(x.location) | number:1}} miles</h3> -->
+              <p>{{x.info.description}}</p>
               <button ng-click="joinAction(x.userID, x.id)"> Join </button>
             </div>
           </div>

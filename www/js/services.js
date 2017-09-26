@@ -64,7 +64,7 @@ angular.module('eoko.services', [])
       }
 
 
-    }
+    };
 
     return facebookService;
 
@@ -164,8 +164,8 @@ angular.module('eoko.services', [])
 /* ------------------------------- GEO POS FACTORY --------------------------- */ 
 .factory('geoPos', [function () {
 
-    var myloc, watchId;
-    
+    var myloc, watchId,uid;
+    var ready = false;
     watchId = navigator.geolocation.watchPosition(function(position)
           {
             var latlng = position.coords.latitude + "," + position.coords.longitude;
@@ -174,17 +174,37 @@ angular.module('eoko.services', [])
                 //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
 
                 myloc = latlng;  //actual current location
+
+                 firebase.auth().onAuthStateChanged(function(user){
+                  if (user){
+                    uid = user.uid;
+                    var userRef = firebase.database().ref("users").child(user.uid);
+                    var obj = {
+                      location: myloc
+                    };
+                    console.log("we did it");
+                    userRef.update(obj);
+                    ready = true;
+                  }
+                });
+
+                 if(uid)
+                 {
+                  var userRef = firebase.database().ref("users").child(uid);
+                    var obj = {
+                      location: myloc
+                    };
+                    console.log("we did it");
+                    userRef.update(obj);
+                    ready = true;
+                 }
           });
 
     return {
      
-      updateFirebase: function(usrID)
+      isReady: function()
       {
-        var userRef = firebase.database().ref("users").child(usrID);
-          var obj = {
-            location: myloc
-          };
-          userRef.update(obj);
+        return ready;
       },
       getUserPosition: function () 
       {
@@ -193,6 +213,25 @@ angular.module('eoko.services', [])
     };
 
   }])
+
+
+.filter('orderObjectBy', [function(){
+ return function(input, attribute) {
+    if (!angular.isObject(input)) return input;
+
+    var array = [];
+    for(var objectKey in input) {
+        array.push(input[objectKey]);
+    }
+
+    array.sort(function(a, b){
+        a = parseInt(a[attribute]);
+        b = parseInt(b[attribute]);
+        return a - b;
+    });
+    return array;
+ }
+}])
 
 
 
