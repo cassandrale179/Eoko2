@@ -1,10 +1,11 @@
-app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject',
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject) {
+app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover',
+  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover) {
     $scope.eventNudge = false;
 
     //start the thing in case it starts here
     firebase.auth().onAuthStateChanged(function(user){
       if (user){
+        $scope.currentUser = user;
         startLoop();
       }
     });
@@ -26,27 +27,37 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
      }
 
       //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
-      $scope.joinAction = function(ownerid, eventid){
-        var ref = firebase.database().ref("activities").child(eventid).child("participants");
-        var checkDone = $firebaseArray(ref);
+      $scope.joinAction = function(eventid){
+        var ref = firebase.database().ref("activities").child(eventid);
+        var checkDone = $firebaseObject(ref);
         checkDone.$loaded().then(function(x){
           console.log("loaded event stuff",checkDone);
-
-          for(var i in checkDone)
+          console.log("the thing is ", checkDone);
+          if(checkDone.userID == $scope.currentUser.uid)
           {
-            if(checkDone[i].id == $scope.currentUser.uid)
+            console.log("this is your event, exiting");
+            $scope.closePopover();
+            return;
+          }
+
+          for(var i in checkDone["participants"])
+          {
+            if(checkDone["participants"][i].id == $scope.currentUser.uid)
             {
               console.log("already joined, returning");
+              $scope.closePopover();
               return;
             }
           }
-
-          checkDone.$add({id: $scope.currentUser.uid}).then(function(success)
-          {
-            console.log("successfully added");
-          });
-
-
+            ref.child("participants").push({
+              id: $scope.currentUser.uid,
+              avatar: $scope.currentUser.photoURL
+            }).then(function(succ)
+            {
+              console.log("successfully added");
+              $scope.closePopover();
+              return;
+            });
         });
 
       };
@@ -178,4 +189,73 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
           console.log("Formatted Address: " + response.data.results[0].formatted_address);
         });
       }
+
+
+
+
+      //------------------------POPOVER STUFF----------------------------------
+
+      $scope.$on('$ionicView.loaded', function () {
+        $scope.blurry = {behind: "0px"};
+      });
+
+
+        function makeblurry() {
+        if ($scope.popover.isShown()) {
+          console.log("blur background");
+          $scope.blurry = {behind: "5px"};
+        }
+        else {
+          console.log("clear up");
+          $scope.blurry = {behind: "0px"};
+        }
+      }
+
+      $scope.checkHit = function (event) {
+        if (event.target.className.includes("popup-container popup-showing")) {
+            $scope.closePopover();
+        }
+      };
+
+      $ionicPopover.fromTemplateUrl('my-popover.html', {
+        scope: $scope
+      }).then(function(popover) {
+        $scope.popover = popover;
+      });
+
+      $scope.openPopover = function($event, user) {
+        $scope.blurry.behind = "5px";
+        $scope.currUser = user;
+        $scope.popover.show($event);
+      };
+      $scope.closePopover = function() {
+        $scope.blurry.behind = "0px";
+        $scope.popover.hide();
+        makeblurry();
+      };
+      //Cleanup the popover when we're done with it!
+      $scope.$on('$destroy', function() {
+         $scope.blurry.behind = "0px";
+        $scope.popover.remove();
+        makeblurry();
+      });
+      // Execute action on hide popover
+      $scope.$on('popover.hidden', function() {
+        // Execute action
+      });
+      // Execute action on remove popover
+      $scope.$on('popover.removed', function() {
+        // Execute action
+      });
+
+
+
+
+
+
+
+
+
+
+
   }]);

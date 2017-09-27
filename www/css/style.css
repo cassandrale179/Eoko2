@@ -655,3 +655,20 @@ select{
   color: white;
   font-family: 'Roboto', sans-serif;
 }
+
+
+
+/*-------------Michael's crap css again----------*/
+
+
+.details{
+      margin: 15% 10%;
+    height: 70%;
+    background-color: #F27C22;
+    width: 80%;
+    opacity: 0.90;
+}
+
+.popover-wrapper{
+  height: 100%;
+}

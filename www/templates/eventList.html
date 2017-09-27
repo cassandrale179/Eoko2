@@ -1,5 +1,5 @@
-<ion-view hide-nav-bar="true">
-  <ion-content padding="true" class="innerbackground">
+<ion-view hide-nav-bar="true" >
+  <ion-content padding="true" class="innerbackground" style="filter: blur({{blurry.behind}});">
     <div id="E">
       <!-- _____________ NAVIGATION BAR _______ -->
       <div id="E1">
@@ -12,7 +12,7 @@
       <div id="E2">
         <div id="E2A" ng-repeat="(key,x) in events | orderObjectBy:'distance'">
           <img ng-src="{{x.info.photoURL}}" />
-          <div id="E2A1" ng-click="eventNudge=true">
+          <div id="E2A1" ng-click="openPopover($event, x)">
             <h4>{{x.info.name}}</h4>
             <h5>
               <span>{{x.info.startTime}}</span>
@@ -20,24 +20,51 @@
               <span ng-if="x.distance >= 0.1">{{x.distance | number:1}} miles</span>
               <span ng-if="x.distance < 0.1">{{x.distance * 5280 | number:1}} feet</span>
             </h5>
-            <!-- <h5>{{x.startTime}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{distFromPlayer(x.location) | number:1}} miles</h5> -->
-            <div id="F" ng-show="eventNudge">
-              <h5 ng-click="eventNudge=false">X</h5>
-              <img ng-src={{x.photoURL}} />
-              <h2>{{x.info.owner}}</h2>
-              <h1>{{x.info.name}}</h1>
-              <h3>{{x.info.startTime}}</h3>
-              <!-- <h3>{{distFromPlayer(x.location) | number:1}} miles</h3> -->
-              <p>{{x.info.description}}</p>
-              <button ng-click="joinAction(x.userID, x.id)"> Join </button>
-            </div>
+      
+                    <!-- <div id="F" ng-show="eventNudge">
+                      <h5 ng-click="eventNudge=false">X</h5>
+                      <img ng-src={{x.photoURL}} />
+                      <h2>{{x.info.owner}}</h2>
+                      <h1>{{x.info.name}}</h1>
+                      <h3>{{x.info.startTime}}</h3>
+                      <p>{{x.info.description}}</p>
+                      <button ng-click="joinAction(x.userID, x.id)"> Join </button>
+                    </div> -->
           </div>
         </div>
       </div>
     </div>
+
+    <script id="my-popover.html" type="text/ng-template">
+    <div ng-click="checkHit($event)" class="popup-container popup-showing active">
+      <div class="details">
+        
+      <div id="F">
+        <img ng-src={{currUser.info.photoURL}} />
+        <h2>{{currUser.info.owner}}</h2>
+        <h1>{{currUser.info.name}}</h1>
+        <h3>{{currUser.info.startTime}}</h3>
+
+        <h3 ng-if="currUser.distance >= 0.1">{{currUser.distance | number:1}} miles</h3>
+        <h3 ng-if="currUser.distance < 0.1">{{currUser.distance * 5280 | number:1}} feet</h3>
+
+        <p>{{currUser.info.description}}</p>
+        <div>
+          <h3>Going</h3>
+          <p ng-if="!(currUser.info.participants)">Be the first to join!</p>
+          <span ng-repeat="parts in currUser.info.participants">
+            <img src="{{parts.avatar}}">
+          </span>
+        </div>
+        <button ng-click="joinAction(currUser.info.$id)"> Join </button>
+      </div>
+      </div>
+    </div>
+  </script>
+
 </ion-content>
 <!-- NAVIGATIO BAR -->
-<div id="navbar">
+<div id="navbar" style="filter: blur({{blurry.behind}});">
   <button><i class="fa fa-bell" aria-hidden="true"></i></button>
   <button><i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true"></i></button>
   <button><i ui-sref="actionList" class="fa fa-users" aria-hidden="true"></i></button>
