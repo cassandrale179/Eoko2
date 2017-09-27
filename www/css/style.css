@@ -412,20 +412,15 @@ select{
 
 
 /* --------------------------- EVENT NUDGE -------------------------------- */
-#F{
-  position: fixed;
-  left: 40px !important;
-  width: 290px;
-  height: 400px;
-  background: rgba(230,125,34,0.8);
-  color: white;
-  font-family: "Roboto", sans-serif;
-  padding: 3%;
-}
 
-#F img{
+#F1 img{
+  margin-top: 10px !important;
   display: block;
   margin: auto;
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 35px;
 }
 
 #F h1{
@@ -444,14 +439,17 @@ select{
   margin-top: 10px;
 }
 
+#F1A{
+  margin-left: 15%;
+}
+
 #F h3{
   color: white;
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
   display: inline-block;
-  margin-right: 25px;
-  margin-left: 35px;
   margin-top: 0px;
+  margin-left: 30px;
 }
 
 #F h5{
@@ -461,20 +459,39 @@ select{
 }
 
 #F p{
-  padding-left: 3%;
-  padding-right: 3%;
+  padding-left: 10%;
+  padding-right: 10%;
+  color: white;
+  font-family: "Roboto", sans-serif;
 }
 
 #F button{
   display: block;
   margin: auto;
-  width: 70%;
+  width: 90%;
   background: rgba(255,255,255,0.9);
   color: rgba(230, 126, 34, 0.9);
   border: none;
   height: 30px;
   border-radius: 15px;
+  margin-top: 20px;
+}
 
+
+#F2{
+  padding-left: 5%;
+}
+
+#F2 img{
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 25px;
+}
+
+#F2 p{
+  font-style: italic;
+  margin-top: 30px;
 }
 
 
@@ -639,7 +656,7 @@ select{
   border-radius: 5px;
 }
 
-/* --------------------- EDIT PAGE --------------- */ 
+/* --------------------- EDIT PAGE --------------- */
 #K i{
   color: white;
   margin-bottom: 0px;
@@ -662,8 +679,8 @@ select{
 
 
 .details{
-      margin: 15% 10%;
-    height: 70%;
+    margin: 15% 10%;
+    height: 60%;
     background-color: #F27C22;
     width: 80%;
     opacity: 0.90;
