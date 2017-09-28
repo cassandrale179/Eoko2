@@ -13,7 +13,6 @@ A: LOGIN PAGE
   url(../img/outerbackground.jpeg);
    background-size:cover;
    background-position: center;
-
 }
 
 .innerbackground{
@@ -62,6 +61,11 @@ select{
   font-size: 45px;
 }
 
+#error{
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+}
 
 /* -------------------------------- LOGIN SCREEN ----------------------------- */
 #A img{
@@ -146,9 +150,9 @@ select{
 #B2 button{
   color: white;
   font-family: 'Roboto', sans-serif;
-  border: 0.1px rgba(255,255,255,0.2) solid;
+  border: 1px rgba(255, 255, 255, 0.61) solid;
   background: none;
-  margin-bottom: 5px;
+  margin: 5px;
   font-size: 15px;
   border-radius: 15px;
   padding: 2%;
@@ -177,7 +181,7 @@ select{
   color: white;
   background: transparent;
   border: none;
-  border: 0.1px rgba(255,255,255,0.2) solid;
+  border: 1px rgba(255, 255, 255, 0.61) solid;
   width: 70px;
   height: 40px;
   border-radius: 10px;
@@ -197,7 +201,7 @@ select{
   padding-right: 5%;
 }
 
-#C1, #E2A{
+#C1, #E2A, #I2{
   background: rgba(255,255,255,0.8);
   opacity: 0.9;
   height: 85px;
@@ -208,10 +212,10 @@ select{
   padding: 3%;
 }
 
-#C1 img, #E2A img{
+#C1 img, #E2A img, #I2 img{
   object-fit: cover;
-  width: 65px;
-  height: 65px;
+  width: 70px;
+  height: 55px;
   border-radius: 40px;
   margin-left: 10px;
   margin-top: 2px;
@@ -228,7 +232,7 @@ select{
   margin-left: 10%;
 }
 
-#C1A{
+#C1A, #I2A{
   position: relative;
   width: 100%;
   font-family: 'Roboto', sans-serif;
@@ -282,6 +286,15 @@ select{
   top: 5px;
   right: 5px;
 }
+
+#D1 i{
+  font-size: 15px;
+  position: absolute;
+  color: white;
+  top: 5px;
+  right: 5px;
+}
+
 
 #D2{
   display: flex;
@@ -393,26 +406,21 @@ select{
 #E2 h5{
   display: inline-block;
   margin-top: 0px;
-  padding-left: 20%;
+  padding-left: 15%;
 }
 
 
 
 /* --------------------------- EVENT NUDGE -------------------------------- */
-#F{
-  position: fixed;
-  left: 40px !important;
-  width: 290px;
-  height: 400px;
-  background: rgba(230,125,34,0.8);
-  color: white;
-  font-family: "Roboto", sans-serif;
-  padding: 3%;
-}
 
-#F img{
+#F1 img{
+  margin-top: 10px !important;
   display: block;
   margin: auto;
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 35px;
 }
 
 #F h1{
@@ -431,14 +439,17 @@ select{
   margin-top: 10px;
 }
 
+#F1A{
+  margin-left: 15%;
+}
+
 #F h3{
   color: white;
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
   display: inline-block;
-  margin-right: 25px;
-  margin-left: 35px;
   margin-top: 0px;
+  margin-left: 30px;
 }
 
 #F h5{
@@ -448,20 +459,39 @@ select{
 }
 
 #F p{
-  padding-left: 3%;
-  padding-right: 3%;
+  padding-left: 10%;
+  padding-right: 10%;
+  color: white;
+  font-family: "Roboto", sans-serif;
 }
 
 #F button{
   display: block;
   margin: auto;
-  width: 70%;
+  width: 90%;
   background: rgba(255,255,255,0.9);
   color: rgba(230, 126, 34, 0.9);
   border: none;
   height: 30px;
   border-radius: 15px;
+  margin-top: 20px;
+}
 
+
+#F2{
+  padding-left: 5%;
+}
+
+#F2 img{
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 25px;
+}
+
+#F2 p{
+  font-style: italic;
+  margin-top: 30px;
 }
 
 
@@ -567,4 +597,95 @@ select{
   height: 50px;
   font-size: 18px;
   border-radius: 10px;
+}
+
+
+/* ---------------------------- STYLING FOR JOIN LIST PAGE --------------------- */
+#I{
+  padding-left: 5%;
+  padding-right: 5%;
+}
+#I1{
+  width: 100%;
+  display: flex;
+  margin-bottom: 20px;
+}
+
+#I1 button{
+  width: 49%;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-size: 23px;
+  padding-bottom: 20px;
+  background: none;
+  border: none;
+  height: 40px !important;
+}
+
+#I1 i{
+  color: white;
+  font-size: 20px;
+  margin-top: 8px;
+  margin-right: 2px;
+}
+
+#I2{
+  border-right: 10px solid rgba(230, 126, 34, 0.9);
+}
+
+
+#I2A {
+  padding-left: 5%;
+  font-size: 18px;
+}
+
+#I2 h3{
+  margin-top: 5px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+}
+
+#I2B button{
+  background-color: rgba(230, 126, 34, 0.9);
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  width: 70px;
+  border: none;
+  margin-right: 20px;
+  margin-top: 5px;
+  border-radius: 5px;
+}
+
+/* --------------------- EDIT PAGE --------------- */
+#K i{
+  color: white;
+  margin-bottom: 0px;
+  font-size: 30px;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
+#K h2{
+  margin-top: -10px;
+  padding-bottom: 5%;
+  text-align: center;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+
+/*-------------Michael's crap css again----------*/
+
+
+.details{
+    margin: 15% 10%;
+    height: 60%;
+    background-color: #F27C22;
+    width: 80%;
+    opacity: 0.90;
+}
+
+.popover-wrapper{
+  height: 100%;
 }

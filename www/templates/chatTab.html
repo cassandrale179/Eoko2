@@ -1,59 +1,39 @@
 <ion-view hide-nav-bar="true">
   <ion-content padding="true" class="innerbackground">
-   <!--spacer-->
     <div class="spacer" style="height: 20px;"></div>
-
-    <!--nav bar-->
-    <div class="button-bar">
-      <!--back button-->
-    
-      <!--search-->
-      <!-- <div style="margin: auto; margin-left: 40px; margin-right: 40px;">
-        <a class="eoko-icon-searchbar-small" style="margin-right: 9px; margin-top: 10px"></a>
-        <input class="eoko-nav-searchbar" type="search" placeholder="Search by name" ng-model="search.text"
-               style="border-bottom: 1px solid white; font-size: 19px; width: 62vw; text-align: center;">
-      </div> -->
-
       <div>
         <a class="eoko-icon-searchbar-small"></a>
         <input class="eoko-nav-searchbar" placeholder="Search by name" ng-model="search.text">
-      </div>
-
-      <!--new message-->
-      <a style="display:none;" ng-click="newConversation()" class="eoko-button-clear eoko-icon-new-message"></a>
+        <!-- <a ng-click="newConversation()" class="eoko-button-clear eoko-icon-new-message"></a> -->
     </div>
 
 
     <!--spacer-->
     <div class="spacer" style="height: 20px;"></div>
 
-
     <ion-scroll style="height: calc(100%); padding: 0px;">
       <ion-list id="actionList">
-      <div ng-if="conversations.length == 0" class="eoko-text-button-nav" style="text-align:center;"><span style="line-height: 33px;">No Conversations Started. Press and hold a friend's name to start one!</span>
-        </div>
-        <ion-item ng-repeat="convo in conversations | orderBy : 'name' | filter: {name: search.text}" ng-if="convo.name" class="item-thumbnail-left"
-                  style="background-color:rgba(0,0,0,0);border-top:1px solid rgba(255,255,255,0.3);border-bottom:1px solid rgba(255,255,255,0.3);">
-          <!--users can click the whole item to go to the chatPage-->
-          <div ui-sref="chatPage({otherID: convo.partnerID, convoID: convo.chatID})" native-transitions nav-direction="forward">
-            <div class="eoko-notification-avatar" style="background-image: url({{convo.avatar}});"></div>
-            <p class="eoko-text-thin" style="color: white;font-size: 25px">{{convo.name}}</p>
-            <span class="eoko-text-thin" style="color:white;font-size:16px">{{convo.lasttime}}</span>
-            <br>
-            <p ng-if="!convo.messages" class="eoko-text-ultralight"
-               style="color: white;display: inline; font-size: 15px;">
-              Send the first message!
-            </p>
-            <p ng-if="convo.messages" class="eoko-text-ultralight" style="color: white;display: inline; font-size: 15px;">
-              {{convo.lastmessage}}
-            </p>
-            <a ui-sref="chatPage({otherID: convo.partnerID, convoID: convo.chatID})"
-               class="eoko-button-clear ion-chevron-right" native-transitions nav-direction="forward"
-               style="float:right;margin-top: -20px;"></a>
-          </div>
-        </ion-item>
-      </ion-list>
 
+      <div ng-if="chatData.length == 0" class="eoko-text-button-nav" style="text-align:center;"><span style="line-height: 33px;">No Conversations Started. Press and hold a friend's name to start one!</span>
+        </div>
+
+          <ion-item ng-repeat="chat in chatData" ng-if="chat.title != ''">
+            <h3 ng-if="chat.info.name == ''">{{chat.title}}</h3>
+            <h3 ng-if="chat.info.name != ''">{{chat.info.name}}</h3>
+
+            <a ui-sref="messagePage({otherID: chat.info.ids, convoID: chat.info.$id})"
+               class="eoko-button-clear ion-chevron-right" native-transitions nav-direction="forward"
+               style="float:right;margin-top: -20px;color:black;"></a>
+          </ion-item>
+      </ion-list>
     </ion-scroll>
 </ion-content>
+
+<!-- NAVIGATIO BAR -->
+  <div id="navbar">
+    <button><i ui-sref="joinList" class="fa fa-bell" aria-hidden="true"></i></button>
+    <button><i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true"></i></button>
+    <button><i ui-sref="actionList" class="fa fa-users" aria-hidden="true"></i></button>
+    <button><i ui-sref="chatTab" class="fa fa-comment" aria-hidden="true"></i></button>
+  </div>
 </ion-view>

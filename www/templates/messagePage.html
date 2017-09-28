@@ -1,20 +1,20 @@
 <ion-view hide-nav-bar="true">
-  <ion-content padding="false" class="innerbackground">
+  <ion-content padding="false" class="innerbackground" scroll="false">
       <!--spacer-->
     <div class="spacer" style="height: 20px;"></div>
 
     <div class="button-bar">
-      <a ui-sref="chatTab" class="eoko-button-clear ion-chevron-left" native-transitions nav-direction="back" ng-click="dynamicChatBarTap()"></a>
+      <a ui-sref="chatTab" class="eoko-button-clear ion-chevron-left" native-transitions nav-direction="back"></a>
       <a class="eoko-button-text eoko-text-button-nav eoko-text-regular">{{partner.name}}</a>
-      <a ui-sref="chatTab" class="eoko-button-clear"></a>
     </div>
 
     <div>
-      <ion-scroll style="height: calc(100% - 11em)" on-swipe-down="onSwipeDown()" ng-click="dynamicChatBarTap()">
+
+      <ion-scroll style="height:10%" on-swipe-down="onSwipeDown()" ng-click="dynamicChatBarTap()">
         <div ng-repeat="message in messages track by $index" ng-class="{other: message.userId == myId}" class="messages">
 
           <div class="message" ng-class="{'slide-right': hideTime, '': !hideTime}" style="height:auto;">
-
+          <img src="{{message.avatar}}">
             <!--other user's message-->
             <span ng-if="message.userId != myId" class="eoko-text-light" style="font-size: 17px; margin-bottom: 1px; margin-right: 120px;">
               {{ message.text }}

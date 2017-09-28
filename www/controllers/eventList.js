@@ -1,135 +1,124 @@
-app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject',
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject) {
+app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover',
+  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover) {
     $scope.eventNudge = false;
 
+    //start the thing in case it starts here
+    firebase.auth().onAuthStateChanged(function(user){
+      if (user){
+        $scope.currentUser = user;
+        startLoop();
+      }
+    });
 
-
-    //-------------- GET USER CURRENT LOCATION LOOP --------------
-       function geoLoop(id)
+    //just checks if ready
+    function startLoop()
     {
-      try{
-              geoPos.updateFirebase(id);
-              console.log("position set on firebase");
-              $scope.myloc = geoPos.getUserPosition();
-              getEvents();
-            }
-            catch(error)
-            {
-              $timeout(function(){
-                geoLoop(id);
+       if(geoPos.isReady() == false)
+       {
+        console.log("geoLoc not ready Yet");
+        $timeout(function(){
+                startLoop();
               },1000);
-            }
-    }
-
-    //-------------- GET THE CURRENT USER WHO ARE USING THE APP--------------
-        firebase.auth().onAuthStateChanged(function(user) {
-          if (user) {
-            console.log("auth changed");
-            $scope.currentUser = user;
-            geoLoop(user.uid);
-
-        }
-        console.log("userID is:",$scope.currentUser.uid);
-
-      });
-
+       }
+       else
+       {
+        getEvents();
+       }
+     }
 
       //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
-      $scope.joinAction = function(ownerid, eventid){
-
-        var ref = firebase.database().ref("activities").child(eventid).child("participants");
-        var checkDone = $firebaseArray(ref);
+      $scope.joinAction = function(eventid){
+        var ref = firebase.database().ref("activities").child(eventid);
+        var checkDone = $firebaseObject(ref);
         checkDone.$loaded().then(function(x){
           console.log("loaded event stuff",checkDone);
-
-          for(var i in checkDone)
+          console.log("the thing is ", checkDone);
+          if(checkDone.userID == $scope.currentUser.uid)
           {
-            if(checkDone[i].id == $scope.currentUser.uid)
+            console.log("this is your event, exiting");
+            $scope.closePopover();
+            return;
+          }
+
+          for(var i in checkDone["participants"])
+          {
+            if(checkDone["participants"][i].id == $scope.currentUser.uid)
             {
               console.log("already joined, returning");
+              $scope.closePopover();
               return;
             }
           }
-
-          checkDone.$add({id: $scope.currentUser.uid}).then(function(success)
-          {
-            console.log("successfully added");
-          });
-
-
+            ref.child("participants").push({
+              id: $scope.currentUser.uid,
+              avatar: $scope.currentUser.photoURL
+            }).then(function(succ)
+            {
+              console.log("successfully added");
+              $scope.closePopover();
+              return;
+            });
         });
 
       };
 
-
-
     //--------------------- GET ALL THE EVENTS FOR THE USER -----------------
-    function getEvents()
+
+    function loadActions()      //loading the actions from the start
     {
-      var eventsRef = firebase.database().ref("activities/");
-      $scope.events = $firebaseArray(eventsRef);
-      $scope.events.$loaded().then(function(x)
-      {
-        console.log("Event List: ", $scope.events);
-        angular.forEach($scope.events, function(event){
-          var userRef = firebase.database().ref("users/" + event.userID);
-          userRef.on("value", function(snapshot){
-            event.photoURL = snapshot.val().photoURL;
-            event.owner = snapshot.val().name;
-
-          });
-        });
-
-        $scope.distList = [];
-        $scope.eventList = [];
-        angular.forEach(x, function(value,key)
+      var result = {};
+      for(var i in $scope.eventInfo)
         {
-          this.push({
-            'id': value.id,
-            'dist': $scope.distFromPlayer(value.location)
-          });
-        },$scope.distList);
-
-       console.log("SCOPEFRIENDS",  $scope.distList);
-
-         $scope.events.$watch(function(event)
-         { //watch the database for changes
-          console.log(event);
-
-          if(event.event == "child_changed")
+          console.log("i is", $scope.eventInfo[i].$id);
+          var index = $scope.eventInfo[i].$id;
+          var dist = $scope.distFromPlayer($scope.eventInfo[i].location);
+          if(dist != false)
           {
-            $scope.eventList = [];
-            angular.forEach($scope.distList, function(value,key)
-            {
-              if(value.id == event.key)
-              {
-                console.log("updating location");
-                value.dist = $scope.distFromPlayer($scope.events.$getRecord(event.key).location);
-              }
-            },$scope.distList);
-
-           $scope.distList = $filter('orderBy')($scope.distList, 'dist', false);
-          angular.forEach($scope.distList, function(value,key)
-          {
-            var rec = $scope.events.$getRecord(value.id);
-            this.push(rec);
-          },$scope.eventList);
+            result[index] = {info: $scope.eventInfo[i], distance: dist};
           }
+        }
+        return result;
+    }
 
-        });
-
-         $scope.distList = $filter('orderBy')($scope.distList, 'dist', false);
-          angular.forEach($scope.distList, function(value,key)
+    function changeAction(actionID)    //change individual actions depending on how it is
+    {
+      console.log("before events", $scope.events);
+      for(var i in $scope.eventInfo)
+      {
+        if($scope.eventInfo[i].$id == actionID)
+        {
+          var dist = $scope.distFromPlayer($scope.eventInfo[i].location);
+          if(dist != false)
           {
-            var rec = $scope.events.$getRecord(value.id);
-            this.push(rec);
-          },$scope.eventList);
-
-
-      });
+            $scope.events[actionID] = {info: $scope.eventInfo[i], distance: dist};
+          }
+        }
+      }
+      console.log("after events", $scope.events);
     }
 
 
+    function getEvents()  //called in the beginning, thats all
+    {
+      var eventsRef = firebase.database().ref("activities/");
+      $scope.eventInfo = $firebaseArray(eventsRef);
+       $scope.eventInfo.$loaded().then(function(x)
+      {
+        console.log("event loaded");
+        $scope.events = loadActions();
+        console.log("total events", $scope.events);
+      });
+
+       $scope.eventInfo.$watch(function(event){
+
+        if(event.event == "child_changed")
+        {
+          console.log("run result", event);
+          changeAction(event.key);
+        }
+
+       });
+    }
 
     //--------------------- CALCULATE DISTANCE FOR USERS -----------------
     function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
@@ -152,6 +141,14 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
 
         //---------------------- DISTANCE FROM THE CURRENT USER ------------------
         $scope.distFromPlayer = function(locationdata) {
+          if(locationdata == undefined)
+          {
+            return false;
+          }
+
+          $scope.myloc = geoPos.getUserPosition();
+
+          console.log("distFromPlayer executed");
           if($scope.myloc == undefined || $scope.myloc == null)
           {
             console.log("not yet");
@@ -173,7 +170,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
                 var result = getDistanceFromLatLonInKm(mylat, mylong, lat, long) * 0.621371;
                 $timeout(function(){
                   $scope.$apply();
-                }, 1000);
+                }, 500);
                 //return Math.round(result * 10) / 10;
                 //$scope.distList.push(result);
                 return result;
@@ -192,4 +189,73 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
           console.log("Formatted Address: " + response.data.results[0].formatted_address);
         });
       }
+
+
+
+
+      //------------------------POPOVER STUFF----------------------------------
+
+      $scope.$on('$ionicView.loaded', function () {
+        $scope.blurry = {behind: "0px"};
+      });
+
+
+        function makeblurry() {
+        if ($scope.popover.isShown()) {
+          console.log("blur background");
+          $scope.blurry = {behind: "5px"};
+        }
+        else {
+          console.log("clear up");
+          $scope.blurry = {behind: "0px"};
+        }
+      }
+
+      $scope.checkHit = function (event) {
+        if (event.target.className.includes("popup-container popup-showing")) {
+            $scope.closePopover();
+        }
+      };
+
+      $ionicPopover.fromTemplateUrl('my-popover.html', {
+        scope: $scope
+      }).then(function(popover) {
+        $scope.popover = popover;
+      });
+
+      $scope.openPopover = function($event, user) {
+        $scope.blurry.behind = "5px";
+        $scope.currUser = user;
+        $scope.popover.show($event);
+      };
+      $scope.closePopover = function() {
+        $scope.blurry.behind = "0px";
+        $scope.popover.hide();
+        makeblurry();
+      };
+      //Cleanup the popover when we're done with it!
+      $scope.$on('$destroy', function() {
+         $scope.blurry.behind = "0px";
+        $scope.popover.remove();
+        makeblurry();
+      });
+      // Execute action on hide popover
+      $scope.$on('popover.hidden', function() {
+        // Execute action
+      });
+      // Execute action on remove popover
+      $scope.$on('popover.removed', function() {
+        // Execute action
+      });
+
+
+
+
+
+
+
+
+
+
+
   }]);

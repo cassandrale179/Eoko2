@@ -7,11 +7,15 @@
       <div id="E1B" ui-sref="actionCreate"><button style="border-bottom: 0.1px solid rgb(230,126,34)"> Create </button></div>
     </div>
     <div id="B" ng-show="description==0">
-      <input ng-model="action.title" type="text" placeholder="Title (e.g Coffee at Saxby)"/>
+     
       <div id="B4">
         <button ng-click="setPrivacy('public')" ng-style="publicStyle"> Public </button>
         <button ng-click="setPrivacy('private')" ng-style="privateStyle"> Private </button>
       </div>
+      <br>
+      <p ng-if="privSelect == 'public'">This will allow everyone to view and join your event</p>
+      <p ng-if="privSelect == 'private'">Only friends can view and join your event</p>
+       <input ng-model="action.name" type="text" placeholder="Title (e.g Coffee at Saxby)"/>
       <form>
         <!-- ____________ TAGS ___________ -->
         <div id="B2">
@@ -25,9 +29,9 @@
 
         <!-- _____________________________ INPUT FIELD ___________________________________ -->
 
-        <input ng-model="action.address" type="text" placeholder="Location"/>
-        <input ng-model="action.date" type="date" placeholder="Date"/ />
-        <input ng-model="action.time" type="time" placeholder="Time"/>
+        <input id="pac-input" ng-model="action.address" type="text" placeholder="Location"/>
+        <!-- <input ng-model="action.date" type="date" placeholder="Date"/ /> -->
+        <input ng-model="action.startTime" type="time" placeholder="HH:mm:ss"/>
         <textarea ng-model="action.description" placeholder="Description (Currently drinking coffee at Saxby. Anyone want to hangout?)"></textarea>
       </form>
     </div>
