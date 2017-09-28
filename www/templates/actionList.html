@@ -13,7 +13,7 @@
           {{x.name}}
           <br />
           <div id="C2">
-            <img id="one" src="../img/eoko-login.png" ng-click="nudge=true"/>
+            <img id="one" src="../img/eoko-login.png" ng-click="eokoNudge(x)"/>
             <img id="two" src="http://freevector.co/wp-content/uploads/2014/06/facebook-messenger-white.png"
             ng-click="newConversation(x)" />
           </div>
@@ -38,8 +38,8 @@
           </div>
           <div id="D2">
             <div id="D2A">
-              <img ng-src="{{user.photoURL}}" />
-              <h4> {{user.name}} </h4>
+              <img ng-src="{{currentUser.photoURL}}" />
+              <h4> {{currentUser.displayName}} </h4>
             </div>
             <div id="D2B">
               <i class="fa fa-chevron-right" aria-hidden="true"></i>

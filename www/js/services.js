@@ -1,6 +1,6 @@
 angular.module('eoko.services', [])
 
-/* ------------------------------- FACEBOOK FACTORY --------------------------- */ 
+/* ------------------------------- FACEBOOK FACTORY --------------------------- */
 .factory('facebookService', [function () {
     var facebookService = {
       getUserInfo: function(user){
@@ -70,29 +70,36 @@ angular.module('eoko.services', [])
 
   }])
 
-/* ------------------------------- USER INFO FACTORY --------------------------- */ 
+/* ------------------------------- USER INFO FACTORY --------------------------- */
   .factory('UserInfo', [function() {
-    var user = {};
+    var user;
 
     var UserInfo = {
 
       //fields: what you want e.g. [birthday, photoURL, name] etc.
       //THis will then be stored in UserInfo.user;
-      getInfo: function(firebaseUser, fields) {
+      getInfo: function(firebaseUser) {
+        console.log("firebase User", firebaseUser);
         var ref = firebase.database().ref('users/'+firebaseUser.uid);
-
-        ref.on("value", function(snapshot){
-          for (var i = 0; i<fields.length;i++){
-            user[fields[i]] = snapshot.child(fields[i]).val();
-            console.log("Got the user's " + fields[i]);
-          }
-
+        var promise = ref.once("value");
+        Promise.all([promise]).then(function(response){
+          this.user = response[0].val();
+          console.log("service user: ", this.user)
+          return this.user;
         })
+        // ref.on("value", function(snapshot){
+        //   for (var i = 0; i<fields.length;i++){
+        //     user[fields[i]] = snapshot.child(fields[i]).val();
+        //     console.log("Got the user's " + fields[i]);
+        //   }
+        //
+        // })
 
       },
 
-      getUser: function() {
-        return user;
+      getUser: function(promise) {
+
+
       }
     };
 
@@ -100,7 +107,7 @@ angular.module('eoko.services', [])
   }])
 
 
-/* ------------------------------- OTHER INFO FACTORY --------------------------- */ 
+/* ------------------------------- OTHER INFO FACTORY --------------------------- */
   .factory('OtherInfo', [function () {
     var userData = {
        id:"",
@@ -143,7 +150,7 @@ angular.module('eoko.services', [])
 
   }])
 
-/* ------------------------------- PROFILE PRESS FACTORY --------------------------- */ 
+/* ------------------------------- PROFILE PRESS FACTORY --------------------------- */
    .factory('ProfilePress', [function () {
     var aprofile = false;
 
@@ -161,7 +168,7 @@ angular.module('eoko.services', [])
   }])
 
 
-/* ------------------------------- GEO POS FACTORY --------------------------- */ 
+/* ------------------------------- GEO POS FACTORY --------------------------- */
 .factory('geoPos', [function () {
 
     var myloc, watchId,uid;
@@ -201,12 +208,12 @@ angular.module('eoko.services', [])
           });
 
     return {
-     
+
       isReady: function()
       {
         return ready;
       },
-      getUserPosition: function () 
+      getUserPosition: function ()
       {
         return myloc;
       }
@@ -236,7 +243,7 @@ angular.module('eoko.services', [])
 
 
 
-/* ---------------------------------- CHAT FACTORY ------------------------------- */ 
+/* ---------------------------------- CHAT FACTORY ------------------------------- */
 .factory('chatFactory', ['$firebaseArray',function ($firebaseArray) {
 
     var ref = firebase.database().ref("Chats");
@@ -247,8 +254,8 @@ angular.module('eoko.services', [])
     {
       //console.log("Chats Loaded",x);
       ready = true;
-      
-        
+
+
     });
 
     return {
@@ -257,7 +264,7 @@ angular.module('eoko.services', [])
       {
         return ready;
       },
-     
+
       /*getChats: function(usrID)
       {
         myChatLists = [];
@@ -273,14 +280,14 @@ angular.module('eoko.services', [])
               }
               if(quals == false){
                  myChatLists.push(chatData[i].$id);
-              }            
+              }
             }
           }
         }
         return myChatLists;
       },*/
 
-      loadChatData: function (chatKey) 
+      loadChatData: function (chatKey)
       {
         return chatData.$getRecord(chatKey);
       },
@@ -288,22 +295,22 @@ angular.module('eoko.services', [])
       getChatData: function()
       {
         return chatData;
-      } 
+      }
     };
 
   }])
 
 
-/* ------------------------------- BACK CALL FACTORY --------------------------- */ 
+/* ------------------------------- BACK CALL FACTORY --------------------------- */
 .factory('backcallFactory', ['$state','$ionicPlatform','$ionicHistory','$timeout',
   function($state,$ionicPlatform,$ionicHistory,$timeout){
- 
+
 var obj={};
     obj.backcallfun=function(){
     var backbutton=0;
        $ionicPlatform.registerBackButtonAction(function () {
           if ($state.current.name == "tabsController.actionList") {
-      
+
       if(backbutton==0){
             backbutton++;
               window.plugins.toast.showShortCenter('Press again to exit');
@@ -311,7 +318,7 @@ var obj={};
         }else{
             navigator.app.exitApp();
         }
-      
+
       }else{
             $ionicHistory.nextViewOptions({
                  disableBack: true
