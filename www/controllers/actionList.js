@@ -275,8 +275,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
             var time = Date.now();
             var userRef = firebase.database().ref('users/'+uid);
             userRef.on("value", function(snapshot){
-              location = snapshot.val().location;
-              console.log("location", location);
+              var location = snapshot.val().location;
               ref.update({
                 location: location,
                 name: $scope.currentUser.displayName,
