@@ -2,8 +2,65 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
+exports.sendMessageNotification = functions.database.ref('/Chats/{chatId}/messages/{messageId}').onWrite(event => {
+  const chatId = event.params.chatId;
+  const messageId = event.params.messageId;
 
-exports.sendNotification = functions.database.ref('/nudge/{userId}/{otherId}/')
+  const message = event.data.current.val();
+  console.log("message: ", message);
+
+
+  const chatIdPromise = admin.database().ref(`/Chats/${chatId}/`).once('value');
+  const getSenderPromise = admin.auth().getUser(message.userId);
+
+
+
+
+  //Make sure all 2 promises are returned before continuing
+  return Promise.all([chatIdPromise, getSenderPromise]).then(results => {
+    console.log("Chat data: ", results[0].val().ids);
+
+    var senderName = results[1].val().displayName;
+    console.log("Sender name: ", senderName);
+
+
+    for (var uid in results[0].val().ids){
+      //Makes sure the sender does not receive notification
+      if (uid!=message.userId){
+        console.log("uid:", uid);
+        const userRef = admin.database().ref("users/"+id);
+        userRef.on("value", function(snapshot){
+          const instanceId = snapshot.val().messageToken;
+
+          const payload = {
+              notification: {
+                  title: snapshot.val().name,
+                  body: message.text
+              }
+          };
+
+          admin.messaging().sendToDevice(instanceId, payload)
+              .then(function (response) {
+                  console.log("Successfully sent message:", response);
+              })
+              .catch(function (error) {
+                  console.log("Error sending message:", error);
+              });
+
+
+
+        })
+      }
+
+    }
+  })
+
+
+
+
+})
+
+exports.sendNudgeNotification = functions.database.ref('/nudge/{userId}/{otherId}/')
     .onWrite(event => {
         const nudge = event.data.current.val();
         const senderUid = nudge.senderUid;

@@ -274,7 +274,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
             var ref = firebase.database().ref('nudge/'+uid+"/"+$scope.otherUser.uid);
             var time = Date.now();
             var userRef = firebase.database().ref('users/'+uid);
-            userRef.on("value", function(snapshot){
+            userRef.once("value", function(snapshot){
               var location = snapshot.val().location;
               ref.update({
                 location: location,
