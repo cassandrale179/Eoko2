@@ -268,18 +268,25 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
           }
 
           $scope.sendNudge = function() {
-            var uid = $scope.user.uid;
+            var uid = $scope.currentUser.uid;
             console.log("current user uid:", uid);
 
             var ref = firebase.database().ref('nudge/'+uid+"/"+$scope.otherUser.uid);
             var time = Date.now();
-            ref.update({
-              location: $scope.user.location,
-              name: $scope.user.name,
-              senderUid: uid,
-              receiverUid: $scope.otherUser.uid,
-              latestTime: time
+            var userRef = firebase.database().ref('users/'+uid);
+            userRef.on("value", function(snapshot){
+              location = snapshot.val().location;
+              console.log("location", location);
+              ref.update({
+                location: location,
+                name: $scope.currentUser.displayName,
+                senderUid: uid,
+                receiverUid: $scope.otherUser.uid,
+                latestTime: time
+              })
             })
+
+
           }
 
 
