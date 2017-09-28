@@ -150,9 +150,9 @@ select{
 #B2 button{
   color: white;
   font-family: 'Roboto', sans-serif;
-  border: 0.1px rgba(255,255,255,0.2) solid;
+  border: 1px rgba(255, 255, 255, 0.61) solid;
   background: none;
-  margin-bottom: 5px;
+  margin: 5px;
   font-size: 15px;
   border-radius: 15px;
   padding: 2%;
@@ -181,7 +181,7 @@ select{
   color: white;
   background: transparent;
   border: none;
-  border: 0.1px rgba(255,255,255,0.2) solid;
+  border: 1px rgba(255, 255, 255, 0.61) solid;
   width: 70px;
   height: 40px;
   border-radius: 10px;

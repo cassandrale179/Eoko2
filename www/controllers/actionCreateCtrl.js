@@ -1,20 +1,30 @@
-app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionicPlatform', '$http', '$window', 'ngFB',
-  function ($scope, $state, $firebaseArray, $ionicPlatform, $http, $window, ngFB) {
+app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout',
+  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout) {
 
 
     //------- AUTOCOMPLETE LOCATION ----------
     var input = document.getElementById('pac-input');
     var autocomplete = new google.maps.places.Autocomplete(input);
 
-    $scope.action = {};
+    var d = new Date();
+    var hour = (d.getHours() < 10) ? '0' + d.getHours() : d.getHours();
+    var minute = (d.getMinutes() < 10) ? '0' + d.getMinutes() : d.getMinutes();
+
+
+    $scope.action = {
+      'startTime': new Date(1970, 0, 1, hour, minute, 0)
+    };
 
     //--------TAGS -------------------------------------
     var tagsRef = firebase.database().ref('actions');
     $scope.tagsArray = $firebaseArray(tagsRef);
     $scope.tagsArray.$loaded(function(arr){
-    })
+    });
 
-    clicked = {"background": "rgba(230, 126, 34, 0.9)", "color": "white"};
+    clicked = {
+        "background": "rgba(230, 126, 34, 0.9)",
+        "color": "white"
+      };
     unclicked = {};
 
     $scope.publicStyle = clicked;
@@ -30,7 +40,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
       }
       console.log($scope.selectedTags);
 
-    }
+    };
 
     $scope.setStyle = function(tag) {
       if ($scope.selectedTags.indexOf(tag)==-1){
@@ -39,55 +49,44 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
       else {
         return clicked;
       }
-    }
+    };
 
 //------ CHECK IF USER IS CURRENTLY LOGGING IN ------
     firebase.auth().onAuthStateChanged(function(user) {
       if (user){
         console.log("user is logged in." + user.uid);
-        currentUser = user;
+        $scope.currentUser = user;
+        $scope.action.photoURL = user.photoURL;
 
-        //Get Photo URL of owner of activity
-        var userRef = firebase.database().ref('users/' + user.uid);
-        userRef.on('value', function(snapshot){
-          $scope.action.photoURL = snapshot.val().photoURL;
-          console.log("photo URL acquired: ", $scope.action.photoURL);
-        })
-
+        console.log("photo URL acquired: ", $scope.action.photoURL);
+        startLoop();
       }
-      else{
-        console.log("No user")
-      }
-    })
+    });
 
-
-    //------------------- GET USER CURRENT LOCATION --------------------------------------
-    $ionicPlatform.ready(function(){
-      var watchId = navigator.geolocation.watchPosition(onSuccess);
-      function onSuccess(position) {
-        var latlng = position.coords.latitude + "," + position.coords.longitude;
-        console.log(latlng);
-        $scope.action.location = latlng;
-        var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&sensor=false";
-        $http.get(url).then(function(response){
-          console.log("Google maps response", response);
-          $scope.action.address = response.data.results[0].formatted_address;
-        });
-
-        //UPDATE USER'S LOCATION ON FIREBASE
-        var obj = {
-          location: latlng
-        }
-      }
-
-    })
+    function startLoop()
+    {
+       if(geoPos.isReady() == false)
+       {
+        console.log("geoLoc not ready Yet");
+        $timeout(function(){
+                startLoop();
+              },1000);
+       }
+       else
+       {
+         $scope.action.location = geoPos.getUserPosition();
+         var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + $scope.action.location + "&sensor=false";
+          $http.get(url).then(function(response){
+            console.log("Google maps response", response);
+            $scope.action.address = response.data.results[0].formatted_address;
+          });
+       }
+     }
 
 
     // ------------ THIS ALLOW USER TO MOVE BETWEEN TWO DIFFERENT SCREENS ON CREATE ACTION PAGE  --------
     $scope.description = 0;
-    $scope.action={};
-
-
+    $scope.privSelect = 'public';
     //------------- THIS ALLOW USER TO SET PRIVACY OF ACTION ---------------------
     $scope.setPrivacy = function(privacy) {
 
@@ -97,17 +96,19 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
       {
         $scope.publicStyle = clicked;
         $scope.privateStyle = unclicked;
+        $scope.privSelect = 'public';
       }
 
       if (privacy == "private")
       {
         $scope.privateStyle = clicked;
         $scope.publicStyle = unclicked;
+        $scope.privSelect = 'private';
       }
       $scope.action.privacy = privacy;
 
 
-    }
+    };
 
     // ------------ WHEN USER CLICK SUBMIT, THIS FUNCTION WILL HAPPEN --------
     $scope.submit = function(){
@@ -117,13 +118,13 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
         $scope.action.tags+=$scope.selectedTags[i].$value;
       }
       console.log($scope.action.tags);
-      console.log("current user uid: ", currentUser.uid);
+      console.log("current user uid: ", $scope.currentUser.uid);
       var activitiesRef = firebase.database().ref('activities');
-      var userActionsRef = firebase.database().ref('users/' + currentUser.uid + '/actions/myActions');
+      var userActionsRef = firebase.database().ref('users/' + $scope.currentUser.uid + '/actions/myActions');
 
 
       //List of friends for private Events
-      var friendsRef = firebase.database().ref('users/' + currentUser.uid + '/friends');
+      var friendsRef = firebase.database().ref('users/' + $scope.currentUser.uid + '/friends');
       var friendsArray = $firebaseArray(friendsRef);
 
       //Submit the event and get the event ID
@@ -144,7 +145,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
         $state.go('eventList');
         //Push event into firebase
 
-        ;
+       
       }
 
       if ($scope.action.privacy == "private")
@@ -158,13 +159,13 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$ionic
 
             ref.child(eventID).update(event);
 
-          })
+          });
         $state.go('eventList');
-        })
+        });
 
       }
 
-    }
+    };
 
 
   }])
