@@ -8,6 +8,17 @@
         <div id="E1B" ui-sref="actionCreate"><button ui-sref="actionCreate"> Create </button></div>
       </div>
 
+
+      <ion-scroll direction="x" class="eoko-horizontal-scroll" scrollbar-x="false"
+                scrollbar-y="false" style="height: 46px;">
+
+        <button ng-repeat="tags in tagList" ng-click="selectFilter('{{tags.$value}}')" id="{{tags.$value}}" class="eoko-horizontal-scroll-button eoko-text-thin">
+          {{tags.$value}}
+        </button>
+    </ion-scroll>
+
+    <br>
+
       <!-- _____________ CARDS OF EVENTS _______ -->
       <div id="E2">
         <div id="E2A" ng-repeat="(key,x) in events | orderObjectBy:'distance'">

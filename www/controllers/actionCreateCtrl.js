@@ -17,8 +17,9 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
     //--------TAGS -------------------------------------
     var tagsRef = firebase.database().ref('actions');
-    $scope.tagsArray = $firebaseArray(tagsRef);
-    $scope.tagsArray.$loaded(function(arr){
+    $scope.tagSelect = $firebaseArray(tagsRef);
+    $scope.tagSelect.$loaded(function(arr){
+      console.log("taglist create", $scope.tagSelect);
     });
 
     clicked = {
@@ -29,8 +30,9 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
     $scope.publicStyle = clicked;
     $scope.action.privacy = 'public';
-    $scope.selectedTags = [];
-    $scope.addTag = function(tag) {
+
+    //$scope.selectedTags = [];
+    /*$scope.addTag = function(tag) {
       var index = $scope.selectedTags.indexOf(tag);
       if (index!=-1){
         $scope.selectedTags.splice(index, 1);
@@ -42,6 +44,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
     };
 
+
     $scope.setStyle = function(tag) {
       if ($scope.selectedTags.indexOf(tag)==-1){
         return unclicked;
@@ -49,7 +52,40 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       else {
         return clicked;
       }
-    };
+    };*/
+
+
+    $scope.selectTagList = [];
+      //select filter
+      $scope.selectionTag = function (elementId)
+      {
+        console.log("started select");
+      var elementClass = document.getElementById(elementId).className;
+        if(elementClass == "eoko-horizontal-scroll-button eoko-text-thin activated" || elementClass == "eoko-horizontal-scroll-button eoko-text-thin ng-binding activated")
+        {
+          console.log("activated");
+          document.getElementById(elementId).className = "eoko-horizontal-scroll-button-selected eoko-text-thin";
+          $scope.selectTagList.push(elementId.replace(/create/,''));
+        }else{
+          console.log("not activated");
+          document.getElementById(elementId).className = "eoko-horizontal-scroll-button eoko-text-thin";
+          for(var i in $scope.selectTagList)
+          {
+            console.log("for loopin" , i);
+            if($scope.selectTagList[i] == elementId.replace(/create/,''))
+            {
+              console.log("splicin");
+                  $scope.selectTagList.splice(i, 1);
+            }
+          }
+        }
+        if($scope.selectTagList == [])
+        {
+          console.log("nuller than a null pointer");
+          $scope.selectTagList = null;
+        }
+        console.log("searching",$scope.selectTagList);
+      };
 
 //------ CHECK IF USER IS CURRENTLY LOGGING IN ------
     firebase.auth().onAuthStateChanged(function(user) {
@@ -74,12 +110,12 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
        }
        else
        {
-         $scope.action.location = geoPos.getUserPosition();
+        /* $scope.action.location = geoPos.getUserPosition();
          var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + $scope.action.location + "&sensor=false";
           $http.get(url).then(function(response){
             console.log("Google maps response", response);
             $scope.action.address = response.data.results[0].formatted_address;
-          });
+          });*/
        }
      }
 
@@ -113,10 +149,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
     // ------------ WHEN USER CLICK SUBMIT, THIS FUNCTION WILL HAPPEN --------
     $scope.submit = function(){
       //Store the tags
-      $scope.action.tags = "";
-      for (var i = 0; i<$scope.selectedTags.length; i++){
-        $scope.action.tags+=$scope.selectedTags[i].$value;
-      }
+      $scope.action.tags = $scope.selectTagList;
       console.log($scope.action.tags);
       console.log("current user uid: ", $scope.currentUser.uid);
       var activitiesRef = firebase.database().ref('activities');
@@ -147,6 +180,9 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
        
       }
+
+
+      
 
       if ($scope.action.privacy == "private")
       {

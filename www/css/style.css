@@ -689,3 +689,37 @@ select{
 .popover-wrapper{
   height: 100%;
 }
+
+.eoko-horizontal-scroll-button {
+  background: transparent;
+    border-radius: 14px;
+    border-width: 1px;
+    border-style: solid;
+    min-width: 61px;
+    padding: 3px 6px;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-size: 18px;
+  border-color: white;
+  color: white;
+   width: auto; }
+
+.eoko-horizontal-scroll-button-selected {
+  border-color: #F57C00;
+  background: #F57C00;
+  border-radius: 14px;
+  border-width: 1px;
+  min-width: 61px;
+  border-style: solid;
+ margin-left: 2px;
+  margin-right: 2px;
+  width: auto;
+   padding: 3px 6px;
+  font-size: 18px;
+  color: white; }
+
+
+.button.button-energized.button-outline {
+  border-color: white;
+  color: white;
+  }
