@@ -140,6 +140,14 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
       controller: 'chatTabCtrl'
     })
 
+    .state('invitePage', {
+      url: '/invitePage',
+      nativeTrasitions: {
+        type: "fade"
+      },
+      templateUrl: 'templates/invitePage.html',
+      controller: 'invitePageCtrl'
+    })
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/loginPage');
