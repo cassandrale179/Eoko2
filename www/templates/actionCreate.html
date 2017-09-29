@@ -41,7 +41,10 @@
 
         <!-- _____________________________ INPUT FIELD ___________________________________ -->
 
-        <input id="pac-input" ng-model="action.address" type="text" placeholder="Location"/>
+       <!--  <input id="pac-input" ng-model="action.address" ng-change="" type="text" placeholder="Location"/> -->
+
+        <input id="autocomplete" type="text" placeholder="Location" style="font-size: 1.6em"
+                   class="eoko-input eoko-text-thin" value="{{action.address}}" ng-click="geolocate()" required="">
         <!-- <input ng-model="action.date" type="date" placeholder="Date"/ /> -->
         <input ng-model="action.startTime" type="time" placeholder="HH:mm:ss"/>
         <textarea ng-model="action.description" placeholder="Description (Currently drinking coffee at Saxby. Anyone want to hangout?)"></textarea>

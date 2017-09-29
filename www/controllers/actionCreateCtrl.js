@@ -31,29 +31,6 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
     $scope.publicStyle = clicked;
     $scope.action.privacy = 'public';
 
-    //$scope.selectedTags = [];
-    /*$scope.addTag = function(tag) {
-      var index = $scope.selectedTags.indexOf(tag);
-      if (index!=-1){
-        $scope.selectedTags.splice(index, 1);
-      }
-      else{
-        $scope.selectedTags.push(tag);
-      }
-      console.log($scope.selectedTags);
-
-    };
-
-
-    $scope.setStyle = function(tag) {
-      if ($scope.selectedTags.indexOf(tag)==-1){
-        return unclicked;
-      }
-      else {
-        return clicked;
-      }
-    };*/
-
 
     $scope.selectTagList = [];
       //select filter
@@ -110,12 +87,16 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
        }
        else
        {
-        /* $scope.action.location = geoPos.getUserPosition();
+           $scope.action.location = geoPos.getUserPosition();
          var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + $scope.action.location + "&sensor=false";
           $http.get(url).then(function(response){
             console.log("Google maps response", response);
             $scope.action.address = response.data.results[0].formatted_address;
-          });*/
+          },
+          function(err)
+          {
+            console.log("Problem is probably CORS", err);
+          });
        }
      }
 
@@ -142,6 +123,8 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
         $scope.privSelect = 'private';
       }
       $scope.action.privacy = privacy;
+
+
 
 
     };
@@ -203,5 +186,62 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
     };
 
+
+
+//------------------------------google maps stuff-------------------
+
+function initAutocomplete() {
+          $scope.autocomplete = new google.maps.places.Autocomplete(
+              (document.getElementById('autocomplete')),
+              {types: ['geocode','establishment']});
+
+          container = document.getElementsByClassName('pac-container');
+            // disable ionic data tab
+            angular.element(container).attr('data-tap-disabled', 'true');
+            // leave input field if google-address-entry is selected
+            angular.element(container).on("click", function(){
+                document.getElementById('searchBar').blur();
+            });
+
+          $scope.autocomplete.addListener('place_changed', fillInAddress);
+        }
+
+        function fillInAddress() {
+          var place = $scope.autocomplete.getPlace();
+          $scope.action.address = place.formatted_address;
+        }
+
+
+        container = document.getElementsByClassName('pac-container');
+        // disable ionic data tab
+        angular.element(container).attr('data-tap-disabled', 'true');
+        // leave input field if google-address-entry is selected
+        angular.element(container).on("click", function(){
+            document.getElementById('searchBar').blur();
+        });
+
+
+        
+        $scope.geolocate = function() {
+
+            google.maps.event.addDomListener(window, 'load', initAutocomplete);
+            initAutocomplete();
+
+
+            
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              var geolocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              };
+              var circle = new google.maps.Circle({
+                center: geolocation,
+                radius: position.coords.accuracy
+              });
+              $scope.autocomplete.setBounds(circle.getBounds());
+            });
+          }
+        };
 
   }])
