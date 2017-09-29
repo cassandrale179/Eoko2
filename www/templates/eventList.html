@@ -1,6 +1,6 @@
 <ion-view hide-nav-bar="true" >
-  <ion-content padding="true" class="innerbackground" style="filter: blur({{blurry.behind}});">
-    <div id="E">
+  <ion-content padding="true" class="innerbackground" style="filter: blur({{blurry.behind}});" scroll="false">
+    <!-- <div id="E"> -->
       <!-- _____________ NAVIGATION BAR _______ -->
       <div id="E1">
         <i class="fa fa-search"></i>
@@ -18,10 +18,10 @@
     </ion-scroll>
 
     <br>
-
+     <ion-scroll overflow-scroll="false" style="height: calc(84% - 70px);">
       <!-- _____________ CARDS OF EVENTS _______ -->
       <div id="E2">
-        <div id="E2A" ng-repeat="(key,x) in events | orderObjectBy:'distance'">
+        <div id="E2A" ng-repeat="(key,x) in events track by $index | orderObjectBy:'distance'">
           <img ng-src="{{x.info.photoURL}}" />
           <div id="E2A1" ng-click="openPopover($event, x)">
             <h4>{{x.info.name}}</h4>
@@ -44,7 +44,8 @@
           </div>
         </div>
       </div>
-    </div>
+      </ion-scroll>
+    <!-- </div> -->
 
     <script id="my-popover.html" type="text/ng-template">
     <div ng-click="checkHit($event)" class="popup-container popup-showing active">

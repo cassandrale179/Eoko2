@@ -196,7 +196,7 @@ select{
 
 /* ---------------------------- PEOPLE WITHIN 10 MILES ------------------------ */
 #C{
-  margin-top: 50px;
+  margin-top: 25px;
   padding-left: 5%;
   padding-right: 5%;
 }
@@ -723,3 +723,7 @@ select{
   border-color: white;
   color: white;
   }
+
+  ion-scroll[direction=y] {
+  height: 100vh;
+}

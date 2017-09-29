@@ -1,11 +1,13 @@
 <ion-view hide-nav-bar="true">
-  <ion-content padding="true" class="innerbackground">
+  <ion-content padding="true" class="innerbackground" scroll="false">
     <img class="logo" src="./img/eoko-logo.svg" ui-sref="settingPage" />
     <img class="tagline" src="./img/peoplenearyou.png"></img>
 
 
     <!-- ____________________  DISPLAY USER FRIENDS WITHIN 10 MILES  _________________  -->
-
+   
+ 
+    <ion-scroll overflow-scroll="false" style="height: calc(86% - 70px);">
     <div id="C">
       <div id="C1" ng-repeat="x in peopleList track by $index" ng-if="currentUser.uid != x.uid"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
         <img ng-src="{{x.photoURL}}"/>
@@ -54,7 +56,8 @@
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </ion-scroll>
 </ion-content>
 
 <!-- NAVIGATIO BAR -->

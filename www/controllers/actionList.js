@@ -9,9 +9,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         $scope.currentUser = firebaseUser;
 
         // $scope.currentUser.uid = UserInfo.getUser().uid;
-      })
-
-
+      });
     });
 
 
