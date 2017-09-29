@@ -10,6 +10,11 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
       }
     });
 
+    $scope.$on('$ionicView.afterEnter', function () //before anything runs
+    {
+      startLoop();  
+    });
+
     var res = firebase.database().ref("actions");
         $scope.tagList = $firebaseArray(res);
         $scope.tagList.$loaded().then(function(lad)

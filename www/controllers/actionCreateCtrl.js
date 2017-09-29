@@ -1,5 +1,5 @@
-app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout',
-  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout) {
+app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout','$firebaseObject',
+  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout, $firebaseObject) {
 
 
     //------- AUTOCOMPLETE LOCATION ----------
@@ -29,7 +29,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
     unclicked = {};
 
     $scope.publicStyle = clicked;
-    $scope.action.privacy = 'public';
+    
 
 
     $scope.selectTagList = [];
@@ -71,6 +71,13 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
         $scope.currentUser = user;
         $scope.action.photoURL = user.photoURL;
 
+        var rel = firebase.database().ref('users').child(user.uid);
+        $scope.thisUser = $firebaseObject(rel);
+        $scope.thisUser.$loaded().then(function(suc)
+        {
+          $scope.setPrivacy($scope.thisUser.privacy);
+        });
+
         console.log("photo URL acquired: ", $scope.action.photoURL);
         startLoop();
       }
@@ -88,7 +95,8 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
        else
        {
            $scope.action.location = geoPos.getUserPosition();
-         var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + $scope.action.location + "&sensor=false";
+         var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + $scope.action.location +
+          "&key=AIzaSyCxi6Eah3dgixKG8oFO8DB6sMVN1v3mxuQ";
           $http.get(url).then(function(response){
             console.log("Google maps response", response);
             $scope.action.address = response.data.results[0].formatted_address;
@@ -103,12 +111,9 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
     // ------------ THIS ALLOW USER TO MOVE BETWEEN TWO DIFFERENT SCREENS ON CREATE ACTION PAGE  --------
     $scope.description = 0;
-    $scope.privSelect = 'public';
     //------------- THIS ALLOW USER TO SET PRIVACY OF ACTION ---------------------
-    $scope.setPrivacy = function(privacy) {
-
-
-
+    $scope.setPrivacy = function(privacy) 
+    {
       if (privacy == "public")
       {
         $scope.publicStyle = clicked;
@@ -123,10 +128,6 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
         $scope.privSelect = 'private';
       }
       $scope.action.privacy = privacy;
-
-
-
-
     };
 
     // ------------ WHEN USER CLICK SUBMIT, THIS FUNCTION WILL HAPPEN --------
@@ -136,9 +137,10 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       console.log($scope.action.tags);
       console.log("current user uid: ", $scope.currentUser.uid);
       var activitiesRef = firebase.database().ref('activities');
-      var userActionsRef = firebase.database().ref('users/' + $scope.currentUser.uid + '/actions/myActions');
+      var userActionsRef = firebase.database().ref('users/' + $scope.currentUser.uid).child('actions/myActions');
 
-
+      $scope.action.startTime = $scope.action.startTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+      console.log("new time",$scope.action.startTime);
       //List of friends for private Events
       var friendsRef = firebase.database().ref('users/' + $scope.currentUser.uid + '/friends');
       var friendsArray = $firebaseArray(friendsRef);
@@ -150,7 +152,8 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       //Push the event under the user database
       var event = {
         eventID: eventID,
-        location: $scope.action.location
+        location: $scope.action.location,
+        time: $scope.action.startTime
       };
 
       userActionsRef.child(eventID).update(event);
@@ -159,15 +162,11 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       {
         console.log($scope.action);
         $state.go('eventList');
+        return;
         //Push event into firebase
-
-       
       }
 
-
-      
-
-      if ($scope.action.privacy == "private")
+      else if ($scope.action.privacy == "private")
       {
         console.log($scope.action);
         friendsArray.$loaded(function(friendsArray){
@@ -208,7 +207,30 @@ function initAutocomplete() {
 
         function fillInAddress() {
           var place = $scope.autocomplete.getPlace();
+          console.log("THE FUCKING PLACE IS", place.geometry);
           $scope.action.address = place.formatted_address;
+
+          var addr = place.formatted_address;
+          addr = addr.replace(/,/g,'');
+          addr = addr.replace(/ /g,'+');
+
+
+         var url = "https://maps.googleapis.com/maps/api/geocode/json?address="+ addr 
+         + "&key=AIzaSyCxi6Eah3dgixKG8oFO8DB6sMVN1v3mxuQ";
+
+          $http.get(url).then(function(response){
+            console.log("SHATTY GOOGLE MAPS", response);
+
+            var lat = response.data.results[0].geometry.location.lat;
+            var long = response.data.results[0].geometry.location.lng;
+
+             $scope.action.location = lat + ', ' + long;
+          },
+          function(err)
+          {
+            console.log("Problem is probably CORS", err);
+          });
+         
         }
 
 
@@ -235,6 +257,7 @@ function initAutocomplete() {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
               };
+              console.log("long lat", lng, lat);
               var circle = new google.maps.Circle({
                 center: geolocation,
                 radius: position.coords.accuracy
