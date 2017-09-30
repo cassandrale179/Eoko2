@@ -1,6 +1,6 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory','backcallFactory','$firebaseObject','$ionicPopover',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory','backcallFactory','$firebaseObject','$ionicPopover','$ionicPopup',
 
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory,backcallFactory,$firebaseObject, $ionicPopover) {
+  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory,backcallFactory,$firebaseObject, $ionicPopover, $ionicPopup) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
@@ -14,7 +14,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
               console.log(token);
               userRef.update({
                 messageToken: token
-              })
+              });
 
           }, function(error) {
               console.error(error);
@@ -26,7 +26,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
               console.log(token);
               userRef.update({
                 messageToken: token
-              })
+              });
 
           }, function(error) {
               console.error(error);
@@ -34,7 +34,8 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
           window.FirebasePlugin.onNotificationOpen(function(notification) {
               console.log(notification);
-              $state.go('actionCreate');
+              var combined = notification.name + " sent you a nudge! Go to messaging?";
+              showNotifyAlert(combined, notification);
           }, function(error) {
               console.error(error);
           });
@@ -42,6 +43,42 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         // $scope.currentUser.uid = UserInfo.getUser().uid;
       });
     });
+
+
+    
+    $scope.blurry = {behind: "0px"};
+
+     function showNotifyAlert(message, info) {
+        $scope.blurry = {behind: "5px"};
+
+        var confirmPopup = $ionicPopup.confirm({
+          title: 'Error',
+          cssClass: 'eoko-alert-pop-up',
+          template: message
+        });
+        confirmPopup.then(function(res) {
+          if(res)
+          {
+            $scope.blurry = {behind: "0px"};
+            console.log("redirect to message");
+            var req = firebase.database().ref('users').child(info.uid);
+            var nudgeUser = $firebaseObject(req);
+            nudgeUser.$loaded().then(function(ss)
+            {
+              $scope.blurry = {behind: "0px"};
+              $scope.newConversation(nudgeUser);
+              return;
+            });
+            
+          }
+          else
+          {
+            $scope.blurry = {behind: "0px"};
+            return;
+          }
+          
+        });
+      }
 
 
       //just checks if ready
