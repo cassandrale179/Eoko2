@@ -130,6 +130,8 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       $scope.action.privacy = privacy;
     };
 
+
+
     // ------------ WHEN USER CLICK SUBMIT, THIS FUNCTION WILL HAPPEN --------
     $scope.submit = function(){
       //Store the tags
@@ -157,6 +159,28 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       };
 
       userActionsRef.child(eventID).update(event);
+
+
+      //Create an event chat
+      console.log("userInfo", $scope.currentUser);
+      var chatsRef = firebase.database().ref('Chats/');
+      var eventChat = {
+        ids: {
+          id: $scope.currentUser.uid,
+          name: $scope.currentUser.displayName,
+          avatar: $scope.currentUser.photoURL
+        },
+        name: $scope.action.name
+      }
+      var eventChatRef = chatsRef.push(eventChat);
+      var eventChatID = {
+        chatID: eventChatRef.key
+      }
+
+      //Add chat id to the event creator (currentuser)
+      var userChatRef = firebase.database().ref('users/' + $scope.currentUser.uid).child('chat');
+      userChatRef.push(eventChatID);
+
 
       if ($scope.action.privacy == "public")
       {

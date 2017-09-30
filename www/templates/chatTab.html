@@ -1,5 +1,6 @@
 <ion-view hide-nav-bar="true">
-  <ion-content padding="true" class="innerbackground">
+
+  <ion-content padding="true" class="innerbackground" scroll="false">
     <!--SPACER-->
     <div class="spacer" style="height: 30px;"></div>
     
@@ -23,17 +24,27 @@
     <ion-scroll style="height: calc(100%); padding: 0px;">
       <ion-list id="actionList">
 
-      <div ng-if="chatData.length == 0" class="eoko-text-button-nav" style="text-align:center;"><span style="line-height: 33px;">No Conversations Started. Press and hold a friend's name to start one!</span>
+        <!-- if there is no conversation -->
+        <div ng-if="chatData.length == 0" class="eoko-text-button-nav" style="text-align:center;">
+          <span style="line-height: 33px;">
+            No Conversations Started.
+          </span>
         </div>
 
-          <ion-item ng-repeat="chat in chatData" ng-if="chat.title != ''">
-            <h3 ng-if="chat.info.name == ''">{{chat.title}}</h3>
-            <h3 ng-if="chat.info.name != ''">{{chat.info.name}}</h3>
+          <ion-item ng-repeat="chat in chatData" ng-if="chat.title != ''" id="L2">
+            
+            <div id="L3">
+              <img ng-src="{{currentUser.photoURL}}"/>
+              <h3 ng-if="chat.info.name == ''">{{chat.title}}</h3>
+              <h3 ng-if="chat.info.name != ''">{{chat.info.name}}</h3>
 
-            <a ui-sref="messagePage({otherID: chat.info.ids, convoID: chat.info.$id})"
+              <a ui-sref="messagePage({otherID: chat.info.ids, convoID: chat.info.$id})"
                class="eoko-button-clear ion-chevron-right" native-transitions nav-direction="forward"
                style="float:right;margin-top: -20px;color:black;"></a>
+
+            </div>
           </ion-item>
+
       </ion-list>
     </ion-scroll>
   </ion-content>
