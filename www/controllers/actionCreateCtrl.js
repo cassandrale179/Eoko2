@@ -1,5 +1,5 @@
-app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout','$firebaseObject',
-  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout, $firebaseObject) {
+app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout','$firebaseObject','$ionicPopup',
+  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout, $firebaseObject,$ionicPopup) {
 
 
     //------- AUTOCOMPLETE LOCATION ----------
@@ -30,7 +30,19 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
     $scope.publicStyle = clicked;
     
+    $scope.blurry = {behind: "0px"};
+    function showAlert(message) {
+        $scope.blurry = {behind: "5px"};
 
+        var alertPopup = $ionicPopup.alert({
+          title: 'Error',
+          cssClass: 'eoko-alert-pop-up',
+          template: message
+        });
+        alertPopup.then(function(res) {
+          $scope.blurry = {behind: "0px"};
+        });
+      };
 
     $scope.selectTagList = [];
       //select filter
@@ -132,8 +144,48 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
     // ------------ WHEN USER CLICK SUBMIT, THIS FUNCTION WILL HAPPEN --------
     $scope.submit = function(){
-      //Store the tags
       $scope.action.tags = $scope.selectTagList;
+
+      if($scope.action.privacy == null || $scope.action.privacy == undefined
+         || $scope.action.privacy == "" || $scope.action.privacy == " ")
+      {
+        showAlert("You must select public or private");
+        return;
+      }
+      if($scope.action.name == null || $scope.action.name == undefined
+         || $scope.action.name == "" || $scope.action.name == " ")
+      {
+        showAlert("You must create a title");
+        return;
+      }
+      if($scope.action.tags == null || $scope.action.tags == undefined
+         || $scope.action.tags == "" || $scope.action.tags == " ")
+      {
+        showAlert("You must press at least one tag");
+        return;
+      }
+      if($scope.action.address == null || $scope.action.address == undefined
+         || $scope.action.address == "" || $scope.action.address == " ")
+      {
+        showAlert("You must enter an address");
+        return;
+      }
+      if($scope.action.startTime == null || $scope.action.startTime == undefined
+         || $scope.action.startTime == "" || $scope.action.startTime == " ")
+      {
+        showAlert("You must enter a start time");
+        return;
+      }
+      if($scope.action.description == null || $scope.action.description == undefined
+         || $scope.action.description == "" || $scope.action.description == " ")
+      {
+        showAlert("You must enter a description");
+        return;
+      }
+
+
+      //Store the tags
+      
       console.log($scope.action.tags);
       console.log("current user uid: ", $scope.currentUser.uid);
       var activitiesRef = firebase.database().ref('activities');
