@@ -1,15 +1,24 @@
 <ion-view hide-nav-bar="true">
   <ion-content padding="true" class="innerbackground">
-    <div class="spacer" style="height: 20px;"></div>
-      <div>
-        <a class="eoko-icon-searchbar-small"></a>
-        <input class="eoko-nav-searchbar" placeholder="Search by name" ng-model="search.text">
-        <!-- <a ng-click="newConversation()" class="eoko-button-clear eoko-icon-new-message"></a> -->
+    <!--SPACER-->
+    <div class="spacer" style="height: 30px;"></div>
+    
+    <!-- SEARCH BAR -->
+    <div id="L">
+      <a class="eoko-icon-searchbar-left"></a>
+      <input placeholder="Search messages" ng-model="search.text">
+      <!-- <a ng-click="newConversation()" class="eoko-button-clear eoko-icon-new-message"></a> -->
     </div>
 
+    <!--PEOPLE NEAR YOU LIST-->
+    <ion-scroll id="L1" direction="x" scrollbar-x="false" scrollbar-y="false">
+        <img *ngFor="#item of items" src="http://placehold.it/150x70">
+    </ion-scroll>
 
-    <!--spacer-->
-    <div class="spacer" style="height: 20px;"></div>
+    
+    <!--SPACER-->
+    <div class="spacer" style="height: 30px;"></div>
+
 
     <ion-scroll style="height: calc(100%); padding: 0px;">
       <ion-list id="actionList">
@@ -27,13 +36,15 @@
           </ion-item>
       </ion-list>
     </ion-scroll>
-</ion-content>
+  </ion-content>
 
-<!-- NAVIGATIO BAR -->
+
+  <!-- NAVIGATIO BAR -->
   <div id="navbar">
     <button><i ui-sref="joinList" class="fa fa-bell" aria-hidden="true"></i></button>
     <button><i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true"></i></button>
     <button><i ui-sref="actionList" class="fa fa-users" aria-hidden="true"></i></button>
     <button><i ui-sref="chatTab" class="fa fa-comment" aria-hidden="true"></i></button>
   </div>
+
 </ion-view>
