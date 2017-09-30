@@ -61,17 +61,15 @@ exports.sendMessageNotification = functions.database.ref('/Chats/{chatId}/messag
 })
 
 exports.sendNudgeNotification = functions.database.ref('/nudge/{userId}/{otherId}/')
-    .onWrite(event => {
+    .onCreate(event => {
         const nudge = event.data.current.val();
         const senderUid = nudge.senderUid;
         const receiverUid = nudge.receiverUid;
         const promises = [];
 
-        // if (senderUid == receiverUid) {
-        //     //if sender is receiver, don't send notification
-        //     promises.push(event.data.current.ref.remove());
-        //     return Promise.all(promises);
-        // }
+        const userId = event.params.userId;
+        const otherId = event.params.otherId;
+
 
         const getInstanceIdPromise = admin.database().ref(`/users/${receiverUid}/`).once('value');
         const getReceiverUidPromise = admin.auth().getUser(receiverUid);
@@ -90,14 +88,30 @@ exports.sendNudgeNotification = functions.database.ref('/nudge/{userId}/{otherId
             const payload = {
                 notification: {
                     title: "You have an Eoko nudge!",
-                    body: body,
-                    icon: sender.photoURL
+                    body: body
+
+                },
+                data: {
+                  uid: senderUid,
+                  name: sender.displayName,
+                  photoURL: sender.photoURL
                 }
             };
 
             admin.messaging().sendToDevice(instanceId, payload)
                 .then(function (response) {
                     console.log("Successfully sent message:", response);
+                    var ref = admin.database().ref(`/nudge/${userId}/${otherId}`);
+                    ref.update({
+                      name: sender.displayName,
+                      photoURL: sender.photoURL,
+                      uid: sender.uid
+                    })
+                    ref.remove();
+
+
+
+
                 })
                 .catch(function (error) {
                     console.log("Error sending message:", error);
