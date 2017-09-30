@@ -53,12 +53,14 @@ select{
   bottom: 0px;
 
 }
-#navbar button{
+#navbar i{
   color: rgba(0,0,0,0.3);
   width: 25%;
   font-size: 45px;
   background: none !important;
   border: none !important;
+  padding-left: 5%; 
+  padding-bottom: 5%;
 }
 
 #error{
@@ -139,6 +141,8 @@ select{
 #B p{
   color: rgba(255,255,255,0.8);
   font-style: italic;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 #B2{
@@ -733,7 +737,7 @@ select{
 #L input{
   background: none;
   border: none;
-  font-size: 20px; 
+  font-size: 20px;
   color: #263238;
   /* text-align: center; */
 }
