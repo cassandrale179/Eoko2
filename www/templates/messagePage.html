@@ -5,7 +5,8 @@
 
     <div class="button-bar">
       <a ui-sref="chatTab" class="eoko-button-clear ion-chevron-left" native-transitions nav-direction="back"></a>
-      <a class="eoko-button-text eoko-text-button-nav eoko-text-regular">{{partner.name}}</a>
+      <img id="M" ng-src="{{userInfo.photoURL}}"/>
+      <a class="M2">{{chat.title}}</a>
     </div>
 
     <div>
@@ -14,7 +15,7 @@
         <div ng-repeat="message in messages track by $index" ng-class="{other: message.userId == myId}" class="messages">
 
           <div class="message" ng-class="{'slide-right': hideTime, '': !hideTime}" style="height:auto;">
-          <img src="{{message.avatar}}">
+          <img id="M" src="{{message.avatar}}">
             <!--other user's message-->
             <span ng-if="message.userId != myId" class="eoko-text-light" style="font-size: 17px; margin-bottom: 1px; margin-right: 120px;">
               {{ message.text }}

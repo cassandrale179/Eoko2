@@ -708,18 +708,55 @@ select{
   background-color: transparent;
   border: none;
   border-color: transparent;
+  padding: 1%;
 }
 
 #L3{
+  margin-bottom: 20px;
+  display: inline-block;
+  width: 80%;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+#L4{
+  border-radius: 50%;
+  float: left;
+  object-fit: cover;
+  width: 70px;
+  height: 70px;
+  margin-right: 15px;
+}
 
+#L5{
+  position: relative;
+  width: 100%;
+  font-family: 'San Francisco Display', sans-serif;
+  font-weight: 500;
+  font-size: 27px;
+  margin-top: 7px;
+  margin-bottom: 14px;
+  color: white
+}
+
+#L6{
+  font-family: 'San Francisco Display', sans-serif;
+  font-weight: 100;
+  color: white;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
 
 
 
 /* --------------------- CHAT PAGE DETAIL --------------- */
-
+#M{
+  border-radius: 50%;
+  float: left;
+  object-fit: cover;
+  width: 70px;
+  height: 70px;
+  margin-right: 15px;
+}
 
 
 

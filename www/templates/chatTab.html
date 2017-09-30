@@ -12,9 +12,9 @@
     </div>
 
     <!--PEOPLE NEAR YOU LIST-->
-    <ion-scroll id="L1" direction="x" scrollbar-x="false" scrollbar-y="false">
+    <!-- <ion-scroll id="L1" direction="x" scrollbar-x="false" scrollbar-y="false">
         <img *ngFor="#item of items" src="http://placehold.it/150x70">
-    </ion-scroll>
+    </ion-scroll> -->
 
     
     <!--SPACER-->
@@ -27,21 +27,17 @@
         <!-- if there is no conversation -->
         <div ng-if="chatData.length == 0" class="eoko-text-button-nav" style="text-align:center;">
           <span style="line-height: 33px;">
-            No Conversations Started.
+            No Conversations
           </span>
         </div>
 
           <ion-item ng-repeat="chat in chatData" ng-if="chat.title != ''" id="L2">
             
-            <div id="L3">
-              <img ng-src="{{currentUser.photoURL}}"/>
-              <h3 ng-if="chat.info.name == ''">{{chat.title}}</h3>
-              <h3 ng-if="chat.info.name != ''">{{chat.info.name}}</h3>
-
-              <a ui-sref="messagePage({otherID: chat.info.ids, convoID: chat.info.$id})"
-               class="eoko-button-clear ion-chevron-right" native-transitions nav-direction="forward"
-               style="float:right;margin-top: -20px;color:black;"></a>
-
+            <img id="L4" ng-src="{{userInfo.photoURL}}"/>
+            <div id="L3" ui-sref="messagePage({otherID: chat.info.ids, convoID: chat.info.$id})" 
+                         native-transitions nav-direction="forward">  
+              <div id="L5" ng-if="chat.info.name == ''">{{chat.title}}</div>
+              <div id="L6">You: hi there</div>
             </div>
           </ion-item>
 

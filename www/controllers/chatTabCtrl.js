@@ -7,7 +7,7 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
     //before anything runs, get the list of all chats
     $scope.$on('$ionicView.afterEnter', function () 
     {
-      getChats();
+      populateChats();
     });
 
 
@@ -28,10 +28,10 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
           if(event.event == "child_removed")
           {
             console.log("event",event.event);
-            getChats();
+            populateChats();
           }  
         });
-        getChats();
+        populateChats();
       }
     }
 
@@ -49,34 +49,17 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
       return nameList.join(", ");
    }
 
-    
-   //get all existing chats
-  function getChats(){
-
-    $scope.chatList = [];
-    var chatRef = firebase.database().ref("Chats/");
-    $scope.chatList = $firebaseArray(chatRef);
-
-    $scope.chatList.$loaded().then(function(x) {
-      console.log("got chat list", $scope.chatList);
-    })
-  }
-
 
    function populateChats()
    {
-      //var chatList = chatFactory.getChats($scope.currentUser.uid);
-      //console.log("the chat list",chatList);
       $scope.chatData = [];
       console.log("userInfo", $scope.userInfo);
       for(var i in $scope.userInfo.chat)
       {
-        //console.log("ids is", $scope.userInfo.chat[i].chatID);
         var chatdata = chatFactory.loadChatData($scope.userInfo.chat[i].chatID);
         var chattitle = makeName(chatdata.ids);
         
         console.log("chatdata: ", chatdata);
-        // console.log(chatdata, chattitle);
         var obj = {
           info: chatdata,
           title: chattitle

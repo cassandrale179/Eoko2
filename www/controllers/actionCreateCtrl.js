@@ -149,7 +149,10 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
       //Create an event chat
       var chatsRef = firebase.database().ref('Chats/');
-      var eventChatRef = chatsRef.push({name: $scope.action.name});
+      var eventChatRef = chatsRef.push({
+        name: $scope.action.name,
+        photoURL: $scope.currentUser.photoURL
+      });
       var eventChatID = {chatID: eventChatRef.key}
       chatsRef.child(eventChatID.chatID + '/ids').push({
         id: $scope.currentUser.uid,
