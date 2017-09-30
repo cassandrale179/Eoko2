@@ -5,8 +5,8 @@
 
 
     <!-- ____________________  DISPLAY USER FRIENDS WITHIN 10 MILES  _________________  -->
-   
- 
+
+
     <ion-scroll overflow-scroll="false" style="height: calc(86% - 70px);">
     <div id="C">
       <div id="C1" ng-repeat="x in peopleList track by $index" ng-if="currentUser.uid != x.uid"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
@@ -73,9 +73,9 @@
 
 <!-- NAVIGATIO BAR -->
   <div id="navbar">
-    <button><i ui-sref="joinList" class="fa fa-bell" aria-hidden="true"></i></button>
-    <button><i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true"></i></button>
-    <button><i ui-sref="actionList" class="fa fa-users" aria-hidden="true"></i></button>
-    <button><i ui-sref="chatTab" class="fa fa-comment" aria-hidden="true"></i></button>
+    <i ui-sref="joinList" class="fa fa-bell" aria-hidden="true"></i>
+    <i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true"></i>
+    <i ui-sref="actionList" class="fa fa-users" aria-hidden="true"></i>
+    <i ui-sref="chatTab" class="fa fa-comment" aria-hidden="true"></i>
   </div>
 </ion-view>
