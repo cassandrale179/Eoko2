@@ -1,6 +1,6 @@
 <ion-view hide-nav-bar="true" >
-  <ion-content padding="true" class="innerbackground" style="filter: blur({{blurry.behind}});">
-    <div id="E">
+  <ion-content padding="true" class="innerbackground" style="filter: blur({{blurry.behind}});" scroll="false">
+    <!-- <div id="E"> -->
       <!-- _____________ NAVIGATION BAR _______ -->
       <div id="E0" ng-show="searchBar==1">
         <input type="text" placeholder="Search for an event..." ng-model="searchEvent" />
@@ -12,6 +12,17 @@
           <div id="E1B" ui-sref="actionCreate"><button ui-sref="actionCreate"> Create </button></div>
       </div>
 
+
+      <ion-scroll direction="x" class="eoko-horizontal-scroll" scrollbar-x="false"
+                scrollbar-y="false" style="height: 46px;">
+
+        <button ng-repeat="tags in tagList" ng-click="selectFilter('{{tags.$value}}')" id="{{tags.$value}}" class="eoko-horizontal-scroll-button eoko-text-thin">
+          {{tags.$value}}
+        </button>
+    </ion-scroll>
+
+    <br>
+     <ion-scroll overflow-scroll="false" style="height: calc(84% - 70px);">
       <!-- _____________ CARDS OF EVENTS _______ -->
       <div id="E2">
         <div id="E2A" ng-repeat="(key,x) in events | orderObjectBy:'distance' | filter: searchEvent">
@@ -27,7 +38,8 @@
           </div>
         </div>
       </div>
-    </div>
+      </ion-scroll>
+    <!-- </div> -->
 
     <script id="my-popover.html" type="text/ng-template">
     <div ng-click="checkHit($event)" class="popup-container popup-showing active">

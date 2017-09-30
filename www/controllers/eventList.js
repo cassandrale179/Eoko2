@@ -9,9 +9,22 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
     firebase.auth().onAuthStateChanged(function(user){
       if (user){
         $scope.currentUser = user;
-        startLoop();
+        startLoop();        
       }
     });
+
+    $scope.$on('$ionicView.afterEnter', function () //before anything runs
+    {
+      startLoop();  
+    });
+
+    var res = firebase.database().ref("actions");
+        $scope.tagList = $firebaseArray(res);
+        $scope.tagList.$loaded().then(function(lad)
+        {
+          console.log("taglist action", $scope.tagList);
+
+        });
 
     //just checks if ready
     function startLoop()
@@ -28,6 +41,33 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
         getEvents();
        }
      }
+
+     $scope.searchEventFilter = [];
+      //select filter
+      $scope.selectFilter = function (elementId)
+      {
+      var elementClass = document.getElementById(elementId).className;
+        if(elementClass == "eoko-horizontal-scroll-button eoko-text-thin activated" || elementClass == "eoko-horizontal-scroll-button eoko-text-thin ng-binding activated")
+        {
+          document.getElementById(elementId).className = "eoko-horizontal-scroll-button-selected eoko-text-thin";
+          $scope.searchEventFilter.push(elementId);
+        }else{
+          document.getElementById(elementId).className = "eoko-horizontal-scroll-button eoko-text-thin";
+          for(var i in $scope.searchEventFilter)
+          {
+            if($scope.searchEventFilter[i] == elementId)
+            {
+                  $scope.searchEventFilter.splice(i, 1);
+            }
+          }
+        }
+        if($scope.searchEventFilter == [])
+        {
+          $scope.searchEventFilter = null;
+        }
+        console.log("searching",$scope.searchEventFilter)
+      };
+
 
       //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
       $scope.joinAction = function(eventid){

@@ -1,5 +1,5 @@
-app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout',
-  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout) {
+app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout','$firebaseObject',
+  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout, $firebaseObject) {
 
 
     //------- AUTOCOMPLETE LOCATION ----------
@@ -17,8 +17,9 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
     //--------TAGS -------------------------------------
     var tagsRef = firebase.database().ref('actions');
-    $scope.tagsArray = $firebaseArray(tagsRef);
-    $scope.tagsArray.$loaded(function(arr){
+    $scope.tagSelect = $firebaseArray(tagsRef);
+    $scope.tagSelect.$loaded(function(arr){
+      console.log("taglist create", $scope.tagSelect);
     });
 
     clicked = {
@@ -28,28 +29,40 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
     unclicked = {};
 
     $scope.publicStyle = clicked;
-    $scope.action.privacy = 'public';
-    $scope.selectedTags = [];
-    $scope.addTag = function(tag) {
-      var index = $scope.selectedTags.indexOf(tag);
-      if (index!=-1){
-        $scope.selectedTags.splice(index, 1);
-      }
-      else{
-        $scope.selectedTags.push(tag);
-      }
-      console.log($scope.selectedTags);
+    
 
-    };
 
-    $scope.setStyle = function(tag) {
-      if ($scope.selectedTags.indexOf(tag)==-1){
-        return unclicked;
-      }
-      else {
-        return clicked;
-      }
-    };
+    $scope.selectTagList = [];
+      //select filter
+      $scope.selectionTag = function (elementId)
+      {
+        console.log("started select");
+      var elementClass = document.getElementById(elementId).className;
+        if(elementClass == "eoko-horizontal-scroll-button eoko-text-thin activated" || elementClass == "eoko-horizontal-scroll-button eoko-text-thin ng-binding activated")
+        {
+          console.log("activated");
+          document.getElementById(elementId).className = "eoko-horizontal-scroll-button-selected eoko-text-thin";
+          $scope.selectTagList.push(elementId.replace(/create/,''));
+        }else{
+          console.log("not activated");
+          document.getElementById(elementId).className = "eoko-horizontal-scroll-button eoko-text-thin";
+          for(var i in $scope.selectTagList)
+          {
+            console.log("for loopin" , i);
+            if($scope.selectTagList[i] == elementId.replace(/create/,''))
+            {
+              console.log("splicin");
+                  $scope.selectTagList.splice(i, 1);
+            }
+          }
+        }
+        if($scope.selectTagList == [])
+        {
+          console.log("nuller than a null pointer");
+          $scope.selectTagList = null;
+        }
+        console.log("searching",$scope.selectTagList);
+      };
 
 //------ CHECK IF USER IS CURRENTLY LOGGING IN ------
     firebase.auth().onAuthStateChanged(function(user) {
@@ -57,6 +70,13 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
         console.log("user is logged in." + user.uid);
         $scope.currentUser = user;
         $scope.action.photoURL = user.photoURL;
+
+        var rel = firebase.database().ref('users').child(user.uid);
+        $scope.thisUser = $firebaseObject(rel);
+        $scope.thisUser.$loaded().then(function(suc)
+        {
+          $scope.setPrivacy($scope.thisUser.privacy);
+        });
 
         console.log("photo URL acquired: ", $scope.action.photoURL);
         startLoop();
@@ -74,11 +94,16 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
        }
        else
        {
-         $scope.action.location = geoPos.getUserPosition();
-         var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + $scope.action.location + "&sensor=false";
+           $scope.action.location = geoPos.getUserPosition();
+         var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + $scope.action.location +
+          "&key=AIzaSyCxi6Eah3dgixKG8oFO8DB6sMVN1v3mxuQ";
           $http.get(url).then(function(response){
             console.log("Google maps response", response);
             $scope.action.address = response.data.results[0].formatted_address;
+          },
+          function(err)
+          {
+            console.log("Problem is probably CORS", err);
           });
        }
      }
@@ -86,12 +111,9 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
     // ------------ THIS ALLOW USER TO MOVE BETWEEN TWO DIFFERENT SCREENS ON CREATE ACTION PAGE  --------
     $scope.description = 0;
-    $scope.privSelect = 'public';
     //------------- THIS ALLOW USER TO SET PRIVACY OF ACTION ---------------------
-    $scope.setPrivacy = function(privacy) {
-
-
-
+    $scope.setPrivacy = function(privacy) 
+    {
       if (privacy == "public")
       {
         $scope.publicStyle = clicked;
@@ -106,23 +128,19 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
         $scope.privSelect = 'private';
       }
       $scope.action.privacy = privacy;
-
-
     };
 
     // ------------ WHEN USER CLICK SUBMIT, THIS FUNCTION WILL HAPPEN --------
     $scope.submit = function(){
       //Store the tags
-      $scope.action.tags = "";
-      for (var i = 0; i<$scope.selectedTags.length; i++){
-        $scope.action.tags+=$scope.selectedTags[i].$value;
-      }
+      $scope.action.tags = $scope.selectTagList;
       console.log($scope.action.tags);
       console.log("current user uid: ", $scope.currentUser.uid);
       var activitiesRef = firebase.database().ref('activities');
-      var userActionsRef = firebase.database().ref('users/' + $scope.currentUser.uid + '/actions/myActions');
+      var userActionsRef = firebase.database().ref('users/' + $scope.currentUser.uid).child('actions/myActions');
 
-
+      $scope.action.startTime = $scope.action.startTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+      console.log("new time",$scope.action.startTime);
       //List of friends for private Events
       var friendsRef = firebase.database().ref('users/' + $scope.currentUser.uid + '/friends');
       var friendsArray = $firebaseArray(friendsRef);
@@ -134,7 +152,8 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       //Push the event under the user database
       var event = {
         eventID: eventID,
-        location: $scope.action.location
+        location: $scope.action.location,
+        time: $scope.action.startTime
       };
 
       userActionsRef.child(eventID).update(event);
@@ -143,12 +162,11 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       {
         console.log($scope.action);
         $state.go('eventList');
+        return;
         //Push event into firebase
-
-       
       }
 
-      if ($scope.action.privacy == "private")
+      else if ($scope.action.privacy == "private")
       {
         console.log($scope.action);
         friendsArray.$loaded(function(friendsArray){
@@ -167,5 +185,86 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
     };
 
+
+
+//------------------------------google maps stuff-------------------
+
+function initAutocomplete() {
+          $scope.autocomplete = new google.maps.places.Autocomplete(
+              (document.getElementById('autocomplete')),
+              {types: ['geocode','establishment']});
+
+          container = document.getElementsByClassName('pac-container');
+            // disable ionic data tab
+            angular.element(container).attr('data-tap-disabled', 'true');
+            // leave input field if google-address-entry is selected
+            angular.element(container).on("click", function(){
+                document.getElementById('searchBar').blur();
+            });
+
+          $scope.autocomplete.addListener('place_changed', fillInAddress);
+        }
+
+        function fillInAddress() {
+          var place = $scope.autocomplete.getPlace();
+          console.log("THE FUCKING PLACE IS", place.geometry);
+          $scope.action.address = place.formatted_address;
+
+          var addr = place.formatted_address;
+          addr = addr.replace(/,/g,'');
+          addr = addr.replace(/ /g,'+');
+
+
+         var url = "https://maps.googleapis.com/maps/api/geocode/json?address="+ addr 
+         + "&key=AIzaSyCxi6Eah3dgixKG8oFO8DB6sMVN1v3mxuQ";
+
+          $http.get(url).then(function(response){
+            console.log("SHATTY GOOGLE MAPS", response);
+
+            var lat = response.data.results[0].geometry.location.lat;
+            var long = response.data.results[0].geometry.location.lng;
+
+             $scope.action.location = lat + ', ' + long;
+          },
+          function(err)
+          {
+            console.log("Problem is probably CORS", err);
+          });
+         
+        }
+
+
+        container = document.getElementsByClassName('pac-container');
+        // disable ionic data tab
+        angular.element(container).attr('data-tap-disabled', 'true');
+        // leave input field if google-address-entry is selected
+        angular.element(container).on("click", function(){
+            document.getElementById('searchBar').blur();
+        });
+
+
+        
+        $scope.geolocate = function() {
+
+            google.maps.event.addDomListener(window, 'load', initAutocomplete);
+            initAutocomplete();
+
+
+            
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              var geolocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              };
+              console.log("long lat", lng, lat);
+              var circle = new google.maps.Circle({
+                center: geolocation,
+                radius: position.coords.accuracy
+              });
+              $scope.autocomplete.setBounds(circle.getBounds());
+            });
+          }
+        };
 
   }])

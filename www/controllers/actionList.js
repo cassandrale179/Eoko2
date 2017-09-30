@@ -9,9 +9,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         $scope.currentUser = firebaseUser;
 
         // $scope.currentUser.uid = UserInfo.getUser().uid;
-      })
-
-
+      });
     });
 
 
@@ -32,8 +30,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
        }
 
 
-
-      firebase.auth().onAuthStateChanged(function(user) {
+        firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
             var rez = firebase.database().ref("users").child(user.uid);
             $scope.userInfo = $firebaseObject(rez);

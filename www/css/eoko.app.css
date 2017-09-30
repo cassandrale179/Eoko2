@@ -10394,29 +10394,31 @@ input, textarea::-webkit-input-placeholder {
   border-radius: 25px; }
 
 .eoko-horizontal-scroll-button {
-  border-color: #F57C00;
   background: transparent;
-  border-radius: 25px;
-  border-width: 1px;
-  border-style: solid;
-  width: 100px;
-  padding: 8px;
-  margin-left: 1px;
-  margin-right: 1px;
-  font-size: 20px;
-  color: #F57C00; }
+    border-radius: 14px;
+    border-width: 1px;
+    border-style: solid;
+    min-width: 61px;
+    padding: 3px 6px;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-size: 18px;
+  border-color: white;
+  color: white;
+   width: auto; }
 
 .eoko-horizontal-scroll-button-selected {
   border-color: #F57C00;
   background: #F57C00;
-  border-radius: 25px;
+  border-radius: 14px;
   border-width: 1px;
+  min-width: 61px;
   border-style: solid;
-  margin-left: 1px;
-  margin-right: 1px;
+ margin-left: 2px;
+  margin-right: 2px;
   width: 100px;
-  padding: 8px;
-  font-size: 20px;
+   padding: 3px 6px;
+  font-size: 18px;
   color: white; }
 
 textarea,

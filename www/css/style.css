@@ -196,7 +196,7 @@ select{
 
 /* ---------------------------- PEOPLE WITHIN 10 MILES ------------------------ */
 #C{
-  margin-top: 50px;
+  margin-top: 25px;
   padding-left: 5%;
   padding-right: 5%;
 }
@@ -384,7 +384,7 @@ select{
 }
 
 #E1{
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 
@@ -714,6 +714,49 @@ select{
 
 
 
+/* --------------------- CHAT PAGE --------------- */
+#L {
+  background: rgba(255,255,255,0.8);
+  opacity: 0.9;
+  height: 40px;
+  margin-bottom: 17px;
+  border-radius: 7px;
+  box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);
+  display: flex;
+  padding: 1%;
+}
+
+#L a{
+  margin-right: 10px;
+}
+
+#L input{
+  background: none;
+  border: none;
+  font-size: 20px; 
+  color: #263238;
+  /* text-align: center; */
+}
+
+#L1{
+  overflow: scroll;
+  white-space: nowrap;
+}
+
+
+
+
+
+
+/* --------------------- CHAT PAGE DETAIL --------------- */
+
+
+
+
+
+
+
+
 /*-------------Michael's crap css again----------*/
 
 
@@ -727,4 +770,42 @@ select{
 
 .popover-wrapper{
   height: 100%;
+}
+
+.eoko-horizontal-scroll-button {
+  background: transparent;
+    border-radius: 14px;
+    border-width: 1px;
+    border-style: solid;
+    min-width: 61px;
+    padding: 3px 6px;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-size: 18px;
+  border-color: white;
+  color: white;
+   width: auto; }
+
+.eoko-horizontal-scroll-button-selected {
+  border-color: #F57C00;
+  background: #F57C00;
+  border-radius: 14px;
+  border-width: 1px;
+  min-width: 61px;
+  border-style: solid;
+ margin-left: 2px;
+  margin-right: 2px;
+  width: auto;
+   padding: 3px 6px;
+  font-size: 18px;
+  color: white; }
+
+
+.button.button-energized.button-outline {
+  border-color: white;
+  color: white;
+  }
+
+  ion-scroll[direction=y] {
+  height: 100vh;
 }
