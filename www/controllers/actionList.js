@@ -1,6 +1,6 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory','backcallFactory','$firebaseObject',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory','backcallFactory','$firebaseObject','$ionicPopover',
 
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory,backcallFactory,$firebaseObject) {
+  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory,backcallFactory,$firebaseObject, $ionicPopover) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
@@ -251,18 +251,19 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
             $scope.nudge=true;
             console.log("nudge: ", $scope.nudge);
             console.log("eoko nudge user: ", $scope.user);
-
+            $scope.blurry = {behind: "5px"};
             $scope.otherUser = x;
             console.log("the other person is: ", $scope.otherUser.uid);
             console.log($scope.currentUser);
-          }
+          };
 
 
           $scope.hideEokoNudge = function() {
             $scope.nudge = false;
             console.log("nudge: ", $scope.nudge);
+            $scope.blurry = {behind: "0px"};
 
-          }
+          };
 
           $scope.sendNudge = function() {
             var uid = $scope.currentUser.uid;
@@ -279,11 +280,69 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
                 senderUid: uid,
                 receiverUid: $scope.otherUser.uid,
                 latestTime: time
-              })
-            })
+              });
+            });
 
 
-          }
+          };
+
+
+
+//------------------------POPOVER STUFF----------------------------------
+
+      $scope.$on('$ionicView.loaded', function () {
+        $scope.blurry = {behind: "0px"};
+      });
+
+
+        function makeblurry() {
+        if ($scope.popover.isShown()) {
+          console.log("blur background");
+          $scope.blurry = {behind: "5px"};
+        }
+        else {
+          console.log("clear up");
+          $scope.blurry = {behind: "0px"};
+        }
+      }
+
+      $scope.checkHit = function (event) {
+        if (event.target.className.includes("popup-container popup-showing")) {
+            $scope.closePopover();
+        }
+      };
+
+      $ionicPopover.fromTemplateUrl('my-popover.html', {
+        scope: $scope
+      }).then(function(popover) {
+        $scope.popover = popover;
+      });
+
+      $scope.openPopover = function($event, user) {
+        $scope.blurry.behind = "5px";
+        $scope.otherUser = user;
+        $scope.popover.show($event);
+      };
+      $scope.closePopover = function() {
+        $scope.blurry.behind = "0px";
+        $scope.popover.hide();
+        makeblurry();
+      };
+      //Cleanup the popover when we're done with it!
+      $scope.$on('$destroy', function() {
+         $scope.blurry.behind = "0px";
+        $scope.popover.remove();
+        makeblurry();
+      });
+      // Execute action on hide popover
+      $scope.$on('popover.hidden', function() {
+        // Execute action
+      });
+      // Execute action on remove popover
+      $scope.$on('popover.removed', function() {
+        // Execute action
+      });
+
 
 
 

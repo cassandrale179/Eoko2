@@ -65,9 +65,11 @@
         <div id="F2">
           <p ng-if="!(currUser.info.participants)">Be the first to join!</p>
           <p>Going:</p>
-          <span ng-repeat="parts in currUser.info.participants">
-            <img src="{{parts.avatar}}">
-          </span>
+          <ion-scroll overflow-scroll="false" scrollX="true">
+            <span ng-repeat="parts in currUser.info.participants">
+              <img src="{{parts.avatar}}">
+            </span>
+          </ion-scroll>
         </div>
         <button ng-click="joinAction(currUser.info.$id)"> Join </button>
       </div>

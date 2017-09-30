@@ -1,5 +1,5 @@
 <ion-view hide-nav-bar="true">
-  <ion-content padding="true" class="innerbackground" scroll="false">
+  <ion-content padding="true" class="innerbackground" scroll="false" style="filter: blur({{blurry.behind}});">
     <img class="logo" src="./img/eoko-logo.svg" ui-sref="settingPage" />
     <img class="tagline" src="./img/peoplenearyou.png"></img>
 
@@ -15,7 +15,7 @@
           {{x.name}}
           <br />
           <div id="C2">
-            <img id="one" src="../img/eoko-login.png" ng-click="eokoNudge(x)"/>
+            <img id="one" src="../img/eoko-login.png" ng-click="openPopover($event, x)"/>
             <img id="two" src="http://freevector.co/wp-content/uploads/2014/06/facebook-messenger-white.png"
             ng-click="newConversation(x)" />
           </div>
@@ -33,7 +33,7 @@
 
 
       <!-- ____________________________  EOKO NUDGE _______________________________________  -->
-        <div id="D" ng-show="nudge==true">
+        <!-- <div id="D" ng-show="nudge==true">
           <div id="D1">
             <h3>People Near You</h3>
             <i class="fa fa-times" aria-hidden="true" ng-click="hideEokoNudge()"></i>
@@ -54,10 +54,44 @@
           <div id="D3">
             <button ng-click=sendNudge()> Send </button>
           </div>
-        </div>
+        </div> -->
+
+
       </div>
       </div>
     </ion-scroll>
+
+<script id="my-popover.html" type="text/ng-template">
+    <div ng-click="checkHit($event)" class="popup-container popup-showing active">
+      <div class="details">
+
+        <!-- <div id="D"> -->
+          <div id="D1">
+            <h3>People Near You</h3>
+            <!-- <i class="fa fa-times" aria-hidden="true" ng-click="hideEokoNudge()"></i> -->
+          </div>
+          <div id="D2">
+            <div id="D2A">
+              <img ng-src="{{currentUser.photoURL}}" />
+              <h4> {{currentUser.displayName}} </h4>
+            </div>
+            <div id="D2B">
+              <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </div>
+            <div id="D2C">
+              <img ng-src="{{otherUser.photoURL}}" />
+              <h4> {{otherUser.name}}</h4>
+            </div>
+          </div>
+          <div id="D3">
+            <button ng-click=sendNudge()> Send </button>
+          </div>
+        <!-- </div>  -->
+
+      </div>
+    </div>
+  </script>
+
 </ion-content>
 
 <!-- NAVIGATIO BAR -->
