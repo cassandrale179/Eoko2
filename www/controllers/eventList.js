@@ -69,7 +69,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
       //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
       $scope.joinAction = function(eventid, chatid){
         var ref = firebase.database().ref("activities").child(eventid);
-        var chatsRef = firebase.database().ref("chats").child(chatid);
+
         var checkDone = $firebaseObject(ref);
         checkDone.$loaded().then(function(x){
           console.log("loaded event stuff",checkDone);
@@ -95,10 +95,14 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
               avatar: $scope.currentUser.photoURL
             }).then(function(succ)
             {
-              //create the chat hereeeeee
-              //push
-              //name
-              //
+              var chatsRef = firebase.database().ref("Chats").child(checkDone["chatID"]);
+              
+              chatsRef.child(checkDone["chatID"]["ids"]).push({
+                id: $scope.currentUser.uid,
+                name: $scope.currentUser.displayName,
+                avatar: $scope.currentUser.photoURL
+              });
+
               console.log("successfully added");
               $scope.closePopover();
               return;
