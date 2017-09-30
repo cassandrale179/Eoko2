@@ -428,9 +428,10 @@ select{
   padding: 3%;
   display: inline-block;
   background: rgba(255,255,255,0.1);
-  width: 90%;
+  width: 80%;
   font-family: 'Roboto', sans-serif;
   border: none;
+  height: 40px;
 
 }
 
@@ -438,12 +439,15 @@ select{
   color: white;
 }
 
-/*#E p{
+#E0 button{
   color: white;
   font-family: 'Roboto', sans-serif;
   display: inline-block;
-  padding-left: 10px;
-}*/
+  background: rgba(255,255,255,0.1);
+  border: none;
+  height: 40px;
+  width: 40px;
+}
 
 
 /* --------------------------- EVENT NUDGE -------------------------------- */
