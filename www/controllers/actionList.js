@@ -7,6 +7,37 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
     $scope.$on('$ionicView.beforeEnter', function(){
       firebase.auth().onAuthStateChanged(function(firebaseUser){
         $scope.currentUser = firebaseUser;
+        var userRef = firebase.database().ref("users/"+$scope.currentUser.uid);
+        window.FirebasePlugin.grantPermission();
+        window.FirebasePlugin.getToken(function(token) {
+              // save this server-side and use it to push notifications to this device
+              console.log(token);
+              userRef.update({
+                messageToken: token
+              })
+
+          }, function(error) {
+              console.error(error);
+          });
+
+
+          window.FirebasePlugin.onTokenRefresh(function(token) {
+              // save this server-side and use it to push notifications to this device
+              console.log(token);
+              userRef.update({
+                messageToken: token
+              })
+
+          }, function(error) {
+              console.error(error);
+          });
+
+          window.FirebasePlugin.onNotificationOpen(function(notification) {
+              console.log(notification);
+              $state.go('actionCreate');
+          }, function(error) {
+              console.error(error);
+          });
 
         // $scope.currentUser.uid = UserInfo.getUser().uid;
       });
@@ -247,11 +278,15 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
 
           //--------------------------------NUDGE FUNCTIONS-----------------------------------
+          $scope.checkNudge = function() {
+            var userNudgeRef = firebase.database().ref(`users/${scope.currentUser.uid}/nudge/`);
+
+          }
+
           $scope.eokoNudge = function(x) {
             $scope.nudge=true;
             console.log("nudge: ", $scope.nudge);
-            console.log("eoko nudge user: ", $scope.user);
-            $scope.blurry = {behind: "5px"};
+
             $scope.otherUser = x;
             console.log("the other person is: ", $scope.otherUser.uid);
             console.log($scope.currentUser);
@@ -343,6 +378,14 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         // Execute action
       });
 
+
+          document.addEventListener("deviceready", onDeviceReady, false);
+
+
+
+          function onDeviceReady() {
+
+          }
 
 
 
