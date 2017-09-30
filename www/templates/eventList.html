@@ -2,10 +2,16 @@
   <ion-content padding="true" class="innerbackground" style="filter: blur({{blurry.behind}});">
     <div id="E">
       <!-- _____________ NAVIGATION BAR _______ -->
-      <div id="E1">
-        <i class="fa fa-search"></i>
-        <div id="E1A" ui-sref="tabsController.eventList"><button style="border-bottom: 0.1px solid rgb(230,126,34)"> Action </button></div>
-        <div id="E1B" ui-sref="actionCreate"><button ui-sref="actionCreate"> Create </button></div>
+      <div id="E0" ng-show="searchBar==1">
+        <input type="text" placeholder="Search for an event..." />
+        <!-- <p>
+          X
+        </p> -->
+      </div>
+      <div id="E1" ng-show="searchBar==2">
+        <i ng-click="searchBar = 1" class="fa fa-search"></i>
+          <div id="E1A" ui-sref="tabsController.eventList"><button style="border-bottom: 0.1px solid rgb(230,126,34)"> Action </button></div>
+          <div id="E1B" ui-sref="actionCreate"><button ui-sref="actionCreate"> Create </button></div>
       </div>
 
       <!-- _____________ CARDS OF EVENTS _______ -->

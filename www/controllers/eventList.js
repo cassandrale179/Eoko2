@@ -1,6 +1,9 @@
 app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover',
   function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover) {
     $scope.eventNudge = false;
+    $scope.searchBar = 2;
+    console.log("State of searchbar");
+    console.log($scope.searchBar);
 
     //start the thing in case it starts here
     firebase.auth().onAuthStateChanged(function(user){
