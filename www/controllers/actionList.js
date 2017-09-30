@@ -66,7 +66,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
             nudgeUser.$loaded().then(function(ss)
             {
               $scope.blurry = {behind: "0px"};
-              $scope.newConversation(nudgeUser);
+              $scope.newConversation(nudgeUser,true);
               return;
             });
             
@@ -113,7 +113,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
 
 
-        $scope.newConversation = function(other)
+        $scope.newConversation = function(other, boo)
         {
           console.log("started newconvo");
             for(var i in $scope.userInfo.chat)
@@ -128,7 +128,11 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
                   if(info.ids[j].id == other.$id)
                   {
                     console.log("FOUDN!!", $scope.userInfo.chat[i].chatID);
-                    $state.go('messagePage',{otherID: other.$id, convoID: $scope.userInfo.chat[i].chatID});
+                    if(boo)
+                    {
+                      $state.go('messagePage',{otherID: other.$id, convoID: $scope.userInfo.chat[i].chatID});
+                    }
+                    
                     return;
                   }
                 }
@@ -159,7 +163,10 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
                       'chatID' : success.key
                       }).then(function(ddd)
                       {
+                        if(boo)
+                        {
                          $state.go('messagePage',{otherID: other.$id, convoID: success.key}); //with params
+                        }
                       });
                   });
                 });
@@ -353,6 +360,8 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
                 receiverUid: $scope.otherUser.uid,
                 latestTime: time
               });
+              $scope.newConversation($scope.otherUser,false);
+              $scope.closePopover();
             });
 
 
