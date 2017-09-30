@@ -4,7 +4,6 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
-<<<<<<< Updated upstream
     $scope.$on('$ionicView.beforeEnter', function(){
       firebase.auth().onAuthStateChanged(function(firebaseUser){
         $scope.currentUser = firebaseUser;
@@ -31,32 +30,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
        }
 
 
-
-      firebase.auth().onAuthStateChanged(function(user) {
-=======
-
-
-    // function geoLoop(id)
-    // {
-    //   console.log("started geoLoop");
-    //   try{
-    //           geoPos.updateFirebase(id);
-    //           console.log("position set on firebase");
-    //           $scope.myloc = geoPos.getUserPosition();
-    //           getFriends();
-    //         }
-    //         catch(error)
-    //         {
-    //           $timeout(function(){
-    //             geoLoop(id);
-    //           },1000);
-    //         }
-    // }
-
-
-
         firebase.auth().onAuthStateChanged(function(user) {
->>>>>>> Stashed changes
           if (user) {
             var rez = firebase.database().ref("users").child(user.uid);
             $scope.userInfo = $firebaseObject(rez);
