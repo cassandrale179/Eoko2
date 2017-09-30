@@ -3,18 +3,18 @@
     <div id="E">
       <!-- _____________ NAVIGATION BAR _______ -->
       <div id="E0" ng-show="searchBar==1">
-        <input type="text" placeholder="Search for an event..." />
+        <input type="text" placeholder="Search for an event..." ng-model="searchEvent" />
         <button ng-click="searchBar = 2" >X</button>
       </div>
       <div id="E1" ng-show="searchBar==2">
         <i ng-click="searchBar = 1" class="fa fa-search"></i>
-          <div id="E1A" ui-sref="tabsController.eventList"><button style="border-bottom: 0.1px solid rgb(230,126,34)"> Action </button></div>
+          <div id="E1A" ui-sref="eventList"><button style="border-bottom: 0.1px solid rgb(230,126,34)"> Action </button></div>
           <div id="E1B" ui-sref="actionCreate"><button ui-sref="actionCreate"> Create </button></div>
       </div>
 
       <!-- _____________ CARDS OF EVENTS _______ -->
       <div id="E2">
-        <div id="E2A" ng-repeat="(key,x) in events | orderObjectBy:'distance'">
+        <div id="E2A" ng-repeat="(key,x) in events | orderObjectBy:'distance' | filter: searchEvent">
           <img ng-src="{{x.info.photoURL}}" />
           <div id="E2A1" ng-click="openPopover($event, x)">
             <h4>{{x.info.name}}</h4>
@@ -24,16 +24,6 @@
               <span ng-if="x.distance >= 0.1">{{x.distance | number:1}} miles</span>
               <span ng-if="x.distance < 0.1">{{x.distance * 5280 | number:1}} feet</span>
             </h5>
-
-                    <!-- <div id="F" ng-show="eventNudge">
-                      <h5 ng-click="eventNudge=false">X</h5>
-                      <img ng-src={{x.photoURL}} />
-                      <h2>{{x.info.owner}}</h2>
-                      <h1>{{x.info.name}}</h1>
-                      <h3>{{x.info.startTime}}</h3>
-                      <p>{{x.info.description}}</p>
-                      <button ng-click="joinAction(x.userID, x.id)"> Join </button>
-                    </div> -->
           </div>
         </div>
       </div>
