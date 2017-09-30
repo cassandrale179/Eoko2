@@ -9,13 +9,13 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
     firebase.auth().onAuthStateChanged(function(user){
       if (user){
         $scope.currentUser = user;
-        startLoop();        
+        startLoop();
       }
     });
 
     $scope.$on('$ionicView.afterEnter', function () //before anything runs
     {
-      startLoop();  
+      startLoop();
     });
 
     var res = firebase.database().ref("actions");
@@ -43,14 +43,18 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
      }
 
      $scope.searchEventFilter = [];
+
+
       //select filter
       $scope.selectFilter = function (elementId)
       {
+
       var elementClass = document.getElementById(elementId).className;
         if(elementClass == "eoko-horizontal-scroll-button eoko-text-thin activated" || elementClass == "eoko-horizontal-scroll-button eoko-text-thin ng-binding activated")
         {
           document.getElementById(elementId).className = "eoko-horizontal-scroll-button-selected eoko-text-thin";
           $scope.searchEventFilter.push(elementId);
+
         }else{
           document.getElementById(elementId).className = "eoko-horizontal-scroll-button eoko-text-thin";
           for(var i in $scope.searchEventFilter)
@@ -58,6 +62,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
             if($scope.searchEventFilter[i] == elementId)
             {
                   $scope.searchEventFilter.splice(i, 1);
+
             }
           }
         }
@@ -66,7 +71,45 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
           $scope.searchEventFilter = null;
         }
         console.log("searching",$scope.searchEventFilter)
+        console.log($scope.events);
+        if ($scope.searchEventFilter.length==0 || $scope.searchEventFilter==null){
+          console.log("activated");
+          angular.forEach($scope.events, function(event){
+            event.display=true;
+          })
+        }
+        else{
+          angular.forEach($scope.events, function(event){
+            var tags = event.info.tags;
+            console.log(tags);
+
+            var display = findTags(tags, $scope.searchEventFilter);
+            event.display = display;
+          })
+        }
+
       };
+
+      //Return true if an element in arr1 is in arr2
+      function findTags(arr1, arr2){
+        console.log("arr2", arr2);
+        result = false;
+
+        angular.forEach(arr1, function(ele){
+          console.log(ele);
+
+          if (arr2.indexOf(ele)>-1){
+            console.log("found", arr2.indexOf(ele))
+
+            result = true;
+          }
+          console.log("not found", arr2.indexOf(ele))
+        })
+
+        return result;
+      }
+
+
 
 
       //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
@@ -117,7 +160,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
           var dist = $scope.distFromPlayer($scope.eventInfo[i].location);
           if(dist != false)
           {
-            result[index] = {info: $scope.eventInfo[i], distance: dist};
+            result[index] = {info: $scope.eventInfo[i], distance: dist, display: true};
           }
         }
         return result;
