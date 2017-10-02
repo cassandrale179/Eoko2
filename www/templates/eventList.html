@@ -24,6 +24,7 @@
      
       <!-- _____________ CARDS OF EVENTS _______ -->
       <ion-scroll id="E2" overflow-scroll="false" style="height: calc(84% - 70px);">
+      <ion-refresher on-refresh="doRefresh()"></ion-refresher>
         <div id="E2A" ng-repeat="(key,x) in events | orderObjectBy:'distance' | filter: {display: true}">
           <img ng-src="{{x.info.photoURL}}" />
           <div id="E2A1" ng-click="openPopover($event, x)">
