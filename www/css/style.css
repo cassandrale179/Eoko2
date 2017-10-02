@@ -811,7 +811,7 @@ select{
 }
 
 #N1A{
-  width: 33%; 
+  width: 33%;
 }
 
 
@@ -826,7 +826,7 @@ select{
   margin-right: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
-  
+
 }
 
 /* --------------------- CHAT PAGE DETAIL --------------- */
@@ -907,8 +907,6 @@ select{
 }
 
 
-<<<<<<< HEAD
-=======
 #N button{
   border-radius: 20px;
   height: 40px;
@@ -922,6 +920,7 @@ select{
   font-size: 20px;
   margin-top: 20px;
 }
+
 
 /*-------------Michael's crap css again----------*/
 
