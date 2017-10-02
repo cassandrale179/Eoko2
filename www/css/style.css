@@ -118,7 +118,7 @@ select{
   right: 20px;
 }
 
-#B input, #B textarea{
+#B input, #B textarea, #N input{
   width: 90%;
   border: none;
   background: rgba(255,255,255,0.9);
@@ -794,6 +794,40 @@ select{
 }
 
 
+/* --------------------- INVITE PAGE DETAILS --------------- */
+#N{
+  padding-top: 5%;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+}
+
+#N0{
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+#N1{
+  display: flex;
+}
+
+#N1A{
+  width: 33%; 
+}
+
+
+
+
+#N1 img{
+  display: block;
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 100px;
+  margin-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  
+}
 
 /* --------------------- CHAT PAGE DETAIL --------------- */
 #M{
@@ -873,6 +907,27 @@ select{
 }
 
 
+<<<<<<< HEAD
+=======
+#N button{
+  border-radius: 20px;
+  height: 40px;
+  border: none;
+  display: block;
+  margin: auto;
+  width: 90%;
+  background-color: rgba(230, 126, 34, 0.9);
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+
+
+
+
+>>>>>>> 1426f6e3add8208c78a35378ef88b6c4dca907ad
 /*-------------Michael's crap css again----------*/
 
 
