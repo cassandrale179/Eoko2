@@ -3,9 +3,11 @@
       <div id="N">
         <input type="text" placeholder="Search your friends" ng-model="searchFriend" />
         <div id="N0">
-          <div id="N1" ng-repeat="x in userFriendObject | filter: searchFriend ">
-            <img ng-src="{{x.photoURL}}" />
-            {{x.name}}
+          <div id="N1" ng-repeat="smallArr in splitArr | filter: searchFriend ">
+            <div id="N1A" ng-repeat="y in smallArr">
+              <img ng-src="{{y.photoURL}}" />
+              {{y.name}}
+            </div>
           </div>
         </div>
         <button> INVITE </button>

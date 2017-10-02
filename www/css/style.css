@@ -759,8 +759,16 @@ select{
 #N0{
   padding-left: 5%;
   padding-right: 5%;
+}
+
+#N1{
   display: flex;
 }
+
+#N1A{
+  width: 33%; 
+}
+
 
 
 #N1 img{
