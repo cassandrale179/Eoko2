@@ -809,3 +809,11 @@ select{
   ion-scroll[direction=y] {
   height: 100vh;
 }
+
+
+.activeActions{
+  max-width: 50vw;
+    display: inline-block;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}

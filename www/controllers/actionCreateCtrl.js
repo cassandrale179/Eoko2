@@ -205,7 +205,8 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       var event = {
         eventID: eventID,
         location: $scope.action.location,
-        time: $scope.action.startTime
+        time: $scope.action.startTime,
+        name: $scope.action.name
       };
 
       userActionsRef.child(eventID).update(event);

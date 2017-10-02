@@ -393,17 +393,31 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         }
       };
 
-      $ionicPopover.fromTemplateUrl('my-popover.html', {
-        scope: $scope
-      }).then(function(popover) {
-        $scope.popover = popover;
-      });
+ 
+        $ionicPopover.fromTemplateUrl('my-popover.html', {
+          scope: $scope
+        }).then(function(popover) {
+          $scope.popover = popover;
+        });
+      
 
-      $scope.openPopover = function($event, user) {
+        $scope.openPopover = function($event, user) {
         $scope.blurry.behind = "5px";
         $scope.otherUser = user;
+        console.log("nudge popover");
+        $scope.pop = 'nudge';
         $scope.popover.show($event);
       };
+
+      $scope.viewProfilePopover = function($event, user) {
+        $scope.blurry.behind = "5px";
+        $scope.otherUser = user;
+        console.log("profile popover");
+        $scope.pop = 'profile';
+        $scope.popover.show($event);
+      };
+
+
       $scope.closePopover = function() {
         $scope.blurry.behind = "0px";
         $scope.popover.hide();
