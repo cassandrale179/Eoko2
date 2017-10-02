@@ -4,11 +4,11 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
     var authUser = firebase.auth().currentUser;
       $scope.myId = authUser.uid;
       var ref = firebase.database().ref();
-      var partnerID = $stateParams.otherID;
+      $scope.partnerID = $stateParams.otherID;
       var convoID = $stateParams.convoID;
       var currentnum = 0;
 
-      console.log("partnerObj", partnerID, "convoID", convoID);
+      console.log("partnerObj", $scope.partnerID, "convoID", convoID);
 
     $scope.getAvatar = function(id)
     {
@@ -37,6 +37,11 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
 
 
       $scope.sendMessage = function () {
+        if($scope.data.messageText == " " || $scope.data.messageText == "")
+        {
+          console.log("nothing there, do nothing");
+          return;
+        }
         console.log("starting messagesend");
         var d = new Date();
         d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
