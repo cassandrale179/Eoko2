@@ -406,7 +406,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         $scope.otherUser = user;
         console.log("nudge popover");
         $scope.pop = 'nudge';
-        $scope.popover.show($event);
+        $scope.popover.show();
       };
 
       $scope.viewProfilePopover = function($event, user) {
@@ -414,7 +414,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         $scope.otherUser = user;
         console.log("profile popover");
         $scope.pop = 'profile';
-        $scope.popover.show($event);
+        $scope.popover.show();
       };
 
 

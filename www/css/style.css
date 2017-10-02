@@ -218,10 +218,10 @@ select{
 
 #C1 img, #E2A img, #I2 img{
   object-fit: cover;
-  width: 70px;
+  width: 55px;
   height: 55px;
-  border-radius: 40px;
-  margin-left: 10px;
+  border-radius: 55px;
+  /*margin-left: 10px;*/
   margin-top: 2px;
 }
 
@@ -245,6 +245,7 @@ select{
   margin-bottom: 5px;
   padding: 3%;
   font-size: 20px;
+  text-align: center;
 }
 
 #one, #two{
@@ -401,6 +402,14 @@ select{
 #E2 h4{
   margin-left: 5%;
   margin-top: 0%;
+  overflow-y: hidden;
+  height: 42px;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+
+
 }
 
 #E2A1{
@@ -411,6 +420,7 @@ select{
   display: inline-block;
   margin-top: 0px;
   padding-left: 15%;
+  width: 61vw;
 }
 
 #E0{

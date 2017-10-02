@@ -1,9 +1,11 @@
-app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover',
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover) {
+app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover',
+  function ($scope,$stateParams, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover) {
     $scope.eventNudge = false;
     $scope.searchBar = 2;
     console.log("State of searchbar");
     console.log($scope.searchBar);
+
+
 
     //start the thing in case it starts here
     firebase.auth().onAuthStateChanged(function(user){
@@ -15,6 +17,9 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
 
     $scope.$on('$ionicView.afterEnter', function () //before anything runs
     {
+      $scope.actionActivate = $stateParams.actionID;
+      console.log("state params, ", $stateParams.actionID, "triggeredm,, ", $stateParams.SJWTriggered);
+      $scope.triggered = $stateParams.SJWTriggered;
       startLoop();
     });
 
@@ -45,6 +50,8 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
      $scope.searchEventFilter = [];
 
 
+
+
       //select filter
       $scope.selectFilter = function (elementId)
       {
@@ -70,13 +77,13 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
         {
           $scope.searchEventFilter = null;
         }
-        console.log("searching",$scope.searchEventFilter)
+        console.log("searching",$scope.searchEventFilter);
         console.log($scope.events);
         if ($scope.searchEventFilter.length==0 || $scope.searchEventFilter==null){
           console.log("activated");
           angular.forEach($scope.events, function(event){
             event.display=true;
-          })
+          });
         }
         else{
           angular.forEach($scope.events, function(event){
@@ -85,7 +92,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
 
             var display = findTags(tags, $scope.searchEventFilter);
             event.display = display;
-          })
+          });
         }
 
       };
@@ -183,27 +190,51 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
       console.log("after events", $scope.events);
     }
 
+    function dd()
+    {
+      console.log("THIS IS THE ULTIMATE SHOWDOWN OF ULTIMATE DESTINY!!!,", $scope.actionActivat, $stateParams.actionID);
+      $scope.openPopover("", $scope.events[$scope.actionActivate]);
 
+    }
+
+    $scope.loadedOnce = false;
     function getEvents()  //called in the beginning, thats all
     {
-      var eventsRef = firebase.database().ref("activities/");
-      $scope.eventInfo = $firebaseArray(eventsRef);
-       $scope.eventInfo.$loaded().then(function(x)
+
+      if($scope.loadedOnce == false)
       {
-        console.log("event loaded");
-        $scope.events = loadActions();
-        console.log("total events", $scope.events);
-      });
+        var eventsRef = firebase.database().ref("activities/");
+          $scope.eventInfo = $firebaseArray(eventsRef);
+           $scope.eventInfo.$loaded().then(function(x)
+          {
+            $scope.loadedOnce = true;
+            console.log("event loaded");
+            $scope.events = loadActions();
+            console.log("total events", $scope.events);
 
-       $scope.eventInfo.$watch(function(event){
+            //create watcher
 
-        if(event.event == "child_changed")
-        {
-          console.log("run result", event);
-          changeAction(event.key);
-        }
+              $scope.eventInfo.$watch(function(event){
+              if(event.event == "child_changed")
+              {
+                console.log("run result", event);
+                changeAction(event.key);
+              }
+              if(event.event = "child_created")
+              {
+                $scope.events = loadActions();
+              }
+             });
+          });
+      }
+      
 
-       });
+       
+
+       if($scope.triggered == true)
+       {
+        dd();
+       }
     }
 
     //--------------------- CALCULATE DISTANCE FOR USERS -----------------
@@ -312,7 +343,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
       $scope.openPopover = function($event, user) {
         $scope.blurry.behind = "5px";
         $scope.currUser = user;
-        $scope.popover.show($event);
+        $scope.popover.show();
       };
       $scope.closePopover = function() {
         $scope.blurry.behind = "0px";

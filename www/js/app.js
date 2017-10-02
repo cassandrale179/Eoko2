@@ -80,6 +80,10 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
     nativeTransitions: {
       type: "fade"
     },
+    params: {
+          actionID: "",
+          SJWTriggered: false
+        },
     templateUrl: 'templates/eventList.html',
     controller: 'eventListCtrl'
   })
