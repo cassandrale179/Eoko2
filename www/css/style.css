@@ -59,7 +59,7 @@ select{
   font-size: 45px;
   background: none !important;
   border: none !important;
-  padding-left: 5%; 
+  padding-left: 5%;
   padding-bottom: 5%;
 }
 
@@ -186,16 +186,14 @@ select{
   background: transparent;
   border: none;
   border: 1px rgba(255, 255, 255, 0.61) solid;
-  width: 70px;
+  width: 100px;
   height: 40px;
   border-radius: 10px;
 }
 
 #B4{
-  margin-left: 30%;
-
+  margin-left: 7%;
 }
-
 
 
 /* ---------------------------- PEOPLE WITHIN 10 MILES ------------------------ */
@@ -233,7 +231,7 @@ select{
 }
 
 #C2{
-  margin-top: 6px; 
+  margin-top: 6px;
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
 }
@@ -875,11 +873,6 @@ select{
 }
 
 
-
-
-
-
-
 /*-------------Michael's crap css again----------*/
 
 
@@ -940,4 +933,3 @@ select{
     overflow-x: hidden;
     text-overflow: ellipsis;
 }
-
