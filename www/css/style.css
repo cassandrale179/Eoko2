@@ -487,7 +487,7 @@ select{
 }
 
 #F1A{
-  margin-left: 15%;
+  /*margin-left: 15%;*/
 }
 
 #F h3{
@@ -495,8 +495,8 @@ select{
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
   display: inline-block;
-  margin-top: 0px;
   margin-left: 30px;
+
 }
 
 #F h5{
@@ -521,7 +521,7 @@ select{
   border: none;
   height: 30px;
   border-radius: 15px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 
@@ -538,7 +538,7 @@ select{
 
 #F2 p{
   font-style: italic;
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 
@@ -923,14 +923,12 @@ select{
   margin-top: 20px;
 }
 
-
-
 /*-------------Michael's crap css again----------*/
 
 
 .details{
     margin: 15% 10%;
-    height: 60%;
+    height: 80%;
     background-color: #F27C22;
     width: 80%;
     opacity: 0.90;
@@ -984,4 +982,15 @@ select{
     display: inline-block;
     overflow-x: hidden;
     text-overflow: ellipsis;
+}
+
+
+.item-complex .item-content, .item-radio .item-content {
+  background-color: rgba(0,0,0,0);
+}
+
+.descriptionArea{
+  height: 14vh;
+    overflow: scroll;
+    margin: 0px;
 }

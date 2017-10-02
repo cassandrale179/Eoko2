@@ -118,6 +118,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
           console.log("started newconvo");
             for(var i in $scope.userInfo.chat)
             {
+              console.log("dafuq is that,", $scope.userInfo.chat[i].chatID);
               var info = chatFactory.loadChatData($scope.userInfo.chat[i].chatID);
               console.log("length is ", Object.keys(info.ids).length);
               if(Object.keys(info.ids).length < 3)

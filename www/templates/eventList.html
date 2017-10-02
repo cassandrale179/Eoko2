@@ -52,18 +52,19 @@
           <img ng-src={{currUser.info.photoURL}} />
           <!-- <h2>{{currUser.info.owner}}</h2> -->
           <h1>{{currUser.info.name}}</h1>
+          <h3>{{currUser.info.address}}</h3>
           <div id="F1A">
             <h3>{{currUser.info.startTime}}</h3>
             <h3 ng-if="currUser.distance >= 0.1">{{currUser.distance | number:1}} miles</h3>
             <h3 ng-if="currUser.distance < 0.1">{{currUser.distance * 5280 | number:1}} feet</h3>
           </div>
-          <p>{{currUser.info.description}}</p>
+          <p class="descriptionArea">{{currUser.info.description}}</p>
         </div>
 
         <!-- ___________ DISPLAY LIST OF PEOPLE WHO ARE JOINING IT _________________ -->
         <div id="F2">
-          <p ng-if="!(currUser.info.participants)">Be the first to join!</p>
           <p>Going:</p>
+           <p ng-if="!(currUser.info.participants)">Be the first to join!</p>
           <ion-scroll overflow-scroll="false" scrollX="true">
             <span ng-repeat="parts in currUser.info.participants">
               <img src="{{parts.avatar}}">
