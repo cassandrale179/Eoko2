@@ -113,15 +113,16 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
 
 
       //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
-      $scope.joinAction = function(eventid){
+      $scope.joinAction = function(eventid, chatid){
         var ref = firebase.database().ref("activities").child(eventid);
+
         var checkDone = $firebaseObject(ref);
         checkDone.$loaded().then(function(x){
           console.log("loaded event stuff",checkDone);
           console.log("the thing is ", checkDone);
-          if(checkDone.userID == $scope.currentUser.uid)
-          {
-            console.log("this is your event, exiting");
+          
+          if(checkDone["ownerID"] == $scope.currentUser.uid){
+            console.log("you are the owner of this event");
             $scope.closePopover();
             return;
           }
@@ -140,6 +141,20 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
               avatar: $scope.currentUser.photoURL
             }).then(function(succ)
             {
+              //add current user to the action chat
+              var chatsRef = firebase.database().ref("Chats").child(checkDone["chatID"]);
+              chatsRef.child('/ids').push({
+                id: $scope.currentUser.uid,
+                name: $scope.currentUser.displayName,
+                avatar: $scope.currentUser.photoURL
+              });
+
+              //save chat id in user
+              var usersRef = firebase.database().ref("users").child($scope.currentUser.uid);
+              usersRef.child('/chat').push({
+                chatID: checkDone["chatID"]
+              })
+
               console.log("successfully added");
               $scope.closePopover();
               return;
