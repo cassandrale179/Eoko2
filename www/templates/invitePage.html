@@ -1,6 +1,21 @@
 <ion-view hide-nav-bar="true" >
     <ion-content padding="true" class="innerbackground">
+      <div id="N">
+        <input type="text" placeholder="Search your friends" />
+        <div id="N0">
+          <div id="N1" ng-repeat="x in userFriendObject">
+            <img ng-src="{{x.photoURL}}" />
+            {{x.name}}
+          </div>
+        </div>
+      </div>
     </ion-content>
+    <div id="navbar" style="filter: blur({{blurry.behind}});">
+      <i ui-sref="joinList" class="fa fa-bell" aria-hidden="true"></i>
+      <i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true"></i>
+      <i ui-sref="actionList" class="fa fa-users" aria-hidden="true"></i>
+      <i ui-sref="chatTab" class="fa fa-comment" aria-hidden="true"></i>
+    </div>
 </ion-view>
 
 

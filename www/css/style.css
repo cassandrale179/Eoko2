@@ -59,7 +59,7 @@ select{
   font-size: 45px;
   background: none !important;
   border: none !important;
-  padding-left: 5%; 
+  padding-left: 5%;
   padding-bottom: 5%;
 }
 
@@ -118,7 +118,7 @@ select{
   right: 20px;
 }
 
-#B input, #B textarea{
+#B input, #B textarea, #N input{
   width: 90%;
   border: none;
   background: rgba(255,255,255,0.9);
@@ -749,13 +749,31 @@ select{
 
 
 
+/* --------------------- INVITE PAGE DETAILS --------------- */
+#N{
+  padding-top: 5%;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+}
+
+#N0{
+  padding-left: 5%;
+  padding-right: 5%;
+  display: flex;
+}
 
 
+#N1 img{
+  display: block;
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 100px;
+  margin-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px; 
 
-/* --------------------- CHAT PAGE DETAIL --------------- */
-
-
-
+}
 
 
 

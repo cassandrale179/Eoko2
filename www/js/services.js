@@ -32,10 +32,16 @@ angular.module('eoko.services', [])
                 var friendID = friend.id;
                 console.log(friendID);
                 ref.orderByChild('fbid').equalTo(friendID).on("child_added", function(snapshot){
-                  var obj = {};
-                  obj[snapshot.key] = snapshot.val().name;
 
-                  userFriendsRef.update(obj);
+                    var obj = {
+                    name: snapshot.val().name,
+                    photoURL: snapshot.val().photoURL 
+                  }
+
+                  userFriendsRef.child(friendID).update(obj);
+
+
+                  // userFriendsRef.update(obj + friendID);
                 });
 
               });
