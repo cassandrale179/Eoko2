@@ -1,5 +1,6 @@
 <ion-view hide-nav-bar="true">
-  <ion-content padding="true" class="innerbackground">
+
+  <ion-content padding="true" class="innerbackground" scroll="false">
     <!--SPACER-->
     <div class="spacer" style="height: 30px;"></div>
 
@@ -11,9 +12,9 @@
     </div>
 
     <!--PEOPLE NEAR YOU LIST-->
-    <ion-scroll id="L1" direction="x" scrollbar-x="false" scrollbar-y="false">
+    <!-- <ion-scroll id="L1" direction="x" scrollbar-x="false" scrollbar-y="false">
         <img *ngFor="#item of items" src="http://placehold.it/150x70">
-    </ion-scroll>
+    </ion-scroll> -->
 
 
     <!--SPACER-->
@@ -23,17 +24,23 @@
     <ion-scroll style="height: calc(100%); padding: 0px;">
       <ion-list id="actionList">
 
-      <div ng-if="chatData.length == 0" class="eoko-text-button-nav" style="text-align:center;"><span style="line-height: 33px;">No Conversations Started. Press and hold a friend's name to start one!</span>
+        <!-- if there is no conversation -->
+        <div ng-if="chatData.length == 0" class="eoko-text-button-nav" style="text-align:center;">
+          <span style="line-height: 33px;">
+            No Conversations
+          </span>
         </div>
 
-          <ion-item ng-repeat="chat in chatData" ng-if="chat.title != ''">
-            <h3 ng-if="chat.info.name == ''">{{chat.title}}</h3>
-            <h3 ng-if="chat.info.name != ''">{{chat.info.name}}</h3>
-
-            <a ui-sref="messagePage({otherID: chat.info.ids, convoID: chat.info.$id})"
-               class="eoko-button-clear ion-chevron-right" native-transitions nav-direction="forward"
-               style="float:right;margin-top: -20px;color:black;"></a>
+          <ion-item ng-repeat="chat in chatData" ng-if="chat.title != ''" id="L2">
+            
+            <img id="L4" ng-src="{{userInfo.photoURL}}"/>
+            <div id="L3" ui-sref="messagePage({otherID: chat.info.ids, convoID: chat.info.$id})" 
+                         native-transitions nav-direction="forward">  
+              <div id="L5" ng-if="chat.info.name == ''">{{chat.title}}</div>
+              <div id="L6">You: hi there</div>
+            </div>
           </ion-item>
+
       </ion-list>
     </ion-scroll>
   </ion-content>
@@ -44,7 +51,7 @@
     <i ui-sref="joinList" class="fa fa-bell" aria-hidden="true"></i>
     <i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true"></i>
     <i ui-sref="actionList" class="fa fa-users" aria-hidden="true"></i>
-    <i ui-sref="chatTab" class="fa fa-comment" aria-hidden="true"></i>
+    <i ui-sref="chatTab" class="fa fa-comment" aria-hidden="true" style="color: #F27C22;"></i>
   </div>
 
 </ion-view>

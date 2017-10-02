@@ -218,22 +218,24 @@ select{
 
 #C1 img, #E2A img, #I2 img{
   object-fit: cover;
-  width: 70px;
+  width: 55px;
   height: 55px;
-  border-radius: 40px;
-  margin-left: 10px;
+  border-radius: 55px;
+  /*margin-left: 10px;*/
   margin-top: 2px;
 }
 
-#C2 img{
-  width: 30px !important;
-  height: 30px !important;
+#C3 img{
+  width: 40px !important;
+  height: 40px !important;
   margin-right: 7%;
+
 }
 
 #C2{
-  margin-top: 6px;
-  margin-left: 10%;
+  margin-top: 6px; 
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
 }
 
 #C1A, #I2A{
@@ -243,6 +245,7 @@ select{
   margin-bottom: 5px;
   padding: 3%;
   font-size: 20px;
+  text-align: center;
 }
 
 #one, #two{
@@ -258,13 +261,7 @@ select{
 
 /* ---------------------------------------- EOKO NUDGE -------------------------------------- */
 #D{
-  height: 210px;
-  width: 260px;
-  background: rgba(230, 126, 34, 0.9);
-  left:60px;
-  top: 200px;
-  position: fixed;
-  padding-top: 3%;
+  padding-top: 10%;
   z-index: 900;
 }
 
@@ -405,6 +402,14 @@ select{
 #E2 h4{
   margin-left: 5%;
   margin-top: 0%;
+  overflow-y: hidden;
+  height: 42px;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+
+
 }
 
 #E2A1{
@@ -415,6 +420,7 @@ select{
   display: inline-block;
   margin-top: 0px;
   padding-left: 15%;
+  width: 61vw;
 }
 
 #E0{
@@ -747,6 +753,47 @@ select{
   white-space: nowrap;
 }
 
+#L2{
+  background-color: transparent;
+  border: none;
+  border-color: transparent;
+  padding: 1%;
+}
+
+#L3{
+  margin-bottom: 20px;
+  display: inline-block;
+  width: 80%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+#L4{
+  border-radius: 50%;
+  float: left;
+  object-fit: cover;
+  width: 70px;
+  height: 70px;
+  margin-right: 15px;
+}
+
+#L5{
+  position: relative;
+  width: 100%;
+  font-family: 'San Francisco Display', sans-serif;
+  font-weight: 500;
+  font-size: 27px;
+  margin-top: 7px;
+  margin-bottom: 14px;
+  color: white
+}
+
+#L6{
+  font-family: 'San Francisco Display', sans-serif;
+  font-weight: 100;
+  color: white;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
 
 
 /* --------------------- INVITE PAGE DETAILS --------------- */
@@ -771,6 +818,7 @@ select{
 
 
 
+
 #N1 img{
   display: block;
   width: 90px;
@@ -780,8 +828,86 @@ select{
   margin-right: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
-
+  
 }
+
+/* --------------------- CHAT PAGE DETAIL --------------- */
+#M{
+  border-radius: 50%;
+  float: left;
+  object-fit: cover;
+  width: 50px;
+  height: 50px;
+  margin-top: 17px;
+  margin-right: 5px;
+}
+
+#M1{
+  display: block;
+  position: relative;
+  padding: 3px 10px 0 10px;
+}
+
+#M2{
+  display: block;
+  background-color: transparent;
+  border: none;
+  border-color: transparent;
+  padding: 1%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+}
+
+#M3{
+  background: rgba(255,255,255,0.8);
+  opacity: 0.9;
+  border-radius: 7px;
+  box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);
+  display: table-cell;
+  padding: 10px;
+  font-size: 17px;
+}
+
+#Mm{
+  border-radius: 50%;
+  float: right;
+  object-fit: cover;
+  width: 50px;
+  height: 50px;
+  margin-top: 17px;
+  margin-left: 5px;
+}
+
+#Mm2{
+  display: block;
+  background-color: transparent;
+  border: none;
+  border-color: transparent;
+  padding: 1%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+}
+
+#Mm3{
+  background: rgba(255,255,255,0.8);
+  display: block;
+  float:right;
+  clear:both;
+  opacity: 0.9;
+  border-radius: 7px;
+  box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);
+  display: table-cell;
+  max-width: 300px;
+  white-space: initial;
+  padding: 10px;
+  height: auto;
+  font-size: 17px;
+}
+
 
 #N button{
   border-radius: 20px;
@@ -853,3 +979,12 @@ select{
   ion-scroll[direction=y] {
   height: 100vh;
 }
+
+
+.activeActions{
+  max-width: 50vw;
+    display: inline-block;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+

@@ -268,16 +268,14 @@ angular.module('eoko.services', [])
     var chatData = $firebaseArray(ref);
     var myChatLists = [];
     var ready = false;
+
     chatData.$loaded(function(x)
     {
       //console.log("Chats Loaded",x);
       ready = true;
-
-
     });
 
     return {
-
       checkReady: function()
       {
         return ready;
@@ -315,8 +313,7 @@ angular.module('eoko.services', [])
         return chatData;
       }
     };
-
-  }])
+}])
 
 
 /* ------------------------------- BACK CALL FACTORY --------------------------- */

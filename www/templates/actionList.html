@@ -1,5 +1,5 @@
 <ion-view hide-nav-bar="true">
-  <ion-content padding="true" class="innerbackground" scroll="false">
+  <ion-content padding="true" class="innerbackground" scroll="false" style="filter: blur({{blurry.behind}});">
     <img class="logo" src="./img/eoko-logo.svg" ui-sref="settingPage" />
     <img class="tagline" src="./img/peoplenearyou.png"></img>
 
@@ -10,33 +10,43 @@
     <ion-scroll overflow-scroll="false" style="height: calc(86% - 70px);">
     <div id="C">
       <div id="C1" ng-repeat="x in peopleList track by $index" ng-if="currentUser.uid != x.uid"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
-        <img ng-src="{{x.photoURL}}"/>
-        <div id="C1A">
+        <img ng-src="{{x.photoURL}}" ng-click="viewProfilePopover($event, x)"/>
+        <div id="C1A" ng-click="viewProfilePopover($event, x)">
           {{x.name}}
           <br />
-          <div id="C2">
-            <img id="one" src="../img/eoko-login.png" ng-click="eokoNudge(x)"/>
-            <img id="two" src="http://freevector.co/wp-content/uploads/2014/06/facebook-messenger-white.png"
-            ng-click="newConversation(x)" />
+
+          <div ng-if="distList[$index].dist >= 0.1" id="C2">
+          {{distList[$index].dist | number:1}} miles
           </div>
+          <div ng-if="distList[$index].dist < 0.1" id="C2">
+          {{distList[$index].dist * 5280  | number:1 }} feet
+          </div>
+
+          
         </div>
 
 
-        <div ng-if="distList[$index].dist >= 0.1" id="C3">
-        {{distList[$index].dist | number:1}} <br />
-        miles
-        </div>
-        <div ng-if="distList[$index].dist < 0.1" id="C3">
-        {{distList[$index].dist * 5280  | number:1 }} <br />
-        feet
-        </div>
+        <div id="C3">
+            <img id="one" src="../img/eoko-login.png" ng-click="openPopover($event, x)"/>
+          <!--   <img id="two" src="http://freevector.co/wp-content/uploads/2014/06/facebook-messenger-white.png"
+            ng-click="newConversation(x)" /> -->
+          </div>
 
 
-      <!-- ____________________________  EOKO NUDGE _______________________________________  -->
-        <div id="D" ng-show="nudge==true">
+
+      </div>
+      </div>
+    </ion-scroll>
+
+<script id="my-popover.html" type="text/ng-template">
+    <div ng-click="checkHit($event)" class="popup-container popup-showing active">
+      <div class="details">
+
+        <div ng-if="pop == 'nudge'" id="D">
           <div id="D1">
-            <h3>People Near You</h3>
-            <i class="fa fa-times" aria-hidden="true" ng-click="hideEokoNudge()"></i>
+            <h3>Send a Nudge!</h3>
+            <!-- <i class="fa fa-times" aria-hidden="true" ng-click="hideEokoNudge()"></i> -->
+            <br>
           </div>
           <div id="D2">
             <div id="D2A">
@@ -51,20 +61,56 @@
               <h4> {{otherUser.name}}</h4>
             </div>
           </div>
+          <br>
           <div id="D3">
             <button ng-click=sendNudge()> Send </button>
           </div>
         </div>
+
+
+        <div ng-if="pop == 'profile'" id="D">
+          <div id="D1" >
+            <h3>{{otherUser.name}}</h3>
+            <!-- <i class="fa fa-times" aria-hidden="true" ng-click="hideEokoNudge()"></i> -->
+          </div>
+          <div id="D2">
+            <img style="margin: 0 auto;" ng-src="{{otherUser.photoURL}}" />
+          </div>
+
+              <h5 style="color: white;text-align: center;">Active Actions</h5>
+                <ion-scroll overflow-scroll="false" style="max-height: 24vh;" ng-if="otherUser.actions.myActions">
+
+                    <ion-item ng-repeat="action in otherUser.actions.myActions"
+                    style="background-color: rgba(0,0,0,0);color: white"
+                    ui-sref="eventList({actionID: action.eventID, SJWTriggered: true})" ng-click="closePopover()">
+             
+                        <div class="activeActions">{{action.name}}</div>  <span style="float:right;">{{action.time}}</span>
+           
+                    </ion-item>
+
+                </ion-scroll>
+                <h5 style="color: white" ng-if="!(otherUser.actions.myActions)">
+                No active actions at this time</h5>
+          <br>
+          <br>
+          <div id="D3">
+            <button ng-click=closePopover()> Close </button>
+          </div>
+        </div>
+
       </div>
-      </div>
-    </ion-scroll>
+    </div>
+  </script>
+
+  
+
 </ion-content>
 
 <!-- NAVIGATIO BAR -->
   <div id="navbar">
     <i ui-sref="joinList" class="fa fa-bell" aria-hidden="true"></i>
     <i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true"></i>
-    <i ui-sref="actionList" class="fa fa-users" aria-hidden="true"></i>
+    <i ui-sref="actionList" class="fa fa-users" aria-hidden="true" style="color: #F27C22;"></i>
     <i ui-sref="chatTab" class="fa fa-comment" aria-hidden="true"></i>
   </div>
 </ion-view>

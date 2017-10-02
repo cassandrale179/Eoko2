@@ -1,21 +1,26 @@
-app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover',
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover) {
+app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover',
+  function ($scope,$stateParams, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover) {
     $scope.eventNudge = false;
     $scope.searchBar = 2;
     console.log("State of searchbar");
     console.log($scope.searchBar);
 
+
+
     //start the thing in case it starts here
     firebase.auth().onAuthStateChanged(function(user){
       if (user){
         $scope.currentUser = user;
-        startLoop();        
+        startLoop();
       }
     });
 
     $scope.$on('$ionicView.afterEnter', function () //before anything runs
     {
-      startLoop();  
+      $scope.actionActivate = $stateParams.actionID;
+      console.log("state params, ", $stateParams.actionID, "triggeredm,, ", $stateParams.SJWTriggered);
+      $scope.triggered = $stateParams.SJWTriggered;
+      startLoop();
     });
 
     var res = firebase.database().ref("actions");
@@ -43,14 +48,20 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
      }
 
      $scope.searchEventFilter = [];
+
+
+
+
       //select filter
       $scope.selectFilter = function (elementId)
       {
+
       var elementClass = document.getElementById(elementId).className;
         if(elementClass == "eoko-horizontal-scroll-button eoko-text-thin activated" || elementClass == "eoko-horizontal-scroll-button eoko-text-thin ng-binding activated")
         {
           document.getElementById(elementId).className = "eoko-horizontal-scroll-button-selected eoko-text-thin";
           $scope.searchEventFilter.push(elementId);
+
         }else{
           document.getElementById(elementId).className = "eoko-horizontal-scroll-button eoko-text-thin";
           for(var i in $scope.searchEventFilter)
@@ -58,6 +69,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
             if($scope.searchEventFilter[i] == elementId)
             {
                   $scope.searchEventFilter.splice(i, 1);
+
             }
           }
         }
@@ -65,20 +77,59 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
         {
           $scope.searchEventFilter = null;
         }
-        console.log("searching",$scope.searchEventFilter)
+        console.log("searching",$scope.searchEventFilter);
+        console.log($scope.events);
+        if ($scope.searchEventFilter.length==0 || $scope.searchEventFilter==null){
+          console.log("activated");
+          angular.forEach($scope.events, function(event){
+            event.display=true;
+          });
+        }
+        else{
+          angular.forEach($scope.events, function(event){
+            var tags = event.info.tags;
+            console.log(tags);
+
+            var display = findTags(tags, $scope.searchEventFilter);
+            event.display = display;
+          });
+        }
+
       };
+
+      //Return true if an element in arr1 is in arr2
+      function findTags(arr1, arr2){
+        console.log("arr2", arr2);
+        result = false;
+
+        angular.forEach(arr1, function(ele){
+          console.log(ele);
+
+          if (arr2.indexOf(ele)>-1){
+            console.log("found", arr2.indexOf(ele))
+
+            result = true;
+          }
+          console.log("not found", arr2.indexOf(ele))
+        })
+
+        return result;
+      }
+
+
 
 
       //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
-      $scope.joinAction = function(eventid){
+      $scope.joinAction = function(eventid, chatid){
         var ref = firebase.database().ref("activities").child(eventid);
+
         var checkDone = $firebaseObject(ref);
         checkDone.$loaded().then(function(x){
           console.log("loaded event stuff",checkDone);
           console.log("the thing is ", checkDone);
-          if(checkDone.userID == $scope.currentUser.uid)
-          {
-            console.log("this is your event, exiting");
+          
+          if(checkDone["ownerID"] == $scope.currentUser.uid){
+            console.log("you are the owner of this event");
             $scope.closePopover();
             return;
           }
@@ -97,6 +148,20 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
               avatar: $scope.currentUser.photoURL
             }).then(function(succ)
             {
+              //add current user to the action chat
+              var chatsRef = firebase.database().ref("Chats").child(checkDone["chatID"]);
+              chatsRef.child('/ids').push({
+                id: $scope.currentUser.uid,
+                name: $scope.currentUser.displayName,
+                avatar: $scope.currentUser.photoURL
+              });
+
+              //save chat id in user
+              var usersRef = firebase.database().ref("users").child($scope.currentUser.uid);
+              usersRef.child('/chat').push({
+                chatID: checkDone["chatID"]
+              })
+
               console.log("successfully added");
               $scope.closePopover();
               return;
@@ -117,7 +182,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
           var dist = $scope.distFromPlayer($scope.eventInfo[i].location);
           if(dist != false)
           {
-            result[index] = {info: $scope.eventInfo[i], distance: dist};
+            result[index] = {info: $scope.eventInfo[i], distance: dist, display: true};
           }
         }
         return result;
@@ -140,27 +205,51 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
       console.log("after events", $scope.events);
     }
 
+    function dd()
+    {
+      console.log("THIS IS THE ULTIMATE SHOWDOWN OF ULTIMATE DESTINY!!!,", $scope.actionActivat, $stateParams.actionID);
+      $scope.openPopover("", $scope.events[$scope.actionActivate]);
 
+    }
+
+    $scope.loadedOnce = false;
     function getEvents()  //called in the beginning, thats all
     {
-      var eventsRef = firebase.database().ref("activities/");
-      $scope.eventInfo = $firebaseArray(eventsRef);
-       $scope.eventInfo.$loaded().then(function(x)
+
+      if($scope.loadedOnce == false)
       {
-        console.log("event loaded");
-        $scope.events = loadActions();
-        console.log("total events", $scope.events);
-      });
+        var eventsRef = firebase.database().ref("activities/");
+          $scope.eventInfo = $firebaseArray(eventsRef);
+           $scope.eventInfo.$loaded().then(function(x)
+          {
+            $scope.loadedOnce = true;
+            console.log("event loaded");
+            $scope.events = loadActions();
+            console.log("total events", $scope.events);
 
-       $scope.eventInfo.$watch(function(event){
+            //create watcher
 
-        if(event.event == "child_changed")
-        {
-          console.log("run result", event);
-          changeAction(event.key);
-        }
+              $scope.eventInfo.$watch(function(event){
+              if(event.event == "child_changed")
+              {
+                console.log("run result", event);
+                changeAction(event.key);
+              }
+              if(event.event = "child_created")
+              {
+                $scope.events = loadActions();
+              }
+             });
+          });
+      }
+      
 
-       });
+       
+
+       if($scope.triggered == true)
+       {
+        dd();
+       }
     }
 
     //--------------------- CALCULATE DISTANCE FOR USERS -----------------
@@ -269,7 +358,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
       $scope.openPopover = function($event, user) {
         $scope.blurry.behind = "5px";
         $scope.currUser = user;
-        $scope.popover.show($event);
+        $scope.popover.show();
       };
       $scope.closePopover = function() {
         $scope.blurry.behind = "0px";

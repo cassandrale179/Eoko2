@@ -1,16 +1,84 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory','backcallFactory','$firebaseObject',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory','backcallFactory','$firebaseObject','$ionicPopover','$ionicPopup',
 
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory,backcallFactory,$firebaseObject) {
+  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory,backcallFactory,$firebaseObject, $ionicPopover, $ionicPopup) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
     $scope.$on('$ionicView.beforeEnter', function(){
       firebase.auth().onAuthStateChanged(function(firebaseUser){
         $scope.currentUser = firebaseUser;
+        var userRef = firebase.database().ref("users/"+$scope.currentUser.uid);
+        window.FirebasePlugin.grantPermission();
+        window.FirebasePlugin.getToken(function(token) {
+              // save this server-side and use it to push notifications to this device
+              console.log(token);
+              userRef.update({
+                messageToken: token
+              });
+
+          }, function(error) {
+              console.error(error);
+          });
+
+
+          window.FirebasePlugin.onTokenRefresh(function(token) {
+              // save this server-side and use it to push notifications to this device
+              console.log(token);
+              userRef.update({
+                messageToken: token
+              });
+
+          }, function(error) {
+              console.error(error);
+          });
+
+          window.FirebasePlugin.onNotificationOpen(function(notification) {
+              console.log(notification);
+              var combined = notification.name + " sent you a nudge! Go to messaging?";
+              showNotifyAlert(combined, notification);
+          }, function(error) {
+              console.error(error);
+          });
 
         // $scope.currentUser.uid = UserInfo.getUser().uid;
       });
     });
+
+
+    
+    $scope.blurry = {behind: "0px"};
+
+     function showNotifyAlert(message, info) {
+        $scope.blurry = {behind: "5px"};
+
+        var confirmPopup = $ionicPopup.confirm({
+          title: 'Error',
+          cssClass: 'eoko-alert-pop-up',
+          template: message
+        });
+        confirmPopup.then(function(res) {
+          if(res)
+          {
+            $scope.blurry = {behind: "0px"};
+            console.log("redirect to message");
+            var req = firebase.database().ref('users').child(info.uid);
+            var nudgeUser = $firebaseObject(req);
+            nudgeUser.$loaded().then(function(ss)
+            {
+              $scope.blurry = {behind: "0px"};
+              $scope.newConversation(nudgeUser,true);
+              return;
+            });
+            
+          }
+          else
+          {
+            $scope.blurry = {behind: "0px"};
+            return;
+          }
+          
+        });
+      }
 
 
       //just checks if ready
@@ -45,7 +113,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
 
 
-        $scope.newConversation = function(other)
+        $scope.newConversation = function(other, boo)
         {
           console.log("started newconvo");
             for(var i in $scope.userInfo.chat)
@@ -60,7 +128,11 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
                   if(info.ids[j].id == other.$id)
                   {
                     console.log("FOUDN!!", $scope.userInfo.chat[i].chatID);
-                    $state.go('messagePage',{otherID: other.$id, convoID: $scope.userInfo.chat[i].chatID});
+                    if(boo)
+                    {
+                      $state.go('messagePage',{otherID: other.$id, convoID: $scope.userInfo.chat[i].chatID});
+                    }
+                    
                     return;
                   }
                 }
@@ -91,7 +163,10 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
                       'chatID' : success.key
                       }).then(function(ddd)
                       {
+                        if(boo)
+                        {
                          $state.go('messagePage',{otherID: other.$id, convoID: success.key}); //with params
+                        }
                       });
                   });
                 });
@@ -247,22 +322,27 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
 
           //--------------------------------NUDGE FUNCTIONS-----------------------------------
+          $scope.checkNudge = function() {
+            var userNudgeRef = firebase.database().ref(`users/${scope.currentUser.uid}/nudge/`);
+
+          }
+
           $scope.eokoNudge = function(x) {
             $scope.nudge=true;
             console.log("nudge: ", $scope.nudge);
-            console.log("eoko nudge user: ", $scope.user);
 
             $scope.otherUser = x;
             console.log("the other person is: ", $scope.otherUser.uid);
             console.log($scope.currentUser);
-          }
+          };
 
 
           $scope.hideEokoNudge = function() {
             $scope.nudge = false;
             console.log("nudge: ", $scope.nudge);
+            $scope.blurry = {behind: "0px"};
 
-          }
+          };
 
           $scope.sendNudge = function() {
             var uid = $scope.currentUser.uid;
@@ -279,9 +359,91 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
                 senderUid: uid,
                 receiverUid: $scope.otherUser.uid,
                 latestTime: time
-              })
-            })
+              });
+              $scope.newConversation($scope.otherUser,false);
+              $scope.closePopover();
+            });
 
+
+          };
+
+
+
+//------------------------POPOVER STUFF----------------------------------
+
+      $scope.$on('$ionicView.loaded', function () {
+        $scope.blurry = {behind: "0px"};
+      });
+
+
+        function makeblurry() {
+        if ($scope.popover.isShown()) {
+          console.log("blur background");
+          $scope.blurry = {behind: "5px"};
+        }
+        else {
+          console.log("clear up");
+          $scope.blurry = {behind: "0px"};
+        }
+      }
+
+      $scope.checkHit = function (event) {
+        if (event.target.className.includes("popup-container popup-showing")) {
+            $scope.closePopover();
+        }
+      };
+
+ 
+        $ionicPopover.fromTemplateUrl('my-popover.html', {
+          scope: $scope
+        }).then(function(popover) {
+          $scope.popover = popover;
+        });
+      
+
+        $scope.openPopover = function($event, user) {
+        $scope.blurry.behind = "5px";
+        $scope.otherUser = user;
+        console.log("nudge popover");
+        $scope.pop = 'nudge';
+        $scope.popover.show();
+      };
+
+      $scope.viewProfilePopover = function($event, user) {
+        $scope.blurry.behind = "5px";
+        $scope.otherUser = user;
+        console.log("profile popover");
+        $scope.pop = 'profile';
+        $scope.popover.show();
+      };
+
+
+      $scope.closePopover = function() {
+        $scope.blurry.behind = "0px";
+        $scope.popover.hide();
+        makeblurry();
+      };
+      //Cleanup the popover when we're done with it!
+      $scope.$on('$destroy', function() {
+         $scope.blurry.behind = "0px";
+        $scope.popover.remove();
+        makeblurry();
+      });
+      // Execute action on hide popover
+      $scope.$on('popover.hidden', function() {
+        // Execute action
+      });
+      // Execute action on remove popover
+      $scope.$on('popover.removed', function() {
+        // Execute action
+      });
+
+
+          document.addEventListener("deviceready", onDeviceReady, false);
+
+
+
+          function onDeviceReady() {
 
           }
 

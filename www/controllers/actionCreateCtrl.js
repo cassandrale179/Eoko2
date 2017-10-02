@@ -1,20 +1,65 @@
-app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout','$firebaseObject',
-  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout, $firebaseObject) {
+app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout','$firebaseObject','$ionicPopup',
+  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout, $firebaseObject,$ionicPopup) {
 
 
     //------- AUTOCOMPLETE LOCATION ----------
+    
+    
     var input = document.getElementById('pac-input');
     var autocomplete = new google.maps.places.Autocomplete(input);
+      $scope.action = {};
 
-    var d = new Date();
-    var hour = (d.getHours() < 10) ? '0' + d.getHours() : d.getHours();
-    var minute = (d.getMinutes() < 10) ? '0' + d.getMinutes() : d.getMinutes();
+      $scope.selectTagList = [];
 
+       $scope.$on('$ionicView.afterEnter', function () //before anything runs
+      {
+        try
+        {           
+          var d = new Date();
+          var hour = (d.getHours() < 10) ? '0' + d.getHours() : d.getHours();
+          var minute = (d.getMinutes() < 10) ? '0' + d.getMinutes() : d.getMinutes();
+           
+          $scope.action.startTime = new Date(1970, 0, 1, hour, minute, 0);
 
-    $scope.action = {
-      'startTime': new Date(1970, 0, 1, hour, minute, 0)
-    };
+          if($scope.tagSelect)
+          {
+            for(var i in $scope.tagSelect)
+            {
+              if($scope.tagSelect[i].$value != null)
+              {
+                console.log("fucking reset you ass, ", $scope.tagSelect[i]);
+              $scope.selectionTag($scope.tagSelect[i].$value + 'create');
+              }
+              
+            }
+            $scope.selectTagList = [];
+          }
 
+          if(geoPos.isReady() == true)
+        {
+          $scope.action.address = '';
+          initGeoLoc();
+        }
+          
+          $scope.action.name = '';
+          $scope.action.description = '';
+          
+          if($scope.currentUser && $scope.thisUser)
+          {
+            $scope.action.photoURL = $scope.currentUser.photoURL;
+            $scope.setPrivacy($scope.thisUser.privacy);
+          }
+          
+
+          }
+        catch(err)
+        {
+          console.log("first time?", err);
+        }
+        //startLoop();
+      });
+
+    
     //--------TAGS -------------------------------------
     var tagsRef = firebase.database().ref('actions');
     $scope.tagSelect = $firebaseArray(tagsRef);
@@ -30,9 +75,21 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
     $scope.publicStyle = clicked;
     
+    $scope.blurry = {behind: "0px"};
+    function showAlert(message) {
+        $scope.blurry = {behind: "5px"};
 
+        var alertPopup = $ionicPopup.alert({
+          title: 'Error',
+          cssClass: 'eoko-alert-pop-up',
+          template: message
+        });
+        alertPopup.then(function(res) {
+          $scope.blurry = {behind: "0px"};
+        });
+      };
 
-    $scope.selectTagList = [];
+   // $scope.selectTagList = [];
       //select filter
       $scope.selectionTag = function (elementId)
       {
@@ -62,6 +119,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
           $scope.selectTagList = null;
         }
         console.log("searching",$scope.selectTagList);
+        $timeout(function(){$scope.$apply();});
       };
 
 //------ CHECK IF USER IS CURRENTLY LOGGING IN ------
@@ -94,7 +152,13 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
        }
        else
        {
-           $scope.action.location = geoPos.getUserPosition();
+           initGeoLoc();
+       }
+     }
+
+     function initGeoLoc()
+     {
+       $scope.action.location = geoPos.getUserPosition();
          var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + $scope.action.location +
           "&key=AIzaSyCxi6Eah3dgixKG8oFO8DB6sMVN1v3mxuQ";
           $http.get(url).then(function(response){
@@ -105,9 +169,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
           {
             console.log("Problem is probably CORS", err);
           });
-       }
      }
-
 
     // ------------ THIS ALLOW USER TO MOVE BETWEEN TWO DIFFERENT SCREENS ON CREATE ACTION PAGE  --------
     $scope.description = 0;
@@ -130,10 +192,52 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       $scope.action.privacy = privacy;
     };
 
+
+
     // ------------ WHEN USER CLICK SUBMIT, THIS FUNCTION WILL HAPPEN --------
     $scope.submit = function(){
-      //Store the tags
       $scope.action.tags = $scope.selectTagList;
+
+      if($scope.action.privacy == null || $scope.action.privacy == undefined
+         || $scope.action.privacy == "" || $scope.action.privacy == " ")
+      {
+        showAlert("You must select public or private");
+        return;
+      }
+      if($scope.action.name == null || $scope.action.name == undefined
+         || $scope.action.name == "" || $scope.action.name == " ")
+      {
+        showAlert("You must create a title");
+        return;
+      }
+      if($scope.action.tags == null || $scope.action.tags == undefined
+         || $scope.action.tags == "" || $scope.action.tags == " ")
+      {
+        showAlert("You must press at least one tag");
+        return;
+      }
+      if($scope.action.address == null || $scope.action.address == undefined
+         || $scope.action.address == "" || $scope.action.address == " ")
+      {
+        showAlert("You must enter an address");
+        return;
+      }
+      if($scope.action.startTime == null || $scope.action.startTime == undefined
+         || $scope.action.startTime == "" || $scope.action.startTime == " ")
+      {
+        showAlert("You must enter a start time");
+        return;
+      }
+      if($scope.action.description == null || $scope.action.description == undefined
+         || $scope.action.description == "" || $scope.action.description == " ")
+      {
+        showAlert("You must enter a description");
+        return;
+      }
+
+
+      //Store the tags
+      
       console.log($scope.action.tags);
       console.log("current user uid: ", $scope.currentUser.uid);
       var activitiesRef = firebase.database().ref('activities');
@@ -145,7 +249,22 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       var friendsRef = firebase.database().ref('users/' + $scope.currentUser.uid + '/friends');
       var friendsArray = $firebaseArray(friendsRef);
 
+      //Create an event chat
+      var chatsRef = firebase.database().ref('Chats/');
+      var eventChatRef = chatsRef.push({
+        name: $scope.action.name,
+        photoURL: $scope.currentUser.photoURL
+      });
+      var eventChatID = {chatID: eventChatRef.key}
+      chatsRef.child(eventChatID.chatID + '/ids').push({
+        id: $scope.currentUser.uid,
+        name: $scope.currentUser.displayName,
+        avatar: $scope.currentUser.photoURL
+      })
+
       //Submit the event and get the event ID
+      $scope.action.chatID = eventChatID.chatID;
+      $scope.action.ownerID = $scope.currentUser.uid;
       eventRef = activitiesRef.push($scope.action);
       eventID = eventRef.key;
 
@@ -153,14 +272,21 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       var event = {
         eventID: eventID,
         location: $scope.action.location,
-        time: $scope.action.startTime
+        time: $scope.action.startTime,
+        name: $scope.action.name
       };
 
       userActionsRef.child(eventID).update(event);
 
+
+      //Add chat id to the event creator (currentuser)
+      var userChatRef = firebase.database().ref('users/' + $scope.currentUser.uid).child('chat');
+      userChatRef.push(eventChatID);
+
+
       if ($scope.action.privacy == "public")
       {
-        console.log($scope.action);
+        console.log($scope.action);        
         $state.go('eventList');
         return;
         //Push event into firebase
@@ -178,7 +304,8 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
             ref.child(eventID).update(event);
 
           });
-        $state.go('eventList');
+           $state.go('eventList');
+           return;
         });
 
       }
