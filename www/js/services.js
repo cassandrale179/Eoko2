@@ -35,10 +35,11 @@ angular.module('eoko.services', [])
 
                     var obj = {
                     name: snapshot.val().name,
-                    photoURL: snapshot.val().photoURL 
+                    photoURL: snapshot.val().photoURL,
+                    uid: snapshot.val().uid
                   }
 
-                  userFriendsRef.child(friendID).update(obj);
+                  userFriendsRef.child(snapshot.val().uid).update(obj);
 
 
                   // userFriendsRef.update(obj + friendID);
