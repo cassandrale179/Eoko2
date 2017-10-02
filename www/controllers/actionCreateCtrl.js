@@ -192,6 +192,8 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       $scope.action.privacy = privacy;
     };
 
+
+
     // ------------ WHEN USER CLICK SUBMIT, THIS FUNCTION WILL HAPPEN --------
     $scope.submit = function(){
       $scope.action.tags = $scope.selectTagList;
@@ -247,7 +249,22 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       var friendsRef = firebase.database().ref('users/' + $scope.currentUser.uid + '/friends');
       var friendsArray = $firebaseArray(friendsRef);
 
+      //Create an event chat
+      var chatsRef = firebase.database().ref('Chats/');
+      var eventChatRef = chatsRef.push({
+        name: $scope.action.name,
+        photoURL: $scope.currentUser.photoURL
+      });
+      var eventChatID = {chatID: eventChatRef.key}
+      chatsRef.child(eventChatID.chatID + '/ids').push({
+        id: $scope.currentUser.uid,
+        name: $scope.currentUser.displayName,
+        avatar: $scope.currentUser.photoURL
+      })
+
       //Submit the event and get the event ID
+      $scope.action.chatID = eventChatID.chatID;
+      $scope.action.ownerID = $scope.currentUser.uid;
       eventRef = activitiesRef.push($scope.action);
       eventID = eventRef.key;
 
@@ -260,6 +277,12 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       };
 
       userActionsRef.child(eventID).update(event);
+
+
+      //Add chat id to the event creator (currentuser)
+      var userChatRef = firebase.database().ref('users/' + $scope.currentUser.uid).child('chat');
+      userChatRef.push(eventChatID);
+
 
       if ($scope.action.privacy == "public")
       {

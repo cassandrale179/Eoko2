@@ -1,40 +1,39 @@
 app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactory','$firebaseObject', '$state',
   function ($scope, $firebaseArray, $timeout,chatFactory,$firebaseObject,$state) {
 
-        
 
-      $scope.currentUser = firebase.auth().currentUser;
+    $scope.currentUser = firebase.auth().currentUser;
 
-
-      $scope.$on('$ionicView.afterEnter', function () //before anything runs
-      {
-        populateChats();
-      });
-
-  function chatLoop()
+    //before anything runs, get the list of all chats
+    $scope.$on('$ionicView.afterEnter', function () 
     {
-       if(chatFactory.checkReady() == false)
-       {
+      populateChats();
+    });
+
+
+    function chatLoop()
+    {
+      if(chatFactory.checkReady() == false)
+      {
         console.log("chat not ready Yet");
         $timeout(function(){
                 chatLoop();
-              },1000);
-       }
-       else
+        },1000);
+      }
+      else
+      {
+        $scope.rawChatInfo = chatFactory.getChatData();
+        $scope.rawChatInfo.$watch(function(event)
         {
-          $scope.rawChatInfo = chatFactory.getChatData();
-          $scope.rawChatInfo.$watch(function(event)
+          if(event.event == "child_removed")
           {
-            if(event.event == "child_removed")
-            {
-              console.log("event",event.event);
-                populateChats();
-            }
-            
-          });
-          populateChats();
-        }
-   }
+            console.log("event",event.event);
+            populateChats();
+          }  
+        });
+        populateChats();
+      }
+    }
 
 
    function makeName(ids)
@@ -50,28 +49,25 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
       return nameList.join(", ");
    }
 
-    
+
    function populateChats()
    {
-    
-      //var chatList = chatFactory.getChats($scope.currentUser.uid);
-        //console.log("the chat list",chatList);
-        $scope.chatData = [];
-        for(var i in $scope.userInfo.chat)
-        {
-          console.log("ids is", $scope.userInfo.chat[i].chatID);
-          var chatdata = chatFactory.loadChatData($scope.userInfo.chat[i].chatID);
-          var chattitle = makeName(chatdata.ids);
-            
-          console.log(chatdata, chattitle);
-          var obj = {
-            info: chatdata,
-            title: chattitle};
-          $scope.chatData.push(obj);
-        }
-        console.log("chatData",$scope.chatData);
-        $timeout(function(){$scope.$apply();});
+      $scope.chatData = [];
+      console.log("userInfo", $scope.userInfo);
+      for(var i in $scope.userInfo.chat)
+      {
+        var chatdata = chatFactory.loadChatData($scope.userInfo.chat[i].chatID);
+        var chattitle = makeName(chatdata.ids);
         
+        console.log("chatdata: ", chatdata);
+        var obj = {
+          info: chatdata,
+          title: chattitle
+        };
+        $scope.chatData.push(obj);
+      }
+      console.log("chatData",$scope.chatData);
+      $timeout(function(){$scope.$apply();});   
    }
 
        
