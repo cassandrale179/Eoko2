@@ -771,8 +771,22 @@ select{
   border-radius: 100px;
   margin-right: 20px;
   margin-top: 20px;
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
 
+}
+
+#N button{
+  border-radius: 20px;
+  height: 40px;
+  border: none;
+  display: block;
+  margin: auto;
+  width: 90%;
+  background-color: rgba(230, 126, 34, 0.9);
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  margin-top: 20px;
 }
 
 
