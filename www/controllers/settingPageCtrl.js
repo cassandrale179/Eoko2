@@ -1,5 +1,5 @@
-app.controller('settingPageCtrl', ['$scope', '$state', '$firebaseAuth',
-function($scope, $state, $firebaseAuth){
+app.controller('settingPageCtrl', ['$scope', '$state', '$firebaseAuth', '$localStorage',
+function($scope, $state, $firebaseAuth, $localStorage){
 
   //---------- SET INITIAL MODE TO VIEW SETTINGS --------------
   $scope.view = true;
@@ -23,11 +23,13 @@ function($scope, $state, $firebaseAuth){
     var userRef = firebase.database().ref("users/" + $scope.currentUser.uid);
     $scope.setPublic = function(){
       userRef.update({privacy: 'public'});
+      $localStorage.eventPrivacy = 'public';
       console.log("Set user's preference to public");
       $state.go('settingPage');
     }
     $scope.setPrivate = function(){
       userRef.update({privacy: 'private'})
+      $localStorage.eventPrivacy = 'private';
       console.log("Set user's preference to private");
       $state.go('settingPage');
     }
