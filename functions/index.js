@@ -17,42 +17,66 @@ exports.sendMessageNotification = functions.database.ref('/Chats/{chatId}/messag
 
 
   //Make sure all 2 promises are returned before continuing
-  return Promise.all([chatIdPromise, getSenderPromise]).then(results => {
+  Promise.all([chatIdPromise, getSenderPromise]).then(results => {
     console.log("Chat data: ", results[0].val().ids);
 
-    var senderName = results[1].val().displayName;
+    const senderName = results[1].displayName;
     console.log("Sender name: ", senderName);
 
-
-    for (var uid in results[0].val().ids){
-      //Makes sure the sender does not receive notification
-      if (uid!=message.userId){
-        console.log("uid:", uid);
-        const userRef = admin.database().ref("users/"+id);
-        userRef.on("value", function(snapshot){
-          const instanceId = snapshot.val().messageToken;
-
-          const payload = {
-              notification: {
-                  title: snapshot.val().name,
-                  body: message.text
-              }
-          };
-
-          admin.messaging().sendToDevice(instanceId, payload)
-              .then(function (response) {
-                  console.log("Successfully sent message:", response);
-              })
-              .catch(function (error) {
-                  console.log("Error sending message:", error);
-              });
+    const ids = results[0].val().ids;
 
 
 
-        })
+    console.log("length of ids: ", Object.keys(ids).length);
+
+    //No notifications for chats with more than 2 people
+    if (Object.keys(ids).length<3){
+      for (var pushId in ids){
+        console.log("pushId", pushId);
+        //Makes sure the sender does not receive notification
+        uid = results[0].val().ids[pushId].id;
+        if (uid!=message.userId){
+          console.log("uid:", uid);
+          const userRefPromise = admin.database().ref(`/users/${uid}`).once('value');
+          return Promise.all([userRefPromise]).then(res => {
+            console.log("res value:", res[0].val());
+
+              const instanceId = res[0].val().messageToken;
+              console.log("msg token: ", instanceId);
+
+              const payload = {
+                  notification: {
+                      title: senderName,
+                      body: message.text,
+                      tag: chatId
+                  },
+                  data: {
+                    chatId: chatId
+                  }
+              };
+
+              admin.messaging().sendToDevice(instanceId, payload)
+                  .then(function (response) {
+                      console.log("Successfully sent message:", response);
+                  })
+                  .catch(function (error) {
+                      console.log("Error sending message:", error);
+                  });
+
+
+
+
+
+          })
+
+        }
+
       }
 
     }
+
+
+
   })
 
 

@@ -7,7 +7,7 @@
 // 'eoko.controllers' is found in controllers.js
 
 angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.services', 'eoko.directives',
-'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngInstafeed', 'ngCordova', 'ngCordovaOauth', 'firebase', 'socialLogin', 'ngOpenFB','angularRangeSlider'])
+'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngInstafeed', 'ngCordova', 'ngCordovaOauth', 'firebase', 'socialLogin', 'ngOpenFB','angularRangeSlider', 'ngStorage'])
 
 .run(function($ionicPlatform, ngFB) {
   ngFB.init({appId: '694354544087073'});
