@@ -7,7 +7,6 @@
       <div id="E1B" ui-sref="actionCreate"><button style="border-bottom: 0.1px solid rgb(230,126,34)"> Create </button></div>
     </div>
     <div id="B" ng-show="description==0">
-     
       <div id="B4">
         <button ng-click="setPrivacy('public')" ng-style="publicStyle"> Public </button>
         <button ng-click="setPrivacy('private')" ng-style="privateStyle"> Private </button>
@@ -17,7 +16,7 @@
       <p ng-if="privSelect == 'private'">Only friends can view and join your event</p>
        <input ng-model="action.name" type="text" placeholder="Title (e.g Coffee at Saxby)"/>
       <form>
-     
+
         <ion-scroll direction="x" class="eoko-horizontal-scroll" scrollbar-x="false"
                 scrollbar-y="false" style="height: 46px;">
 
@@ -27,12 +26,8 @@
           </ion-scroll>
 
         <!-- _____________________________ INPUT FIELD ___________________________________ -->
-
-       <!--  <input id="pac-input" ng-model="action.address" ng-change="" type="text" placeholder="Location"/> -->
-
         <input id="autocomplete" type="text" placeholder="Location" select-on-click
                    class="eoko-input eoko-text-thin" value="{{action.address}}" ng-click="geolocate()" required="">
-        <!-- <input ng-model="action.date" type="date" placeholder="Date"/ /> -->
         <input ng-model="action.startTime" type="time" placeholder="HH:mm:ss"/>
         <textarea ng-model="action.description" placeholder="Description (Currently drinking coffee at Saxby. Anyone want to hangout?)"></textarea>
       </form>
