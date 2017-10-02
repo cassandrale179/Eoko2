@@ -98,6 +98,19 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
        }
 
 
+        $scope.doRefresh = function() {
+    
+          console.log('Refreshing!');
+          $timeout(function()
+          {
+            //$scope.loadedOnce = false;
+            getFriends();
+            
+          },1000);
+          $scope.$broadcast('scroll.refreshComplete');
+        };
+
+
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
             var rez = firebase.database().ref("users").child(user.uid);
