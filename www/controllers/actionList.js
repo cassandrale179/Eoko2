@@ -368,7 +368,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
             ref.update({
               nudge: true
             });
-            ref.remove();
+        
             $scope.newConversation($scope.otherUser,false);
             $scope.closePopover();
 
