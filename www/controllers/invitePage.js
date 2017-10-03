@@ -8,6 +8,8 @@ function($scope, $state, $firebaseAuth, $stateParams){
   var newArr = []
   $scope.action = $stateParams.actionObject;
   $scope.event = $stateParams.eventObject;
+  console.log($scope.action);
+  console.log($scope.event);
 
 
 
@@ -54,14 +56,8 @@ function($scope, $state, $firebaseAuth, $stateParams){
       }
 
 
-      //---------------------- WHEN USER SUBMIT AN INVITATION -----------------------
-      $scope.invitedSubmit = function(){
-        for (var p = 0; p < $scope.invitedPeople.length; p++){
-          var ref = firebase.database().ref('users/' + $scope.invitedPeople[p] + '/actions/friendActions');
-          ref.child("lalala").update($scope.event);
-        }
-        console.log("Successfully updated");
-      }
+      //---------------------- WHEN USER SUBMIT, EVENT ARE PUSHED UNDER THE FRIEND-----------------------
+
     })
   });
 }])
