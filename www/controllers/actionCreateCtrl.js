@@ -290,14 +290,15 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       userChatRef.push(eventChatID);
 
 
+      //---------- IF PRIVACY IS SET AS PUBLIC --------------
       if ($scope.action.privacy == "public")
       {
         console.log($scope.action);
         $state.go('eventList');
         return;
-        //Push event into firebase
       }
 
+      //---------- IF PRIVACY IS SET AS PRIVATE --------------
       else if ($scope.action.privacy == "private")
       {
         console.log($scope.action);
@@ -306,14 +307,17 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
           angular.forEach(friendsArray, function(friend){
             console.log("friend ID:", friend.$id);
             var ref = firebase.database().ref('users/' + friend.$id + '/actions/friendActions');
-
             ref.child(eventID).update(event);
-
           });
            $state.go('eventList');
            return;
         });
+      }
 
+      //---------- IF PRIVACY IS SET AS INVITE ONLY --------------
+      else if ($scope.action.privacy == "invite")
+      {
+        $state.go('invitePage', {actionObject: $scope.action, eventObject: event})
       }
 
     };
@@ -365,7 +369,6 @@ function initAutocomplete() {
 
         }
 
-
         container = document.getElementsByClassName('pac-container');
         // disable ionic data tab
         angular.element(container).attr('data-tap-disabled', 'true');
@@ -377,11 +380,8 @@ function initAutocomplete() {
 
 
         $scope.geolocate = function() {
-
             google.maps.event.addDomListener(window, 'load', initAutocomplete);
             initAutocomplete();
-
-
 
           if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -398,5 +398,4 @@ function initAutocomplete() {
             });
           }
         };
-
   }])

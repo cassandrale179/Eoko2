@@ -121,6 +121,7 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
   })
 
 
+  /* --------- MESSAGE PAGE ------- */
     .state('messagePage', {
       url: '/messagePage',
       nativeTrasitions: {
@@ -134,7 +135,7 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
       controller: 'messagePageCtrl'
     })
 
-
+/* --------- CHAT TAB PAGE ------- */
     .state('chatTab', {
       url: '/chatTab',
       nativeTransitions: {
@@ -144,10 +145,15 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
       controller: 'chatTabCtrl'
     })
 
+/* --------- INVITE PAGE ------- */
     .state('invitePage', {
       url: '/invitePage',
       nativeTrasitions: {
         type: "fade"
+      },
+      params: {
+        actionObject: "",
+        eventObject: ""
       },
       templateUrl: 'templates/invitePage.html',
       controller: 'invitePageCtrl'

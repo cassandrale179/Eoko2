@@ -1,11 +1,15 @@
-app.controller('invitePageCtrl', ['$scope', '$state', '$firebaseAuth',
-function($scope, $state, $firebaseAuth){
+app.controller('invitePageCtrl', ['$scope', '$state', '$firebaseAuth', '$stateParams',
+function($scope, $state, $firebaseAuth, $stateParams){
 
   //----------------- LIST OF ARRAYS TO BE USED BY THIS CONTROLLER --------------
   $scope.userFriendObject = []
   $scope.splitArr = []
   $scope.invitedPeople = []
   var newArr = []
+  $scope.action = $stateParams.actionObject;
+  $scope.event = $stateParams.eventObject;
+
+
 
 
   //------------------- GET CURRENT USER UID -------------------
@@ -52,14 +56,12 @@ function($scope, $state, $firebaseAuth){
 
       //---------------------- WHEN USER SUBMIT AN INVITATION -----------------------
       $scope.invitedSubmit = function(){
-        console.log($scope.invitedPeople);
+        for (var p = 0; p < $scope.invitedPeople.length; p++){
+          var ref = firebase.database().ref('users/' + $scope.invitedPeople[p] + '/actions/friendActions');
+          ref.child("lalala").update($scope.event);
+        }
+        console.log("Successfully updated");
       }
-
-
     })
-
   });
-
-
-
 }])
