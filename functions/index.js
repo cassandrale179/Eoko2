@@ -126,11 +126,6 @@ exports.sendNudgeNotification = functions.database.ref('/nudge/{userId}/{otherId
                 .then(function (response) {
                     console.log("Successfully sent message:", response);
                     var ref = admin.database().ref(`/nudge/${userId}/${otherId}`);
-                    ref.update({
-                      name: sender.displayName,
-                      photoURL: sender.photoURL,
-                      uid: sender.uid
-                    })
                     ref.remove();
 
 

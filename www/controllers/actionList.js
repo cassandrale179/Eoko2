@@ -45,7 +45,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
     });
 
 
-    
+
     $scope.blurry = {behind: "0px"};
 
      function showNotifyAlert(message, info) {
@@ -69,14 +69,14 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
               $scope.newConversation(nudgeUser,true);
               return;
             });
-            
+
           }
           else
           {
             $scope.blurry = {behind: "0px"};
             return;
           }
-          
+
         });
       }
 
@@ -99,13 +99,13 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
 
         $scope.doRefresh = function() {
-    
+
           console.log('Refreshing!');
           $timeout(function()
           {
             //$scope.loadedOnce = false;
             getFriends();
-            
+
           },1000);
           $scope.$broadcast('scroll.refreshComplete');
         };
@@ -146,7 +146,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
                     {
                       $state.go('messagePage',{otherID: other.$id, convoID: $scope.userInfo.chat[i].chatID});
                     }
-                    
+
                     return;
                   }
                 }
@@ -365,18 +365,13 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
             var ref = firebase.database().ref('nudge/'+uid+"/"+$scope.otherUser.uid);
             var time = Date.now();
             var userRef = firebase.database().ref('users/'+uid);
-            userRef.once("value", function(snapshot){
-              var location = snapshot.val().location;
-              ref.update({
-                location: location,
-                name: $scope.currentUser.displayName,
-                senderUid: uid,
-                receiverUid: $scope.otherUser.uid,
-                latestTime: time
-              });
-              $scope.newConversation($scope.otherUser,false);
-              $scope.closePopover();
+            ref.update({
+              nudge: true
             });
+            ref.remove();
+            $scope.newConversation($scope.otherUser,false);
+            $scope.closePopover();
+
 
 
           };
@@ -407,13 +402,13 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         }
       };
 
- 
+
         $ionicPopover.fromTemplateUrl('my-popover.html', {
           scope: $scope
         }).then(function(popover) {
           $scope.popover = popover;
         });
-      
+
 
         $scope.openPopover = function($event, user) {
         $scope.blurry.behind = "5px";
