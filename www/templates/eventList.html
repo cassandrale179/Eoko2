@@ -1,9 +1,9 @@
 <ion-view hide-nav-bar="true" >
-  <ion-content padding="true" class="innerbackground" style="filter: blur({{blurry.behind}});" scroll="false">
+  <ion-content padding="true" class="innerbackground eoko-content" style="filter: blur({{blurry.behind}});" scroll="false">
     <!-- <div id="E"> -->
       <!-- _____________ NAVIGATION BAR _______ -->
       <div id="E0" ng-show="searchBar==1">
-        <input type="text" placeholder="Search for an event..." ng-model="searchEvent" />
+        <input type="text" placeholder="Search for an event..." ng-model="searchEvent"  />
         <button ng-click="searchBar = 2" >X</button>
       </div>
       <div id="E1" ng-show="searchBar==2">
@@ -21,10 +21,13 @@
         </button>
     </ion-scroll>
 
-     
+
       <!-- _____________ CARDS OF EVENTS _______ -->
       <ion-scroll id="E2" overflow-scroll="false" style="height: calc(84% - 70px);">
-        <div id="E2A" ng-repeat="(key,x) in events | orderObjectBy:'distance' | filter: {display: true}">
+
+      <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+        <div id="E2A" ng-repeat="(key,x) in events | orderObjectBy:'distance' | filter: {display: true} | filter: searchEvent">
+
           <img ng-src="{{x.info.photoURL}}" />
           <div id="E2A1" ng-click="openPopover($event, x)">
             <h4>{{x.info.name}}</h4>
@@ -52,18 +55,19 @@
           <img ng-src={{currUser.info.photoURL}} />
           <!-- <h2>{{currUser.info.owner}}</h2> -->
           <h1>{{currUser.info.name}}</h1>
+          <h3>{{currUser.info.address}}</h3>
           <div id="F1A">
             <h3>{{currUser.info.startTime}}</h3>
             <h3 ng-if="currUser.distance >= 0.1">{{currUser.distance | number:1}} miles</h3>
             <h3 ng-if="currUser.distance < 0.1">{{currUser.distance * 5280 | number:1}} feet</h3>
           </div>
-          <p>{{currUser.info.description}}</p>
+          <p class="descriptionArea">{{currUser.info.description}}</p>
         </div>
 
         <!-- ___________ DISPLAY LIST OF PEOPLE WHO ARE JOINING IT _________________ -->
         <div id="F2">
-          <p ng-if="!(currUser.info.participants)">Be the first to join!</p>
           <p>Going:</p>
+           <p ng-if="!(currUser.info.participants)">Be the first to join!</p>
           <ion-scroll overflow-scroll="false" scrollX="true">
             <span ng-repeat="parts in currUser.info.participants">
               <img src="{{parts.avatar}}">
@@ -77,11 +81,4 @@
   </script>
 
 </ion-content>
-<!-- NAVIGATIO BAR -->
-<div id="navbar" style="filter: blur({{blurry.behind}});">
-  <i ui-sref="joinList" class="fa fa-bell" aria-hidden="true"></i>
-  <i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true" style="color: #F27C22;"></i>
-  <i ui-sref="actionList" class="fa fa-users" aria-hidden="true"></i>
-  <i ui-sref="chatTab" class="fa fa-comment" aria-hidden="true"></i>
-</div>
 </ion-view>

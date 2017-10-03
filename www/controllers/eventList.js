@@ -44,12 +44,24 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
        else
        {
         getEvents();
+
        }
      }
 
      $scope.searchEventFilter = [];
 
 
+      $scope.doRefresh = function() {
+    
+          console.log('Refreshing!');
+          $timeout(function()
+          {
+            $scope.loadedOnce = false;
+            getEvents();
+            
+          },1000);
+          $scope.$broadcast('scroll.refreshComplete');
+        };
 
 
       //select filter
