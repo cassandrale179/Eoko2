@@ -34,8 +34,14 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
           window.FirebasePlugin.onNotificationOpen(function(notification) {
               console.log(notification);
-              var combined = notification.name + " sent you a nudge! Go to messaging?";
-              showNotifyAlert(combined, notification);
+              if (notification.data.nudge=="true"){
+                var combined = notification.name + " sent you a nudge! Go to messaging?";
+                showNotifyAlert(combined, notification);
+              }
+              if (notification.data.chatId){
+                //TODO: Redirect to messaging here
+              }
+
           }, function(error) {
               console.error(error);
           });
@@ -374,7 +380,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
               receiverUid: $scope.otherUser.uid,
               latestTime: time
             });
-            
+
             $scope.newConversation($scope.otherUser,false);
             $scope.closePopover();
 

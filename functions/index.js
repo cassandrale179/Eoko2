@@ -48,7 +48,8 @@ exports.sendMessageNotification = functions.database.ref('/Chats/{chatId}/messag
                   notification: {
                       title: senderName,
                       body: message.text,
-                      tag: chatId
+                      tag: chatId,
+                      sound: "default"
                   },
                   data: {
                     chatId: chatId
@@ -112,10 +113,12 @@ exports.sendNudgeNotification = functions.database.ref('/nudge/{userId}/{otherId
             const payload = {
                 notification: {
                     title: "You have an Eoko nudge!",
-                    body: body
+                    body: body,
+                    sound: "default"
 
                 },
                 data: {
+                  nudge: true,
                   uid: senderUid,
                   name: sender.displayName,
                   photoURL: sender.photoURL
