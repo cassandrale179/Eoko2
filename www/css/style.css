@@ -815,8 +815,6 @@ select{
 }
 
 
-
-
 #N1 img{
   display: block;
   width: 90px;
@@ -827,6 +825,14 @@ select{
   margin-top: 20px;
   margin-bottom: 20px;
 
+}
+
+.opaque{
+  opacity: 0.5;
+}
+
+.not-opaque{
+  opacity: 0.9;
 }
 
 /* --------------------- CHAT PAGE DETAIL --------------- */
@@ -923,11 +929,8 @@ select{
 
 
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 4d16267f768242b3c5d4221b9c9689b107051cbf
 /*-------------Michael's crap css again----------*/
 
 
