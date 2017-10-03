@@ -3,7 +3,7 @@
     <!-- ___________________ THIS DIV WILL DISPLAY THE EVENTS THAT YOU HAVE CREATED ________________ -->
     <div id="I" ng-show="show==1">
       <div id="I1">
-        <button style="border-bottom: 0.1px rgba(230, 126, 34, 0.9) solid" ng-click="show=1"> Created </button>
+        <button style="border-bottom: 1px solid rgb(230, 126, 34)" ng-click="show=1"> Create </button>
         <button ng-click="show=3"> Joined </button>
         <i class="fa fa-trash-o" aria-hidden="true"></i>
       </div>
@@ -54,7 +54,7 @@
     <div id="J" ng-show="show==3">
       <div id="I1">
         <button ng-click="show=1"> Created </button>
-        <button style="border-bottom: 0.1px rgba(230, 126, 34, 0.9) solid" ng-click="show=3"> Joined </button>
+        <button style="border-bottom: 1px rgb(230, 126, 34) solid" ng-click="show=3"> Joined </button>
       </div>
       <div id="error" ng-if="errorMessage2 != ''">
         {{errorMessage2}}
