@@ -5,15 +5,58 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
     //------- AUTOCOMPLETE LOCATION ----------
     var input = document.getElementById('pac-input');
     var autocomplete = new google.maps.places.Autocomplete(input);
+      $scope.action = {};
 
-    var d = new Date();
-    var hour = (d.getHours() < 10) ? '0' + d.getHours() : d.getHours();
-    var minute = (d.getMinutes() < 10) ? '0' + d.getMinutes() : d.getMinutes();
+      $scope.selectTagList = [];
+
+       $scope.$on('$ionicView.afterEnter', function () //before anything runs
+      {
+        try
+        {
+          var d = new Date();
+          var hour = (d.getHours() < 10) ? '0' + d.getHours() : d.getHours();
+          var minute = (d.getMinutes() < 10) ? '0' + d.getMinutes() : d.getMinutes();
+
+          $scope.action.startTime = new Date(1970, 0, 1, hour, minute, 0);
+
+          if($scope.tagSelect)
+          {
+            for(var i in $scope.tagSelect)
+            {
+              if($scope.tagSelect[i].$value != null)
+              {
+                console.log("fucking reset you ass, ", $scope.tagSelect[i]);
+              $scope.selectionTag($scope.tagSelect[i].$value + 'create');
+              }
+
+            }
+            $scope.selectTagList = [];
+          }
+
+          if(geoPos.isReady() == true)
+        {
+          $scope.action.address = '';
+          initGeoLoc();
+        }
+
+          $scope.action.name = '';
+          $scope.action.description = '';
+
+          if($scope.currentUser && $scope.thisUser)
+          {
+            $scope.action.photoURL = $scope.currentUser.photoURL;
+            $scope.setPrivacy($scope.thisUser.privacy);
+          }
 
 
-    $scope.action = {
-      'startTime': new Date(1970, 0, 1, hour, minute, 0)
-    };
+          }
+        catch(err)
+        {
+          console.log("first time?", err);
+        }
+        //startLoop();
+      });
+
 
     //--------TAGS -------------------------------------
     var tagsRef = firebase.database().ref('actions');
@@ -29,7 +72,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
     unclicked = {};
 
     $scope.publicStyle = clicked;
-    
+
     $scope.blurry = {behind: "0px"};
     function showAlert(message) {
         $scope.blurry = {behind: "5px"};
@@ -44,7 +87,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
         });
       };
 
-    $scope.selectTagList = [];
+   // $scope.selectTagList = [];
       //select filter
       $scope.selectionTag = function (elementId)
       {
@@ -74,6 +117,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
           $scope.selectTagList = null;
         }
         console.log("searching",$scope.selectTagList);
+        $timeout(function(){$scope.$apply();});
       };
 
 //------ CHECK IF USER IS CURRENTLY LOGGING IN ------
@@ -106,7 +150,13 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
        }
        else
        {
-           $scope.action.location = geoPos.getUserPosition();
+           initGeoLoc();
+       }
+     }
+
+     function initGeoLoc()
+     {
+       $scope.action.location = geoPos.getUserPosition();
          var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + $scope.action.location +
           "&key=AIzaSyCxi6Eah3dgixKG8oFO8DB6sMVN1v3mxuQ";
           $http.get(url).then(function(response){
@@ -117,19 +167,18 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
           {
             console.log("Problem is probably CORS", err);
           });
-       }
      }
-
 
     // ------------ THIS ALLOW USER TO MOVE BETWEEN TWO DIFFERENT SCREENS ON CREATE ACTION PAGE  --------
     $scope.description = 0;
     //------------- THIS ALLOW USER TO SET PRIVACY OF ACTION ---------------------
-    $scope.setPrivacy = function(privacy) 
+    $scope.setPrivacy = function(privacy)
     {
       if (privacy == "public")
       {
         $scope.publicStyle = clicked;
         $scope.privateStyle = unclicked;
+        $scope.inviteStyle = unclicked;
         $scope.privSelect = 'public';
       }
 
@@ -137,12 +186,19 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       {
         $scope.privateStyle = clicked;
         $scope.publicStyle = unclicked;
+        $scope.inviteStyle = unclicked;
         $scope.privSelect = 'private';
+      }
+
+      if (privacy == "invite")
+      {
+        $scope.privateStyle = unclicked;
+        $scope.publicStyle = unclicked;
+        $scope.inviteStyle = clicked;
+        $scope.privSelect = 'invite';
       }
       $scope.action.privacy = privacy;
     };
-
-
 
     // ------------ WHEN USER CLICK SUBMIT, THIS FUNCTION WILL HAPPEN --------
     $scope.submit = function(){
@@ -187,7 +243,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
 
       //Store the tags
-      
+
       console.log($scope.action.tags);
       console.log("current user uid: ", $scope.currentUser.uid);
       var activitiesRef = firebase.database().ref('activities');
@@ -234,14 +290,15 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       userChatRef.push(eventChatID);
 
 
+      //---------- IF PRIVACY IS SET AS PUBLIC --------------
       if ($scope.action.privacy == "public")
       {
         console.log($scope.action);
         $state.go('eventList');
         return;
-        //Push event into firebase
       }
 
+      //---------- IF PRIVACY IS SET AS PRIVATE --------------
       else if ($scope.action.privacy == "private")
       {
         console.log($scope.action);
@@ -250,13 +307,17 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
           angular.forEach(friendsArray, function(friend){
             console.log("friend ID:", friend.$id);
             var ref = firebase.database().ref('users/' + friend.$id + '/actions/friendActions');
-
             ref.child(eventID).update(event);
-
           });
-        $state.go('eventList');
+           $state.go('eventList');
+           return;
         });
+      }
 
+      //---------- IF PRIVACY IS SET AS INVITE ONLY --------------
+      else if ($scope.action.privacy == "invite")
+      {
+        $state.go('invitePage', {actionObject: $scope.action, eventObject: event})
       }
 
     };
@@ -264,7 +325,6 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
 
 //------------------------------google maps stuff-------------------
-
 function initAutocomplete() {
           $scope.autocomplete = new google.maps.places.Autocomplete(
               (document.getElementById('autocomplete')),
@@ -291,7 +351,7 @@ function initAutocomplete() {
           addr = addr.replace(/ /g,'+');
 
 
-         var url = "https://maps.googleapis.com/maps/api/geocode/json?address="+ addr 
+         var url = "https://maps.googleapis.com/maps/api/geocode/json?address="+ addr
          + "&key=AIzaSyCxi6Eah3dgixKG8oFO8DB6sMVN1v3mxuQ";
 
           $http.get(url).then(function(response){
@@ -306,9 +366,8 @@ function initAutocomplete() {
           {
             console.log("Problem is probably CORS", err);
           });
-         
-        }
 
+        }
 
         container = document.getElementsByClassName('pac-container');
         // disable ionic data tab
@@ -319,14 +378,11 @@ function initAutocomplete() {
         });
 
 
-        
-        $scope.geolocate = function() {
 
+        $scope.geolocate = function() {
             google.maps.event.addDomListener(window, 'load', initAutocomplete);
             initAutocomplete();
 
-
-            
           if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
               var geolocation = {
@@ -342,5 +398,4 @@ function initAutocomplete() {
             });
           }
         };
-
   }])

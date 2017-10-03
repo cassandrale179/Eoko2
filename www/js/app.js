@@ -87,6 +87,10 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
     nativeTransitions: {
       type: "fade"
     },
+    params: {
+          actionID: "",
+          SJWTriggered: false
+        },
     views: {
       'actionPage': {
         templateUrl: 'templates/eventList.html',
@@ -147,10 +151,6 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
 
 
 
-
-
-
-
   /* --------- SETTING PAGE ------- */
   .state('settingPage', {
     url: '/settingPage',
@@ -163,32 +163,46 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
 
 
 
-
-
-
-
-
-  .state('messagePage', {
-    url: '/messagePage',
-    nativeTrasitions: {
-      type: "fade"
-    },
-    params: {
-        otherID: "",
-        convoID: ""
+  /* --------- MESSAGE PAGE ------- */
+    .state('messagePage', {
+      url: '/messagePage',
+      nativeTrasitions: {
+        type: "fade"
       },
-    templateUrl: 'templates/messagePage.html',
-    controller: 'messagePageCtrl'
-  })
+      params: {
+          otherID: "",
+          convoID: ""
+        },
+      templateUrl: 'templates/messagePage.html',
+      controller: 'messagePageCtrl'
+    })
 
-  .state('invitePage', {
-    url: '/invitePage',
-    nativeTrasitions: {
-      type: "fade"
-    },
-    templateUrl: 'templates/invitePage.html',
-    controller: 'invitePageCtrl'
-  })
+/* --------- CHAT TAB PAGE ------- */
+    .state('chatTab', {
+      url: '/chatTab',
+      nativeTransitions: {
+        type: "fade"
+      },
+      templateUrl: 'templates/chatTab.html',
+      controller: 'chatTabCtrl'
+    })
+
+/* --------- INVITE PAGE ------- */
+    .state('invitePage', {
+      url: '/invitePage',
+      nativeTrasitions: {
+        type: "fade"
+      },
+      params: {
+        actionObject: "",
+        eventObject: ""
+      },
+      templateUrl: 'templates/invitePage.html',
+      controller: 'invitePageCtrl'
+    })
+
+
+
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/loginPage');

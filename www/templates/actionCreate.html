@@ -7,40 +7,38 @@
       <div id="E1B" ui-sref="actionCreate"><button style="border-bottom: 0.1px solid rgb(230,126,34)"> Create </button></div>
     </div>
     <div id="B" ng-show="description==0">
-     
+
+        <!-- _____________________________ PRIVACY SETTINGS ___________________________________ -->
       <div id="B4">
         <button ng-click="setPrivacy('public')" ng-style="publicStyle"> Public </button>
         <button ng-click="setPrivacy('private')" ng-style="privateStyle"> Private </button>
+        <button ng-click="setPrivacy('invite')" ng-style="inviteStyle"> Invites Only </button>
       </div>
       <br>
+
+      <!-- _____________________________ OUTPUT PRIVACY MESSAGE ___________________________________ -->
       <p ng-if="privSelect == 'public'">This will allow everyone to view and join your event</p>
       <p ng-if="privSelect == 'private'">Only friends can view and join your event</p>
-       <input ng-model="action.name" type="text" placeholder="Title (e.g Coffee at Saxby)"/>
-      <form>
-     
-        <ion-scroll direction="x" class="eoko-horizontal-scroll" scrollbar-x="false"
-                scrollbar-y="false" style="height: 46px;">
+      <p ng-if="privSelect == 'invite'">Only people you invite can view and join your event</p>
+      <input ng-model="action.name" type="text" placeholder="Title (e.g Coffee at Saxby)"/>
 
-              <button ng-repeat="tags in tagSelect" ng-click="selectionTag('{{tags.$value}}create')" id="{{tags.$value}}create" class="eoko-horizontal-scroll-button eoko-text-thin">
-                {{tags.$value}}
-              </button>
-          </ion-scroll>
+
+      <form>
+        <ion-scroll direction="x" class="eoko-horizontal-scroll" scrollbar-x="false" scrollbar-y="false" style="height: 46px;">
+          <button ng-repeat="tags in tagSelect" ng-click="selectionTag('{{tags.$value}}create')" id="{{tags.$value}}create" class="eoko-horizontal-scroll-button eoko-text-thin">
+            {{tags.$value}}
+          </button>
+        </ion-scroll>
 
         <!-- _____________________________ INPUT FIELD ___________________________________ -->
-
-       <!--  <input id="pac-input" ng-model="action.address" ng-change="" type="text" placeholder="Location"/> -->
-
         <input id="autocomplete" type="text" placeholder="Location" select-on-click
-                   class="eoko-input eoko-text-thin" value="{{action.address}}" ng-click="geolocate()" required="">
-        <!-- <input ng-model="action.date" type="date" placeholder="Date"/ /> -->
+            class="eoko-input eoko-text-thin" value="{{action.address}}" ng-click="geolocate()" required="">
         <input ng-model="action.startTime" type="time" placeholder="HH:mm:ss"/>
         <textarea ng-model="action.description" placeholder="Description (Currently drinking coffee at Saxby. Anyone want to hangout?)"></textarea>
       </form>
     </div>
 
-    <!-- ____________________________________ DESCRIPTION FIELD  ________________________________________________ -->
-
-      <button id="submit" ng-click="submit()"> CREATE </button>
-
+    <!-- _________________________________ CREATE BUTTON  __________________________________ -->
+    <button id="submit" ng-click="submit()"> CREATE </button>
 
 </ion-view>

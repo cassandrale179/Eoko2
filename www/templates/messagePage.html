@@ -4,9 +4,9 @@
     <div class="spacer" style="height: 20px;"></div>
 
     <div class="button-bar">
-      <a ui-sref="chatTab" class="eoko-button-clear ion-chevron-left" native-transitions nav-direction="back"></a>
-      <img id="M" ng-src="{{userInfo.photoURL}}"/>
-      <a class="M2">{{userInfo.avatar}}</a>
+      <a ui-sref="navController.chat" class="eoko-button-clear ion-chevron-left" native-transitions nav-direction="back"></a>
+     <!--  <img id="M" ng-src="{{userInfo.avatar}}"/>
+      <a class="M2">{{userInfo.avatar}}</a> -->
     </div>
 
     <div>
@@ -15,7 +15,7 @@
         <div ng-repeat="message in messages track by $index" ng-class="{other: message.userId == myId}" class="messages">
 
           <div id="M1" ng-class="{'slide-right': hideTime, '': !hideTime}" style="height:auto;">
-            
+
             <div ng-if="message.userId != myId">
               <img id="M" src="{{message.avatar}}">
 
@@ -32,8 +32,8 @@
 
 
             <div ng-if="message.userId == myId">
-              <img id="Mm" src="{{message.avatar}}"> 
-              
+              <img id="Mm" src="{{message.avatar}}">
+
               <!--current user's message-->
               <div id="Mm2">
                 <div ng-if="message.userId == myId" class="eoko-text-ultralight time" ng-class="{'slide-right': hideTime, '': !hideTime}" style="display: block; float: right; margin-bottom: 2px;">
@@ -44,7 +44,7 @@
                 </span>
               </div>
 
-              
+
             </div>
           </div>
 

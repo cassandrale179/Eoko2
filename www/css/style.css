@@ -232,7 +232,7 @@ select{
   font-size: 45px;
   background: none !important;
   border: none !important;
-  padding-left: 5%; 
+  padding-left: 5%;
   padding-bottom: 5%;
 }
 
@@ -291,7 +291,7 @@ select{
   right: 20px;
 }
 
-#B input, #B textarea{
+#B input, #B textarea, #N input{
   width: 90%;
   border: none;
   background: rgba(255,255,255,0.9);
@@ -359,16 +359,14 @@ select{
   background: transparent;
   border: none;
   border: 1px rgba(255, 255, 255, 0.61) solid;
-  width: 70px;
+  width: 100px;
   height: 40px;
   border-radius: 10px;
 }
 
 #B4{
-  margin-left: 30%;
-
+  margin-left: 7%;
 }
-
 
 
 /* ---------------------------- PEOPLE WITHIN 10 MILES ------------------------ */
@@ -391,10 +389,10 @@ select{
 
 #C1 img, #E2A img, #I2 img{
   object-fit: cover;
-  width: 70px;
+  width: 55px;
   height: 55px;
-  border-radius: 40px;
-  margin-left: 10px;
+  border-radius: 55px;
+  /*margin-left: 10px;*/
   margin-top: 2px;
 }
 
@@ -406,7 +404,7 @@ select{
 }
 
 #C2{
-  margin-top: 6px; 
+  margin-top: 6px;
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
 }
@@ -418,6 +416,7 @@ select{
   margin-bottom: 5px;
   padding: 3%;
   font-size: 20px;
+  text-align: center;
 }
 
 #one, #two{
@@ -574,6 +573,14 @@ select{
 #E2 h4{
   margin-left: 5%;
   margin-top: 0%;
+  overflow-y: hidden;
+  height: 42px;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+
+
 }
 
 #E2A1{
@@ -584,6 +591,7 @@ select{
   display: inline-block;
   margin-top: 0px;
   padding-left: 15%;
+  width: 61vw;
 }
 
 #E0{
@@ -652,7 +660,7 @@ select{
 }
 
 #F1A{
-  margin-left: 15%;
+  /*margin-left: 15%;*/
 }
 
 #F h3{
@@ -660,8 +668,8 @@ select{
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
   display: inline-block;
-  margin-top: 0px;
   margin-left: 30px;
+
 }
 
 #F h5{
@@ -686,7 +694,7 @@ select{
   border: none;
   height: 30px;
   border-radius: 15px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 
@@ -703,7 +711,7 @@ select{
 
 #F2 p{
   font-style: italic;
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 
@@ -959,6 +967,46 @@ select{
 }
 
 
+/* --------------------- INVITE PAGE DETAILS --------------- */
+#N{
+  padding-top: 5%;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+}
+
+#N0{
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+#N1{
+  display: flex;
+}
+
+#N1A{
+  width: 33%;
+}
+
+
+#N1 img{
+  display: block;
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 100px;
+  margin-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+}
+
+.opaque{
+  opacity: 0.5;
+}
+
+.not-opaque{
+  opacity: 0.9;
+}
 
 /* --------------------- CHAT PAGE DETAIL --------------- */
 #M{
@@ -1038,17 +1086,25 @@ select{
 }
 
 
+#N button{
+  border-radius: 20px;
+  height: 40px;
+  border: none;
+  display: block;
+  margin: auto;
+  width: 90%;
+  background-color: rgba(230, 126, 34, 0.9);
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  margin-top: 20px;
+}
 
 
-
-
-
-/*-------------Michael's crap css again----------*/
-
-
+/* --------------- MICHEAL ALRIGHT CSS (IT'S NOT THAT CRAP) ---------------- */ 
 .details{
     margin: 15% 10%;
-    height: 60%;
+    height: 80%;
     background-color: #F27C22;
     width: 80%;
     opacity: 0.90;
@@ -1104,3 +1160,13 @@ select{
     text-overflow: ellipsis;
 }
 
+
+.item-complex .item-content, .item-radio .item-content {
+  background-color: rgba(0,0,0,0);
+}
+
+.descriptionArea{
+  height: 14vh;
+    overflow: scroll;
+    margin: 0px;
+}

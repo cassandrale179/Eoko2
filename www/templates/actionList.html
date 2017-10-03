@@ -7,8 +7,9 @@
     <!-- ____________________  DISPLAY USER FRIENDS WITHIN 10 MILES  _________________  -->
 
 
-    <ion-scroll overflow-scroll="false" style="height: calc(86% - 70px);">
-    <div id="C">
+   
+    <ion-scroll id="C" overflow-scroll="false" style="height: calc(86% - 70px);">
+    <ion-refresher on-refresh="doRefresh()"></ion-refresher>
       <div id="C1" ng-repeat="x in peopleList track by $index" ng-if="currentUser.uid != x.uid"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
         <img ng-src="{{x.photoURL}}" ng-click="viewProfilePopover($event, x)"/>
         <div id="C1A" ng-click="viewProfilePopover($event, x)">
@@ -34,7 +35,6 @@
 
 
 
-      </div>
       </div>
     </ion-scroll>
 
@@ -79,10 +79,15 @@
 
               <h5 style="color: white;text-align: center;">Active Actions</h5>
                 <ion-scroll overflow-scroll="false" style="max-height: 24vh;" ng-if="otherUser.actions.myActions">
-                  <ion-item ng-repeat="action in otherUser.actions.myActions" 
-                  style="background-color: rgba(0,0,0,0);color: white">
-                      <div class="activeActions">{{action.name}}</div>  <span style="float:right;">{{action.time}}</span>
-                  </ion-item>
+
+                    <ion-item ng-repeat="action in otherUser.actions.myActions"
+                    style="background-color: rgba(0,0,0,0);color: white"
+                    ng-click="viewPersonAction(action.eventID, true)">
+             
+                        <div class="activeActions">{{action.name}}</div>  <span style="float:right;">{{action.time}}</span>
+           
+                    </ion-item>
+
                 </ion-scroll>
                 <h5 style="color: white" ng-if="!(otherUser.actions.myActions)">
                 No active actions at this time</h5>

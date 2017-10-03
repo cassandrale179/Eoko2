@@ -1,6 +1,28 @@
 <ion-view hide-nav-bar="true" >
     <ion-content padding="true" class="innerbackground">
+
+      <!-- __________________ OUTPUT ALL THE PEOPLE WHO ARE TO BE INVITED ______________________ -->
+      <div id="N">
+        <input type="text" placeholder="Search your friends" ng-model="searchFriend" />
+        <div id="N0">
+          <div id="N1" ng-repeat="smallArr in splitArr | filter: searchFriend ">
+            <div id="N1A" ng-repeat="y in smallArr" >
+              <img class="opaque" ng-src="{{y.photoURL}}" ng-click="inviteFriend(y.id)" id="{{y.id}}"/>
+              {{y.name}}
+            </div>
+          </div>
+        </div>
+        <button ng-click="invitedSubmit()"> INVITE </button>
+      </div>
     </ion-content>
+
+      <!-- __________________ NAVIGATION BAR ______________________ -->
+    <div id="navbar">
+      <i ui-sref="joinList" class="fa fa-bell" aria-hidden="true"></i>
+      <i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true"></i>
+      <i ui-sref="actionList" class="fa fa-users" aria-hidden="true"></i>
+      <i ui-sref="chatTab" class="fa fa-comment" aria-hidden="true"></i>
+    </div>
 </ion-view>
 
 

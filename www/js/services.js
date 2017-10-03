@@ -12,9 +12,10 @@ angular.module('eoko.services', [])
             console.log("response",  response.status);
             openFB.api({
               path: '/me',
-              params: {fields: 'id, name, gender, picture, birthday, friends'},
+              params: {fields: 'id, name, gender, picture.type(large), birthday, friends'},
             success: function(res){
               console.log("Success!");
+              console.log("Check this: ", res);
               var userInfo = {
                 fbid: res.id,
                 name: res.name,
@@ -32,10 +33,17 @@ angular.module('eoko.services', [])
                 var friendID = friend.id;
                 console.log(friendID);
                 ref.orderByChild('fbid').equalTo(friendID).on("child_added", function(snapshot){
-                  var obj = {};
-                  obj[snapshot.key] = snapshot.val().name;
 
-                  userFriendsRef.update(obj);
+                    var obj = {
+                    name: snapshot.val().name,
+                    photoURL: snapshot.val().photoURL,
+                    uid: snapshot.val().uid
+                  }
+
+                  userFriendsRef.child(snapshot.val().uid).update(obj);
+
+
+                  // userFriendsRef.update(obj + friendID);
                 });
 
               });

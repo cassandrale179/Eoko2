@@ -1,22 +1,32 @@
-app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover',
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover) {
+app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover',
+  function ($scope,$stateParams, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover) {
     $scope.eventNudge = false;
     $scope.searchBar = 2;
     console.log("State of searchbar");
     console.log($scope.searchBar);
+
+
 
     //start the thing in case it starts here
     firebase.auth().onAuthStateChanged(function(user){
       if (user){
         $scope.currentUser = user;
         startLoop();
+
       }
     });
 
     $scope.$on('$ionicView.afterEnter', function () //before anything runs
     {
+      console.log("state params, ", $stateParams.actionID, "triggeredm,, ", $stateParams.SJWTriggered);
       startLoop();
     });
+
+    /*$scope.$on('$ionicView.afterLeave', function () //before anything runs
+    {
+      $stateParams.actionID = '';
+      $stateParams.SJWTriggered = false;
+    });*/
 
     var res = firebase.database().ref("actions");
         $scope.tagList = $firebaseArray(res);
@@ -39,10 +49,24 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
        else
        {
         getEvents();
+
        }
      }
 
      $scope.searchEventFilter = [];
+
+
+      $scope.doRefresh = function() {
+    
+          console.log('Refreshing!');
+          $timeout(function()
+          {
+            $scope.loadedOnce = false;
+            getEvents();
+            
+          },1000);
+          $scope.$broadcast('scroll.refreshComplete');
+        };
 
 
       //select filter
@@ -70,13 +94,13 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
         {
           $scope.searchEventFilter = null;
         }
-        console.log("searching",$scope.searchEventFilter)
+        console.log("searching",$scope.searchEventFilter);
         console.log($scope.events);
         if ($scope.searchEventFilter.length==0 || $scope.searchEventFilter==null){
           console.log("activated");
           angular.forEach($scope.events, function(event){
             event.display=true;
-          })
+          });
         }
         else{
           angular.forEach($scope.events, function(event){
@@ -85,7 +109,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
 
             var display = findTags(tags, $scope.searchEventFilter);
             event.display = display;
-          })
+          });
         }
 
       };
@@ -199,26 +223,45 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
     }
 
 
+
+    $scope.loadedOnce = false;
     function getEvents()  //called in the beginning, thats all
     {
-      var eventsRef = firebase.database().ref("activities/");
-      $scope.eventInfo = $firebaseArray(eventsRef);
-       $scope.eventInfo.$loaded().then(function(x)
+
+      if($scope.loadedOnce == false)
       {
-        console.log("event loaded");
-        $scope.events = loadActions();
-        console.log("total events", $scope.events);
-      });
+        var eventsRef = firebase.database().ref("activities/");
+          $scope.eventInfo = $firebaseArray(eventsRef);
+           $scope.eventInfo.$loaded().then(function(x)
+          {
+            $scope.loadedOnce = true;
+            console.log("event loaded");
+            $scope.events = loadActions();
+            console.log("total events", $scope.events);
 
-       $scope.eventInfo.$watch(function(event){
+            //create watcher
 
-        if(event.event == "child_changed")
-        {
-          console.log("run result", event);
-          changeAction(event.key);
-        }
+              $scope.eventInfo.$watch(function(event){
+              if(event.event == "child_changed")
+              {
+                console.log("run result", event);
+                changeAction(event.key);
+              }
+              if(event.event = "child_created")
+              {
+                $scope.events = loadActions();
+              }
+             });
+          });
+      }
+      
 
-       });
+       
+
+       if($stateParams.SJWTriggered == true)
+       {
+        $scope.openPopover("", $scope.events[$stateParams.actionID]);
+       }
     }
 
     //--------------------- CALCULATE DISTANCE FOR USERS -----------------
@@ -327,12 +370,15 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
       $scope.openPopover = function($event, user) {
         $scope.blurry.behind = "5px";
         $scope.currUser = user;
-        $scope.popover.show($event);
+        $scope.popover.show();
       };
       $scope.closePopover = function() {
         $scope.blurry.behind = "0px";
+        //$stateParams.actionID = '';
+        //$stateParams.SJWTriggered = false;
         $scope.popover.hide();
         makeblurry();
+        $state.go('.',{actionID: '', SJWTriggered: false});
       };
       //Cleanup the popover when we're done with it!
       $scope.$on('$destroy', function() {

@@ -45,7 +45,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
     });
 
 
-    
+
     $scope.blurry = {behind: "0px"};
 
      function showNotifyAlert(message, info) {
@@ -69,14 +69,14 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
               $scope.newConversation(nudgeUser,true);
               return;
             });
-            
+
           }
           else
           {
             $scope.blurry = {behind: "0px"};
             return;
           }
-          
+
         });
       }
 
@@ -98,6 +98,19 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
        }
 
 
+        $scope.doRefresh = function() {
+
+          console.log('Refreshing!');
+          $timeout(function()
+          {
+            //$scope.loadedOnce = false;
+            getFriends();
+
+          },1000);
+          $scope.$broadcast('scroll.refreshComplete');
+        };
+
+
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
             var rez = firebase.database().ref("users").child(user.uid);
@@ -111,13 +124,18 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
         });
 
-
+        $scope.viewPersonAction = function(actionID, triggered)
+        {
+          $scope.closePopover();
+          $state.go('navController.action',{actionID: actionID, SJWTriggered: true});
+        };
 
         $scope.newConversation = function(other, boo)
         {
           console.log("started newconvo");
             for(var i in $scope.userInfo.chat)
             {
+              console.log("dafuq is that,", $scope.userInfo.chat[i].chatID);
               var info = chatFactory.loadChatData($scope.userInfo.chat[i].chatID);
               console.log("length is ", Object.keys(info.ids).length);
               if(Object.keys(info.ids).length < 3)
@@ -132,7 +150,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
                     {
                       $state.go('messagePage',{otherID: other.$id, convoID: $scope.userInfo.chat[i].chatID});
                     }
-                    
+
                     return;
                   }
                 }
@@ -351,18 +369,19 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
             var ref = firebase.database().ref('nudge/'+uid+"/"+$scope.otherUser.uid);
             var time = Date.now();
             var userRef = firebase.database().ref('users/'+uid);
-            userRef.once("value", function(snapshot){
-              var location = snapshot.val().location;
-              ref.update({
-                location: location,
-                name: $scope.currentUser.displayName,
-                senderUid: uid,
-                receiverUid: $scope.otherUser.uid,
-                latestTime: time
-              });
-              $scope.newConversation($scope.otherUser,false);
-              $scope.closePopover();
+
+
+            ref.update({
+
+              name: $scope.currentUser.displayName,
+              senderUid: uid,
+              receiverUid: $scope.otherUser.uid,
+              latestTime: time
             });
+            
+            $scope.newConversation($scope.otherUser,false);
+            $scope.closePopover();
+
 
 
           };
@@ -393,20 +412,20 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         }
       };
 
- 
+
         $ionicPopover.fromTemplateUrl('my-popover.html', {
           scope: $scope
         }).then(function(popover) {
           $scope.popover = popover;
         });
-      
+
 
         $scope.openPopover = function($event, user) {
         $scope.blurry.behind = "5px";
         $scope.otherUser = user;
         console.log("nudge popover");
         $scope.pop = 'nudge';
-        $scope.popover.show($event);
+        $scope.popover.show();
       };
 
       $scope.viewProfilePopover = function($event, user) {
@@ -414,7 +433,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         $scope.otherUser = user;
         console.log("profile popover");
         $scope.pop = 'profile';
-        $scope.popover.show($event);
+        $scope.popover.show();
       };
 
 
