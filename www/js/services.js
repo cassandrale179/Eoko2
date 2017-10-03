@@ -12,9 +12,10 @@ angular.module('eoko.services', [])
             console.log("response",  response.status);
             openFB.api({
               path: '/me',
-              params: {fields: 'id, name, gender, picture, birthday, friends'},
+              params: {fields: 'id, name, gender, picture.type(large), birthday, friends'},
             success: function(res){
               console.log("Success!");
+              console.log("Check this: ", res);
               var userInfo = {
                 fbid: res.id,
                 name: res.name,
