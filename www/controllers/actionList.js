@@ -365,10 +365,16 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
             var ref = firebase.database().ref('nudge/'+uid+"/"+$scope.otherUser.uid);
             var time = Date.now();
             var userRef = firebase.database().ref('users/'+uid);
+
+
             ref.update({
-              nudge: true
+
+              name: $scope.currentUser.displayName,
+              senderUid: uid,
+              receiverUid: $scope.otherUser.uid,
+              latestTime: time
             });
-        
+            ref.remove();
             $scope.newConversation($scope.otherUser,false);
             $scope.closePopover();
 
