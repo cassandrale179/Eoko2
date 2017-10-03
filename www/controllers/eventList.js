@@ -12,16 +12,21 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
       if (user){
         $scope.currentUser = user;
         startLoop();
+
       }
     });
 
     $scope.$on('$ionicView.afterEnter', function () //before anything runs
     {
-      $scope.actionActivate = $stateParams.actionID;
       console.log("state params, ", $stateParams.actionID, "triggeredm,, ", $stateParams.SJWTriggered);
-      $scope.triggered = $stateParams.SJWTriggered;
       startLoop();
     });
+
+    /*$scope.$on('$ionicView.afterLeave', function () //before anything runs
+    {
+      $stateParams.actionID = '';
+      $stateParams.SJWTriggered = false;
+    });*/
 
     var res = firebase.database().ref("actions");
         $scope.tagList = $firebaseArray(res);
@@ -217,12 +222,7 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
       console.log("after events", $scope.events);
     }
 
-    function dd()
-    {
-      console.log("THIS IS THE ULTIMATE SHOWDOWN OF ULTIMATE DESTINY!!!,", $scope.actionActivat, $stateParams.actionID);
-      $scope.openPopover("", $scope.events[$scope.actionActivate]);
 
-    }
 
     $scope.loadedOnce = false;
     function getEvents()  //called in the beginning, thats all
@@ -258,9 +258,9 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
 
        
 
-       if($scope.triggered == true)
+       if($stateParams.SJWTriggered == true)
        {
-        dd();
+        $scope.openPopover("", $scope.events[$stateParams.actionID]);
        }
     }
 
@@ -374,8 +374,11 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
       };
       $scope.closePopover = function() {
         $scope.blurry.behind = "0px";
+        //$stateParams.actionID = '';
+        //$stateParams.SJWTriggered = false;
         $scope.popover.hide();
         makeblurry();
+        $state.go('.',{actionID: '', SJWTriggered: false});
       };
       //Cleanup the popover when we're done with it!
       $scope.$on('$destroy', function() {

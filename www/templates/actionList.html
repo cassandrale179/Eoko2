@@ -82,7 +82,7 @@
 
                     <ion-item ng-repeat="action in otherUser.actions.myActions"
                     style="background-color: rgba(0,0,0,0);color: white"
-                    ui-sref="eventList({actionID: action.eventID, SJWTriggered: true})" ng-click="closePopover()">
+                    ng-click="viewPersonAction(action.eventID, true)">
              
                         <div class="activeActions">{{action.name}}</div>  <span style="float:right;">{{action.time}}</span>
            

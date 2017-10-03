@@ -124,7 +124,11 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
         });
 
-
+        $scope.viewPersonAction = function(actionID, triggered)
+        {
+          $scope.closePopover();
+          $state.go('navController.action',{actionID: actionID, SJWTriggered: true});
+        };
 
         $scope.newConversation = function(other, boo)
         {
