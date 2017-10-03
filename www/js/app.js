@@ -138,6 +138,20 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
     }
   })
 
+  /* --------- INVITE PAGE ------- */
+      .state('invitePage', {
+        url: '/invitePage',
+        nativeTrasitions: {
+          type: "fade"
+        },
+        params: {
+          actionObject: "",
+          eventObject: ""
+        },
+        templateUrl: 'templates/invitePage.html',
+        controller: 'invitePageCtrl'
+      })
+
 
   /* --------- MAIN NAV BAR ------- */
   .state('navController', {
@@ -187,21 +201,9 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
       controller: 'chatTabCtrl'
     })
 
-/* --------- INVITE PAGE ------- */
-    .state('invitePage', {
-      url: '/invitePage',
-      nativeTrasitions: {
-        type: "fade"
-      },
-      params: {
-        actionObject: "",
-        eventObject: ""
-      },
-      templateUrl: 'templates/invitePage.html',
-      controller: 'invitePageCtrl'
-    })
 
 
+    /* --------- CHAT PAGE ------- */
 
 
   // if none of the above states are matched, use this as the fallback
