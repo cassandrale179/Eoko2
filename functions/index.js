@@ -118,7 +118,7 @@ exports.sendNudgeNotification = functions.database.ref('/nudge/{userId}/{otherId
 
                 },
                 data: {
-                  nudge: true,
+                  nudge: 'true',
                   uid: senderUid,
                   name: sender.displayName,
                   photoURL: sender.photoURL
