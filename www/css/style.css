@@ -6,10 +6,16 @@ A: LOGIN PAGE
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 
+.eoko-content {
+  min-height: 100% !important;
+  top: 0 !important;
+  bottom: 0 !important; 
+}
+
 .background{
    background: linear-gradient(
                      rgba(20,20,20, .6),
-                     rgba(20,20,20, .6)),
+                     rgba(20,20,20, .8)),
   url(../img/outerbackground.jpeg);
    background-size:cover;
    background-position: center;
@@ -43,8 +49,175 @@ select{
   margin-top: 10px;
 }
 
+/* -------------------------------- FONTS --------------------------- */
+/** Ultra Light */
+@font-face {
+  font-family: "San Francisco Display";
+  font-weight: 100;
+  src: url("../fonts/sanfranciscodisplay-ultralight.woff"); 
+}
+
+/** Thin */
+@font-face {
+  font-family: "San Francisco Display";
+  font-weight: 200;
+  src: url("../fonts/sanfranciscodisplay-thin.woff"); 
+}
+
+/** Regular */
+@font-face {
+  font-family: "San Francisco Display";
+  font-weight: 400;
+  src: url("../fonts/sanfranciscodisplay-regular.woff"); 
+}
+
+/** Medium */
+@font-face {
+  font-family: "San Francisco Display";
+  font-weight: 500;
+  src: url("../fonts/sanfranciscodisplay-medium.woff"); 
+}
+
+/** Semi Bold */
+@font-face {
+  font-family: "San Francisco Display";
+  font-weight: 600;
+  src: url("../fonts/sanfranciscodisplay-semibold.woff"); 
+}
+
+/** Bold */
+@font-face {
+  font-family: "San Francisco Display";
+  font-weight: 700;
+  src: url("../fonts/sanfranciscodisplay-bold.woff"); 
+}
+
+.eoko-font-ultralight {
+  font-family: "San Francisco Display";
+  font-weight: 100;
+  color: #FFFFFF; 
+}
+
+.eoko-font-thin {
+  font-family: "San Francisco Display";
+  font-weight: 200;
+  color: #FFFFFF; }
+
+.eoko-font-regular {
+  font-family: "San Francisco Display";
+  font-weight: 400;
+  color: #FFFFFF; 
+}
+
+.eoko-font-medium {
+  font-family: "San Francisco Display";
+  font-weight: 500;
+  color: #FFFFFF; 
+}
+
+.eoko-font-semibold {
+  font-family: "San Francisco Display";
+  font-weight: 600;
+  color: #FFFFFF; 
+}
+
+.eoko-font-bold {
+  font-family: "San Francisco Display";
+  font-weight: 700;
+  color: #FFFFFF; 
+}
+
+
+/* -------------------------------- IMAGES/ICONS --------------------------- */
+.eoko-icon-notification-on{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/notification_icon_on.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-notification-off{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/notification_icon_off.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-action-on {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/action_icon_on.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-action-off{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/action_icon_off.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-people-on {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/people_icon_on.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-people-off{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/people_icon_off.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-chat-on {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/chat_icon_on.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-chat-off{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/chat_icon_off.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+
+
+
+
+
 
 /* -------------------------------- NAVIGATION BAR --------------------------- */
+
+.eoko-tabs-blur .tab-nav.tabs {
+  height: 70px;
+  background: transparent; 
+}
+
+.tab-item{
+  margin-top: 20px;
+}
+
 #navbar{
   width: 100%;
   display: flex;

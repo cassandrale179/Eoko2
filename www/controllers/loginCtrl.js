@@ -18,7 +18,7 @@ app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state'
               //GET USER INFO
               //facebookService can be found in js/service.js
               facebookService.getUserInfo(firebaseUser);
-              $state.go('actionList');
+              $state.go('navController.people');
             }
             else {
               console.log("Signed out");
@@ -56,7 +56,7 @@ app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state'
                       })
 
 
-                      $state.go('actionList');
+                      $state.go('navController.people');
                     }).catch(function(error) {
                       console.error("Authentication failed:", error);
                     });

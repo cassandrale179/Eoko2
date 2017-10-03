@@ -63,36 +63,51 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
     controller: 'loginCtrl'
   })
 
+
+
+
   /* --------- JOIN LIST PAGE ------- */
-    .state('joinList', {
-      url: '/joinListPage',
-      nativeTransitions: {
-        type: "fade"
-      },
-      templateUrl: 'templates/joinList.html',
-      controller: 'joinListCtrl'
-    })
-
-
-  /* --------- EVENT LIST PAGE ------- */
-  .state('eventList', {
-    url: '/eventListPage',
+  .state('navController.notification', {
+    url: '/notificationPage',
     nativeTransitions: {
       type: "fade"
     },
-    templateUrl: 'templates/eventList.html',
-    controller: 'eventListCtrl'
+    views: {
+      'notificationPage': {
+        templateUrl: 'templates/joinList.html',
+        controller: 'joinListCtrl'
+      }
+    }
+  })
+
+
+  /* --------- EVENT LIST PAGE ------- */
+  .state('navController.action', {
+    url: '/actionPage',
+    nativeTransitions: {
+      type: "fade"
+    },
+    views: {
+      'actionPage': {
+        templateUrl: 'templates/eventList.html',
+        controller: 'eventListCtrl'
+      }
+    }
   })
 
 
   /* --------- ACTION LIST PAGE ------- */
-  .state('actionList', {
-    url: '/actionListPage',
+  .state('navController.people', {
+    url: '/peoplePage',
     nativeTransitions: {
       type: "fade"
     },
-    templateUrl: 'templates/actionList.html',
-    controller: 'actionListCtrl'
+    views: {
+      'peoplePage': {
+        templateUrl: 'templates/actionList.html',
+        controller: 'actionListCtrl'
+      }
+    }
   })
 
   /* --------- ACTION CREATE PAGE ------- */
@@ -105,8 +120,38 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
     controller: 'actionCreateCtrl'
   })
 
+  /* --------- CHAT PAGE ------- */
+  .state('navController.chat', {
+    url: '/chatPage',
+    nativeTransitions: {
+      type: "fade"
+    },
+    views: {
+      'chatPage': {
+        templateUrl: 'templates/chatTab.html',
+        controller: 'chatTabCtrl'
+      }
+    }
+  })
 
-/* --------- SETTING PAGE ------- */
+
+  /* --------- MAIN NAV BAR ------- */
+  .state('navController', {
+    url: '/navController',
+    nativeTransitions: {
+      type: "fade"
+    },
+    templateUrl: 'templates/navController.html',
+    abstract: true
+  })
+
+
+
+
+
+
+
+  /* --------- SETTING PAGE ------- */
   .state('settingPage', {
     url: '/settingPage',
     nativeTransitions: {
@@ -117,37 +162,33 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
   })
 
 
-    .state('messagePage', {
-      url: '/messagePage',
-      nativeTrasitions: {
-        type: "fade"
-      },
-      params: {
-          otherID: "",
-          convoID: ""
-        },
-      templateUrl: 'templates/messagePage.html',
-      controller: 'messagePageCtrl'
-    })
 
 
-    .state('chatTab', {
-      url: '/chatTab',
-      nativeTransitions: {
-        type: "fade"
-      },
-      templateUrl: 'templates/chatTab.html',
-      controller: 'chatTabCtrl'
-    })
 
-    .state('invitePage', {
-      url: '/invitePage',
-      nativeTrasitions: {
-        type: "fade"
+
+
+
+  .state('messagePage', {
+    url: '/messagePage',
+    nativeTrasitions: {
+      type: "fade"
+    },
+    params: {
+        otherID: "",
+        convoID: ""
       },
-      templateUrl: 'templates/invitePage.html',
-      controller: 'invitePageCtrl'
-    })
+    templateUrl: 'templates/messagePage.html',
+    controller: 'messagePageCtrl'
+  })
+
+  .state('invitePage', {
+    url: '/invitePage',
+    nativeTrasitions: {
+      type: "fade"
+    },
+    templateUrl: 'templates/invitePage.html',
+    controller: 'invitePageCtrl'
+  })
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/loginPage');
