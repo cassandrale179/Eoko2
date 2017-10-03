@@ -374,7 +374,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
               receiverUid: $scope.otherUser.uid,
               latestTime: time
             });
-            ref.remove();
+            
             $scope.newConversation($scope.otherUser,false);
             $scope.closePopover();
 
