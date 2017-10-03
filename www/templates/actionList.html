@@ -1,5 +1,5 @@
 <ion-view hide-nav-bar="true">
-  <ion-content padding="true" class="innerbackground" scroll="false" style="filter: blur({{blurry.behind}});">
+  <ion-content padding="true" class="innerbackground eoko-content" scroll="false" style="filter: blur({{blurry.behind}});">
     <img class="logo" src="./img/eoko-logo.svg" ui-sref="settingPage" />
     <img class="tagline" src="./img/peoplenearyou.png"></img>
 
@@ -7,8 +7,9 @@
     <!-- ____________________  DISPLAY USER FRIENDS WITHIN 10 MILES  _________________  -->
 
 
-    <ion-scroll overflow-scroll="false" style="height: calc(86% - 70px);">
-    <div id="C">
+   
+    <ion-scroll id="C" overflow-scroll="false" style="height: calc(86% - 70px);">
+    <ion-refresher on-refresh="doRefresh()"></ion-refresher>
       <div id="C1" ng-repeat="x in peopleList track by $index" ng-if="currentUser.uid != x.uid"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
         <img ng-src="{{x.photoURL}}" ng-click="viewProfilePopover($event, x)"/>
         <div id="C1A" ng-click="viewProfilePopover($event, x)">
@@ -34,7 +35,6 @@
 
 
 
-      </div>
       </div>
     </ion-scroll>
 
@@ -105,12 +105,4 @@
   
 
 </ion-content>
-
-<!-- NAVIGATIO BAR -->
-  <div id="navbar">
-    <i ui-sref="joinList" class="fa fa-bell" aria-hidden="true"></i>
-    <i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true"></i>
-    <i ui-sref="actionList" class="fa fa-users" aria-hidden="true" style="color: #F27C22;"></i>
-    <i ui-sref="chatTab" class="fa fa-comment" aria-hidden="true"></i>
-  </div>
 </ion-view>

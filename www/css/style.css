@@ -6,10 +6,16 @@ A: LOGIN PAGE
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 
+.eoko-content {
+  min-height: 100% !important;
+  top: 0 !important;
+  bottom: 0 !important; 
+}
+
 .background{
    background: linear-gradient(
                      rgba(20,20,20, .6),
-                     rgba(20,20,20, .6)),
+                     rgba(20,20,20, .8)),
   url(../img/outerbackground.jpeg);
    background-size:cover;
    background-position: center;
@@ -43,8 +49,175 @@ select{
   margin-top: 10px;
 }
 
+/* -------------------------------- FONTS --------------------------- */
+/** Ultra Light */
+@font-face {
+  font-family: "San Francisco Display";
+  font-weight: 100;
+  src: url("../fonts/sanfranciscodisplay-ultralight.woff"); 
+}
+
+/** Thin */
+@font-face {
+  font-family: "San Francisco Display";
+  font-weight: 200;
+  src: url("../fonts/sanfranciscodisplay-thin.woff"); 
+}
+
+/** Regular */
+@font-face {
+  font-family: "San Francisco Display";
+  font-weight: 400;
+  src: url("../fonts/sanfranciscodisplay-regular.woff"); 
+}
+
+/** Medium */
+@font-face {
+  font-family: "San Francisco Display";
+  font-weight: 500;
+  src: url("../fonts/sanfranciscodisplay-medium.woff"); 
+}
+
+/** Semi Bold */
+@font-face {
+  font-family: "San Francisco Display";
+  font-weight: 600;
+  src: url("../fonts/sanfranciscodisplay-semibold.woff"); 
+}
+
+/** Bold */
+@font-face {
+  font-family: "San Francisco Display";
+  font-weight: 700;
+  src: url("../fonts/sanfranciscodisplay-bold.woff"); 
+}
+
+.eoko-font-ultralight {
+  font-family: "San Francisco Display";
+  font-weight: 100;
+  color: #FFFFFF; 
+}
+
+.eoko-font-thin {
+  font-family: "San Francisco Display";
+  font-weight: 200;
+  color: #FFFFFF; }
+
+.eoko-font-regular {
+  font-family: "San Francisco Display";
+  font-weight: 400;
+  color: #FFFFFF; 
+}
+
+.eoko-font-medium {
+  font-family: "San Francisco Display";
+  font-weight: 500;
+  color: #FFFFFF; 
+}
+
+.eoko-font-semibold {
+  font-family: "San Francisco Display";
+  font-weight: 600;
+  color: #FFFFFF; 
+}
+
+.eoko-font-bold {
+  font-family: "San Francisco Display";
+  font-weight: 700;
+  color: #FFFFFF; 
+}
+
+
+/* -------------------------------- IMAGES/ICONS --------------------------- */
+.eoko-icon-notification-on{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/notification_icon_on.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-notification-off{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/notification_icon_off.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-action-on {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/action_icon_on.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-action-off{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/action_icon_off.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-people-on {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/people_icon_on.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-people-off{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/people_icon_off.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-chat-on {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/chat_icon_on.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-chat-off{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/chat_icon_off.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+
+
+
+
+
 
 /* -------------------------------- NAVIGATION BAR --------------------------- */
+
+.eoko-tabs-blur .tab-nav.tabs {
+  height: 70px;
+  background: transparent; 
+}
+
+.tab-item{
+  margin-top: 20px;
+}
+
 #navbar{
   width: 100%;
   display: flex;
@@ -487,7 +660,7 @@ select{
 }
 
 #F1A{
-  margin-left: 15%;
+  /*margin-left: 15%;*/
 }
 
 #F h3{
@@ -495,8 +668,8 @@ select{
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
   display: inline-block;
-  margin-top: 0px;
   margin-left: 30px;
+
 }
 
 #F h5{
@@ -521,7 +694,7 @@ select{
   border: none;
   height: 30px;
   border-radius: 15px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 
@@ -538,7 +711,7 @@ select{
 
 #F2 p{
   font-style: italic;
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 
@@ -811,7 +984,7 @@ select{
 }
 
 #N1A{
-  width: 33%; 
+  width: 33%;
 }
 
 
@@ -826,7 +999,7 @@ select{
   margin-right: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
-  
+
 }
 
 /* --------------------- CHAT PAGE DETAIL --------------- */
@@ -907,8 +1080,6 @@ select{
 }
 
 
-<<<<<<< HEAD
-=======
 #N button{
   border-radius: 20px;
   height: 40px;
@@ -924,13 +1095,12 @@ select{
 }
 
 
-
 /*-------------Michael's crap css again----------*/
 
 
 .details{
     margin: 15% 10%;
-    height: 60%;
+    height: 80%;
     background-color: #F27C22;
     width: 80%;
     opacity: 0.90;
@@ -984,4 +1154,15 @@ select{
     display: inline-block;
     overflow-x: hidden;
     text-overflow: ellipsis;
+}
+
+
+.item-complex .item-content, .item-radio .item-content {
+  background-color: rgba(0,0,0,0);
+}
+
+.descriptionArea{
+  height: 14vh;
+    overflow: scroll;
+    margin: 0px;
 }
