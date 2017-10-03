@@ -42,11 +42,15 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
   firebase.initializeApp(config);
 })
 
+
 .config(function(socialProvider){
-socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
+  socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
 })
 
-
+//Config nav bar to the bottom of the screen regardless the platforms
+.config(function($ionicConfigProvider) {
+      $ionicConfigProvider.tabs.position('bottom');
+})
 
 //Config app states
 .config(function($stateProvider, $urlRouterProvider) {
