@@ -988,8 +988,6 @@ select{
 }
 
 
-
-
 #N1 img{
   display: block;
   width: 90px;
@@ -1000,6 +998,14 @@ select{
   margin-top: 20px;
   margin-bottom: 20px;
 
+}
+
+.opaque{
+  opacity: 0.5;
+}
+
+.not-opaque{
+  opacity: 0.9;
 }
 
 /* --------------------- CHAT PAGE DETAIL --------------- */
@@ -1095,9 +1101,7 @@ select{
 }
 
 
-/*-------------Michael's crap css again----------*/
-
-
+/* --------------- MICHEAL ALRIGHT CSS (IT'S NOT THAT CRAP) ---------------- */ 
 .details{
     margin: 15% 10%;
     height: 80%;
