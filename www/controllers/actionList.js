@@ -35,8 +35,17 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','backcallF
 
           window.FirebasePlugin.onNotificationOpen(function(notification) {
               console.log(notification);
-              var combined = notification.name + " sent you a nudge! Go to messaging?";
-              showNotifyAlert(combined, notification);
+              if (notification.chatId){
+                //redirect to chat here
+                $state.go('messagePage', {otherID: notification.senderID, convoID: notification.chatId})
+
+              }
+              else{
+                //Nudge popup here
+                var combined = notification.name + " sent you a nudge! Go to messaging?";
+                showNotifyAlert(combined, notification);
+              }
+
           }, function(error) {
               console.error(error);
           });
@@ -397,7 +406,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','backcallF
               receiverUid: $scope.otherUser.uid,
               latestTime: time
             });
-            
+
             $scope.newConversation($scope.otherUser,false);
             $scope.closePopover();
 
