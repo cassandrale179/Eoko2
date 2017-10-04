@@ -1,5 +1,5 @@
 <ion-view hide-nav-bar="true">
-  <ion-content padding="true" class="innerbackground eoko-content" scroll="false" style="filter: blur({{blurry.behind}});">
+  <ion-content padding="false" class="innerbackground eoko-content" scroll="false" style="filter: blur({{blurry.behind}});">
     <img class="logo" src="./img/eoko-logo.svg" ui-sref="settingPage" />
     <img class="tagline" src="./img/peoplenearyou.png"></img>
 
@@ -9,7 +9,9 @@
 
    
     <ion-scroll id="C" overflow-scroll="false" style="height: calc(86% - 70px);">
-    <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+      
+      <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+      
       <div id="C1" ng-repeat="x in peopleList track by $index" ng-if="currentUser.uid != x.uid"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
         <img ng-src="{{x.photoURL}}" ng-click="viewProfilePopover($event, x)"/>
         <div id="C1A" ng-click="viewProfilePopover($event, x)">
@@ -17,10 +19,10 @@
           <br />
 
           <div ng-if="distList[$index].dist >= 0.1" id="C2">
-          {{distList[$index].dist | number:1}} miles
+            {{distList[$index].dist | number:1}} miles
           </div>
           <div ng-if="distList[$index].dist < 0.1" id="C2">
-          {{distList[$index].dist * 5280  | number:1 }} feet
+            {{distList[$index].dist * 5280  | number:1 }} feet
           </div>
 
           

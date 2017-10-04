@@ -10032,13 +10032,6 @@ input, textarea::-webkit-input-placeholder {
   color: #FFFFFF;
   opacity: 0.6; }
 
-.eoko-tabs-blur .tab-nav.tabs {
-  height: 70px;
-  background: transparent; }
-
-.tab-item {
-  margin-top: 3px; }
-
 .eoko-bell-left {
   background-repeat: no-repeat;
   background-position: center;
@@ -10102,15 +10095,6 @@ input, textarea::-webkit-input-placeholder {
   background-size: cover;
   position: absolute;
   left: 10px; }
-
-.eoko-icon-searchbar-left {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url("../img/search_icon.png");
-  height: 30px;
-  width: 30px;
-  float: left; }
 
 .eoko-icon-searchbar-small {
   background-repeat: no-repeat;
@@ -10359,17 +10343,19 @@ input, textarea::-webkit-input-placeholder {
 
 .eoko-horizontal-scroll-button {
   background: transparent;
-    border-radius: 14px;
-    border-width: 1px;
-    border-style: solid;
-    min-width: 61px;
-    padding: 3px 6px;
-    margin-left: 2px;
-    margin-right: 2px;
-    font-size: 18px;
+  border-radius: 14px;
+  border-width: 1px;
+  border-style: solid;
+  min-width: 61px;
+  padding: 3px 6px;
+  margin-left: 2px;
+  margin-right: 2px;
+  font-size: 18px;
   border-color: white;
   color: white;
-   width: auto; }
+  width: auto; 
+  font-family: "San Francisco Display Thin";
+  }
 
 .eoko-horizontal-scroll-button-selected {
   border-color: #F57C00;
@@ -10378,12 +10364,13 @@ input, textarea::-webkit-input-placeholder {
   border-width: 1px;
   min-width: 61px;
   border-style: solid;
- margin-left: 2px;
+  margin-left: 2px;
   margin-right: 2px;
   width: 100px;
-   padding: 3px 6px;
+  padding: 3px 6px;
   font-size: 18px;
-  color: white; }
+  color: white; 
+  font-family: "San Francisco Display Thin";}
 
 textarea,
 input[type="text"],
