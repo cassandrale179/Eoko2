@@ -10100,15 +10100,6 @@ input, textarea::-webkit-input-placeholder {
   position: absolute;
   left: 10px; }
 
-.eoko-icon-searchbar-left {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url("../img/search_icon.png");
-  height: 30px;
-  width: 30px;
-  float: left; }
-
 .eoko-icon-searchbar-small {
   background-repeat: no-repeat;
   background-position: center;
