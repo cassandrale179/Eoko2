@@ -536,7 +536,7 @@ select{
 
 /* ---------- DISPLAY CARDS OF CURRENT ACTIONS ------- */
 #E2{
-  font-family: 'Roboto', sans-serif;
+  font-family: 'San Francisco Display Medium', sans-serif;
   overflow: auto;
   height: 500px;
   padding-left: 5%;

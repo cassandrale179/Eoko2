@@ -10032,10 +10032,6 @@ input, textarea::-webkit-input-placeholder {
   color: #FFFFFF;
   opacity: 0.6; }
 
-.eoko-tabs-blur .tab-nav.tabs {
-  height: 70px;
-  background: transparent; }
-
 .eoko-bell-left {
   background-repeat: no-repeat;
   background-position: center;
