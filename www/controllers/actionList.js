@@ -1,10 +1,11 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory','backcallFactory','$firebaseObject','$ionicPopover','$ionicPopup',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','backcallFactory', '$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform',
 
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory,backcallFactory,$firebaseObject, $ionicPopover, $ionicPopup) {
+  function ($scope, $state, $firebaseArray, backcallFactory, $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
     $scope.$on('$ionicView.beforeEnter', function(){
+      $scope.exitButton = 2;
       firebase.auth().onAuthStateChanged(function(firebaseUser){
         $scope.currentUser = firebaseUser;
         var userRef = firebase.database().ref("users/"+$scope.currentUser.uid);
@@ -45,7 +46,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
     });
 
 
-
+    backcallFactory.backcallfun();
     $scope.blurry = {behind: "0px"};
 
      function showNotifyAlert(message, info) {
@@ -97,6 +98,24 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
          }
        }
 
+       
+       /*$ionicPlatform.onHardwareBackButton(function(e) 
+       {
+        if($state.current.name == 'navController.people')
+        {
+          $scope.exitButton -= 1;
+          if ($scope.exitButton == 1) 
+          {
+            console.log("press again to exit!");
+            window.plugins.toast.showShortBottom('Press again to exit');
+            e.preventDefault();
+          } 
+          else if($scope.exitButton == 0)
+          {
+            navigator.app.exitApp();
+          }
+        }
+      },101);*/
 
         $scope.doRefresh = function() {
 

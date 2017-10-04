@@ -50,6 +50,7 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
 //Config nav bar to the bottom of the screen regardless the platforms
 .config(function($ionicConfigProvider) {
       $ionicConfigProvider.tabs.position('bottom');
+      ionic.Platform.setPlatform('ios');
 })
 
 //Config app states

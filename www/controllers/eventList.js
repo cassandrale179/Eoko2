@@ -72,15 +72,17 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
       //select filter
       $scope.selectFilter = function (elementId)
       {
-
+        console.log("started selectFilter");
       var elementClass = document.getElementById(elementId).className;
-        if(elementClass == "eoko-horizontal-scroll-button eoko-text-thin activated" || elementClass == "eoko-horizontal-scroll-button eoko-text-thin ng-binding activated")
+        if(elementClass == "eoko-horizontal-scroll-button activated" || elementClass == "eoko-horizontal-scroll-button ng-binding activated")
         {
+          console.log("found elementClass, selecting and pushing");
           document.getElementById(elementId).className = "eoko-horizontal-scroll-button-selected eoko-text-thin";
           $scope.searchEventFilter.push(elementId);
 
         }else{
-          document.getElementById(elementId).className = "eoko-horizontal-scroll-button eoko-text-thin";
+          console.log("not the thing, dont select");
+          document.getElementById(elementId).className = "eoko-horizontal-scroll-button";
           for(var i in $scope.searchEventFilter)
           {
             if($scope.searchEventFilter[i] == elementId)
@@ -101,6 +103,7 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
           angular.forEach($scope.events, function(event){
             event.display=true;
           });
+          console.log("WTF IS GOING ON????",$scope.searchEventFilter);
         }
         else{
           angular.forEach($scope.events, function(event){
