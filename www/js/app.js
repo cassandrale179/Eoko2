@@ -128,6 +128,7 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
     controller: 'actionCreateCtrl'
   })
 
+
   /* --------- CHAT PAGE ------- */
   .state('navController.chat', {
     url: '/chatPage',

@@ -1,24 +1,26 @@
 <ion-view hide-nav-bar="true" >
-  <ion-content padding="true" class="innerbackground eoko-content" style="filter: blur({{blurry.behind}});" scroll="false">
+  <ion-content padding="false" class="innerbackground eoko-content" style="filter: blur({{blurry.behind}});" scroll="false">
     <!-- <div id="E"> -->
       <!-- _____________ NAVIGATION BAR _______ -->
-      <div id="E0" ng-show="searchBar==1">
-        <a class="eoko-icon-search-black"></a>
-        <input placeholder="Search actions" ng-model="searchEvent"  />
-        <button ng-click="searchBar = 2" >X</button>
-      </div>
+      <div id="E">
+        <div id="E0" ng-show="searchBar==1">
+          <a class="eoko-icon-search-black"></a>
+          <input placeholder="Search actions" ng-model="searchEvent"  />
+          <button ng-click="searchBar = 2" >X</button>
+        </div>
 
-      <div id="E1" ng-show="searchBar==2">
-        <i ng-click="searchBar = 1" class="eoko-icon-search-white"></i>
-        <div id="E1A" ui-sref="eventList"><button style="border-bottom: 0.1px solid rgb(230,126,34)"> Action </button></div>
-        <div id="E1B" ui-sref="actionCreate"><button ui-sref="actionCreate"> Create </button></div>
-      </div>
+        <div id="E1" ng-show="searchBar==2">
+          <i ng-click="searchBar = 1" class="eoko-icon-search-white"></i>
+          <div id="E1A" ui-sref="eventList"><button style="border-bottom: 0.1px solid rgb(230,126,34)">Action</button></div>
+          <div id="E1B" ui-sref="actionCreate"><button ui-sref="actionCreate">Create</button></div>
+        </div>
+    </div>
 
 
       <ion-scroll direction="x" class="eoko-horizontal-scroll" scrollbar-x="false"
                 scrollbar-y="false" style="height: 46px;">
 
-        <button ng-repeat="tags in tagList" ng-click="selectFilter('{{tags.$value}}')" id="{{tags.$value}}" class="eoko-horizontal-scroll-button eoko-text-thin">
+        <button ng-repeat="tags in tagList" ng-click="selectFilter('{{tags.$value}}')" id="{{tags.$value}}" class="eoko-horizontal-scroll-button">
           {{tags.$value}}
         </button>
     </ion-scroll>

@@ -491,6 +491,9 @@ select{
 
 /* ---------------------------------------- EVENTS PAGE -------------------------------------- */
 
+#E{
+  margin: 15px 10px 20px 10px;
+}
 
 #E1{
   width: 100%;
@@ -507,35 +510,26 @@ select{
   margin-right: 13px;
 }
 
-#E1 button{
-  color: white;
-  font-family: 'Roboto', serif;
-  width: 45%;
-  font-size: 23px;
-  text-align: left;
-}
-
 #E1A{
   width: 50%;
+  margin-left: 40px;
   border: none;
 }
 
 #E1A button, #E1B button{
   text-align: center;
   display: block;
-  margin: auto;
+  font-family: 'San Francisco Display Regular', serif;
+  font-size: 23px;
+  color: white;
+  margin: auto auto auto 10px;
   border: none;
   background: transparent;
-  width: 100px;
-
 }
 
 #E1B{
   width: 50%;
-}
-
-#E1{
-  margin-bottom: 10px;
+  
 }
 
 
@@ -572,18 +566,15 @@ select{
 #E0{
   background: rgba(255,255,255,0.8);
   opacity: 0.9;
-  height: 40px;
-  margin-bottom: 17px;
   border-radius: 7px;
   box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);
   display: flex;
-  padding: 10px;
+  padding: 5px;
 }
 
 #E0 a{
   margin-right: 10px;
   margin-left: 3px;
-  height: 22px;
   width: 24px;
 }
 
