@@ -52,7 +52,8 @@ exports.sendMessageNotification = functions.database.ref('/Chats/{chatId}/messag
                       sound: "default"
                   },
                   data: {
-                    chatId: chatId
+                    convoID: chatId,
+                    senderID: message.userId
                   }
               };
 

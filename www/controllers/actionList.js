@@ -34,12 +34,15 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
           window.FirebasePlugin.onNotificationOpen(function(notification) {
               console.log(notification);
-              if (notification.data.nudge=="true"){
+              if (notification.chatId){
+                //redirect to chat here
+                $state.go('messagePage', {otherID: notification.senderID, convoID: notification.chatId})
+
+              }
+              else{
+                //Nudge popup here
                 var combined = notification.name + " sent you a nudge! Go to messaging?";
                 showNotifyAlert(combined, notification);
-              }
-              if (notification.data.chatId){
-                //TODO: Redirect to messaging here
               }
 
           }, function(error) {
