@@ -1,6 +1,6 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','backcallFactory', '$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform',
 
-  function ($scope, $state, $firebaseArray, backcallFactory, $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform) {
+  function ($scope, $state, $firebaseArray,  $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
@@ -20,7 +20,6 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','backcallF
           }, function(error) {
               console.error(error);
           });
-
 
           window.FirebasePlugin.onTokenRefresh(function(token) {
               // save this server-side and use it to push notifications to this device
@@ -55,7 +54,12 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','backcallF
     });
 
 
-    backcallFactory.backcallfun();
+     $scope.$on('$ionicView.afterEnter', function () //before anything runs
+    {
+      makeblurry();
+    });
+
+    
     $scope.blurry = {behind: "0px"};
 
      function showNotifyAlert(message, info) {
@@ -478,10 +482,12 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','backcallF
       });
       // Execute action on hide popover
       $scope.$on('popover.hidden', function() {
+        $scope.blurry.behind = "0px";
         // Execute action
       });
       // Execute action on remove popover
       $scope.$on('popover.removed', function() {
+        $scope.blurry.behind = "0px";
         // Execute action
       });
 

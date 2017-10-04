@@ -18,15 +18,11 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
 
     $scope.$on('$ionicView.afterEnter', function () //before anything runs
     {
+      makeblurry();
       console.log("state params, ", $stateParams.actionID, "triggeredm,, ", $stateParams.SJWTriggered);
       startLoop();
     });
 
-    /*$scope.$on('$ionicView.afterLeave', function () //before anything runs
-    {
-      $stateParams.actionID = '';
-      $stateParams.SJWTriggered = false;
-    });*/
 
     var res = firebase.database().ref("actions");
         $scope.tagList = $firebaseArray(res);
@@ -136,7 +132,10 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
         return result;
       }
 
-
+      $scope.goToMaps = function(address)
+      {
+        launchnavigator.navigate(address);
+      };
 
 
       //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
@@ -391,10 +390,12 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
       });
       // Execute action on hide popover
       $scope.$on('popover.hidden', function() {
+        $scope.blurry.behind = "0px";
         // Execute action
       });
       // Execute action on remove popover
       $scope.$on('popover.removed', function() {
+        $scope.blurry.behind = "0px";
         // Execute action
       });
 
