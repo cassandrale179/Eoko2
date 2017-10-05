@@ -320,7 +320,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       //---------- IF PRIVACY IS SET AS INVITE ONLY --------------
       else if ($scope.action.privacy == "invite")
       {
-        $state.go('invitePage', {actionObject: $scope.action, eventObject: event})
+        $state.go('invitePage', {eventObject: event})
       }
 
     };
