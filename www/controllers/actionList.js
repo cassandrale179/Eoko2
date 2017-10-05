@@ -34,12 +34,13 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
 
           window.FirebasePlugin.onNotificationOpen(function(notification) {
               console.log(notification);
-              if (notification.chatId){
+              if (notification.chatId && notification.wasTapped){
                 //redirect to chat here
+
                 $state.go('messagePage', {otherID: notification.senderID, convoID: notification.chatId})
 
               }
-              else{
+              if (notification.nudge){
                 //Nudge popup here
                 var combined = notification.name + " sent you a nudge! Go to messaging?";
                 showNotifyAlert(combined, notification);
@@ -59,7 +60,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
       makeblurry();
     });
 
-    
+
     $scope.blurry = {behind: "0px"};
 
      function showNotifyAlert(message, info) {
@@ -111,18 +112,18 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
          }
        }
 
-       
-       /*$ionicPlatform.onHardwareBackButton(function(e) 
+
+       /*$ionicPlatform.onHardwareBackButton(function(e)
        {
         if($state.current.name == 'navController.people')
         {
           $scope.exitButton -= 1;
-          if ($scope.exitButton == 1) 
+          if ($scope.exitButton == 1)
           {
             console.log("press again to exit!");
             window.plugins.toast.showShortBottom('Press again to exit');
             e.preventDefault();
-          } 
+          }
           else if($scope.exitButton == 0)
           {
             navigator.app.exitApp();
