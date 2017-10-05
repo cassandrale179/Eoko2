@@ -147,7 +147,7 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
           console.log("loaded event stuff",checkDone);
           console.log("the thing is ", checkDone);
           
-          if(checkDone["ownerID"] == $scope.currentUser.uid){
+          if(checkDone["owner"]["id"] == $scope.currentUser.uid){
             console.log("you are the owner of this event");
             $scope.closePopover();
             return;
@@ -352,7 +352,7 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
           $scope.blurry = {behind: "5px"};
         }
         else {
-          console.log("clear up");
+          console.log("blur clear up");
           $scope.blurry = {behind: "0px"};
         }
       }
@@ -398,15 +398,4 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
         $scope.blurry.behind = "0px";
         // Execute action
       });
-
-
-
-
-
-
-
-
-
-
-
   }]);

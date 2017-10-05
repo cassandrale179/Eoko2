@@ -270,7 +270,10 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
       //Submit the event and get the event ID
       $scope.action.chatID = eventChatID.chatID;
-      $scope.action.ownerID = $scope.currentUser.uid;
+      $scope.action.owner = {
+        id: $scope.currentUser.uid,
+        name: $scope.currentUser.displayName
+      }
       eventRef = activitiesRef.push($scope.action);
       eventID = eventRef.key;
 
