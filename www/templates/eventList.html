@@ -18,7 +18,7 @@
 
 
       <ion-scroll direction="x" class="eoko-horizontal-scroll" scrollbar-x="false"
-                scrollbar-y="false" style="height: 46px;">
+                scrollbar-y="false" style="height: 50px;">
 
         <button ng-repeat="tags in tagList" ng-click="selectFilter('{{tags.$value}}')" id="{{tags.$value}}" class="eoko-horizontal-scroll-button">
           {{tags.$value}}
@@ -27,14 +27,12 @@
 
 
       <!-- _____________ CARDS OF EVENTS _______ -->
-      <ion-scroll id="E2" overflow-scroll="false" style="height: calc(84% - 70px);">
-
-      <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+      <ion-scroll id="E2" overflow-scroll="false" style="height: calc(100% - 70px);">
+        <ion-refresher on-refresh="doRefresh()"></ion-refresher>
         <div id="E2A" ng-repeat="(key,x) in events | orderObjectBy:'distance' | filter: {display: true} | filter: searchEvent">
-
           <img ng-src="{{x.info.photoURL}}" />
           <div id="E2A1" ng-click="openPopover($event, x)">
-            <h4>{{x.info.name}}</h4>
+            <div id="E2A11">{{x.info.name}}</div>
             <h5>
               <span>{{x.info.startTime}}</span>
               <span id="spacer" style="padding: 0 1.618em;"></span>
@@ -43,8 +41,9 @@
             </h5>
           </div>
         </div>
-
       </ion-scroll>
+
+      <div id="blur-nav-bar"></div>
     <!-- </div> -->
 
     <script id="my-popover.html" type="text/ng-template">
@@ -57,15 +56,16 @@
         <!-- ___________ DISPLAY USER INFORMATION, IMAGE AND EVENT NAME, TIME _________________ -->
         <div id="F1">
           <img ng-src={{currUser.info.photoURL}} />
-          <!-- <h2>{{currUser.info.owner}}</h2> -->
+          <h2>{{currUser.info.owner.name}}</h2>
           <h1>{{currUser.info.name}}</h1>
-          <h3>{{currUser.info.address}}</h3>
-          <div id="F1A">
+          <div>
             <h3>{{currUser.info.startTime}}</h3>
+            <span id="spacer" style="padding: 0 1.618em;"></span>
             <h3 ng-if="currUser.distance >= 0.1">{{currUser.distance | number:1}} miles</h3>
             <h3 ng-if="currUser.distance < 0.1">{{currUser.distance * 5280 | number:1}} feet</h3>
           </div>
-          <p class="descriptionArea">{{currUser.info.description}}</p>
+          <h3>{{currUser.info.address}}</h3>
+          <ion-scroll id="F1A" overflow-scroll="false" class="descriptionArea">{{currUser.info.description}}</ion-scroll>
         </div>
 
         <!-- ___________ DISPLAY LIST OF PEOPLE WHO ARE JOINING IT _________________ -->
