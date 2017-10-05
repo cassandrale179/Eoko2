@@ -64,7 +64,7 @@
             <h3 ng-if="currUser.distance >= 0.1">{{currUser.distance | number:1}} miles</h3>
             <h3 ng-if="currUser.distance < 0.1">{{currUser.distance * 5280 | number:1}} feet</h3>
           </div>
-          <h3>{{currUser.info.address}}</h3>
+          <h3 ng-click="goToMaps(currUser.info.address)">{{currUser.info.address}}</h3>
           <ion-scroll id="F1A" overflow-scroll="false" class="descriptionArea">{{currUser.info.description}}</ion-scroll>
         </div>
 

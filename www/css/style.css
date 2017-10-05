@@ -739,7 +739,8 @@ select{
 }
 
 .active{
-  border-bottom: 0.1px solid rgba(255,255,255,0.3) !important;
+  border-bottom: 0px solid rgba(255,255,255,1) !important;
+  color: white;
 }
 
 #container{
@@ -1160,3 +1161,12 @@ select{
     overflow: scroll;
     margin: 0px;
 }
+
+.scroll-refresher .ionic-refresher-content {
+  color: white;
+  }
+
+  .spinner-ios{
+    stroke: white;
+    fill : white;
+  }

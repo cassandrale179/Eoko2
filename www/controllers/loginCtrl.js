@@ -1,12 +1,12 @@
-app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state', '$http', 'ngFB', '$window','geoPos', 'facebookService', '$ionicPlatform',
+app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state', '$http', 'ngFB', '$window','geoPos', 'facebookService', '$ionicPlatform','backcallFactory',
 
-  function ($scope, $cordovaOauth, $firebaseAuth, $state, $http, ngFB, $window, geoPos, facebookService, $ionicPlatform) {
+  function ($scope, $cordovaOauth, $firebaseAuth, $state, $http, ngFB, $window, geoPos, facebookService, $ionicPlatform,backcallFactory) {
 
   var fbAppId = '694354544087073';
   $scope.authObj = $firebaseAuth();
   var userInfo;
   var currentUserUid;
-
+  backcallFactory.backcallfun();
 
   //------- CHECK IF USER IS LOGIN, IF SO REDIRECT OT ACTION LIST PAGE --------
    $scope.authObj.$onAuthStateChanged(function(firebaseUser){

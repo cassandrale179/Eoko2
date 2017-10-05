@@ -1,10 +1,11 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory','backcallFactory','$firebaseObject','$ionicPopover','$ionicPopup',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform',
 
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory,backcallFactory,$firebaseObject, $ionicPopover, $ionicPopup) {
+  function ($scope, $state, $firebaseArray,  $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
     $scope.$on('$ionicView.beforeEnter', function(){
+      $scope.exitButton = 2;
       firebase.auth().onAuthStateChanged(function(firebaseUser){
         $scope.currentUser = firebaseUser;
         var userRef = firebase.database().ref("users/"+$scope.currentUser.uid);
@@ -20,7 +21,6 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
               console.error(error);
           });
 
-
           window.FirebasePlugin.onTokenRefresh(function(token) {
               // save this server-side and use it to push notifications to this device
               console.log(token);
@@ -34,8 +34,17 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
           window.FirebasePlugin.onNotificationOpen(function(notification) {
               console.log(notification);
-              var combined = notification.name + " sent you a nudge! Go to messaging?";
-              showNotifyAlert(combined, notification);
+              if (notification.chatId){
+                //redirect to chat here
+                $state.go('messagePage', {otherID: notification.senderID, convoID: notification.chatId})
+
+              }
+              else{
+                //Nudge popup here
+                var combined = notification.name + " sent you a nudge! Go to messaging?";
+                showNotifyAlert(combined, notification);
+              }
+
           }, function(error) {
               console.error(error);
           });
@@ -45,7 +54,12 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
     });
 
 
+     $scope.$on('$ionicView.afterEnter', function () //before anything runs
+    {
+      makeblurry();
+    });
 
+    
     $scope.blurry = {behind: "0px"};
 
      function showNotifyAlert(message, info) {
@@ -97,6 +111,24 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
          }
        }
 
+       
+       /*$ionicPlatform.onHardwareBackButton(function(e) 
+       {
+        if($state.current.name == 'navController.people')
+        {
+          $scope.exitButton -= 1;
+          if ($scope.exitButton == 1) 
+          {
+            console.log("press again to exit!");
+            window.plugins.toast.showShortBottom('Press again to exit');
+            e.preventDefault();
+          } 
+          else if($scope.exitButton == 0)
+          {
+            navigator.app.exitApp();
+          }
+        }
+      },101);*/
 
         $scope.doRefresh = function() {
 
@@ -378,7 +410,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
               receiverUid: $scope.otherUser.uid,
               latestTime: time
             });
-            
+
             $scope.newConversation($scope.otherUser,false);
             $scope.closePopover();
 
@@ -450,10 +482,12 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
       });
       // Execute action on hide popover
       $scope.$on('popover.hidden', function() {
+        $scope.blurry.behind = "0px";
         // Execute action
       });
       // Execute action on remove popover
       $scope.$on('popover.removed', function() {
+        $scope.blurry.behind = "0px";
         // Execute action
       });
 

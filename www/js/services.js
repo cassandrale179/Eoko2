@@ -325,26 +325,44 @@ angular.module('eoko.services', [])
 var obj={};
     obj.backcallfun=function(){
     var backbutton=0;
-       $ionicPlatform.registerBackButtonAction(function () {
-          if ($state.current.name == "tabsController.actionList") {
+      $ionicPlatform.registerBackButtonAction(function () 
+       {
+          if ($state.current.name == "navController.people") 
+          {
+            if(backbutton==0)
+            {
+                  backbutton++;
+                    window.plugins.toast.showWithOptions(
+                    {
+                      message: 'Press again to exit',
+                      duration: "short", // which is 2000 ms. "long" is 4000. Or specify the nr of ms yourself.
+                      position: "bottom",
+                      addPixelsY: -40  // added a negative value to move it up a bit (default 0)
+                    });
 
-      if(backbutton==0){
-            backbutton++;
-              window.plugins.toast.showShortCenter('Press again to exit');
-            $timeout(function(){backbutton=0;},5000);
-        }else{
-            navigator.app.exitApp();
-        }
+                  $timeout(function(){backbutton=0;},3000);
+              }
+              else
+              {
+                  navigator.app.exitApp();
+              }
 
-      }else{
-            $ionicHistory.nextViewOptions({
-                 disableBack: true
-                });
-        $state.go('tabsController.actionList');
-        //go to home page
-     }
-        }, 100);//registerBackButton
-};//backcallfun
+          }
+          else
+          {
+            backbutton=0;
+           $ionicHistory.goBack();
+                /*$ionicHistory.nextViewOptions({
+                     disableBack: true
+                    });
+            $state.go('navController.people');*/
+            //go to home page
+         }
+            }, 100);//registerBackButton
+
+
+
+};
 return obj;
 }])
 

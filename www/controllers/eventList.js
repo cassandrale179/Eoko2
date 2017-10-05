@@ -18,15 +18,11 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
 
     $scope.$on('$ionicView.afterEnter', function () //before anything runs
     {
+      makeblurry();
       console.log("state params, ", $stateParams.actionID, "triggeredm,, ", $stateParams.SJWTriggered);
       startLoop();
     });
 
-    /*$scope.$on('$ionicView.afterLeave', function () //before anything runs
-    {
-      $stateParams.actionID = '';
-      $stateParams.SJWTriggered = false;
-    });*/
 
     var res = firebase.database().ref("actions");
         $scope.tagList = $firebaseArray(res);
@@ -72,15 +68,17 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
       //select filter
       $scope.selectFilter = function (elementId)
       {
-
+        console.log("started selectFilter");
       var elementClass = document.getElementById(elementId).className;
-        if(elementClass == "eoko-horizontal-scroll-button eoko-text-thin activated" || elementClass == "eoko-horizontal-scroll-button eoko-text-thin ng-binding activated")
+        if(elementClass == "eoko-horizontal-scroll-button activated" || elementClass == "eoko-horizontal-scroll-button ng-binding activated")
         {
+          console.log("found elementClass, selecting and pushing");
           document.getElementById(elementId).className = "eoko-horizontal-scroll-button-selected eoko-text-thin";
           $scope.searchEventFilter.push(elementId);
 
         }else{
-          document.getElementById(elementId).className = "eoko-horizontal-scroll-button eoko-text-thin";
+          console.log("not the thing, dont select");
+          document.getElementById(elementId).className = "eoko-horizontal-scroll-button";
           for(var i in $scope.searchEventFilter)
           {
             if($scope.searchEventFilter[i] == elementId)
@@ -101,6 +99,7 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
           angular.forEach($scope.events, function(event){
             event.display=true;
           });
+          console.log("WTF IS GOING ON????",$scope.searchEventFilter);
         }
         else{
           angular.forEach($scope.events, function(event){
@@ -133,7 +132,10 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
         return result;
       }
 
-
+      $scope.goToMaps = function(address)
+      {
+        launchnavigator.navigate(address);
+      };
 
 
       //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
@@ -388,10 +390,12 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
       });
       // Execute action on hide popover
       $scope.$on('popover.hidden', function() {
+        $scope.blurry.behind = "0px";
         // Execute action
       });
       // Execute action on remove popover
       $scope.$on('popover.removed', function() {
+        $scope.blurry.behind = "0px";
         // Execute action
       });
   }]);
