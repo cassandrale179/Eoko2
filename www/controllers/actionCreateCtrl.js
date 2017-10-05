@@ -380,8 +380,6 @@ function initAutocomplete() {
             document.getElementById('searchBar').blur();
         });
 
-
-
         $scope.geolocate = function() {
             google.maps.event.addDomListener(window, 'load', initAutocomplete);
             initAutocomplete();

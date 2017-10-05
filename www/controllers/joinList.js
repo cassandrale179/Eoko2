@@ -114,20 +114,21 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
             }
           }
         }
+
+        // ------------ COLORING THE TAGS THAT ALREADY EXIST -------
+        for (var i = 0; i < $scope.action.tags.length; i++){
+          for (var j = 0; j < $scope.tagSelect.length; j++){
+            if ($scope.action.tags[i] == $scope.tagSelect[j].$value){
+              console.log("Some similar tag",$scope.action.tags[i] + 'create');
+              var idName = $scope.action.tags[i] + 'create';
+              document.getElementById('Networkingcreate').className = "eoko-horizontal-scroll-button-selected eoko-text-thin";
+            }
+          }
+        }
       });
 
 
-      // ------------ COLORING THE TAGS THAT ALREADY EXIST -------
-      for (var i = 0; i < $scope.action.tags.length; i++){
-        for (var j = 0; j < $scope.tagSelect.length; j++){
-          if ($scope.action.tags[i] == $scope.tagSelect[j].$value){
-            console.log("Some similar tag");
-            console.log($scope.tagSelect[j]);
 
-            //NOT SURE HOW TO COLOR THE TAGS THAT ARE ALREAYD CHOSEN
-          }
-        }
-      }
 
       //------------- WHEN USER SELECT A TAG -----------------
       $scope.selectionTag = function (elementId)
