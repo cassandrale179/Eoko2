@@ -4,9 +4,16 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
     //--------- PRESET SOME VARIBALES---------
     $scope.show = 1;
     $scope.selectTagList = [];
-    $scope.errorMessage = ""
+    $scope.errorMessage = "";
     var input = document.getElementById('pac-input');
     var autocomplete = new google.maps.places.Autocomplete(input);
+
+
+    //--------------- BACK BUTTON -------------
+    $scope.return = function(){
+      $state.go("navController.notification");
+      $scope.show = 1;
+    };
 
     //--------- CHECK IF USER IS LOG IN ---------
     firebase.auth().onAuthStateChanged(function(user){
@@ -15,15 +22,14 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
       }
 
 
-      //------- DELETE AN ACTION -----------------
+      //------------------ DELETE AN ACTION -----------------
       $scope.deleteAction = function(x){
         var activitiesRef = firebase.database().ref("users/" + $scope.currentUser.uid + "/actions/myActions");
         activitiesRef.child(x).remove();
         console.log("Successfully delete event");
+      };
 
-      }
-
-      //----------------------- EDIT AN ACTION -------------------
+      //---------------------------------- EDIT AN ACTION -------------------------------------
       $scope.editAction = function(x){
         $scope.show = 2;
         console.log(x);
@@ -46,14 +52,20 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
         if ($scope.action.privacy == "public"){
           $scope.privSelect = "public";
           $scope.publicStyle = clicked;
+          $scope.inviteStyle = unclicked;
+          $scope.privateStyle = unclicked;
         }
         if ($scope.action.privacy == "private"){
           $scope.privSelect = "private";
-          $scope.prviateStyle = clicked;
+          $scope.privateStyle = clicked;
+          $scope.inviteStyle = unclicked;
+          $scope.publicStyle = unclicked;
         }
         if ($scope.action.privacy == "invite"){
           $scope.privSelect = "invite";
           $scope.inviteStyle = clicked;
+          $scope.publicStyle = unclicked;
+          $scope.privateStyle = unclicked;
         }
 
 
@@ -94,6 +106,16 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
       $scope.tagSelect.$loaded(function(arr){
         console.log("taglist create", $scope.tagSelect);
       });
+
+
+      //------------ COLORING THE TAGS THAT ALREADY EXIST -------
+      // for (var i = 0; i < $scope.action.tags.length; i++){
+      //   for (var j = 0; j < $scope.tagSelect.length; j++){
+      //     if ($scope.action.tags[i] == $scope.tagSelect[j].value){
+      //       console.log($scope.tagSelect[j]);
+      //     }
+      //   }
+      // }
 
 
       //------------- WHEN USER SELECT A TAG -----------------
