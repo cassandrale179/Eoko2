@@ -55,6 +55,35 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
     });
 
 
+    $scope.facebookFuckery = function()
+    {
+      facebookConnectPlugin.appInvite(
+        {
+            url: "https://play.google.com/store/apps/details?id=com.eokoteam.eoko&hl=en",
+            picture: "https://static1.squarespace.com/static/58001680d2b8579653e773bd/t/59446a67d2b8579c7609ea83/1507244341876/?format=1500w"
+        },
+        function(obj){
+            if(obj) {
+                if(obj.completionGesture == "cancel") {
+                    console.log("hit cancel");
+                } else {
+                    console.log("thanks for the invite!");
+                }
+            } else {
+                console.log("what did you do?");
+            }
+        },
+        function(obj){
+            // error
+            console.log(obj);
+        });
+
+    };
+
+    
+
+
+
      $scope.$on('$ionicView.afterEnter', function () //before anything runs
     {
       makeblurry();
