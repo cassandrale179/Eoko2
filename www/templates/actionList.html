@@ -2,19 +2,19 @@
   <ion-content padding="false" class="innerbackground eoko-content" scroll="false" style="filter: blur({{blurry.behind}});">
     <img class="logo" src="./img/eoko-logo.svg" ui-sref="settingPage" />
     <img class="tagline" src="img/peoplenearyou.png"></img>
-    
-    <button ng-click="facebookFuckery()">FUCKERY</button> 
+
+    <button ng-click="facebookFuckery()">FUCKERY</button>
 
 
     <!-- ____________________  DISPLAY USER FRIENDS WITHIN 10 MILES  _________________  -->
 
 
-   
+
     <ion-scroll id="C" overflow-scroll="false" style="height: calc(86% - 70px);">
-      
+
       <ion-refresher on-refresh="doRefresh()"></ion-refresher>
-      
-      <div id="C1" ng-repeat="x in peopleList track by $index" ng-if="currentUser.uid != x.uid"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
+
+      <div id="C1" ng-repeat="x in peopleList | filter: (publicFilter || '') && {display: peopleFilter} | filter: privateFilter && {display: peopleFilter} track by $index" ng-if="currentUser.uid != x.uid"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
         <img ng-src="{{x.photoURL}}" ng-click="viewProfilePopover($event, x)"/>
         <div id="C1A" ng-click="viewProfilePopover($event, x)">
           {{x.name}}
@@ -27,7 +27,7 @@
             {{distList[$index].dist * 5280  | number:1 }} feet
           </div>
 
-          
+
         </div>
 
 
@@ -89,9 +89,9 @@
                     <ion-item ng-repeat="action in otherUser.actions.myActions"
                     style="background-color: rgba(0,0,0,0);color: white"
                     ng-click="viewPersonAction(action.eventID, true)">
-             
+
                         <div class="activeActions">{{action.name}}</div>  <span style="float:right;">{{action.time}}</span>
-           
+
                     </ion-item>
 
                 </ion-scroll>
@@ -108,7 +108,7 @@
     </div>
   </script>
 
-  
+
 
 </ion-content>
 </ion-view>

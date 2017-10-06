@@ -767,14 +767,14 @@ select{
   margin: auto;
 }
 
-#H2, #H3{
+#H2, #H3, #H5{
   display: flex;
   width: 100%;
 }
 
 
 /* public, private or both buttons */
-#H2 button, #H3 button{
+#H2 button, #H3 button, #H5 button{
   font-family: 'Roboto', sans-serif;
   color: white;
   font-size: 15px;
@@ -786,7 +786,7 @@ select{
 }
 
 /*public, private, or both buttons */
-#H2 button, #H3 button{
+#H2 button, #H3 button, #H5 button{
   width: 45%;
   margin-right: 10px;
   margin-left: 10px;
@@ -1172,4 +1172,3 @@ select{
     stroke: white;
     fill : white;
   }
-

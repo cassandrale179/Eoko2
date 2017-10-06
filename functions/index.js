@@ -172,6 +172,9 @@ exports.sendNudgeNotification = functions.database.ref('/nudge/{userId}/{otherId
             admin.messaging().sendToDevice(instanceId, payload)
                 .then(function (response) {
                     console.log("Successfully sent message:", response);
+                    if (response.results.error){
+                      console.log(response.results.error);
+                    }
                     var ref = admin.database().ref(`/nudge/${userId}/${otherId}`);
                     ref.remove();
 
