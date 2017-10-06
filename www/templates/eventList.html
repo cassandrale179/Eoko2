@@ -55,19 +55,23 @@
 
         <!-- ___________ DISPLAY USER INFORMATION, IMAGE AND EVENT NAME, TIME _________________ -->
         <div id="F1">
-          <img ng-src={{currUser.info.photoURL}} />
+          <img id="F1profile" ng-src={{currUser.info.photoURL}} />
           <h2>{{currUser.info.owner.name}}</h2>
           <h1>{{currUser.info.name}}</h1>
           <div>
-            <div>
-              <img id="F1time" src="../img/dateTime_icon.png">
-              <h3>{{currUser.info.startTime}}</h3>
-            </div> 
+            <img id="F1icon" src="../img/dateTime_icon.png">
+            <h3>{{currUser.info.startTime}}</h3>
             <span id="spacer" style="padding: 0 1.618em;"></span>
+            <img id="F1icon" src="../img/distance_icon.png">
             <h3 ng-if="currUser.distance >= 0.1">{{currUser.distance | number:1}} miles</h3>
             <h3 ng-if="currUser.distance < 0.1">{{currUser.distance * 5280 | number:1}} feet</h3>
           </div>
-          <h3 ng-click="goToMaps(currUser.info.address)">{{currUser.info.address}}</h3>
+          <div id="F1B1">
+            <img id="F1icon" src="../img/location_icon.png">
+          </div>
+          <div id="F1B2">
+            <h3 style="font-size: 4.5vw"ng-click="goToMaps(currUser.info.address)">{{currUser.info.address}}</h3>
+          </div>
           <ion-scroll id="F1A" overflow-scroll="false" class="descriptionArea">{{currUser.info.description}}</ion-scroll>
         </div>
 
@@ -81,7 +85,8 @@
             </span>
           </ion-scroll>
         </div>
-        <button ng-click="joinAction(currUser.info.$id)"> Join </button>
+        <button ng-if="!isAlreadyJoined" ng-click="joinAction(currUser.info.$id)"> Join </button>
+        <button ng-if="isAlreadyJoined" style="background: rgba(255,255,255,0.5); color: rgba(230, 126, 34, 0.9); font-style: italic;"> Already Joined </button>
       </div>
       </div>
     </div>
