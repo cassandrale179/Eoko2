@@ -149,8 +149,8 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
       //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
       $scope.joinAction = function(eventid, eventobject){
         var ref = firebase.database().ref("activities").child(eventid);
-
         var checkDone = $firebaseObject(ref);
+
         checkDone.$loaded().then(function(x){
           console.log("loaded event stuff",checkDone);
           console.log("the thing is ", checkDone);
@@ -158,7 +158,7 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
           //----------- IF YOU ARE THE OWNER OF THE EVENT, THEN YOU CAN'T JOIN IT LOSER ------------
           if(checkDone["owner"]["id"] == $scope.currentUser.uid){
             console.log("you are the owner of this event");
-            $scope.closePopover();
+            $scope.isAlreadyJoined = true;
             return;
           }
 
@@ -183,7 +183,7 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
             if(checkDone["participants"][i].id == $scope.currentUser.uid)
             {
               console.log("already joined, returning");
-              $scope.closePopover();
+              $scope.isAlreadyJoined = true;
               return;
             }
           }
@@ -395,8 +395,10 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
       });
 
       $scope.openPopover = function($event, user) {
+        $scope.isAlreadyJoined = false;
         $scope.blurry.behind = "5px";
         $scope.currUser = user;
+        $scope.joinAction($scope.currUser.info.$id);
         $scope.popover.show();
       };
       $scope.closePopover = function() {
