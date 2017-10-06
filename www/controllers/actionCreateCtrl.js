@@ -1,5 +1,5 @@
-app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout','$firebaseObject','$ionicPopup',
-  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout, $firebaseObject,$ionicPopup) {
+app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout','$firebaseObject','$ionicPopup', 'EventInfo',
+  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout, $firebaseObject,$ionicPopup, EventInfo) {
 
 
     //------- AUTOCOMPLETE LOCATION ----------
@@ -321,7 +321,11 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       //---------- IF PRIVACY IS SET AS INVITE ONLY --------------
       else if ($scope.action.privacy == "invite")
       {
-        $state.go('invitePage', {eventObject: event})
+        // console.log("invite event after user choose invite, as param");
+        // console.log(event);
+        // $state.go('invitePage', {eventObject: event})
+        EventInfo.setEventInfo(event);
+        $state.go('invitePage');
       }
 
     };

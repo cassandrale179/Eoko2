@@ -200,7 +200,6 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
         type: "fade"
       },
       params: {
-        actionObject: "",
         eventObject: ""
       },
       templateUrl: 'templates/invitePage.html',
