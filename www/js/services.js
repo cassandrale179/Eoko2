@@ -158,6 +158,26 @@ angular.module('eoko.services', [])
 
   }])
 
+  /* ------------------------------- OTHER INFO FACTORY --------------------------- */
+    .factory('EventInfo', [function () {
+      var eventData = {
+
+      };
+
+      return {
+        setEventInfo: function (info) {
+          eventData = info;
+          return true;
+        },
+
+        getEventInfo: function () {
+          return eventData;
+        }
+      };
+
+    }])
+
+
 /* ------------------------------- PROFILE PRESS FACTORY --------------------------- */
    .factory('ProfilePress', [function () {
     var aprofile = false;
@@ -325,9 +345,9 @@ angular.module('eoko.services', [])
 var obj={};
     obj.backcallfun=function(){
     var backbutton=0;
-      $ionicPlatform.registerBackButtonAction(function () 
+      $ionicPlatform.registerBackButtonAction(function ()
        {
-          if ($state.current.name == "navController.people") 
+          if ($state.current.name == "navController.people")
           {
             if(backbutton==0)
             {
