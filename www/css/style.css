@@ -9,7 +9,7 @@ A: LOGIN PAGE
 .eoko-content {
   min-height: 100% !important;
   top: 0 !important;
-  bottom: 0 !important; 
+  bottom: 0 !important;
 }
 
 .background{
@@ -54,42 +54,42 @@ select{
 @font-face {
   font-family: "San Francisco Display UltraLight";
   font-weight: 100;
-  src: url("../fonts/sanfranciscodisplay-ultralight.woff"); 
+  src: url("../fonts/sanfranciscodisplay-ultralight.woff");
 }
 
 /** Thin */
 @font-face {
   font-family: "San Francisco Display Thin";
   font-weight: 200;
-  src: url("../fonts/sanfranciscodisplay-thin.woff"); 
+  src: url("../fonts/sanfranciscodisplay-thin.woff");
 }
 
 /** Regular */
 @font-face {
   font-family: "San Francisco Display Regular";
   font-weight: 400;
-  src: url("../fonts/sanfranciscodisplay-regular.woff"); 
+  src: url("../fonts/sanfranciscodisplay-regular.woff");
 }
 
 /** Medium */
 @font-face {
   font-family: "San Francisco Display Medium";
   font-weight: 500;
-  src: url("../fonts/sanfranciscodisplay-medium.woff"); 
+  src: url("../fonts/sanfranciscodisplay-medium.woff");
 }
 
 /** Semi Bold */
 @font-face {
   font-family: "San Francisco Display Semibold";
   font-weight: 600;
-  src: url("../fonts/sanfranciscodisplay-semibold.woff"); 
+  src: url("../fonts/sanfranciscodisplay-semibold.woff");
 }
 
 /** Bold */
 @font-face {
   font-family: "San Francisco Display Bold";
   font-weight: 700;
-  src: url("../fonts/sanfranciscodisplay-bold.woff"); 
+  src: url("../fonts/sanfranciscodisplay-bold.woff");
 }
 
 
@@ -188,7 +188,7 @@ select{
 
 .eoko-tabs-blur .tab-nav.tabs {
   height: 70px;
-  background: transparent; 
+  background: transparent;
 }
 
 .tab-item{
@@ -540,7 +540,7 @@ select{
 
 #E1B{
   width: 50%;
-  
+
 }
 
 
@@ -812,6 +812,8 @@ select{
 #I{
   padding-left: 5%;
   padding-right: 5%;
+  height: 530px;
+  overflow: auto;
 }
 #I1{
   width: 100%;
@@ -1092,7 +1094,7 @@ select{
 }
 
 
-/* --------------- MICHEAL ALRIGHT CSS (IT'S NOT THAT CRAP) ---------------- */ 
+/* --------------- MICHEAL ALRIGHT CSS (IT'S NOT THAT CRAP) ---------------- */
 .details{
     margin: 15% 10%;
     height: 80%;

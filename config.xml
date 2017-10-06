@@ -3,7 +3,7 @@
     <name>eoko</name>
     <description>A Social Network of Actions</description>
     <author email="geteoko@gmail.com" href="http://geteoko.com/">eoko Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" />
     <access origin="*" />
     <allow-navigation href="http://ionic.local/*" />
     <allow-navigation href="http://192.168.56.1:8100" />
