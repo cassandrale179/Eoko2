@@ -320,7 +320,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       //---------- IF PRIVACY IS SET AS INVITE ONLY --------------
       else if ($scope.action.privacy == "invite")
       {
-        $state.go('invitePage', {actionObject: $scope.action, eventObject: event})
+        $state.go('invitePage', {eventObject: event})
       }
 
     };
@@ -379,8 +379,6 @@ function initAutocomplete() {
         angular.element(container).on("click", function(){
             document.getElementById('searchBar').blur();
         });
-
-
 
         $scope.geolocate = function() {
             google.maps.event.addDomListener(window, 'load', initAutocomplete);

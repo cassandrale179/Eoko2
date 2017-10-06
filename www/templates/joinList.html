@@ -12,13 +12,13 @@
       <div id="error" ng-if="errorMessage != ''">
         {{errorMessage}}
       </div>
-      <div id="I2" ng-repeat="event in myEvents">
+      <div id="I2" ng-repeat="event in myEvents" ng-click="editAction(event.eventid)">
         <img ng-src="{{event.photoURL}}" />
         <div id="I2A">
           {{event.name}}
           <div id="I2B">
-            <button ng-click="editAction(event.eventid)"> Edit </button>
-            <button ng-click="deleteAction(event.eventid)"> Delete </button>
+            <!-- <button ng-click="editAction(event.eventid)"> Edit </button>
+            <button ng-click="deleteAction(event.eventid)"> Delete </button> -->
           </div>
         </div>
       </div>
@@ -57,8 +57,6 @@
         </form>
         <button id="submit" ng-click="submit()"> EDIT AN EVENT </button>
       </div>
-
-
     </div>
 
     <!-- ___________________ THIS DIV WILL DISPLAY THE EVENTS THAT YOU HAVE JOINED ----------->

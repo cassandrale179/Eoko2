@@ -2,16 +2,12 @@ app.controller('invitePageCtrl', ['$scope', '$state', '$firebaseAuth', '$statePa
 function($scope, $state, $firebaseAuth, $stateParams){
 
   //----------------- LIST OF ARRAYS TO BE USED BY THIS CONTROLLER --------------
-  $scope.userFriendObject = []
-  $scope.splitArr = []
-  $scope.invitedPeople = []
-  var newArr = []
-  $scope.action = $stateParams.actionObject;
+  $scope.userFriendObject = [];
+  $scope.splitArr = [];
+  $scope.invitedPeople = [];
+  var newArr = [];
   $scope.event = $stateParams.eventObject;
-  console.log($scope.action);
   console.log($scope.event);
-
-
 
 
   //------------------- GET CURRENT USER UID -------------------
@@ -57,7 +53,12 @@ function($scope, $state, $firebaseAuth, $stateParams){
 
 
       //---------------------- WHEN USER SUBMIT, EVENT ARE PUSHED UNDER THE FRIEND-----------------------
-
+      $scope.invitedSubmit = function(){
+        for (var i = 0;  i < $scope.invitedPeople.length; i++){
+          var inviteRef = firebase.database().ref("users/" + $scope.invitedPeople[i] + "/actions/inviteActions");
+          inviteRef.child($scope.event.eventID).update(event);
+        }
+      };
     })
   });
 }])
