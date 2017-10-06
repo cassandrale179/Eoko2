@@ -4,28 +4,33 @@ admin.initializeApp(functions.config().firebase);
 
 exports.sendInviteNotification = functions.database.ref('/users/{uid}/actions/inviteActions/{eventId}').onWrite(event=> {
   const eventId = event.params.eventId;
-  const senderId = event.data.current.val().userId;
+  console.log("event", event.data._delta);
+  const senderId = event.data._delta.userID;
+  console.log("sender ID", senderId);
   const uid = event.params.uid;
 
   const eventPromise = admin.database().ref(`/activities/${eventId}`).once('value');
   const userPromise = admin.database().ref(`/users/${uid}`).once('value');
-  const senderPromise = admin.database().ref(`/users/${senderId}`).once('value');
+  const senderPromise = admin.auth().getUser(senderId);
 
   return Promise.all([eventPromise, userPromise, senderPromise]).then(results => {
-    const event = results[0].val();
+    const action = results[0].val();
     const user = results[1].val();
-    const sender = results[2].val();
+    const sender = results[2];
     const instanceId = user.messageToken;
-    console.log('user message token: ', messageToken);
-    const body = sender.name + " just invited you to " + event.name + "!";
+    console.log('user message token: ', instanceId);
+    const body = sender.displayName + " just invited you to " + event.data._delta.name+"!";
+    console.log("Name of event: ", event.data._delta.name);
     const payload = {
       notification: {
-        title: "Eoko Invite",
+        title: "êoko Invite",
         body: body,
         sound: "default"
       },
       data: {
-
+        eventID: eventId,
+        eventName: action.name,
+        senderID: sender.uid
       }
     }
 
