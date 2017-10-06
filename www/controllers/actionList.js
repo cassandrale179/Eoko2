@@ -1,6 +1,6 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform', 'facebookService',
 
-  function ($scope, $state, $firebaseArray,  $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform) {
+  function ($scope, $state, $firebaseArray,  $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform, facebookService) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
@@ -80,7 +80,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
 
     };
 
-    
+
 
 
 
@@ -166,6 +166,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
           $timeout(function()
           {
             //$scope.loadedOnce = false;
+            facebookService.getUserInfo($scope.currentUser);
             getFriends();
 
           },1000);
