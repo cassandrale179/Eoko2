@@ -1,5 +1,5 @@
-app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover',
-  function ($scope,$stateParams, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover) {
+app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover','$ionicLoading',
+  function ($scope,$stateParams, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover,$ionicLoading) {
     $scope.eventNudge = false;
     $scope.searchBar = 2;
     console.log("State of searchbar");
@@ -11,16 +11,15 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
     firebase.auth().onAuthStateChanged(function(user){
       if (user){
         $scope.currentUser = user;
-        startLoop();
-
+        showLoadingIndicator();
       }
     });
 
     $scope.$on('$ionicView.afterEnter', function () //before anything runs
     {
       makeblurry();
-      console.log("state params, ", $stateParams.actionID, "triggeredm,, ", $stateParams.SJWTriggered);
-      startLoop();
+      console.log("state params, ", $stateParams.actionID, "triggeredm,, ", $stateParams.SJWTriggered);    
+      showLoadingIndicator();
     });
 
 
@@ -39,30 +38,40 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
        {
         console.log("geoLoc not ready Yet");
         $timeout(function(){
-                startLoop();
-              },1000);
+          startLoop();
+        },2000);
        }
        else
        {
-        getEvents();
-
+        $ionicLoading.hide().then(function(){
+          console.log("The loading indicator is now hidden");
+          getEvents();
+        });
        }
      }
 
-     $scope.searchEventFilter = [];
+     //loading indicator
+    function showLoadingIndicator (){
+      $ionicLoading.show({
+        template: '<div class="loader"></div>',
+      }).then(function(){
+          startLoop();
+      });
+    }
+
+    $scope.searchEventFilter = [];
 
 
-      $scope.doRefresh = function() {
-    
-          console.log('Refreshing!');
-          $timeout(function()
-          {
-            $scope.loadedOnce = false;
-            getEvents();
-            
-          },1000);
-          $scope.$broadcast('scroll.refreshComplete');
-        };
+    $scope.doRefresh = function() {   
+      console.log('Refreshing!');
+      $timeout(function()
+      {
+        $scope.loadedOnce = false;
+        getEvents();
+        
+      },1000);
+      $scope.$broadcast('scroll.refreshComplete');
+    };
 
 
       //select filter
