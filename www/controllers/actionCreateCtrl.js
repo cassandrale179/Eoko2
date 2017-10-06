@@ -240,6 +240,12 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
         showAlert("You must enter a description");
         return;
       }
+      if($scope.action.comply == null || $scope.action.comply == undefined
+         || $scope.action.comply == "" || $scope.action.comply == " ")
+      {
+        showAlert("You must agree to create the action");
+        return;
+      }
 
 
       //Store the tags

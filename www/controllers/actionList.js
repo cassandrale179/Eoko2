@@ -59,7 +59,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
     {
       facebookConnectPlugin.appInvite(
         {
-            url: "https://play.google.com/store/apps/details?id=com.eokoteam.eoko&hl=en",
+            url: "https://fb.me/705123973010130",
             picture: "https://static1.squarespace.com/static/58001680d2b8579653e773bd/t/59446a67d2b8579c7609ea83/1507244341876/?format=1500w"
         },
         function(obj){
