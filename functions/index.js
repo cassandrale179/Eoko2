@@ -4,6 +4,7 @@ admin.initializeApp(functions.config().firebase);
 
 exports.sendInviteNotification = functions.database.ref('/users/{uid}/actions/inviteActions/{eventId}').onWrite(event=> {
   const eventId = event.params.eventId;
+  console.log("eventId", eventId);
   console.log("event", event.data._delta);
   const senderId = event.data._delta.userID;
   console.log("sender ID", senderId);
