@@ -53,13 +53,13 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
 
 
       $scope.doRefresh = function() {
-    
+
           console.log('Refreshing!');
           $timeout(function()
           {
             $scope.loadedOnce = false;
             getEvents();
-            
+
           },1000);
           $scope.$broadcast('scroll.refreshComplete');
         };
@@ -139,19 +139,36 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
 
 
       //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
-      $scope.joinAction = function(eventid, chatid){
+      $scope.joinAction = function(eventid, eventobject){
         var ref = firebase.database().ref("activities").child(eventid);
 
         var checkDone = $firebaseObject(ref);
         checkDone.$loaded().then(function(x){
           console.log("loaded event stuff",checkDone);
           console.log("the thing is ", checkDone);
-          
+
+          //----------- IF YOU ARE THE OWNER OF THE EVENT, THEN YOU CAN'T JOIN IT LOSER ------------
           if(checkDone["owner"]["id"] == $scope.currentUser.uid){
             console.log("you are the owner of this event");
             $scope.closePopover();
             return;
           }
+
+          //------------ ELSE YOU CAN JOIN IT -------------
+          else{
+            console.log("this is the eventid");
+            console.log(eventid);
+            console.log("This is the eventobject");
+            console.log(eventobject);
+            var userRefJoin = firebase.database().ref("users/" + $scope.currentUser.uid + "/actions/joinActions");
+            var eventToPushUnderJoinList = {
+              eventID: eventid,
+              location: eventobject.info.location,
+              name: eventobject.info.name,
+              time: eventobject.info.startTime
+            };
+            userRefJoin.child(eventid).update(eventToPushUnderJoinList);
+          };
 
           for(var i in checkDone["participants"])
           {
@@ -256,9 +273,9 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
              });
           });
       }
-      
 
-       
+
+
 
        if($stateParams.SJWTriggered == true)
        {
