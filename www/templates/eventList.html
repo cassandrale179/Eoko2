@@ -41,7 +41,6 @@
             </h5>
           </div>
         </div>
-        <div style="height:140px"></div>
       </ion-scroll>
 
       <div id="blur-nav-bar"></div>
@@ -56,7 +55,7 @@
 
         <!-- ___________ DISPLAY USER INFORMATION, IMAGE AND EVENT NAME, TIME _________________ -->
         <div id="F1">
-          <img ng-src={{currUser.info.photoURL}} />
+          <img id="F1profile" ng-src={{currUser.info.photoURL}} />
           <h2>{{currUser.info.owner.name}}</h2>
           <h1>{{currUser.info.name}}</h1>
           <div>
@@ -82,7 +81,7 @@
             </span>
           </ion-scroll>
         </div>
-        <button ng-click="joinAction(currUser.info.$id, currUser)"> Join </button>
+        <button ng-click="joinAction(currUser.info.$id)"> Join </button>
       </div>
       </div>
     </div>

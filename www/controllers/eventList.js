@@ -61,8 +61,6 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
 
     $scope.searchEventFilter = [];
 
-<<<<<<< HEAD
-
     $scope.doRefresh = function() {   
       console.log('Refreshing!');
       $timeout(function()
@@ -73,19 +71,6 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
       },1000);
       $scope.$broadcast('scroll.refreshComplete');
     };
-=======
-      $scope.doRefresh = function() {
-
-          console.log('Refreshing!');
-          $timeout(function()
-          {
-            $scope.loadedOnce = false;
-            getEvents();
-
-          },1000);
-          $scope.$broadcast('scroll.refreshComplete');
-        };
->>>>>>> origin/develop
 
 
       //select filter
