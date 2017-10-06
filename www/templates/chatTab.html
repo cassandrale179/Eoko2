@@ -37,6 +37,9 @@
             <div id="L3" ui-sref="messagePage({otherID: chat.info.ids, convoID: chat.info.$id})"
                          native-transitions nav-direction="forward">
               <div id="L5" ng-if="chat.info.name == ''">{{chat.title}}</div>
+              <div id="L5" ng-if="chat.info.name.length>0">
+                {{chat.info.name}}
+              </div>
               <div id="L6">{{chat.info.lastText}}</div>
             </div>
           </ion-item>
