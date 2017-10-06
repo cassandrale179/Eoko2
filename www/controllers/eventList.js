@@ -155,29 +155,7 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
           console.log("loaded event stuff",checkDone);
           console.log("the thing is ", checkDone);
 
-          //----------- IF YOU ARE THE OWNER OF THE EVENT, THEN YOU CAN'T JOIN IT LOSER ------------
-          if(checkDone["owner"]["id"] == $scope.currentUser.uid){
-            console.log("you are the owner of this event");
-            $scope.isAlreadyJoined = true;
-            return;
-          }
-
-          //------------ ELSE YOU CAN JOIN IT -------------
-          else{
-            console.log("this is the eventid");
-            console.log(eventid);
-            console.log("This is the eventobject");
-            console.log(eventobject);
-            var userRefJoin = firebase.database().ref("users/" + $scope.currentUser.uid + "/actions/joinActions");
-            var eventToPushUnderJoinList = {
-              eventID: eventid,
-              location: eventobject.info.location,
-              name: eventobject.info.name,
-              time: eventobject.info.startTime
-            };
-            userRefJoin.child(eventid).update(eventToPushUnderJoinList);
-          };
-
+          //----------- IF YOU ARE ALREADY JOINED, THEN YOU CAN'T JOIN IT LOSER ------------
           for(var i in checkDone["participants"])
           {
             if(checkDone["participants"][i].id == $scope.currentUser.uid)
@@ -187,6 +165,21 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
               return;
             }
           }
+
+          //------------ ELSE YOU CAN JOIN IT -------------
+          console.log("this is the eventid");
+          console.log(eventid);
+          console.log("This is the eventobject");
+          console.log(eventobject);
+          var userRefJoin = firebase.database().ref("users/" + $scope.currentUser.uid + "/actions/joinActions");
+          var eventToPushUnderJoinList = {
+            eventID: eventid,
+            location: eventobject.info.location,
+            name: eventobject.info.name,
+            time: eventobject.info.startTime
+          };
+          userRefJoin.child(eventid).update(eventToPushUnderJoinList);
+
             ref.child("participants").push({
               id: $scope.currentUser.uid,
               avatar: $scope.currentUser.photoURL
