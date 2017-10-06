@@ -60,7 +60,10 @@
           <h2>{{currUser.info.owner.name}}</h2>
           <h1>{{currUser.info.name}}</h1>
           <div>
-            <h3>{{currUser.info.startTime}}</h3>
+            <div>
+              <img id="F1time" src="../img/dateTime_icon.png">
+              <h3>{{currUser.info.startTime}}</h3>
+            </div> 
             <span id="spacer" style="padding: 0 1.618em;"></span>
             <h3 ng-if="currUser.distance >= 0.1">{{currUser.distance | number:1}} miles</h3>
             <h3 ng-if="currUser.distance < 0.1">{{currUser.distance * 5280 | number:1}} feet</h3>
@@ -72,10 +75,10 @@
         <!-- ___________ DISPLAY LIST OF PEOPLE WHO ARE JOINING IT _________________ -->
         <div id="F2">
           <p>Going:</p>
-           <p ng-if="!(currUser.info.participants)">Be the first to join!</p>
-          <ion-scroll overflow-scroll="false" scrollX="true">
-            <span ng-repeat="parts in currUser.info.participants">
-              <img src="{{parts.avatar}}">
+          <p ng-if="!(currUser.info.participants)">Be the first to join!</p>
+          <ion-scroll style="clear: both" direction="x" class="eoko-horizontal-scroll" scrollbar-x="false" scrollbar-y="false">
+            <span style="float: left" ng-repeat="parts in currUser.info.participants">
+              <img style="margin-right: 1vw" src="{{parts.avatar}}">
             </span>
           </ion-scroll>
         </div>
