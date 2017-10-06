@@ -56,7 +56,7 @@ function($scope, $state, $firebaseAuth, $stateParams){
       $scope.invitedSubmit = function(){
         for (var i = 0;  i < $scope.invitedPeople.length; i++){
           var inviteRef = firebase.database().ref("users/" + $scope.invitedPeople[i] + "/actions/inviteActions");
-          inviteRef.child($scope.event.eventID).update(event);
+          inviteRef.child($scope.event.eventID).update($scope.event);
         }
       };
     })
