@@ -67,6 +67,7 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
     };
 
 
+    $scope.keyboardHeight = 271;
 
     window.addEventListener('native.keyboardshow', keyboardShowHandler);
     
@@ -87,9 +88,13 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
       })
     };
 
-    window.addEventListener('native.keyboardhide', $scope.closeKeyboard);
+    window.addEventListener('native.keyboardhide', keyboardHideHandler);
+    
+    function keyboardHideHandler(e){
+        // alert('Goodnight, sweet prince');
+    }
 
-    $scope.closeKeyboard = function (e){
+    $scope.closeKeyboard = function (){
       console.log("MessagePageCtrl.js ---- keyboard closes");
       $scope.M4style = "margin-bottom: 0px";
       $scope.M5style = "height: 134vw";
