@@ -1,6 +1,6 @@
 <ion-view hide-nav-bar="true">
   <ion-content padding="false" class="innerbackground eoko-content" scroll="false" style="filter: blur({{blurry.behind}});">
-    
+
     <img class="logo" src="./img/eoko-logo.svg" ui-sref="settingPage" />
     <img class="tagline" src="img/peoplenearyou.png"></img>
 
@@ -18,8 +18,8 @@
 
     <ion-scroll id="C" overflow-scroll="false" style="height: calc(86% - 70px);">
 
-
       <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+
 
       <div id="C1" ng-repeat="(key,x) in people | orderObjectBy:'distance' " ng-if="currentUser.uid != x.info.uid"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
         <img ng-src="{{x.info.photoURL}}" ng-click="viewProfilePopover($event, x)"/>

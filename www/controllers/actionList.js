@@ -4,11 +4,28 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
+
     $scope.$on('$ionicView.beforeEnter', function(){
       $scope.exitButton = 2;
       firebase.auth().onAuthStateChanged(function(firebaseUser){
         $scope.currentUser = firebaseUser;
         var userRef = firebase.database().ref("users/"+$scope.currentUser.uid);
+        userRef.on('value', function(snapshot){
+          $scope.peopleFilter = snapshot.val().peopleFilter;
+          if ($scope.peopleFilter == 'public'){
+            $scope.publicFilter = true;
+            $scope.privateFilter = false;
+          }
+          if ($scope.peopleFilter == 'private'){
+            $scope.privateFilter = true;
+            $scope.publicFilter = false;
+          }
+          //Filter function
+
+          //Friends list to filter private
+          $scope.userFriendsList = snapshot.val().friends;
+          console.log('filter', $scope.peopleFilter);
+        })
         window.FirebasePlugin.grantPermission();
         window.FirebasePlugin.getToken(function(token) {
               // save this server-side and use it to push notifications to this device
