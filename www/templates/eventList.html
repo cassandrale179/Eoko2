@@ -59,15 +59,15 @@
           <h2>{{currUser.info.owner.name}}</h2>
           <h1>{{currUser.info.name}}</h1>
           <div>
-            <img id="F1icon" src="../img/dateTime_icon.png">
+            <img id="F1icon" src="./img/dateTime_icon.png">
             <h3>{{currUser.info.startTime}}</h3>
             <span id="spacer" style="padding: 0 1.618em;"></span>
-            <img id="F1icon" src="../img/distance_icon.png">
+            <img id="F1icon" src="./img/distance_icon.png">
             <h3 ng-if="currUser.distance >= 0.1">{{currUser.distance | number:1}} miles</h3>
             <h3 ng-if="currUser.distance < 0.1">{{currUser.distance * 5280 | number:1}} feet</h3>
           </div>
           <div id="F1B1">
-            <img id="F1icon" src="../img/location_icon.png">
+            <img id="F1icon" src="./img/location_icon.png">
           </div>
           <div id="F1B2">
             <h3 style="font-size: 4.5vw"ng-click="goToMaps(currUser.info.address)">{{currUser.info.address}}</h3>
