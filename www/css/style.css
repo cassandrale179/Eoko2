@@ -359,19 +359,20 @@ select{
 
 
 #B4 button{
-  margin-top: 5%;
-  font-family: 'Roboto', sans-serif;
+  /* margin-top: 1vw; */
+  margin: auto;
+  font-family: 'San Francisco Display Regular', sans-serif;
   color: white;
   background: transparent;
   border: none;
   border: 1px rgba(255, 255, 255, 0.61) solid;
-  width: 100px;
-  height: 40px;
+  width: 27vw;
+  height: 9vw;
   border-radius: 10px;
 }
 
 #B4{
-  margin-left: 7%;
+  text-align: center;
 }
 
 
