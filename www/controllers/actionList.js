@@ -1,12 +1,13 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform', 'facebookService', '$localStorage',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform', 'facebookService', '$localStorage', '$ionicLoading',
 
-  function ($scope, $state, $firebaseArray,  $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform, facebookService, $localStorage) {
+  function ($scope, $state, $firebaseArray,  $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform, facebookService, $localStorage, $ionicLoading) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
 
     $scope.$on('$ionicView.beforeEnter', function(){
       $scope.exitButton = 2;
+      showLoadingIndicator();
       firebase.auth().onAuthStateChanged(function(firebaseUser){
         $scope.currentUser = firebaseUser;
         var userRef = firebase.database().ref("users/"+$scope.currentUser.uid);
@@ -148,10 +149,21 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
          }
          else
          {
-          getPeople();
+          $ionicLoading.hide().then(function(){
+            console.log("The loading indicator is now hidden");
+            getPeople();
+          }); 
          }
        }
 
+      //loading indicator
+      function showLoadingIndicator (){
+        $ionicLoading.show({
+          template: '<div class="loader"></div>',
+        }).then(function(){
+            startLoop();
+        });
+      }
 
         $scope.doRefresh = function() {
 
