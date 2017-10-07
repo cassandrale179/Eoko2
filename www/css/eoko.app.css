@@ -9942,12 +9942,12 @@ a.button {
     line-height: 22px; } }
 
 .eoko-text-ultralight {
-  font-family: "San Francisco Display";
+  font-family: "San Francisco Display UltraLight";
   font-weight: 100;
   color: #FFFFFF; }
 
 .eoko-text-thin, .eoko-text-button-nav, .eoko-alert-pop-up .popup-body {
-  font-family: "San Francisco Display";
+  font-family: "San Francisco Display Regular";
   font-weight: 200;
   color: #FFFFFF; }
 
@@ -10313,7 +10313,7 @@ input, textarea::-webkit-input-placeholder {
   background-color: transparent; }
 
 .eoko-alert-pop-up .popup {
-  background-color: rgba(245, 124, 0, 0.4); }
+  background-color: rgba(245, 124, 0, 0.7); }
 
 .eoko-alert-pop-up .popup-head {
   display: none; }
