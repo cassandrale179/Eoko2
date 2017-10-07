@@ -44,11 +44,11 @@ function($scope, $state, $firebaseAuth, $localStorage){
     }
 
     //------------------ SET PRIVATE / PUBLIC SETTINGS FOR THE USER --------------------
-    $scope.displayPublic = function(){
-      userRef.update({display: 'public'});
-    }
-    $scope.displayPrivate = function(){
-      userRef.update({display: 'private'});
+    $scope.displaySetting = function(privacy){
+      userRef.update({
+        display: privacy
+      })
+      $scope.displayMessage = privacy;
     }
 
 
@@ -87,22 +87,50 @@ function($scope, $state, $firebaseAuth, $localStorage){
 
       //----------- CHANGE CORRESPONDING TEXT DEPENDING ON THE DISPLAY ------------
       var display = snapshot.val().display;
+      var clicked = {
+        'border': 'none',
+        'background': 'rgba(255,255,255,0.5)',
+        'color': 'black'
+      }
+      var unclicked = {}
       if (display == 'public'){
-        $scope.public2 = {
-          'border': 'none',
-          'background': 'rgba(255,255,255,0.5)',
-          'color': 'black'
-        }
-        $scope.private2 = {}
+        $scope.public2 = clicked
+
+        $scope.private2 = unclicked
+        $scope.hidden = unclicked
       }
       else if (display == 'private'){
-        $scope.private2 = {
-          'border': 'none',
-          'background': 'rgba(255,255,255,0.5)',
-          'color': 'black'
-        }
-        $scope.public2 = {}
+        $scope.private2 = clicked
+
+        $scope.public2 = unclicked
+        $scope.hidden = unclicked
       }
+      else if (display == 'hidden'){
+        $scope.hidden = clicked;
+
+        $scope.public2 = unclicked;
+        $scope.private2 = unclicked;
+
+        }
+
+
+        //Filtering people in peoplePage
+        $localStorage.peopleFilter = snapshot.val().peopleFilter;
+        if ($localStorage.peopleFilter=="public"){
+          $scope.publicPeople = clicked;
+          $scope.privatePeople = unclicked;
+        }
+        if ($localStorage.peopleFilter=="private"){
+          $scope.privatePeople = clicked;
+          $scope.publicPeople = unclicked;
+        }
+        $scope.peopleFilter = function(value){
+          $localStorage.peopleFilter = value;
+          userRef.update({
+            peopleFilter: value
+          })
+
+        }
     })
   });
 
