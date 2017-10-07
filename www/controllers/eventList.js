@@ -1,5 +1,5 @@
-app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover',
-  function ($scope,$stateParams, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover) {
+app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover','$ionicLoading',
+  function ($scope,$stateParams, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover,$ionicLoading) {
     $scope.eventNudge = false;
     $scope.searchBar = 2;
     console.log("State of searchbar");
@@ -11,16 +11,15 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
     firebase.auth().onAuthStateChanged(function(user){
       if (user){
         $scope.currentUser = user;
-        startLoop();
-
+        showLoadingIndicator();
       }
     });
 
     $scope.$on('$ionicView.afterEnter', function () //before anything runs
     {
       makeblurry();
-      console.log("state params, ", $stateParams.actionID, "triggeredm,, ", $stateParams.SJWTriggered);
-      startLoop();
+      console.log("state params, ", $stateParams.actionID, "triggeredm,, ", $stateParams.SJWTriggered);    
+      showLoadingIndicator();
     });
 
 
@@ -39,30 +38,39 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
        {
         console.log("geoLoc not ready Yet");
         $timeout(function(){
-                startLoop();
-              },1000);
+          startLoop();
+        },2000);
        }
        else
        {
-        getEvents();
-
+        $ionicLoading.hide().then(function(){
+          console.log("The loading indicator is now hidden");
+          getEvents();
+        });
        }
      }
 
-     $scope.searchEventFilter = [];
+     //loading indicator
+    function showLoadingIndicator (){
+      $ionicLoading.show({
+        template: '<div class="loader"></div>',
+      }).then(function(){
+          startLoop();
+      });
+    }
 
+    $scope.searchEventFilter = [];
 
-      $scope.doRefresh = function() {
-
-          console.log('Refreshing!');
-          $timeout(function()
-          {
-            $scope.loadedOnce = false;
-            getEvents();
-
-          },1000);
-          $scope.$broadcast('scroll.refreshComplete');
-        };
+    $scope.doRefresh = function() {   
+      console.log('Refreshing!');
+      $timeout(function()
+      {
+        $scope.loadedOnce = false;
+        getEvents();
+        
+      },1000);
+      $scope.$broadcast('scroll.refreshComplete');
+    };
 
 
       //select filter
@@ -141,44 +149,37 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
       //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
       $scope.joinAction = function(eventid, eventobject){
         var ref = firebase.database().ref("activities").child(eventid);
-
         var checkDone = $firebaseObject(ref);
+
         checkDone.$loaded().then(function(x){
           console.log("loaded event stuff",checkDone);
           console.log("the thing is ", checkDone);
 
-          //----------- IF YOU ARE THE OWNER OF THE EVENT, THEN YOU CAN'T JOIN IT LOSER ------------
-          if(checkDone["owner"]["id"] == $scope.currentUser.uid){
-            console.log("you are the owner of this event");
-            $scope.closePopover();
-            return;
-          }
-
-          //------------ ELSE YOU CAN JOIN IT -------------
-          else{
-            console.log("this is the eventid");
-            console.log(eventid);
-            console.log("This is the eventobject");
-            console.log(eventobject);
-            var userRefJoin = firebase.database().ref("users/" + $scope.currentUser.uid + "/actions/joinActions");
-            var eventToPushUnderJoinList = {
-              eventID: eventid,
-              location: eventobject.info.location,
-              name: eventobject.info.name,
-              time: eventobject.info.startTime
-            };
-            userRefJoin.child(eventid).update(eventToPushUnderJoinList);
-          };
-
+          //----------- IF YOU ARE ALREADY JOINED, THEN YOU CAN'T JOIN IT LOSER ------------
           for(var i in checkDone["participants"])
           {
             if(checkDone["participants"][i].id == $scope.currentUser.uid)
             {
               console.log("already joined, returning");
-              $scope.closePopover();
+              $scope.isAlreadyJoined = true;
               return;
             }
           }
+
+          //------------ ELSE YOU CAN JOIN IT -------------
+          console.log("this is the eventid");
+          console.log(eventid);
+          console.log("This is the eventobject");
+          console.log(eventobject);
+          var userRefJoin = firebase.database().ref("users/" + $scope.currentUser.uid + "/actions/joinActions");
+          var eventToPushUnderJoinList = {
+            eventID: eventid,
+            location: eventobject.info.location,
+            name: eventobject.info.name,
+            time: eventobject.info.startTime
+          };
+          userRefJoin.child(eventid).update(eventToPushUnderJoinList);
+
             ref.child("participants").push({
               id: $scope.currentUser.uid,
               avatar: $scope.currentUser.photoURL
@@ -266,7 +267,7 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
                 console.log("run result", event);
                 changeAction(event.key);
               }
-              if(event.event = "child_created")
+              if(event.event == "child_created")
               {
                 $scope.events = loadActions();
               }
@@ -387,8 +388,10 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
       });
 
       $scope.openPopover = function($event, user) {
+        $scope.isAlreadyJoined = false;
         $scope.blurry.behind = "5px";
         $scope.currUser = user;
+        $scope.joinAction($scope.currUser.info.$id);
         $scope.popover.show();
       };
       $scope.closePopover = function() {

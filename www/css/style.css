@@ -49,6 +49,24 @@ select{
   margin-top: 10px;
 }
 
+.loading-container .loading{
+  background-color: transparent;
+}
+
+.loader {
+  border: 5px solid white; /* Light grey */
+  border-top: 5px solid #F27C22; /* Blue */
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* -------------------------------- FONTS --------------------------- */
 /** Ultra Light */
 @font-face {
@@ -573,7 +591,7 @@ select{
 
 #E2 h5{
   font-family: 'San Francisco Display Thin', sans-serif;
-  font-size: 19px;
+  font-size: 4.5vw;
   display: inline-block;
   margin-top: 10px;
   margin-left: 5%;
@@ -626,7 +644,7 @@ select{
   text-align: center;
 }
 
-#F1 img{
+#F1profile{
   margin-top: 10px !important;
   display: block;
   margin: auto;
@@ -634,6 +652,11 @@ select{
   height: 70px;
   object-fit: cover;
   border-radius: 35px;
+}
+
+#F1icon{
+  width:4.5vw;
+  padding-top: 1vw;
 }
 
 #F h1{
@@ -653,7 +676,7 @@ select{
 #F h3{
   color: white;
   font-family: 'San Francisco Display Thin', sans-serif;
-  font-size: 20px;
+  font-size: 6vw;
   display: inline-block;
   margin-top: 0;
 }
@@ -668,7 +691,8 @@ select{
   padding-left: 10%;
   padding-right: 10%;
   color: white;
-  height: 50px;
+  height: 17vw;
+  font-size: 5vw;
   font-family: "San Francisco Display Thin", sans-serif;
 }
 
@@ -684,21 +708,35 @@ select{
   margin-top: 10px;
 }
 
+#F1B1{
+  float:left;
+  width: 22%;
+  margin: auto;
+  padding: 0 0 0 5vw;
+}
+
+#F1B2{
+  width: 56%;
+  margin: auto;
+}
 
 #F2{
   padding-left: 5%;
 }
 
 #F2 img{
-  width: 50px;
-  height: 50px;
+  width: 12vw;
+  height: 12vw;
   object-fit: cover;
-  border-radius: 25px;
+  border-radius: 6vw;
 }
 
 #F2 p{
+  font-family: "San Francisco Display Thin", sans-serif;
   font-style: italic;
-  margin-top: 15px;
+  font-size: 5vw;
+  margin-top: 1vw;
+  float: left;
 }
 
 
