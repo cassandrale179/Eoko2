@@ -12,18 +12,11 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
         var userRef = firebase.database().ref("users/"+$scope.currentUser.uid);
         userRef.on('value', function(snapshot){
           $scope.peopleFilter = snapshot.val().peopleFilter;
-          if ($scope.peopleFilter == 'public'){
-            $scope.publicFilter = true;
-            $scope.privateFilter = false;
-          }
-          if ($scope.peopleFilter == 'private'){
-            $scope.privateFilter = true;
-            $scope.publicFilter = false;
-          }
-          //Filter function
+
 
           //Friends list to filter private
           $scope.userFriendsList = snapshot.val().friends;
+          console.log('friends List', $scope.userFriendsList)
           console.log('filter', $scope.peopleFilter);
         })
         window.FirebasePlugin.grantPermission();
@@ -260,10 +253,11 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
           var result = {};
           for(var i in $scope.peopleInfo)
             {
-              if ($localStorage)
+
               console.log($scope.peopleInfo[i]);
               console.log("i is", $scope.peopleInfo[i].$id);
               var index = $scope.peopleInfo[i].$id;
+
               var dist = $scope.distFromPlayer($scope.peopleInfo[i].location);
               console.log("what is the dist", dist);
               if(dist != 'false')
