@@ -274,7 +274,7 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
                 console.log("run result", event);
                 changeAction(event.key);
               }
-              if(event.event = "child_created")
+              if(event.event == "child_created")
               {
                 $scope.events = loadActions();
               }
