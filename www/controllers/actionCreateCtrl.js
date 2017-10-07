@@ -41,6 +41,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
           $scope.action.name = '';
           $scope.action.description = '';
+          $scope.duration = {hours: '', minutes: ''};
 
           if($scope.currentUser && $scope.thisUser)
           {
@@ -247,8 +248,27 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
         return;
       }
 
+      if(($scope.duration.hours == null || $scope.duration.hours == undefined
+         || $scope.duration.hours == "" || $scope.duration.hours == " ") &&
+        ($scope.duration.minutes == null || $scope.duration.minutes == undefined
+         || $scope.duration.minutes == "" || $scope.duration.minutes == " "))
+      {
+        showAlert("You must set a duration for your action");
+        return;
+      }
+
+      if($scope.duration.hours == '')
+      {
+        $scope.duration.hours = 0;
+      }
+      if($scope.duration.minutes == '')
+      {
+        $scope.duration.minutes = 0;
+      }
+
 
       //Store the tags
+      $scope.action.duration = $scope.duration;
 
       console.log($scope.action.tags);
       console.log("current user uid: ", $scope.currentUser.uid);
@@ -289,6 +309,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
         location: $scope.action.location,
         time: $scope.action.startTime,
         name: $scope.action.name,
+        duration: $scope.duration,
         userID: $scope.currentUser.uid
       };
 
@@ -304,7 +325,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       if ($scope.action.privacy == "public")
       {
         console.log($scope.action);
-        $state.go('eventList');
+        $state.go('navController.action');
         return;
       }
 
@@ -319,7 +340,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
             var ref = firebase.database().ref('users/' + friend.$id + '/actions/friendActions');
             ref.child(eventID).update(event);
           });
-           $state.go('eventList');
+           $state.go('navController.action');
            return;
         });
       }

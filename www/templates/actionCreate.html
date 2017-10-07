@@ -43,7 +43,10 @@
         <input id="autocomplete" type="text" placeholder="Location" select-on-click
             class="eoko-input eoko-text-thin" value="{{action.address}}" ng-click="geolocate()" required="">
         <input ng-model="action.startTime" type="time" placeholder="HH:mm:ss" style="text-align: center;"/>
-        <input ng-model="action.endTime" type="time" placeholder="HH:mm:ss" style="text-align: center;"/>
+
+        <input ng-model="duration.hours" type="number" placeholder="hours" style="text-align: center;"/>
+        <input ng-model="duration.minutes" type="number" placeholder="minutes" style="text-align: center;"/>
+
         <textarea ng-model="action.description" placeholder="Description (Currently drinking coffee at Saxby. Anyone want to hangout?)" ></textarea>
         <label>I agree to follow all applicable laws on or off the services.
           <input type="checkbox" id="comply" ng-model=action.comply>
