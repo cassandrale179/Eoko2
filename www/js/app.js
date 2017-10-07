@@ -10,11 +10,13 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
 'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngInstafeed', 'ngCordova', 'ngCordovaOauth', 
 'firebase', 'socialLogin', 'ngOpenFB','angularRangeSlider', 'ngStorage'])
 
+
 .run(function($ionicPlatform, ngFB) {
   ngFB.init({appId: '694354544087073'});
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
+    
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
@@ -179,7 +181,8 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
       },
       params: {
           otherID: "",
-          convoID: ""
+          convoID: "",
+          chatInfo: {}
         },
       templateUrl: 'templates/messagePage.html',
       controller: 'messagePageCtrl'

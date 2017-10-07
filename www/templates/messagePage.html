@@ -3,12 +3,17 @@
 
     <!--spacer-->
     <div class="spacer" style="height: 20px;"></div>
-    
+
     <a ui-sref="navController.chat" class="eoko-button-clear ion-chevron-left" native-transitions nav-direction="back" style="float: left; position: absolute;" ng-click="closeKeyboard()"></a>
 
-    <div id="M">  
-      <img id="M0a" ng-src="{{userInfo.avatar}}"/>
-      <h3 id="M0b">Insert Name of Conv.</a>
+    <div id="M">
+      <img id="M0a" ng-src="{{chatInfo.photoURL}}"/>
+
+      <!-- I have no idea how this works even though the two ng-ifs are the same?? -->
+      <h3 id="M0b" ng-if="chatInfo.title!=''">{{chatInfo.title}}</h3>
+      <h3 id="M0b" ng-if="chatInfo.title!=''">{{chatInfo.name}}</h3>
+
+
     </div>
 
     <div>
@@ -52,7 +57,7 @@
           <input id="M4a" type="text" placeholder="Text here..." ng-model="data.messageText" ng-click="showKeyboard()" autofocus>
           <a class="eoko-button-clear eoko-icon-send-message" style="margin-top: 6px;" ng-click="sendMessage(); closeKeyboard()"></a>
       </ion-footer-bar>
-      
+
     </div>
   </ion-content>
 </ion-view>

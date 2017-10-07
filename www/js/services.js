@@ -201,6 +201,13 @@ angular.module('eoko.services', [])
 
     var myloc, watchId,uid;
     var ready = false;
+    watchId = navigator.geolocation.watchPosition(success, error);
+    function error(err){
+      console.log("There's an error", err);
+    }
+    function success(position) {
+      console.log("Success boi", position);
+    }
     watchId = navigator.geolocation.watchPosition(function(position)
           {
             var latlng = position.coords.latitude + "," + position.coords.longitude;
@@ -209,6 +216,11 @@ angular.module('eoko.services', [])
                 //------- CONTINOUSLY UPDATE USER'S LOCATION --------------
 
                 myloc = latlng;  //actual current location
+
+                if (myloc){
+                  console.log("we got myloc", myloc);
+
+
 
                  firebase.auth().onAuthStateChanged(function(user){
                   if (user){
@@ -220,6 +232,9 @@ angular.module('eoko.services', [])
                     console.log("we did it");
                     userRef.update(obj);
                     ready = true;
+                  }
+                  else{
+                    console.log("no user yet");
                   }
                 });
 
@@ -233,17 +248,32 @@ angular.module('eoko.services', [])
                     userRef.update(obj);
                     ready = true;
                  }
+               }
           });
 
     return {
 
       isReady: function()
       {
+        
         return ready;
       },
       getUserPosition: function ()
       {
         return myloc;
+      },
+      isPromiseReady: function()
+      {
+        return navigator.geolocation.watchPosition(success, error, {maximumAge: 300000, timeout: 5000, enableHighAccuracy: true});
+          function error(err){
+            console.log("There's an error", err);
+            this.isPromiseReady();
+          }
+          function success(position) {
+            console.log("Success boi", position);
+            ready = true;
+            return ready;
+          }
       }
     };
 
@@ -327,6 +357,7 @@ angular.module('eoko.services', [])
 
       loadChatData: function (chatKey)
       {
+        
         return chatData.$getRecord(chatKey);
       },
 

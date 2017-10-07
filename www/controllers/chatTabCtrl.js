@@ -5,7 +5,7 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
     $scope.currentUser = firebase.auth().currentUser;
 
     //before anything runs, get the list of all chats
-    $scope.$on('$ionicView.afterEnter', function () 
+    $scope.$on('$ionicView.afterEnter', function ()
     {
       populateChats();
     });
@@ -29,7 +29,7 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
           {
             console.log("event",event.event);
             populateChats();
-          }  
+          }
         });
         populateChats();
       }
@@ -58,8 +58,19 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
       {
         var chatdata = chatFactory.loadChatData($scope.userInfo.chat[i].chatID);
         var chattitle = makeName(chatdata.ids);
-        
+
         console.log("chatdata: ", chatdata);
+        console.log("uid", $scope.currentUser.uid);
+
+        //Add photo for one-on-one chat
+        if (chatdata.name==""){
+          angular.forEach(chatdata.ids, function(person){
+            if (person.id!=$scope.currentUser.uid){
+              chatdata.photoURL = person.avatar;
+              chatdata.title = person.name;
+            }
+          })
+        }
         var obj = {
           info: chatdata,
           title: chattitle
@@ -67,11 +78,11 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
         $scope.chatData.push(obj);
       }
       console.log("chatData",$scope.chatData);
-      $timeout(function(){$scope.$apply();});   
+      $timeout(function(){$scope.$apply();});
    }
 
-       
-  firebase.auth().onAuthStateChanged(function(user) 
+
+  firebase.auth().onAuthStateChanged(function(user)
   {
     if (user){
       var rez = firebase.database().ref("users").child(user.uid);

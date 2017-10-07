@@ -6,6 +6,9 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
       var ref = firebase.database().ref();
       $scope.partnerID = $stateParams.otherID;
       var convoID = $stateParams.convoID;
+      $scope.chatInfo = $stateParams.chatInfo;
+      console.log('chatInfo', $scope.chatInfo);
+
       var currentnum = 0;
 
       console.log("partnerObj", $scope.partnerID, "convoID", convoID);
@@ -70,7 +73,7 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
     $scope.keyboardHeight = 271;
 
     window.addEventListener('native.keyboardshow', keyboardShowHandler);
-    
+
     function keyboardShowHandler(e){
         $scope.keyboardHeight = e.keyboardHeight;
     }
@@ -84,7 +87,7 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
           $scope.M4style = "margin-bottom: " + $scope.keyboardHeight + "px";
           $scope.M5style = "height: calc(129.5vw - " + $scope.keyboardHeight + "px)";
           $ionicScrollDelegate.scrollBottom();
-          
+
           $timeout(function(){
             $scope.$apply();
           });
@@ -92,7 +95,7 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
     };
 
     window.addEventListener('native.keyboardhide', keyboardHideHandler);
-    
+
     function keyboardHideHandler(e){
         // alert('Goodnight, sweet prince');
     }
@@ -109,5 +112,5 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
       }
     };
 
-    
+
   }]);
