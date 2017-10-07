@@ -31,12 +31,13 @@
           </span>
         </div>
 
-          <ion-item ng-repeat="chat in chatData" ng-if="chat.title != ''" id="L2">
+          <ion-item ng-repeat="chat in chatData | filter: search.text" ng-if="chat.title != ''" id="L2">
 
             <img id="L4" ng-src="{{chat.info.photoURL}}"/>
-            <div id="L3" ui-sref="messagePage({otherID: chat.info.ids, convoID: chat.info.$id})"
+            <div id="L3" ui-sref="messagePage({otherID: chat.info.ids, convoID: chat.info.$id, chatInfo: chat.info})"
                          native-transitions nav-direction="forward">
-              <div id="L5" ng-if="chat.info.name == ''">{{chat.title}}</div>
+              <div id="L5" ng-if="chat.info.name == ''">
+                {{chat.title}}</div>
               <div id="L5" ng-if="chat.info.name.length>0">
                 {{chat.info.name}}
               </div>

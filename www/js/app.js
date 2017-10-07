@@ -177,7 +177,8 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
       },
       params: {
           otherID: "",
-          convoID: ""
+          convoID: "",
+          chatInfo: {}
         },
       templateUrl: 'templates/messagePage.html',
       controller: 'messagePageCtrl'

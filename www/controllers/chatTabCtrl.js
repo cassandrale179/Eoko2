@@ -67,6 +67,7 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
           angular.forEach(chatdata.ids, function(person){
             if (person.id!=$scope.currentUser.uid){
               chatdata.photoURL = person.avatar;
+              chatdata.title = person.name;
             }
           })
         }
