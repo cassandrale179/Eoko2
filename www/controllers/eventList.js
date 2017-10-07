@@ -11,6 +11,13 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
     firebase.auth().onAuthStateChanged(function(user){
       if (user){
         $scope.currentUser = user;
+        var ref = firebase.database().ref(`users/${user.uid}`);
+        //Filter event based on privacy setting
+        ref.on("value", function(snapshot){
+          $scope.privacyFilter = snapshot.val().privacy;
+          $scope.userFriendsList = snapshot.val().friends;
+          $scope.inviteActions = snapshot.val().actions.inviteActions;
+        })
         showLoadingIndicator();
       }
     });
@@ -18,7 +25,7 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
     $scope.$on('$ionicView.afterEnter', function () //before anything runs
     {
       makeblurry();
-      console.log("state params, ", $stateParams.actionID, "triggeredm,, ", $stateParams.SJWTriggered);    
+      console.log("state params, ", $stateParams.actionID, "triggeredm,, ", $stateParams.SJWTriggered);
       showLoadingIndicator();
     });
 
@@ -61,13 +68,13 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
 
     $scope.searchEventFilter = [];
 
-    $scope.doRefresh = function() {   
+    $scope.doRefresh = function() {
       console.log('Refreshing!');
       $timeout(function()
       {
         $scope.loadedOnce = false;
         getEvents();
-        
+
       },1000);
       $scope.$broadcast('scroll.refreshComplete');
     };

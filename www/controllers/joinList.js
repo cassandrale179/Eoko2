@@ -273,14 +273,19 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
         $scope.errorMessage2 = "You have not joined any action";
       }
 
-      //Add photo URL for all created actions
+      //Add extra info for all created actions
       angular.forEach($scope.createdArray, function(event){
-        event.photoURL = activityTable[event.eventID].photoURL;
+        var eventID = event.eventID;
+        event.photoURL = activityTable[eventID].photoURL;
+        event.privacy = activityTable[eventID].privacy;
       })
 
-      //Add photo URL for all join actions
+      //Add extra info for all join actions
       angular.forEach($scope.joinArray, function(event){
-        event.photoURL = activityTable[event.eventID].photoURL;
+        var eventID = event.eventID;
+        event.photoURL = activityTable[eventID].photoURL;
+        event.privacy = activityTable[eventID].privacy;
+
       })
 
     })
