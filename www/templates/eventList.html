@@ -1,39 +1,58 @@
 <ion-view hide-nav-bar="true" >
-  <ion-content padding="true" class="innerbackground" style="filter: blur({{blurry.behind}});">
-    <div id="E">
+  <ion-content padding="false" class="innerbackground eoko-content" style="filter: blur({{blurry.behind}});" scroll="false">
+    <!-- <div id="E"> -->
       <!-- _____________ NAVIGATION BAR _______ -->
-      <div id="E1">
-        <i class="fa fa-search"></i>
-        <div id="E1A" ui-sref="tabsController.eventList"><button style="border-bottom: 0.1px solid rgb(230,126,34)"> Action </button></div>
-        <div id="E1B" ui-sref="actionCreate"><button ui-sref="actionCreate"> Create </button></div>
-      </div>
+      <div id="E">
+        <div id="E0" ng-show="searchBar==1">
+          <a class="eoko-icon-search-black"></a>
+          <input placeholder="Search actions" ng-model="searchEvent"  />
+          <button ng-click="searchBar = 2" >X</button>
+        </div>
+
+        <div id="E1" ng-show="searchBar==2">
+          <i ng-click="searchBar = 1" class="eoko-icon-search-white"></i>
+          <div id="E1A" ui-sref="eventList"><button style="border-bottom: 0.1px solid rgb(230,126,34)">Action</button></div>
+          <div id="E1B" ui-sref="actionCreate"><button ui-sref="actionCreate">Create</button></div>
+        </div>
+    </div>
+
+
+      <ion-scroll direction="x" class="eoko-horizontal-scroll" scrollbar-x="false"
+                scrollbar-y="false" style="height: 50px;">
+
+        <button ng-repeat="tags in tagList" ng-click="selectFilter('{{tags.$value}}')" id="{{tags.$value}}" class="eoko-horizontal-scroll-button">
+          {{tags.$value}}
+        </button>
+    </ion-scroll>
+
 
       <!-- _____________ CARDS OF EVENTS _______ -->
-      <div id="E2">
-        <div id="E2A" ng-repeat="(key,x) in events | orderObjectBy:'distance'">
+      <ion-scroll id="E2" overflow-scroll="false" style="height: calc(100% - 70px);">
+        <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+        <div id="E2A"
+
+        ng-if="privacyFilter=='public' && x.info.privacy=='public' ||
+        privacyFilter=='private' && x.info.privacy=='private'&&userFriendsList[x.info.owner.id] ||
+        privacyFilter=='private' && x.info.privacy=='invite'&&inviteActions[x.info.$id]
+        "
+
+
+        ng-repeat="(key,x) in events | orderObjectBy:'distance' | filter: {display: true} | filter: searchEvent">
           <img ng-src="{{x.info.photoURL}}" />
           <div id="E2A1" ng-click="openPopover($event, x)">
-            <h4>{{x.info.name}}</h4>
+            <div id="E2A11">{{x.info.name}}</div>
             <h5>
               <span>{{x.info.startTime}}</span>
               <span id="spacer" style="padding: 0 1.618em;"></span>
               <span ng-if="x.distance >= 0.1">{{x.distance | number:1}} miles</span>
               <span ng-if="x.distance < 0.1">{{x.distance * 5280 | number:1}} feet</span>
             </h5>
-
-                    <!-- <div id="F" ng-show="eventNudge">
-                      <h5 ng-click="eventNudge=false">X</h5>
-                      <img ng-src={{x.photoURL}} />
-                      <h2>{{x.info.owner}}</h2>
-                      <h1>{{x.info.name}}</h1>
-                      <h3>{{x.info.startTime}}</h3>
-                      <p>{{x.info.description}}</p>
-                      <button ng-click="joinAction(x.userID, x.id)"> Join </button>
-                    </div> -->
           </div>
         </div>
-      </div>
-    </div>
+      </ion-scroll>
+
+      <div id="blur-nav-bar"></div>
+    <!-- </div> -->
 
     <script id="my-popover.html" type="text/ng-template">
     <div ng-click="checkHit($event)" class="popup-container popup-showing active">
@@ -44,37 +63,42 @@
 
         <!-- ___________ DISPLAY USER INFORMATION, IMAGE AND EVENT NAME, TIME _________________ -->
         <div id="F1">
-          <img ng-src={{currUser.info.photoURL}} />
-          <!-- <h2>{{currUser.info.owner}}</h2> -->
+          <img id="F1profile" ng-src={{currUser.info.photoURL}} />
+          <h2>{{currUser.info.owner.name}}</h2>
           <h1>{{currUser.info.name}}</h1>
-          <div id="F1A">
+          <div>
+            <img id="F1icon" src="./img/dateTime_icon.png">
             <h3>{{currUser.info.startTime}}</h3>
+            <span id="spacer" style="padding: 0 1.618em;"></span>
+            <img id="F1icon" src="./img/distance_icon.png">
             <h3 ng-if="currUser.distance >= 0.1">{{currUser.distance | number:1}} miles</h3>
             <h3 ng-if="currUser.distance < 0.1">{{currUser.distance * 5280 | number:1}} feet</h3>
           </div>
-          <p>{{currUser.info.description}}</p>
+          <div id="F1B1">
+            <img id="F1icon" src="./img/location_icon.png">
+          </div>
+          <div id="F1B2">
+            <h3 style="font-size: 4.5vw"ng-click="goToMaps(currUser.info.address)">{{currUser.info.address}}</h3>
+          </div>
+          <ion-scroll id="F1A" overflow-scroll="false" class="descriptionArea">{{currUser.info.description}}</ion-scroll>
         </div>
 
         <!-- ___________ DISPLAY LIST OF PEOPLE WHO ARE JOINING IT _________________ -->
         <div id="F2">
-          <p ng-if="!(currUser.info.participants)">Be the first to join!</p>
           <p>Going:</p>
-          <span ng-repeat="parts in currUser.info.participants">
-            <img src="{{parts.avatar}}">
-          </span>
+          <p ng-if="!(currUser.info.participants)">Be the first to join!</p>
+          <ion-scroll style="clear: both" direction="x" class="eoko-horizontal-scroll" scrollbar-x="false" scrollbar-y="false">
+            <span style="float: left" ng-repeat="parts in currUser.info.participants">
+              <img style="margin-right: 1vw" src="{{parts.avatar}}">
+            </span>
+          </ion-scroll>
         </div>
-        <button ng-click="joinAction(currUser.info.$id)"> Join </button>
+        <button ng-if="!isAlreadyJoined" ng-click="joinAction(currUser.info.$id)"> Join </button>
+        <button ng-if="isAlreadyJoined" style="background: rgba(255,255,255,0.5); color: rgba(230, 126, 34, 0.9); font-style: italic;"> Already Joined </button>
       </div>
       </div>
     </div>
   </script>
 
 </ion-content>
-<!-- NAVIGATIO BAR -->
-<div id="navbar" style="filter: blur({{blurry.behind}});">
-  <button><i class="fa fa-bell" aria-hidden="true"></i></button>
-  <button><i ui-sref="eventList" class="fa fa-calendar" aria-hidden="true"></i></button>
-  <button><i ui-sref="actionList" class="fa fa-users" aria-hidden="true"></i></button>
-  <button><i ui-sref="chatTab" class="fa fa-comment" aria-hidden="true"></i></button>
-</div>
 </ion-view>

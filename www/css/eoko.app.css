@@ -9942,12 +9942,12 @@ a.button {
     line-height: 22px; } }
 
 .eoko-text-ultralight {
-  font-family: "San Francisco Display";
+  font-family: "San Francisco Display UltraLight";
   font-weight: 100;
   color: #FFFFFF; }
 
 .eoko-text-thin, .eoko-text-button-nav, .eoko-alert-pop-up .popup-body {
-  font-family: "San Francisco Display";
+  font-family: "San Francisco Display Regular";
   font-weight: 200;
   color: #FFFFFF; }
 
@@ -10032,13 +10032,6 @@ input, textarea::-webkit-input-placeholder {
   color: #FFFFFF;
   opacity: 0.6; }
 
-.eoko-tabs-blur .tab-nav.tabs {
-  height: 70px;
-  background: transparent; }
-
-.tab-item {
-  margin-top: 3px; }
-
 .eoko-bell-left {
   background-repeat: no-repeat;
   background-position: center;
@@ -10102,15 +10095,6 @@ input, textarea::-webkit-input-placeholder {
   background-size: cover;
   position: absolute;
   left: 10px; }
-
-.eoko-icon-searchbar-left {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url("../img/search_icon.png");
-  height: 30px;
-  width: 30px;
-  float: left; }
 
 .eoko-icon-searchbar-small {
   background-repeat: no-repeat;
@@ -10251,42 +10235,6 @@ input, textarea::-webkit-input-placeholder {
   -webkit-transform: .5s;
   padding-bottom: 35px; }
 
-/** Ultra Light */
-@font-face {
-  font-family: "San Francisco Display";
-  font-weight: 100;
-  src: url("../fonts/sanfranciscodisplay-ultralight.woff"); }
-
-/** Thin */
-@font-face {
-  font-family: "San Francisco Display";
-  font-weight: 200;
-  src: url("../fonts/sanfranciscodisplay-thin.woff"); }
-
-/** Regular */
-@font-face {
-  font-family: "San Francisco Display";
-  font-weight: 400;
-  src: url("../fonts/sanfranciscodisplay-regular.woff"); }
-
-/** Medium */
-@font-face {
-  font-family: "San Francisco Display";
-  font-weight: 500;
-  src: url("../fonts/sanfranciscodisplay-medium.woff"); }
-
-/** Semi Bold */
-@font-face {
-  font-family: "San Francisco Display";
-  font-weight: 600;
-  src: url("../fonts/sanfranciscodisplay-semibold.woff"); }
-
-/** Bold */
-@font-face {
-  font-family: "San Francisco Display";
-  font-weight: 700;
-  src: url("../fonts/sanfranciscodisplay-bold.woff"); }
-
 .eoko-notification-number {
   border-radius: 10px;
   background-color: #FF5722;
@@ -10365,7 +10313,7 @@ input, textarea::-webkit-input-placeholder {
   background-color: transparent; }
 
 .eoko-alert-pop-up .popup {
-  background-color: rgba(245, 124, 0, 0.4); }
+  background-color: rgba(245, 124, 0, 0.7); }
 
 .eoko-alert-pop-up .popup-head {
   display: none; }
@@ -10394,30 +10342,35 @@ input, textarea::-webkit-input-placeholder {
   border-radius: 25px; }
 
 .eoko-horizontal-scroll-button {
-  border-color: #F57C00;
   background: transparent;
-  border-radius: 25px;
+  border-radius: 14px;
   border-width: 1px;
   border-style: solid;
-  width: 100px;
-  padding: 8px;
-  margin-left: 1px;
-  margin-right: 1px;
-  font-size: 20px;
-  color: #F57C00; }
+  min-width: 61px;
+  padding: 3px 6px;
+  margin-left: 2px;
+  margin-right: 2px;
+  font-size: 18px;
+  border-color: white;
+  color: white;
+  width: auto; 
+  font-family: "San Francisco Display Thin";
+  }
 
 .eoko-horizontal-scroll-button-selected {
   border-color: #F57C00;
   background: #F57C00;
-  border-radius: 25px;
+  border-radius: 14px;
   border-width: 1px;
+  min-width: 61px;
   border-style: solid;
-  margin-left: 1px;
-  margin-right: 1px;
+  margin-left: 2px;
+  margin-right: 2px;
   width: 100px;
-  padding: 8px;
-  font-size: 20px;
-  color: white; }
+  padding: 3px 6px;
+  font-size: 18px;
+  color: white; 
+  font-family: "San Francisco Display Thin";}
 
 textarea,
 input[type="text"],

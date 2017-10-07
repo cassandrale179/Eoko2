@@ -1,6 +1,6 @@
 angular.module('eoko.services', [])
 
-/* ------------------------------- FACEBOOK FACTORY --------------------------- */ 
+/* ------------------------------- FACEBOOK FACTORY --------------------------- */
 .factory('facebookService', [function () {
     var facebookService = {
       getUserInfo: function(user){
@@ -12,9 +12,10 @@ angular.module('eoko.services', [])
             console.log("response",  response.status);
             openFB.api({
               path: '/me',
-              params: {fields: 'id, name, gender, picture, birthday, friends'},
+              params: {fields: 'id, name, gender, picture.type(large), birthday, friends'},
             success: function(res){
               console.log("Success!");
+              console.log("Check this: ", res);
               var userInfo = {
                 fbid: res.id,
                 name: res.name,
@@ -32,10 +33,17 @@ angular.module('eoko.services', [])
                 var friendID = friend.id;
                 console.log(friendID);
                 ref.orderByChild('fbid').equalTo(friendID).on("child_added", function(snapshot){
-                  var obj = {};
-                  obj[snapshot.key] = snapshot.val().name;
 
-                  userFriendsRef.update(obj);
+                    var obj = {
+                    name: snapshot.val().name,
+                    photoURL: snapshot.val().photoURL,
+                    uid: snapshot.val().uid
+                  }
+
+                  userFriendsRef.child(snapshot.val().uid).update(obj);
+
+
+                  // userFriendsRef.update(obj + friendID);
                 });
 
               });
@@ -70,29 +78,36 @@ angular.module('eoko.services', [])
 
   }])
 
-/* ------------------------------- USER INFO FACTORY --------------------------- */ 
+/* ------------------------------- USER INFO FACTORY --------------------------- */
   .factory('UserInfo', [function() {
-    var user = {};
+    var user;
 
     var UserInfo = {
 
       //fields: what you want e.g. [birthday, photoURL, name] etc.
       //THis will then be stored in UserInfo.user;
-      getInfo: function(firebaseUser, fields) {
+      getInfo: function(firebaseUser) {
+        console.log("firebase User", firebaseUser);
         var ref = firebase.database().ref('users/'+firebaseUser.uid);
-
-        ref.on("value", function(snapshot){
-          for (var i = 0; i<fields.length;i++){
-            user[fields[i]] = snapshot.child(fields[i]).val();
-            console.log("Got the user's " + fields[i]);
-          }
-
+        var promise = ref.once("value");
+        Promise.all([promise]).then(function(response){
+          this.user = response[0].val();
+          console.log("service user: ", this.user)
+          return this.user;
         })
+        // ref.on("value", function(snapshot){
+        //   for (var i = 0; i<fields.length;i++){
+        //     user[fields[i]] = snapshot.child(fields[i]).val();
+        //     console.log("Got the user's " + fields[i]);
+        //   }
+        //
+        // })
 
       },
 
-      getUser: function() {
-        return user;
+      getUser: function(promise) {
+
+
       }
     };
 
@@ -100,7 +115,7 @@ angular.module('eoko.services', [])
   }])
 
 
-/* ------------------------------- OTHER INFO FACTORY --------------------------- */ 
+/* ------------------------------- OTHER INFO FACTORY --------------------------- */
   .factory('OtherInfo', [function () {
     var userData = {
        id:"",
@@ -143,7 +158,27 @@ angular.module('eoko.services', [])
 
   }])
 
-/* ------------------------------- PROFILE PRESS FACTORY --------------------------- */ 
+  /* ------------------------------- OTHER INFO FACTORY --------------------------- */
+    .factory('EventInfo', [function () {
+      var eventData = {
+
+      };
+
+      return {
+        setEventInfo: function (info) {
+          eventData = info;
+          return true;
+        },
+
+        getEventInfo: function () {
+          return eventData;
+        }
+      };
+
+    }])
+
+
+/* ------------------------------- PROFILE PRESS FACTORY --------------------------- */
    .factory('ProfilePress', [function () {
     var aprofile = false;
 
@@ -161,7 +196,7 @@ angular.module('eoko.services', [])
   }])
 
 
-/* ------------------------------- GEO POS FACTORY --------------------------- */ 
+/* ------------------------------- GEO POS FACTORY --------------------------- */
 .factory('geoPos', [function () {
 
     var myloc, watchId,uid;
@@ -201,12 +236,12 @@ angular.module('eoko.services', [])
           });
 
     return {
-     
+
       isReady: function()
       {
         return ready;
       },
-      getUserPosition: function () 
+      getUserPosition: function ()
       {
         return myloc;
       }
@@ -216,48 +251,58 @@ angular.module('eoko.services', [])
 
 
 .filter('orderObjectBy', [function(){
- return function(input, attribute) {
+  return function(input, attribute)
+  {
     if (!angular.isObject(input)) return input;
-
     var array = [];
     for(var objectKey in input) {
         array.push(input[objectKey]);
     }
 
-    array.sort(function(a, b){
-        a = parseInt(a[attribute]);
-        b = parseInt(b[attribute]);
-        return a - b;
+    array.sort(function(a,b){
+       a = a[attribute];
+       b = b[attribute];
+       return a-b;
     });
     return array;
- }
+  };
 }])
 
 
+ .directive('selectOnClick', ['$window', function ($window) {
+    // Linker function
+    return function (scope, element, attrs) {
+      element.bind('click', function () {
+        if (!$window.getSelection().toString()) {
+          this.setSelectionRange(0, this.value.length);
+        }
+      });
+    };
+  }])
 
 
-/* ---------------------------------- CHAT FACTORY ------------------------------- */ 
+
+
+/* ---------------------------------- CHAT FACTORY ------------------------------- */
 .factory('chatFactory', ['$firebaseArray',function ($firebaseArray) {
 
     var ref = firebase.database().ref("Chats");
     var chatData = $firebaseArray(ref);
     var myChatLists = [];
     var ready = false;
+
     chatData.$loaded(function(x)
     {
       //console.log("Chats Loaded",x);
       ready = true;
-      
-        
     });
 
     return {
-
       checkReady: function()
       {
         return ready;
       },
-     
+
       /*getChats: function(usrID)
       {
         myChatLists = [];
@@ -273,14 +318,14 @@ angular.module('eoko.services', [])
               }
               if(quals == false){
                  myChatLists.push(chatData[i].$id);
-              }            
+              }
             }
           }
         }
         return myChatLists;
       },*/
 
-      loadChatData: function (chatKey) 
+      loadChatData: function (chatKey)
       {
         return chatData.$getRecord(chatKey);
       },
@@ -288,39 +333,56 @@ angular.module('eoko.services', [])
       getChatData: function()
       {
         return chatData;
-      } 
+      }
     };
+}])
 
-  }])
 
-
-/* ------------------------------- BACK CALL FACTORY --------------------------- */ 
+/* ------------------------------- BACK CALL FACTORY --------------------------- */
 .factory('backcallFactory', ['$state','$ionicPlatform','$ionicHistory','$timeout',
   function($state,$ionicPlatform,$ionicHistory,$timeout){
- 
+
 var obj={};
     obj.backcallfun=function(){
     var backbutton=0;
-       $ionicPlatform.registerBackButtonAction(function () {
-          if ($state.current.name == "tabsController.actionList") {
-      
-      if(backbutton==0){
-            backbutton++;
-              window.plugins.toast.showShortCenter('Press again to exit');
-            $timeout(function(){backbutton=0;},5000);
-        }else{
-            navigator.app.exitApp();
-        }
-      
-      }else{
-            $ionicHistory.nextViewOptions({
-                 disableBack: true
-                });
-        $state.go('tabsController.actionList');
-        //go to home page
-     }
-        }, 100);//registerBackButton
-};//backcallfun
+      $ionicPlatform.registerBackButtonAction(function ()
+       {
+          if ($state.current.name == "navController.people")
+          {
+            if(backbutton==0)
+            {
+                  backbutton++;
+                    window.plugins.toast.showWithOptions(
+                    {
+                      message: 'Press again to exit',
+                      duration: "short", // which is 2000 ms. "long" is 4000. Or specify the nr of ms yourself.
+                      position: "bottom",
+                      addPixelsY: -40  // added a negative value to move it up a bit (default 0)
+                    });
+
+                  $timeout(function(){backbutton=0;},3000);
+              }
+              else
+              {
+                  navigator.app.exitApp();
+              }
+
+          }
+          else
+          {
+            backbutton=0;
+           $ionicHistory.goBack();
+                /*$ionicHistory.nextViewOptions({
+                     disableBack: true
+                    });
+            $state.go('navController.people');*/
+            //go to home page
+         }
+            }, 100);//registerBackButton
+
+
+
+};
 return obj;
 }])
 

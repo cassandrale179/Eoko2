@@ -1,14 +1,42 @@
-app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover',
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover) {
+app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover','$ionicLoading',
+  function ($scope,$stateParams, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover,$ionicLoading) {
     $scope.eventNudge = false;
+    $scope.searchBar = 2;
+    console.log("State of searchbar");
+    console.log($scope.searchBar);
+
+
 
     //start the thing in case it starts here
     firebase.auth().onAuthStateChanged(function(user){
       if (user){
         $scope.currentUser = user;
-        startLoop();
+        var ref = firebase.database().ref(`users/${user.uid}`);
+        //Filter event based on privacy setting
+        ref.on("value", function(snapshot){
+          $scope.privacyFilter = snapshot.val().privacy;
+          $scope.userFriendsList = snapshot.val().friends;
+          $scope.inviteActions = snapshot.val().actions.inviteActions;
+        })
+        showLoadingIndicator();
       }
     });
+
+    $scope.$on('$ionicView.afterEnter', function () //before anything runs
+    {
+      makeblurry();
+      console.log("state params, ", $stateParams.actionID, "triggeredm,, ", $stateParams.SJWTriggered);
+      showLoadingIndicator();
+    });
+
+
+    var res = firebase.database().ref("actions");
+        $scope.tagList = $firebaseArray(res);
+        $scope.tagList.$loaded().then(function(lad)
+        {
+          console.log("taglist action", $scope.tagList);
+
+        });
 
     //just checks if ready
     function startLoop()
@@ -17,43 +45,167 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
        {
         console.log("geoLoc not ready Yet");
         $timeout(function(){
-                startLoop();
-              },1000);
+          startLoop();
+        },2000);
        }
        else
        {
-        getEvents();
+        $ionicLoading.hide().then(function(){
+          console.log("The loading indicator is now hidden");
+          getEvents();
+        });
        }
      }
 
+     //loading indicator
+    function showLoadingIndicator (){
+      $ionicLoading.show({
+        template: '<div class="loader"></div>',
+      }).then(function(){
+          startLoop();
+      });
+    }
+
+    $scope.searchEventFilter = [];
+
+    $scope.doRefresh = function() {
+      console.log('Refreshing!');
+      $timeout(function()
+      {
+        $scope.loadedOnce = false;
+        getEvents();
+
+      },1000);
+      $scope.$broadcast('scroll.refreshComplete');
+    };
+
+
+      //select filter
+      $scope.selectFilter = function (elementId)
+      {
+        console.log("started selectFilter");
+      var elementClass = document.getElementById(elementId).className;
+        if(elementClass == "eoko-horizontal-scroll-button activated" || elementClass == "eoko-horizontal-scroll-button ng-binding activated")
+        {
+          console.log("found elementClass, selecting and pushing");
+          document.getElementById(elementId).className = "eoko-horizontal-scroll-button-selected eoko-text-thin";
+          $scope.searchEventFilter.push(elementId);
+
+        }else{
+          console.log("not the thing, dont select");
+          document.getElementById(elementId).className = "eoko-horizontal-scroll-button";
+          for(var i in $scope.searchEventFilter)
+          {
+            if($scope.searchEventFilter[i] == elementId)
+            {
+                  $scope.searchEventFilter.splice(i, 1);
+
+            }
+          }
+        }
+        if($scope.searchEventFilter == [])
+        {
+          $scope.searchEventFilter = null;
+        }
+        console.log("searching",$scope.searchEventFilter);
+        console.log($scope.events);
+        if ($scope.searchEventFilter.length==0 || $scope.searchEventFilter==null){
+          console.log("activated");
+          angular.forEach($scope.events, function(event){
+            event.display=true;
+          });
+          console.log("WTF IS GOING ON????",$scope.searchEventFilter);
+        }
+        else{
+          angular.forEach($scope.events, function(event){
+            var tags = event.info.tags;
+            console.log(tags);
+
+            var display = findTags(tags, $scope.searchEventFilter);
+            event.display = display;
+          });
+        }
+
+      };
+
+      //Return true if an element in arr1 is in arr2
+      function findTags(arr1, arr2){
+        console.log("arr2", arr2);
+        result = false;
+
+        angular.forEach(arr1, function(ele){
+          console.log(ele);
+
+          if (arr2.indexOf(ele)>-1){
+            console.log("found", arr2.indexOf(ele))
+
+            result = true;
+          }
+          console.log("not found", arr2.indexOf(ele))
+        })
+
+        return result;
+      }
+
+      $scope.goToMaps = function(address)
+      {
+        launchnavigator.navigate(address);
+      };
+
+
       //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
-      $scope.joinAction = function(eventid){
+      $scope.joinAction = function(eventid, eventobject){
         var ref = firebase.database().ref("activities").child(eventid);
         var checkDone = $firebaseObject(ref);
+
         checkDone.$loaded().then(function(x){
           console.log("loaded event stuff",checkDone);
           console.log("the thing is ", checkDone);
-          if(checkDone.userID == $scope.currentUser.uid)
-          {
-            console.log("this is your event, exiting");
-            $scope.closePopover();
-            return;
-          }
 
+          //----------- IF YOU ARE ALREADY JOINED, THEN YOU CAN'T JOIN IT LOSER ------------
           for(var i in checkDone["participants"])
           {
             if(checkDone["participants"][i].id == $scope.currentUser.uid)
             {
               console.log("already joined, returning");
-              $scope.closePopover();
+              $scope.isAlreadyJoined = true;
               return;
             }
           }
+
+          //------------ ELSE YOU CAN JOIN IT -------------
+          console.log("this is the eventid");
+          console.log(eventid);
+          console.log("This is the eventobject");
+          console.log(eventobject);
+          var userRefJoin = firebase.database().ref("users/" + $scope.currentUser.uid + "/actions/joinActions");
+          var eventToPushUnderJoinList = {
+            eventID: eventid,
+            location: eventobject.info.location,
+            name: eventobject.info.name,
+            time: eventobject.info.startTime
+          };
+          userRefJoin.child(eventid).update(eventToPushUnderJoinList);
+
             ref.child("participants").push({
               id: $scope.currentUser.uid,
               avatar: $scope.currentUser.photoURL
             }).then(function(succ)
             {
+              //add current user to the action chat
+              var chatsRef = firebase.database().ref("Chats").child(checkDone["chatID"]);
+              chatsRef.child('/ids').push({
+                id: $scope.currentUser.uid,
+                name: $scope.currentUser.displayName,
+                avatar: $scope.currentUser.photoURL
+              });
+
+              //save chat id in user
+              var usersRef = firebase.database().ref("users").child($scope.currentUser.uid);
+              usersRef.child('/chat').push({
+                chatID: checkDone["chatID"]
+              })
+
               console.log("successfully added");
               $scope.closePopover();
               return;
@@ -74,7 +226,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
           var dist = $scope.distFromPlayer($scope.eventInfo[i].location);
           if(dist != false)
           {
-            result[index] = {info: $scope.eventInfo[i], distance: dist};
+            result[index] = {info: $scope.eventInfo[i], distance: dist, display: true};
           }
         }
         return result;
@@ -98,26 +250,45 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
     }
 
 
+
+    $scope.loadedOnce = false;
     function getEvents()  //called in the beginning, thats all
     {
-      var eventsRef = firebase.database().ref("activities/");
-      $scope.eventInfo = $firebaseArray(eventsRef);
-       $scope.eventInfo.$loaded().then(function(x)
+
+      if($scope.loadedOnce == false)
       {
-        console.log("event loaded");
-        $scope.events = loadActions();
-        console.log("total events", $scope.events);
-      });
+        var eventsRef = firebase.database().ref("activities/");
+          $scope.eventInfo = $firebaseArray(eventsRef);
+           $scope.eventInfo.$loaded().then(function(x)
+          {
+            $scope.loadedOnce = true;
+            console.log("event loaded");
+            $scope.events = loadActions();
+            console.log("total events", $scope.events);
 
-       $scope.eventInfo.$watch(function(event){
+            //create watcher
 
-        if(event.event == "child_changed")
-        {
-          console.log("run result", event);
-          changeAction(event.key);
-        }
+              $scope.eventInfo.$watch(function(event){
+              if(event.event == "child_changed")
+              {
+                console.log("run result", event);
+                changeAction(event.key);
+              }
+              if(event.event == "child_created")
+              {
+                $scope.events = loadActions();
+              }
+             });
+          });
+      }
 
-       });
+
+
+
+       if($stateParams.SJWTriggered == true)
+       {
+        $scope.openPopover("", $scope.events[$stateParams.actionID]);
+       }
     }
 
     //--------------------- CALCULATE DISTANCE FOR USERS -----------------
@@ -206,7 +377,7 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
           $scope.blurry = {behind: "5px"};
         }
         else {
-          console.log("clear up");
+          console.log("blur clear up");
           $scope.blurry = {behind: "0px"};
         }
       }
@@ -224,14 +395,19 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
       });
 
       $scope.openPopover = function($event, user) {
+        $scope.isAlreadyJoined = false;
         $scope.blurry.behind = "5px";
         $scope.currUser = user;
-        $scope.popover.show($event);
+        $scope.joinAction($scope.currUser.info.$id);
+        $scope.popover.show();
       };
       $scope.closePopover = function() {
         $scope.blurry.behind = "0px";
+        //$stateParams.actionID = '';
+        //$stateParams.SJWTriggered = false;
         $scope.popover.hide();
         makeblurry();
+        $state.go('.',{actionID: '', SJWTriggered: false});
       };
       //Cleanup the popover when we're done with it!
       $scope.$on('$destroy', function() {
@@ -241,21 +417,12 @@ app.controller('eventListCtrl', ['$scope', '$state','$firebaseArray', '$http', '
       });
       // Execute action on hide popover
       $scope.$on('popover.hidden', function() {
+        $scope.blurry.behind = "0px";
         // Execute action
       });
       // Execute action on remove popover
       $scope.$on('popover.removed', function() {
+        $scope.blurry.behind = "0px";
         // Execute action
       });
-
-
-
-
-
-
-
-
-
-
-
   }]);

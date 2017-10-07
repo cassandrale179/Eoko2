@@ -6,10 +6,16 @@ A: LOGIN PAGE
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 
+.eoko-content {
+  min-height: 100% !important;
+  top: 0 !important;
+  bottom: 0 !important;
+}
+
 .background{
    background: linear-gradient(
                      rgba(20,20,20, .6),
-                     rgba(20,20,20, .6)),
+                     rgba(20,20,20, .8)),
   url(../img/outerbackground.jpeg);
    background-size:cover;
    background-position: center;
@@ -43,10 +49,170 @@ select{
   margin-top: 10px;
 }
 
+.loading-container .loading{
+  background-color: transparent;
+}
+
+.loader {
+  border: 5px solid white; /* Light grey */
+  border-top: 5px solid #F27C22; /* Blue */
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* -------------------------------- FONTS --------------------------- */
+/** Ultra Light */
+@font-face {
+  font-family: "San Francisco Display UltraLight";
+  font-weight: 100;
+  src: url("../fonts/sanfranciscodisplay-ultralight.woff");
+}
+
+/** Thin */
+@font-face {
+  font-family: "San Francisco Display Thin";
+  font-weight: 200;
+  src: url("../fonts/sanfranciscodisplay-thin.woff");
+}
+
+/** Regular */
+@font-face {
+  font-family: "San Francisco Display Regular";
+  font-weight: 400;
+  src: url("../fonts/sanfranciscodisplay-regular.woff");
+}
+
+/** Medium */
+@font-face {
+  font-family: "San Francisco Display Medium";
+  font-weight: 500;
+  src: url("../fonts/sanfranciscodisplay-medium.woff");
+}
+
+/** Semi Bold */
+@font-face {
+  font-family: "San Francisco Display Semibold";
+  font-weight: 600;
+  src: url("../fonts/sanfranciscodisplay-semibold.woff");
+}
+
+/** Bold */
+@font-face {
+  font-family: "San Francisco Display Bold";
+  font-weight: 700;
+  src: url("../fonts/sanfranciscodisplay-bold.woff");
+}
+
+
+/* -------------------------------- IMAGES/ICONS --------------------------- */
+.eoko-icon-notification-on{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/notification_icon_on.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-notification-off{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/notification_icon_off.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-action-on {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/action_icon_on.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-action-off{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/action_icon_off.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-people-on {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/people_icon_on.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-people-off{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/people_icon_off.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-chat-on {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/chat_icon_on.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-chat-off{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/chat_icon_off.png");
+  -webkit-transform: .5s;
+  padding-top: 40px;
+}
+
+.eoko-icon-search-white{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/search_icon_white.png");
+}
+
+.eoko-icon-search-black {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/search_icon.png");
+}
+
+
 
 
 
 /* -------------------------------- NAVIGATION BAR --------------------------- */
+
+.eoko-tabs-blur .tab-nav.tabs {
+  height: 70px;
+  background: transparent;
+}
+
+.tab-item{
+  margin-top: 20px;
+}
+
 #navbar{
   width: 100%;
   display: flex;
@@ -55,10 +221,14 @@ select{
   bottom: 0px;
 
 }
-#navbar button{
+#navbar i{
   color: rgba(0,0,0,0.3);
   width: 25%;
   font-size: 45px;
+  background: none !important;
+  border: none !important;
+  padding-left: 5%;
+  padding-bottom: 5%;
 }
 
 #error{
@@ -66,6 +236,17 @@ select{
   font-family: 'Roboto', sans-serif;
   text-align: center;
 }
+
+#blur-nav-bar{
+  background: url(../img/background.png);
+  position: absolute;
+  filter: blur(2px);
+  width: 100%;
+  height: 70px;
+  bottom: 0;
+  left: 0;
+}
+
 
 /* -------------------------------- LOGIN SCREEN ----------------------------- */
 #A img{
@@ -104,24 +285,24 @@ select{
 
 #B h1{
   color: white;
-  font-family: 'Roboto';
+  font-family: 'San Francisco Display Regular';
   text-align: center;
 }
 
 #B h4{
-  font-family: 'Roboto', sans-serif;
+  font-family: 'San Francisco Display Regular', sans-serif;
   color: white;
   position: fixed;
   bottom: 20px;
   right: 20px;
 }
 
-#B input, #B textarea{
+#B input, #B textarea, #N input{
   width: 90%;
   border: none;
   background: rgba(255,255,255,0.9);
   color: grey;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'San Francisco Display Regular', sans-serif;
   display: block;
   margin: auto;
   padding: 5%;
@@ -139,6 +320,8 @@ select{
 #B p{
   color: rgba(255,255,255,0.8);
   font-style: italic;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 #B2{
@@ -149,7 +332,7 @@ select{
 }
 #B2 button{
   color: white;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'San Francisco Display Regular', sans-serif;
   border: 1px rgba(255, 255, 255, 0.61) solid;
   background: none;
   margin: 5px;
@@ -168,7 +351,7 @@ select{
 
 #back{
   color: white;
-  font-family: 'Robot', sans-serif;
+  font-family: 'San Francisco Display Regular', sans-serif;
   position: fixed;
   top: 10px;
   font-size: 20px;
@@ -176,30 +359,31 @@ select{
 
 
 #B4 button{
-  margin-top: 5%;
-  font-family: 'Roboto', sans-serif;
+  /* margin-top: 1vw; */
+  margin: auto;
+  font-family: 'San Francisco Display Regular', sans-serif;
   color: white;
   background: transparent;
   border: none;
   border: 1px rgba(255, 255, 255, 0.61) solid;
-  width: 70px;
-  height: 40px;
+  width: 27vw;
+  height: 9vw;
   border-radius: 10px;
 }
 
 #B4{
-  margin-left: 30%;
-
+  text-align: center;
 }
-
 
 
 /* ---------------------------- PEOPLE WITHIN 10 MILES ------------------------ */
 #C{
-  margin-top: 50px;
+  margin-top: 25px;
   padding-left: 5%;
   padding-right: 5%;
 }
+
+
 
 #C1, #E2A, #I2{
   background: rgba(255,255,255,0.8);
@@ -214,22 +398,24 @@ select{
 
 #C1 img, #E2A img, #I2 img{
   object-fit: cover;
-  width: 70px;
+  width: 55px;
   height: 55px;
-  border-radius: 40px;
-  margin-left: 10px;
+  border-radius: 55px;
+  /*margin-left: 10px;*/
   margin-top: 2px;
 }
 
-#C2 img{
-  width: 30px !important;
-  height: 30px !important;
+#C3 img{
+  width: 40px !important;
+  height: 40px !important;
   margin-right: 7%;
+
 }
 
 #C2{
   margin-top: 6px;
-  margin-left: 10%;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
 }
 
 #C1A, #I2A{
@@ -239,6 +425,7 @@ select{
   margin-bottom: 5px;
   padding: 3%;
   font-size: 20px;
+  text-align: center;
 }
 
 #one, #two{
@@ -254,13 +441,7 @@ select{
 
 /* ---------------------------------------- EOKO NUDGE -------------------------------------- */
 #D{
-  height: 210px;
-  width: 260px;
-  background: rgba(230, 126, 34, 0.9);
-  left:60px;
-  top: 200px;
-  position: fixed;
-  padding-top: 3%;
+  padding-top: 10%;
   z-index: 900;
 }
 
@@ -341,79 +522,132 @@ select{
 }
 
 /* ---------------------------------------- EVENTS PAGE -------------------------------------- */
+
+#E{
+  margin: 15px 10px 20px 10px;
+}
+
 #E1{
   width: 100%;
   display: flex;
 }
 
 #E1 i{
-  padding-top: 2%;
+  padding-top: 11%;
   padding-left: 2%;
-  width: 10%;
+  width: 7%;
   color: white;
   font-size: 20px;
-}
-#E1 button{
-  color: white;
-  font-family: 'Roboto', serif;
-  width: 45%;
-  font-size: 23px;
-  text-align: left;
+  margin-left: 6px;
+  margin-right: 13px;
 }
 
 #E1A{
   width: 50%;
+  margin-left: 40px;
   border: none;
 }
 
 #E1A button, #E1B button{
   text-align: center;
   display: block;
-  margin: auto;
+  font-family: 'San Francisco Display Regular', serif;
+  font-size: 23px;
+  color: white;
+  margin: auto auto auto 10px;
   border: none;
   background: transparent;
-  width: 100px;
-
 }
 
 #E1B{
-  padding-left: 7%;
   width: 50%;
-}
 
-#E1{
-  margin-bottom: 20px;
 }
 
 
 
 /* ---------- DISPLAY CARDS OF CURRENT ACTIONS ------- */
 #E2{
+  font-family: 'San Francisco Display Medium', sans-serif;
+  overflow: auto;
+  height: 500px;
   padding-left: 5%;
   padding-right: 5%;
 }
 
-#E2 h4{
-  font-family: 'Roboto', sans-serif;
+#E2A11{
+  font-family: 'San Francisco Display Medium', sans-serif;
+  font-size: 23px;
+  height: 28px;
+  color: #757575;
   margin-left: 5%;
   margin-top: 0%;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 #E2A1{
-  width: 100%;
+  width: 84%;
 }
 
 #E2 h5{
+  font-family: 'San Francisco Display Thin', sans-serif;
+  font-size: 4.5vw;
   display: inline-block;
-  margin-top: 0px;
+  margin-top: 10px;
+  margin-left: 5%;
   padding-left: 15%;
+  width: 61vw;
+  text-overflow: ellipsis;
 }
 
+#E0{
+  background: rgba(255,255,255,0.8);
+  opacity: 0.9;
+  border-radius: 7px;
+  box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);
+  display: flex;
+  padding: 5px;
+}
+
+#E0 a{
+  margin-right: 10px;
+  margin-left: 3px;
+  width: 24px;
+}
+
+#E0 input{
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #263238;
+  font-family: 'San Francisco Display Regular', sans-serif;
+  width: 85%;
+}
+
+#E0 input::placeholder{
+  font-family: 'San Francisco Display Regular', sans-serif;
+  color: #263238;
+}
+
+#E0 button{
+  color: #263238;
+  font-family: 'San Francisco Display Regular', sans-serif;
+  background: transparent;
+  border: none;
+}
 
 
 /* --------------------------- EVENT NUDGE -------------------------------- */
 
-#F1 img{
+#F{
+  padding: 3%;
+  text-align: center;
+}
+
+#F1profile{
   margin-top: 10px !important;
   display: block;
   margin: auto;
@@ -423,33 +657,31 @@ select{
   border-radius: 35px;
 }
 
+#F1icon{
+  width:4.5vw;
+  padding-top: 1vw;
+}
+
 #F h1{
   color: white;
-  text-align: center;
-  font-family: 'Roboto', sans-serif;
-  font-size: 20px;
+  font-family: 'San Francisco Display Regular', sans-serif;
+  font-size: 30px;
   margin-top: 5px;
 }
 
 #F h2{
-  text-align: center;
   color: white;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'San Francisco Display Thin', sans-serif;
   font-size: 18px;
   margin-top: 10px;
 }
 
-#F1A{
-  margin-left: 15%;
-}
-
 #F h3{
   color: white;
-  font-family: 'Roboto', sans-serif;
-  font-size: 15px;
+  font-family: 'San Francisco Display Thin', sans-serif;
+  font-size: 6vw;
   display: inline-block;
-  margin-top: 0px;
-  margin-left: 30px;
+  margin-top: 0;
 }
 
 #F h5{
@@ -458,11 +690,13 @@ select{
   right: 50px;
 }
 
-#F p{
+#F1A{
   padding-left: 10%;
   padding-right: 10%;
   color: white;
-  font-family: "Roboto", sans-serif;
+  height: 17vw;
+  font-size: 5vw;
+  font-family: "San Francisco Display Thin", sans-serif;
 }
 
 #F button{
@@ -474,24 +708,38 @@ select{
   border: none;
   height: 30px;
   border-radius: 15px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
+#F1B1{
+  float:left;
+  width: 22%;
+  margin: auto;
+  padding: 0 0 0 5vw;
+}
+
+#F1B2{
+  width: 56%;
+  margin: auto;
+}
 
 #F2{
   padding-left: 5%;
 }
 
 #F2 img{
-  width: 50px;
-  height: 50px;
+  width: 12vw;
+  height: 12vw;
   object-fit: cover;
-  border-radius: 25px;
+  border-radius: 6vw;
 }
 
 #F2 p{
+  font-family: "San Francisco Display Thin", sans-serif;
   font-style: italic;
-  margin-top: 30px;
+  font-size: 5vw;
+  margin-top: 1vw;
+  float: left;
 }
 
 
@@ -532,7 +780,8 @@ select{
 }
 
 .active{
-  border-bottom: 0.1px solid rgba(255,255,255,0.3) !important;
+  border-bottom: 0px solid rgba(255,255,255,1) !important;
+  color: white;
 }
 
 #container{
@@ -559,14 +808,14 @@ select{
   margin: auto;
 }
 
-#H2, #H3{
+#H2, #H3, #H5{
   display: flex;
   width: 100%;
 }
 
 
 /* public, private or both buttons */
-#H2 button, #H3 button{
+#H2 button, #H3 button, #H5 button{
   font-family: 'Roboto', sans-serif;
   color: white;
   font-size: 15px;
@@ -578,7 +827,7 @@ select{
 }
 
 /*public, private, or both buttons */
-#H2 button, #H3 button{
+#H2 button, #H3 button, #H5 button{
   width: 45%;
   margin-right: 10px;
   margin-left: 10px;
@@ -604,6 +853,8 @@ select{
 #I{
   padding-left: 5%;
   padding-right: 5%;
+  height: 530px;
+  overflow: auto;
 }
 #I1{
   width: 100%;
@@ -675,12 +926,252 @@ select{
 
 
 
-/*-------------Michael's crap css again----------*/
+/* --------------------- CHAT PAGE --------------- */
+#L {
+  background: rgba(255,255,255,0.8);
+  opacity: 0.9;
+  height: 40px;
+  margin-bottom: 17px;
+  border-radius: 7px;
+  box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);
+  display: flex;
+  padding: 1%;
+}
+
+#L a{
+  margin-right: 10px;
+  margin-left: 3px;
+  height: 31px;
+  width: 24px;
+}
+
+#L input{
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #263238;
+  /* text-align: center; */
+}
+
+#L1{
+  overflow: scroll;
+  white-space: nowrap;
+}
+
+#L2{
+  background-color: transparent;
+  border: none;
+  border-color: transparent;
+  padding: 1%;
+}
+
+#L3{
+  margin-bottom: 20px;
+  display: inline-block;
+  width: 80%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+#L4{
+  border-radius: 50%;
+  float: left;
+  object-fit: cover;
+  width: 70px;
+  height: 70px;
+  margin-right: 15px;
+}
+
+#L5{
+  position: relative;
+  width: 100%;
+  font-family: 'San Francisco Display', sans-serif;
+  font-weight: 500;
+  font-size: 27px;
+  margin-top: 7px;
+  margin-bottom: 14px;
+  color: white
+}
+
+#L6{
+  font-family: 'San Francisco Display', sans-serif;
+  font-weight: 100;
+  color: white;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
 
 
+/* --------------------- INVITE PAGE DETAILS --------------- */
+#N{
+  padding-top: 5%;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+}
+
+#N0{
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+#N1{
+  display: flex;
+}
+
+#N1A{
+  width: 33%;
+}
+
+
+#N1 img{
+  display: block;
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 100px;
+  margin-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+}
+
+.opaque{
+  opacity: 0.5;
+}
+
+.not-opaque{
+  opacity: 0.9;
+}
+
+/* --------------------- CHAT PAGE DETAIL --------------- */
+#M{
+  text-align: center;
+}
+
+#M0a{
+  border-radius: 50%;
+  object-fit: cover;
+  width: 17vw;
+  height: 17vw;
+}
+
+#M0b{
+  font-family: "San Francisco Display Regular", sans-serif;
+  color: white;
+  margin-top: 1vw;
+}
+
+#M1{
+  display: block;
+  position: relative;
+  padding: 3px 10px 0 10px;
+}
+
+#M1a{
+  border-radius: 50%;
+  object-fit: cover;
+  float: left;
+  width: 50px;
+  height: 50px;
+  margin-top: 17px;
+  margin-right: 5px;
+}
+
+#M2{
+  display: block;
+  background-color: transparent;
+  border: none;
+  border-color: transparent;
+  padding: 1%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+}
+
+#M3{
+  background: rgba(255,255,255,0.8);
+  opacity: 0.9;
+  border-radius: 7px;
+  box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);
+  display: table-cell;
+  padding: 10px;
+  font-size: 17px;
+}
+
+#Mm{
+  border-radius: 50%;
+  float: right;
+  object-fit: cover;
+  width: 50px;
+  height: 50px;
+  margin-top: 17px;
+  margin-left: 5px;
+}
+
+#Mm2{
+  display: block;
+  background-color: transparent;
+  border: none;
+  border-color: transparent;
+  padding: 1%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+}
+
+#Mm3{
+  background: rgba(255,255,255,0.8);
+  display: block;
+  float:right;
+  clear:both;
+  opacity: 0.9;
+  border-radius: 7px;
+  box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);
+  display: table-cell;
+  max-width: 300px;
+  white-space: initial;
+  padding: 10px;
+  height: auto;
+  font-size: 17px;
+}
+
+#M4a{
+  background-color: transparent; 
+  border-bottom: transparent; 
+  font-size: 4.5vw; 
+  width: 82vw; 
+  float: left; 
+  color: black;
+}
+
+#M5{
+  height: 135vw;
+}
+
+/* .input-cover {
+  position: static;
+} */
+
+#N button{
+  border-radius: 20px;
+  height: 40px;
+  border: none;
+  display: block;
+  margin: auto;
+  width: 90%;
+  background-color: rgba(230, 126, 34, 0.9);
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+
+/* --------------- MICHEAL ALRIGHT CSS (IT'S NOT THAT CRAP) ---------------- */
 .details{
     margin: 15% 10%;
-    height: 60%;
+    height: 80%;
     background-color: #F27C22;
     width: 80%;
     opacity: 0.90;
@@ -689,3 +1180,69 @@ select{
 .popover-wrapper{
   height: 100%;
 }
+
+.eoko-horizontal-scroll-button {
+  background: transparent;
+    border-radius: 14px;
+    border-width: 1px;
+    border-style: solid;
+    min-width: 61px;
+    padding: 3px 6px;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-size: 18px;
+  border-color: white;
+  color: white;
+   width: auto; }
+
+.eoko-horizontal-scroll-button-selected {
+  border-color: #F57C00;
+  background: #F57C00;
+  border-radius: 14px;
+  border-width: 1px;
+  min-width: 61px;
+  border-style: solid;
+ margin-left: 2px;
+  margin-right: 2px;
+  width: auto;
+   padding: 3px 6px;
+  font-size: 18px;
+  color: white; }
+
+
+.button.button-energized.button-outline {
+  border-color: white;
+  color: white;
+  }
+
+  ion-scroll[direction=y] {
+  height: 100vh;
+}
+
+
+.activeActions{
+  max-width: 50vw;
+    display: inline-block;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.item-complex .item-content, .item-radio .item-content {
+  background-color: rgba(0,0,0,0);
+}
+
+.descriptionArea{
+  height: 14vh;
+    overflow: scroll;
+    margin: 0px;
+}
+
+.scroll-refresher .ionic-refresher-content {
+  color: white;
+  }
+
+  .spinner-ios{
+    stroke: white;
+    fill : white;
+  }

@@ -1,28 +1,170 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','$timeout', 'geoPos','$filter','chatFactory','backcallFactory','$firebaseObject',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform', 'facebookService', '$localStorage',
 
-  function ($scope, $state, $firebaseArray, $http, $timeout, geoPos,$filter,chatFactory,backcallFactory,$firebaseObject) {
+  function ($scope, $state, $firebaseArray,  $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform, facebookService, $localStorage) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
 
+    $scope.$on('$ionicView.beforeEnter', function(){
+      $scope.exitButton = 2;
+      firebase.auth().onAuthStateChanged(function(firebaseUser){
+        $scope.currentUser = firebaseUser;
+        var userRef = firebase.database().ref("users/"+$scope.currentUser.uid);
+        userRef.on('value', function(snapshot){
+          $scope.peopleFilter = snapshot.val().peopleFilter;
 
-    function geoLoop(id)
+
+          //Friends list to filter private
+          $scope.userFriendsList = snapshot.val().friends;
+          console.log('friends List', $scope.userFriendsList)
+          console.log('filter', $scope.peopleFilter);
+        })
+        window.FirebasePlugin.grantPermission();
+        window.FirebasePlugin.getToken(function(token) {
+              // save this server-side and use it to push notifications to this device
+              console.log(token);
+              userRef.update({
+                messageToken: token
+              });
+
+          }, function(error) {
+              console.error(error);
+          });
+
+          window.FirebasePlugin.onTokenRefresh(function(token) {
+              // save this server-side and use it to push notifications to this device
+              console.log(token);
+              userRef.update({
+                messageToken: token
+              });
+
+          }, function(error) {
+              console.error(error);
+          });
+
+          window.FirebasePlugin.onNotificationOpen(function(notification) {
+              console.log(notification);
+              if (notification.chatId && notification.wasTapped){
+                //redirect to chat here
+
+                $state.go('messagePage', {otherID: notification.senderID, convoID: notification.chatId})
+
+              }
+              if (notification.nudge){
+                //Nudge popup here
+                var combined = notification.name + " sent you a nudge! Go to messaging?";
+                showNotifyAlert(combined, notification);
+              }
+
+          }, function(error) {
+              console.error(error);
+          });
+
+        // $scope.currentUser.uid = UserInfo.getUser().uid;
+      });
+    });
+
+
+    $scope.facebookFuckery = function()
     {
-      console.log("started geoLoop");
-      try{
-              geoPos.updateFirebase(id);
-              console.log("position set on firebase");
-              $scope.myloc = geoPos.getUserPosition();
-              getFriends();
+      facebookConnectPlugin.appInvite(
+        {
+            url: "https://fb.me/705123973010130",
+            picture: "https://static1.squarespace.com/static/58001680d2b8579653e773bd/t/59446a67d2b8579c7609ea83/1507244341876/?format=1500w"
+        },
+        function(obj){
+            if(obj) {
+                if(obj.completionGesture == "cancel") {
+                    console.log("hit cancel");
+                } else {
+                    console.log("thanks for the invite!");
+                }
+            } else {
+                console.log("what did you do?");
             }
-            catch(error)
-            {
-              $timeout(function(){
-                geoLoop(id);
-              },1000);
-            }
-    }
+        },
+        function(obj){
+            // error
+            console.log(obj);
+        });
 
+    };
+
+
+
+
+
+     $scope.$on('$ionicView.afterEnter', function () //before anything runs
+    {
+      makeblurry();
+    });
+
+
+    $scope.blurry = {behind: "0px"};
+
+     function showNotifyAlert(message, info) {
+        $scope.blurry = {behind: "5px"};
+
+        var confirmPopup = $ionicPopup.confirm({
+          title: 'Error',
+          cssClass: 'eoko-alert-pop-up',
+          template: message
+        });
+        confirmPopup.then(function(res) {
+          if(res)
+          {
+            $scope.blurry = {behind: "0px"};
+            console.log("redirect to message");
+            var req = firebase.database().ref('users').child(info.uid);
+            var nudgeUser = $firebaseObject(req);
+            nudgeUser.$loaded().then(function(ss)
+            {
+              $scope.blurry = {behind: "0px"};
+              $scope.newConversation(nudgeUser,true);
+              return;
+            });
+
+          }
+          else
+          {
+            $scope.blurry = {behind: "0px"};
+            return;
+          }
+
+        });
+      }
+
+
+      //just checks if ready
+      function startLoop()
+      {
+         if(geoPos.isReady() == false)
+         {
+          console.log("geoLoc not ready Yet");
+          $timeout(function(){
+                  startLoop();
+                },1000);
+         }
+         else
+         {
+          getPeople();
+         }
+       }
+
+
+        $scope.doRefresh = function() {
+
+          console.log('Refreshing!');
+          $timeout(function()
+          {
+            //$scope.loadedOnce = false;
+            facebookService.getUserInfo($scope.currentUser);
+            $scope.loadedOnce = false;
+            getPeople();
+
+          },1000);
+          $scope.$broadcast('scroll.refreshComplete');
+        };
 
 
         firebase.auth().onAuthStateChanged(function(user) {
@@ -32,21 +174,24 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
             $scope.userInfo.$loaded();
             $scope.currentUser = user;
             console.log($scope.currentUser.uid);
-            geoLoop(user.uid);
+            startLoop();
         }
-        
+
 
         });
 
-  
+        $scope.viewPersonAction = function(actionID, triggered)
+        {
+          $scope.closePopover();
+          $state.go('navController.action',{actionID: actionID, SJWTriggered: true});
+        };
 
-
-        $scope.newConversation = function(other)
+        $scope.newConversation = function(other, boo)
         {
           console.log("started newconvo");
-
             for(var i in $scope.userInfo.chat)
             {
+              console.log("dafuq is that,", $scope.userInfo.chat[i].chatID);
               var info = chatFactory.loadChatData($scope.userInfo.chat[i].chatID);
               console.log("length is ", Object.keys(info.ids).length);
               if(Object.keys(info.ids).length < 3)
@@ -54,22 +199,23 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
                 for(var j in info.ids)
                 {
                   console.log("j interate", j, info.ids[j]);
-                  if(info.ids[j].id == other.$id)
+                  if(info.ids[j].id == other.info.uid)
                   {
                     console.log("FOUDN!!", $scope.userInfo.chat[i].chatID);
-                    $state.go('messagePage',{otherID: other.$id, convoID: $scope.userInfo.chat[i].chatID});
+                    if(boo)
+                    {
+                      $state.go('messagePage',{otherID: other.info.uid, convoID: $scope.userInfo.chat[i].chatID});
+                    }
+
                     return;
                   }
                 }
               }
-       
             }
-          
-      
-          console.log(other);
-          var rec = firebase.database().ref("Chats");
-          rec.push({
-            name: ""
+            console.log(other);
+            var rec = firebase.database().ref("Chats");
+            rec.push({
+              name: ""
 
             }).then(function(success){
                 rec.child(success.key).child("ids").push({
@@ -79,30 +225,98 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
                 }).then(function(baby)
                 {
                   rec.child(success.key).child("ids").push({
-                  id: other.$id,
-                  name: other.name,
-                  avatar: other.photoURL
+                  id: other.info.uid,
+                  name: other.info.name,
+                  avatar: other.info.photoURL
                 });
                       firebase.database().ref("users").child($scope.currentUser.uid).child('chat').push({
                   'chatID' : success.key
                   }).then(function(ddd)
                   {
-                     $state.go('messagePage',{otherID: other.$id, convoID: success.key}); //with params
+                     firebase.database().ref("users").child(other.info.uid).child('chat').push({
+                      'chatID' : success.key
+                      }).then(function(ddd)
+                      {
+                        if(boo)
+                        {
+                         $state.go('messagePage',{otherID: other.info.uid, convoID: success.key}); //with params
+                        }
+                      });
                   });
-                   
                 });
             });
-          
-          
-          
-
         };
 
+        function loadPeople()      //loading the actions from the start
+        {
+          console.log("WTF IS GOING ON???");
+          var result = {};
+          for(var i in $scope.peopleInfo)
+            {
+
+              console.log($scope.peopleInfo[i]);
+              console.log("i is", $scope.peopleInfo[i].$id);
+              var index = $scope.peopleInfo[i].$id;
+
+              var dist = $scope.distFromPlayer($scope.peopleInfo[i].location);
+              console.log("what is the dist", dist);
+              if(dist != 'false')
+              {
+                result[index] = {info: $scope.peopleInfo[i], distance: dist, display: true};
+              }
+            }
+            console.log('result', result);
+            return result;
+        }
+
+        function changePerson(personID)    //change individual actions depending on how it is
+        {
+          console.log("before people", $scope.people);
+          for(var i in $scope.peopleInfo)
+          {
+            if($scope.peopleInfo[i].$id == personID)
+            {
+              var dist = $scope.distFromPlayer($scope.peopleInfo[i].location);
+              if(dist != 'false')
+              {
+                $scope.people[personID] = {info: $scope.peopleInfo[i], distance: dist};
+              }
+            }
+          }
+          console.log("after events", $scope.people);
+        }
 
 
+        $scope.loadedOnce = false;
+        function getPeople()
+        {
+          if($scope.loadedOnce == false)
+          {
+            var peopleRef = firebase.database().ref("users");
+            $scope.peopleInfo = $firebaseArray(peopleRef);
+            $scope.peopleInfo.$loaded().then(function(x)
+            {
+              $scope.loadedOnce = true;
+              $scope.people = loadPeople();
+              console.log("straigt from firebase", $scope.peopleInfo);
+              console.log("all the people", $scope.people);
+              $scope.peopleInfo.$watch(function(event)
+              {
+                if(event.event == "child_changed")
+                {
+                  changePerson(event.key);
+                }
+                if(event.event == "child_created")
+                {
+                  $scope.people = loadPeople();
+                }
+              });
+            });
+          }
+        }
 
     //GET THE CURRENT USER'S FRIEND LIST
-    function getFriends()
+    /*function getFriends()
     {
       $scope.friends =  [];
       $scope.photos = [];
@@ -116,6 +330,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
         $scope.peopleList = [];
         angular.forEach(x, function(value,key)
         {
+
           this.push({
             'id': value.uid,
             'dist': $scope.distFromPlayer(value.location)
@@ -161,7 +376,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
           });
 
-    }
+    }*/
 
 
 
@@ -185,49 +400,167 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray', '$http','
 
         //$scope.distList = [];
 
-        $scope.distFromPlayer = function(locationdata) {
-          if($scope.myloc == undefined || $scope.myloc == null)
-          {
-            console.log("not yet");
-            return 0;
-          }
-          else
-          {
-            var arr = locationdata.split(",");
-            var lat = arr[0];
-            var long = arr[1];
-
-            var arr2 = $scope.myloc.split(",");
-            var mylat = arr2[0];
-            var mylong = arr2[1];
-
-            if (long == "" || lat == "" || mylong == "" || mylat == "") {
-                return "N/A";
-            } else {
-                var result = getDistanceFromLatLonInKm(mylat, mylong, lat, long) * 0.621371;
-                //$scope.distList.push(result);
-                console.log("this is the distList", $scope.distList);
-                return result;
+          $scope.distFromPlayer = function(locationdata) {
+            if(locationdata == undefined)
+            {
+              return 'false';
             }
-          }
-        };
 
+            $scope.myloc = geoPos.getUserPosition();
 
+            /*console.log("distFromPlayer executed");
+            if($scope.myloc == undefined || $scope.myloc == null)
+            {
+              console.log("not yet");
+              return 0;
+            }
+            else
+            {*/
+              var arr = locationdata.split(",");
+              var lat = arr[0];
+              var long = arr[1];
 
-         $scope.distSorter = function(x)
-          {
-            var result;
-              angular.forEach($scope.distList, function(value,key)
-              {
-                if(value.id == x.$id)
-                {
-                  console.log("found,", key);
-                  result = key;
-                }
-              },$scope.distList);
+              var arr2 = $scope.myloc.split(",");
+              var mylat = arr2[0];
+              var mylong = arr2[1];
 
-             return result;
+              if (long == "" || lat == "" || mylong == "" || mylat == "") {
+                  return "N/A";
+              } else {
+                  var result = getDistanceFromLatLonInKm(mylat, mylong, lat, long) * 0.621371;
+                  $timeout(function(){
+                    $scope.$apply();
+                  }, 500);
+                  //return Math.round(result * 10) / 10;
+                  //$scope.distList.push(result);
+                  return result;
+              }
+            //}
           };
+
+
+
+
+          //--------------------------------NUDGE FUNCTIONS-----------------------------------
+          $scope.checkNudge = function() {
+            var userNudgeRef = firebase.database().ref(`users/${scope.currentUser.uid}/nudge/`);
+
+          }
+
+          $scope.eokoNudge = function(x) {
+            $scope.nudge=true;
+            console.log("nudge: ", $scope.nudge);
+
+            $scope.otherUser = x;
+            console.log("the other person is: ", $scope.otherUser.info.uid);
+            console.log($scope.currentUser);
+          };
+
+
+          $scope.hideEokoNudge = function() {
+            $scope.nudge = false;
+            console.log("nudge: ", $scope.nudge);
+            $scope.blurry = {behind: "0px"};
+
+          };
+
+          $scope.sendNudge = function() {
+            var uid = $scope.currentUser.uid;
+            console.log("current user uid:", uid);
+
+            var ref = firebase.database().ref('nudge/'+uid+"/"+$scope.otherUser.info.uid);
+            var time = Date.now();
+            var userRef = firebase.database().ref('users/'+uid);
+
+
+            ref.update({
+
+              name: $scope.currentUser.displayName,
+              senderUid: uid,
+              receiverUid: $scope.otherUser.info.uid,
+              latestTime: time
+            });
+
+            $scope.newConversation($scope.otherUser,false);
+            $scope.closePopover();
+
+
+
+          };
+
+
+
+//------------------------POPOVER STUFF----------------------------------
+
+      $scope.$on('$ionicView.loaded', function () {
+        $scope.blurry = {behind: "0px"};
+      });
+
+
+        function makeblurry() {
+        if ($scope.popover.isShown()) {
+          console.log("blur background");
+          $scope.blurry = {behind: "5px"};
+        }
+        else {
+          console.log("clear up");
+          $scope.blurry = {behind: "0px"};
+        }
+      }
+
+      $scope.checkHit = function (event) {
+        if (event.target.className.includes("popup-container popup-showing")) {
+            $scope.closePopover();
+        }
+      };
+
+
+        $ionicPopover.fromTemplateUrl('my-popover.html', {
+          scope: $scope
+        }).then(function(popover) {
+          $scope.popover = popover;
+        });
+
+
+        $scope.openPopover = function($event, user) {
+        $scope.blurry.behind = "5px";
+        $scope.otherUser = user;
+        console.log("nudge popover");
+        $scope.pop = 'nudge';
+        $scope.popover.show();
+      };
+
+      $scope.viewProfilePopover = function($event, user) {
+        $scope.blurry.behind = "5px";
+        $scope.otherUser = user;
+        console.log("profile popover");
+        $scope.pop = 'profile';
+        $scope.popover.show();
+      };
+
+
+      $scope.closePopover = function() {
+        $scope.blurry.behind = "0px";
+        $scope.popover.hide();
+        makeblurry();
+      };
+      //Cleanup the popover when we're done with it!
+      $scope.$on('$destroy', function() {
+         $scope.blurry.behind = "0px";
+        $scope.popover.remove();
+        makeblurry();
+      });
+      // Execute action on hide popover
+      $scope.$on('popover.hidden', function() {
+        $scope.blurry.behind = "0px";
+        // Execute action
+      });
+      // Execute action on remove popover
+      $scope.$on('popover.removed', function() {
+        $scope.blurry.behind = "0px";
+        // Execute action
+      });
+
 
 
 

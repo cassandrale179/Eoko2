@@ -1,24 +1,69 @@
-app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout',
-  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout) {
+app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout','$firebaseObject','$ionicPopup', 'EventInfo',
+  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout, $firebaseObject,$ionicPopup, EventInfo) {
 
 
     //------- AUTOCOMPLETE LOCATION ----------
     var input = document.getElementById('pac-input');
     var autocomplete = new google.maps.places.Autocomplete(input);
+      $scope.action = {};
 
-    var d = new Date();
-    var hour = (d.getHours() < 10) ? '0' + d.getHours() : d.getHours();
-    var minute = (d.getMinutes() < 10) ? '0' + d.getMinutes() : d.getMinutes();
+      $scope.selectTagList = [];
+
+       $scope.$on('$ionicView.afterEnter', function () //before anything runs
+      {
+        try
+        {
+          var d = new Date();
+          var hour = (d.getHours() < 10) ? '0' + d.getHours() : d.getHours();
+          var minute = (d.getMinutes() < 10) ? '0' + d.getMinutes() : d.getMinutes();
+
+          $scope.action.startTime = new Date(1970, 0, 1, hour, minute, 0);
+
+          if($scope.tagSelect)
+          {
+            for(var i in $scope.tagSelect)
+            {
+              if($scope.tagSelect[i].$value != null)
+              {
+                console.log("fucking reset you ass, ", $scope.tagSelect[i]);
+              $scope.selectionTag($scope.tagSelect[i].$value + 'create');
+              }
+
+            }
+            $scope.selectTagList = [];
+          }
+
+          if(geoPos.isReady() == true)
+        {
+          $scope.action.address = '';
+          initGeoLoc();
+        }
+
+          $scope.action.name = '';
+          $scope.action.description = '';
+          $scope.duration = {hours: '', minutes: ''};
+
+          if($scope.currentUser && $scope.thisUser)
+          {
+            $scope.action.photoURL = $scope.currentUser.photoURL;
+            $scope.setPrivacy($scope.thisUser.privacy);
+          }
 
 
-    $scope.action = {
-      'startTime': new Date(1970, 0, 1, hour, minute, 0)
-    };
+          }
+        catch(err)
+        {
+          console.log("first time?", err);
+        }
+        //startLoop();
+      });
+
 
     //--------TAGS -------------------------------------
     var tagsRef = firebase.database().ref('actions');
-    $scope.tagsArray = $firebaseArray(tagsRef);
-    $scope.tagsArray.$loaded(function(arr){
+    $scope.tagSelect = $firebaseArray(tagsRef);
+    $scope.tagSelect.$loaded(function(arr){
+      console.log("taglist create", $scope.tagSelect);
     });
 
     clicked = {
@@ -28,28 +73,53 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
     unclicked = {};
 
     $scope.publicStyle = clicked;
-    $scope.action.privacy = 'public';
-    $scope.selectedTags = [];
-    $scope.addTag = function(tag) {
-      var index = $scope.selectedTags.indexOf(tag);
-      if (index!=-1){
-        $scope.selectedTags.splice(index, 1);
-      }
-      else{
-        $scope.selectedTags.push(tag);
-      }
-      console.log($scope.selectedTags);
 
-    };
+    $scope.blurry = {behind: "0px"};
+    function showAlert(message) {
+        $scope.blurry = {behind: "5px"};
 
-    $scope.setStyle = function(tag) {
-      if ($scope.selectedTags.indexOf(tag)==-1){
-        return unclicked;
-      }
-      else {
-        return clicked;
-      }
-    };
+        var alertPopup = $ionicPopup.alert({
+          title: 'Error',
+          cssClass: 'eoko-alert-pop-up',
+          template: message
+        });
+        alertPopup.then(function(res) {
+          $scope.blurry = {behind: "0px"};
+        });
+      };
+
+   // $scope.selectTagList = [];
+      //select filter
+      $scope.selectionTag = function (elementId)
+      {
+        console.log("started select");
+      var elementClass = document.getElementById(elementId).className;
+        if(elementClass == "eoko-horizontal-scroll-button eoko-text-thin activated" || elementClass == "eoko-horizontal-scroll-button eoko-text-thin ng-binding activated")
+        {
+          console.log("activated");
+          document.getElementById(elementId).className = "eoko-horizontal-scroll-button-selected eoko-text-thin";
+          $scope.selectTagList.push(elementId.replace(/create/,''));
+        }else{
+          console.log("not activated");
+          document.getElementById(elementId).className = "eoko-horizontal-scroll-button eoko-text-thin";
+          for(var i in $scope.selectTagList)
+          {
+            console.log("for loopin" , i);
+            if($scope.selectTagList[i] == elementId.replace(/create/,''))
+            {
+              console.log("splicin");
+                  $scope.selectTagList.splice(i, 1);
+            }
+          }
+        }
+        if($scope.selectTagList == [])
+        {
+          console.log("nuller than a null pointer");
+          $scope.selectTagList = null;
+        }
+        console.log("searching",$scope.selectTagList);
+        $timeout(function(){$scope.$apply();});
+      };
 
 //------ CHECK IF USER IS CURRENTLY LOGGING IN ------
     firebase.auth().onAuthStateChanged(function(user) {
@@ -57,6 +127,13 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
         console.log("user is logged in." + user.uid);
         $scope.currentUser = user;
         $scope.action.photoURL = user.photoURL;
+
+        var rel = firebase.database().ref('users').child(user.uid);
+        $scope.thisUser = $firebaseObject(rel);
+        $scope.thisUser.$loaded().then(function(suc)
+        {
+          $scope.setPrivacy($scope.thisUser.privacy);
+        });
 
         console.log("photo URL acquired: ", $scope.action.photoURL);
         startLoop();
@@ -74,28 +151,35 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
        }
        else
        {
-         $scope.action.location = geoPos.getUserPosition();
-         var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + $scope.action.location + "&sensor=false";
-          $http.get(url).then(function(response){
-            console.log("Google maps response", response);
-            $scope.action.address = response.data.results[0].formatted_address;
-          });
+           initGeoLoc();
        }
      }
 
+     function initGeoLoc()
+     {
+       $scope.action.location = geoPos.getUserPosition();
+         var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + $scope.action.location +
+          "&key=AIzaSyCxi6Eah3dgixKG8oFO8DB6sMVN1v3mxuQ";
+          $http.get(url).then(function(response){
+            console.log("Google maps response", response);
+            $scope.action.address = response.data.results[0].formatted_address;
+          },
+          function(err)
+          {
+            console.log("Problem is probably CORS", err);
+          });
+     }
 
     // ------------ THIS ALLOW USER TO MOVE BETWEEN TWO DIFFERENT SCREENS ON CREATE ACTION PAGE  --------
     $scope.description = 0;
-    $scope.privSelect = 'public';
     //------------- THIS ALLOW USER TO SET PRIVACY OF ACTION ---------------------
-    $scope.setPrivacy = function(privacy) {
-
-
-
+    $scope.setPrivacy = function(privacy)
+    {
       if (privacy == "public")
       {
         $scope.publicStyle = clicked;
         $scope.privateStyle = unclicked;
+        $scope.inviteStyle = unclicked;
         $scope.privSelect = 'public';
       }
 
@@ -103,52 +187,150 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       {
         $scope.privateStyle = clicked;
         $scope.publicStyle = unclicked;
+        $scope.inviteStyle = unclicked;
         $scope.privSelect = 'private';
       }
+
+      if (privacy == "invite")
+      {
+        $scope.privateStyle = unclicked;
+        $scope.publicStyle = unclicked;
+        $scope.inviteStyle = clicked;
+        $scope.privSelect = 'invite';
+      }
       $scope.action.privacy = privacy;
-
-
     };
 
     // ------------ WHEN USER CLICK SUBMIT, THIS FUNCTION WILL HAPPEN --------
     $scope.submit = function(){
-      //Store the tags
-      $scope.action.tags = "";
-      for (var i = 0; i<$scope.selectedTags.length; i++){
-        $scope.action.tags+=$scope.selectedTags[i].$value;
+      $scope.action.tags = $scope.selectTagList;
+
+      if($scope.action.privacy == null || $scope.action.privacy == undefined
+         || $scope.action.privacy == "" || $scope.action.privacy == " ")
+      {
+        showAlert("You must select public or private");
+        return;
       }
+      if($scope.action.name == null || $scope.action.name == undefined
+         || $scope.action.name == "" || $scope.action.name == " ")
+      {
+        showAlert("You must create a title");
+        return;
+      }
+      if($scope.action.tags == null || $scope.action.tags == undefined
+         || $scope.action.tags == "" || $scope.action.tags == " ")
+      {
+        showAlert("You must press at least one tag");
+        return;
+      }
+      if($scope.action.address == null || $scope.action.address == undefined
+         || $scope.action.address == "" || $scope.action.address == " ")
+      {
+        showAlert("You must enter an address");
+        return;
+      }
+      if($scope.action.startTime == null || $scope.action.startTime == undefined
+         || $scope.action.startTime == "" || $scope.action.startTime == " ")
+      {
+        showAlert("You must enter a start time");
+        return;
+      }
+      if($scope.action.description == null || $scope.action.description == undefined
+         || $scope.action.description == "" || $scope.action.description == " ")
+      {
+        showAlert("You must enter a description");
+        return;
+      }
+      if($scope.action.comply == null || $scope.action.comply == undefined
+         || $scope.action.comply == "" || $scope.action.comply == " ")
+      {
+        showAlert("You must agree to create the action");
+        return;
+      }
+
+      if(($scope.duration.hours == null || $scope.duration.hours == undefined
+         || $scope.duration.hours == "" || $scope.duration.hours == " ") &&
+        ($scope.duration.minutes == null || $scope.duration.minutes == undefined
+         || $scope.duration.minutes == "" || $scope.duration.minutes == " "))
+      {
+        showAlert("You must set a duration for your action");
+        return;
+      }
+
+      if($scope.duration.hours == '')
+      {
+        $scope.duration.hours = 0;
+      }
+      if($scope.duration.minutes == '')
+      {
+        $scope.duration.minutes = 0;
+      }
+
+
+      //Store the tags
+      $scope.action.duration = $scope.duration;
+
       console.log($scope.action.tags);
       console.log("current user uid: ", $scope.currentUser.uid);
       var activitiesRef = firebase.database().ref('activities');
-      var userActionsRef = firebase.database().ref('users/' + $scope.currentUser.uid + '/actions/myActions');
+      var userActionsRef = firebase.database().ref('users/' + $scope.currentUser.uid).child('actions/myActions');
 
-
+      $scope.action.startTime = $scope.action.startTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+      console.log("new time",$scope.action.startTime);
       //List of friends for private Events
       var friendsRef = firebase.database().ref('users/' + $scope.currentUser.uid + '/friends');
       var friendsArray = $firebaseArray(friendsRef);
 
+      //Create an event chat
+      var chatsRef = firebase.database().ref('Chats/');
+      var eventChatRef = chatsRef.push({
+        name: $scope.action.name,
+        photoURL: $scope.currentUser.photoURL
+      });
+      var eventChatID = {chatID: eventChatRef.key}
+      chatsRef.child(eventChatID.chatID + '/ids').push({
+        id: $scope.currentUser.uid,
+        name: $scope.currentUser.displayName,
+        avatar: $scope.currentUser.photoURL
+      })
+
       //Submit the event and get the event ID
+      $scope.action.chatID = eventChatID.chatID;
+      $scope.action.owner = {
+        id: $scope.currentUser.uid,
+        name: $scope.currentUser.displayName
+      }
       eventRef = activitiesRef.push($scope.action);
       eventID = eventRef.key;
 
       //Push the event under the user database
       var event = {
         eventID: eventID,
-        location: $scope.action.location
+        location: $scope.action.location,
+        time: $scope.action.startTime,
+        name: $scope.action.name,
+        duration: $scope.duration,
+        userID: $scope.currentUser.uid
       };
 
       userActionsRef.child(eventID).update(event);
 
+
+      //Add chat id to the event creator (currentuser)
+      var userChatRef = firebase.database().ref('users/' + $scope.currentUser.uid).child('chat');
+      userChatRef.push(eventChatID);
+
+
+      //---------- IF PRIVACY IS SET AS PUBLIC --------------
       if ($scope.action.privacy == "public")
       {
         console.log($scope.action);
-        $state.go('eventList');
-        //Push event into firebase
-
-       
+        $state.go('navController.action');
+        return;
       }
 
-      if ($scope.action.privacy == "private")
+      //---------- IF PRIVACY IS SET AS PRIVATE --------------
+      else if ($scope.action.privacy == "private")
       {
         console.log($scope.action);
         friendsArray.$loaded(function(friendsArray){
@@ -156,16 +338,97 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
           angular.forEach(friendsArray, function(friend){
             console.log("friend ID:", friend.$id);
             var ref = firebase.database().ref('users/' + friend.$id + '/actions/friendActions');
-
             ref.child(eventID).update(event);
-
           });
-        $state.go('eventList');
+           $state.go('navController.action');
+           return;
         });
+      }
 
+      //---------- IF PRIVACY IS SET AS INVITE ONLY --------------
+      else if ($scope.action.privacy == "invite")
+      {
+        // console.log("invite event after user choose invite, as param");
+        // console.log(event);
+        // $state.go('invitePage', {eventObject: event})
+        EventInfo.setEventInfo(event);
+        $state.go('invitePage');
       }
 
     };
 
 
+
+//------------------------------google maps stuff-------------------
+function initAutocomplete() {
+          $scope.autocomplete = new google.maps.places.Autocomplete(
+              (document.getElementById('autocomplete')),
+              {types: ['geocode','establishment']});
+
+          container = document.getElementsByClassName('pac-container');
+            // disable ionic data tab
+            angular.element(container).attr('data-tap-disabled', 'true');
+            // leave input field if google-address-entry is selected
+            angular.element(container).on("click", function(){
+                document.getElementById('searchBar').blur();
+            });
+
+          $scope.autocomplete.addListener('place_changed', fillInAddress);
+        }
+
+        function fillInAddress() {
+          var place = $scope.autocomplete.getPlace();
+          console.log("THE FUCKING PLACE IS", place.geometry);
+          $scope.action.address = place.formatted_address;
+
+          var addr = place.formatted_address;
+          addr = addr.replace(/,/g,'');
+          addr = addr.replace(/ /g,'+');
+
+
+         var url = "https://maps.googleapis.com/maps/api/geocode/json?address="+ addr
+         + "&key=AIzaSyCxi6Eah3dgixKG8oFO8DB6sMVN1v3mxuQ";
+
+          $http.get(url).then(function(response){
+            console.log("SHATTY GOOGLE MAPS", response);
+
+            var lat = response.data.results[0].geometry.location.lat;
+            var long = response.data.results[0].geometry.location.lng;
+
+             $scope.action.location = lat + ', ' + long;
+          },
+          function(err)
+          {
+            console.log("Problem is probably CORS", err);
+          });
+
+        }
+
+        container = document.getElementsByClassName('pac-container');
+        // disable ionic data tab
+        angular.element(container).attr('data-tap-disabled', 'true');
+        // leave input field if google-address-entry is selected
+        angular.element(container).on("click", function(){
+            document.getElementById('searchBar').blur();
+        });
+
+        $scope.geolocate = function() {
+            google.maps.event.addDomListener(window, 'load', initAutocomplete);
+            initAutocomplete();
+
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              var geolocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              };
+              console.log("long lat", lng, lat);
+              var circle = new google.maps.Circle({
+                center: geolocation,
+                radius: position.coords.accuracy
+              });
+              $scope.autocomplete.setBounds(circle.getBounds());
+            });
+          }
+        };
   }])

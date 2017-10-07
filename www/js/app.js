@@ -7,7 +7,7 @@
 // 'eoko.controllers' is found in controllers.js
 
 angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.services', 'eoko.directives',
-'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngInstafeed', 'ngCordova', 'ngCordovaOauth', 'firebase', 'socialLogin', 'ngOpenFB','angularRangeSlider'])
+'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngInstafeed', 'ngCordova', 'ngCordovaOauth', 'firebase', 'socialLogin', 'ngOpenFB','angularRangeSlider', 'ngStorage'])
 
 .run(function($ionicPlatform, ngFB) {
   ngFB.init({appId: '694354544087073'});
@@ -42,11 +42,16 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
   firebase.initializeApp(config);
 })
 
+
 .config(function(socialProvider){
-socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
+  socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
 })
 
-
+//Config nav bar to the bottom of the screen regardless the platforms
+.config(function($ionicConfigProvider) {
+      $ionicConfigProvider.tabs.position('bottom');
+      ionic.Platform.setPlatform('ios');
+})
 
 //Config app states
 .config(function($stateProvider, $urlRouterProvider) {
@@ -63,36 +68,55 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
     controller: 'loginCtrl'
   })
 
+
+
+
   /* --------- JOIN LIST PAGE ------- */
-    .state('joinList', {
-      url: '/joinListPage',
-      nativeTransitions: {
-        type: "fade"
-      },
-      templateUrl: 'templates/joinList.html',
-      controller: 'joinListCtrl'
-    })
-
-
-  /* --------- EVENT LIST PAGE ------- */
-  .state('eventList', {
-    url: '/eventListPage',
+  .state('navController.notification', {
+    url: '/notificationPage',
     nativeTransitions: {
       type: "fade"
     },
-    templateUrl: 'templates/eventList.html',
-    controller: 'eventListCtrl'
+    views: {
+      'notificationPage': {
+        templateUrl: 'templates/joinList.html',
+        controller: 'joinListCtrl'
+      }
+    }
+  })
+
+
+  /* --------- EVENT LIST PAGE ------- */
+  .state('navController.action', {
+    url: '/actionPage',
+    nativeTransitions: {
+      type: "fade"
+    },
+    params: {
+          actionID: "",
+          SJWTriggered: false
+        },
+    views: {
+      'actionPage': {
+        templateUrl: 'templates/eventList.html',
+        controller: 'eventListCtrl'
+      }
+    }
   })
 
 
   /* --------- ACTION LIST PAGE ------- */
-  .state('actionList', {
-    url: '/actionListPage',
+  .state('navController.people', {
+    url: '/peoplePage',
     nativeTransitions: {
       type: "fade"
     },
-    templateUrl: 'templates/actionList.html',
-    controller: 'actionListCtrl'
+    views: {
+      'peoplePage': {
+        templateUrl: 'templates/actionList.html',
+        controller: 'actionListCtrl'
+      }
+    }
   })
 
   /* --------- ACTION CREATE PAGE ------- */
@@ -106,7 +130,34 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
   })
 
 
-/* --------- SETTING PAGE ------- */
+  /* --------- CHAT PAGE ------- */
+  .state('navController.chat', {
+    url: '/chatPage',
+    nativeTransitions: {
+      type: "fade"
+    },
+    views: {
+      'chatPage': {
+        templateUrl: 'templates/chatTab.html',
+        controller: 'chatTabCtrl'
+      }
+    }
+  })
+
+
+  /* --------- MAIN NAV BAR ------- */
+  .state('navController', {
+    url: '/navController',
+    nativeTransitions: {
+      type: "fade"
+    },
+    templateUrl: 'templates/navController.html',
+    abstract: true
+  })
+
+
+
+  /* --------- SETTING PAGE ------- */
   .state('settingPage', {
     url: '/settingPage',
     nativeTransitions: {
@@ -117,6 +168,8 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
   })
 
 
+
+  /* --------- MESSAGE PAGE ------- */
     .state('messagePage', {
       url: '/messagePage',
       nativeTrasitions: {
@@ -130,7 +183,7 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
       controller: 'messagePageCtrl'
     })
 
-
+/* --------- CHAT TAB PAGE ------- */
     .state('chatTab', {
       url: '/chatTab',
       nativeTransitions: {
@@ -139,6 +192,21 @@ socialProvider.setFbKey({appId: "694354544087073", apiVersion: "v2.10"});
       templateUrl: 'templates/chatTab.html',
       controller: 'chatTabCtrl'
     })
+
+/* --------- INVITE PAGE ------- */
+    .state('invitePage', {
+      url: '/invitePage',
+      nativeTrasitions: {
+        type: "fade"
+      },
+      params: {
+        eventObject: ""
+      },
+      templateUrl: 'templates/invitePage.html',
+      controller: 'invitePageCtrl'
+    })
+
+
 
 
   // if none of the above states are matched, use this as the fallback

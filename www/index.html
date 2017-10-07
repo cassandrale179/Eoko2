@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <!-- <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width"> -->
+    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title></title>
 
     <link rel="manifest" href="manifest.json">
@@ -42,6 +43,7 @@
     <script src="cordova.js"></script>
     <script src="js/angular-range-slider.min.js"></script>
 
+    
     <!-- Service worker -->
     <script>
       if ('serviceWorker' in navigator) {
@@ -70,6 +72,7 @@
     <script src="lib/angularjs-social-login/angularjs-social-login.js"></script>
     <script src="lib/angular-openfb/dist/openfb.js"></script>
     <script src="lib/angular-openfb/dist/ngopenfb.js"></script>
+    <script src="lib/ngstorage/ngStorage.min.js"></script>
 
     <!--  _____________________________ all controller js  _____________________________ -->
     <script src="controllers/loginCtrl.js"></script>
@@ -80,6 +83,7 @@
     <script src="controllers/settingPageCtrl.js"></script>
     <script src="controllers/chatTabCtrl.js"></script>
     <script src="controllers/messagePageCtrl.js"></script>
+    <script src="controllers/invitePage.js"></script>
 
     <!--  _____________________________ firebass js  _____________________________ -->
     <script src="lib/firebase/firebase.js"></script>
@@ -87,9 +91,6 @@
 
 
     <!-- _____________________________ GOOGLE MAPS API ____________________________ -->
-    <!-- <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCy5RuM4Fq4ZP7N282jpAk89iEf4ThIx7k">
-    </script> -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCy5RuM4Fq4ZP7N282jpAk89iEf4ThIx7k&libraries=places">
     </script>
 
@@ -143,4 +144,12 @@
     -->
     <ion-nav-view></ion-nav-view>
   </body>
+  <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10&appId=694354544087073";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 </html>
