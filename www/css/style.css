@@ -382,6 +382,8 @@ select{
   padding-right: 5%;
 }
 
+
+
 #C1, #E2A, #I2{
   background: rgba(255,255,255,0.8);
   opacity: 0.9;
@@ -1210,4 +1212,3 @@ select{
     stroke: white;
     fill : white;
   }
-
