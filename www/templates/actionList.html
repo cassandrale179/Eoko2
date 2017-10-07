@@ -2,6 +2,8 @@
   <ion-content padding="false" class="innerbackground eoko-content" scroll="false" style="filter: blur({{blurry.behind}});">
     <img class="logo" src="./img/eoko-logo.svg" ui-sref="settingPage" />
     <img class="tagline" src="img/peoplenearyou.png"></img>
+    
+    <button ng-click="facebookFuckery()">FUCKERY</button> 
 
 
     <!-- ____________________  DISPLAY USER FRIENDS WITHIN 10 MILES  _________________  -->
@@ -31,13 +33,15 @@
 
         <div id="C3">
             <img id="one" src="img/eoko-login.png" ng-click="openPopover($event, x)"/>
-          <!--   <img id="two" src="http://freevector.co/wp-content/uploads/2014/06/facebook-messenger-white.png"
+          <!--  <img id="two" src="http://freevector.co/wp-content/uploads/2014/06/facebook-messenger-white.png"
             ng-click="newConversation(x)" /> -->
           </div>
 
 
 
       </div>
+
+      <div style="height:140px"></div>
     </ion-scroll>
 
 <script id="my-popover.html" type="text/ng-template">

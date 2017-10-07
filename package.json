@@ -39,10 +39,6 @@
     },
     "cordova": {
         "plugins": {
-            "cordova-plugin-facebook4": {
-                "APP_ID": "1842131039434258",
-                "APP_NAME": "eoko"
-            },
             "cordova-background-geolocation-lt": {
                 "LICENSE": "YOUR_LICENSE_KEY",
                 "BACKGROUND_MODE_LOCATION": "<string>location</string>",
@@ -63,7 +59,11 @@
             "cordova-plugin-inappbrowser": {},
             "cordova-plugin-firebase": {},
             "cordova-plugin-x-toast": {},
-            "uk.co.workingedge.phonegap.plugin.launchnavigator": {}
+            "uk.co.workingedge.phonegap.plugin.launchnavigator": {},
+            "cordova-plugin-facebook4": {
+                "APP_ID": "694354544087073",
+                "APP_NAME": "Eoko"
+            }
         },
         "platforms": [
             "android"

@@ -2,6 +2,49 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
+exports.sendInviteNotification = functions.database.ref('/users/{uid}/actions/inviteActions/{eventId}').onWrite(event=> {
+  const eventId = event.params.eventId;
+  console.log("eventId", eventId);
+  console.log("event", event.data._delta);
+  const senderId = event.data._delta.userID;
+  console.log("sender ID", senderId);
+  const uid = event.params.uid;
+
+  const eventPromise = admin.database().ref(`/activities/${eventId}`).once('value');
+  const userPromise = admin.database().ref(`/users/${uid}`).once('value');
+  const senderPromise = admin.auth().getUser(senderId);
+
+  return Promise.all([eventPromise, userPromise, senderPromise]).then(results => {
+    const action = results[0].val();
+    const user = results[1].val();
+    const sender = results[2];
+    const instanceId = user.messageToken;
+    console.log('user message token: ', instanceId);
+    const body = sender.displayName + " just invited you to " + event.data._delta.name+"!";
+    console.log("Name of event: ", event.data._delta.name);
+    const payload = {
+      notification: {
+        title: "êoko Invite",
+        body: body,
+        sound: "default"
+      },
+      data: {
+        eventID: eventId,
+        eventName: action.name,
+        senderID: sender.uid
+      }
+    }
+
+    admin.messaging().sendToDevice(instanceId, payload)
+      .then(function(response){
+        console.log("Successfully sent message", response);
+      })
+      .catch(function(error){
+        console.log("Error sending message", error);
+      })
+  })
+})
+
 exports.sendMessageNotification = functions.database.ref('/Chats/{chatId}/messages/{messageId}').onWrite(event => {
   const chatId = event.params.chatId;
   const messageId = event.params.messageId;

@@ -92,8 +92,8 @@
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.6" />
     <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
-        <variable name="APP_ID" value="1842131039434258" />
-        <variable name="APP_NAME" value="eoko" />
+        <variable name="APP_ID" value="694354544087073" />
+        <variable name="APP_NAME" value="Eoko" />
     </plugin>
     <plugin name="cordova-plugin-firebase" spec="^0.1.24" />
     <plugin name="cordova-plugin-geolocation" spec="^2.4.3">

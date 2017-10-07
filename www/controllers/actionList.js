@@ -1,6 +1,6 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform', 'facebookService',
 
-  function ($scope, $state, $firebaseArray,  $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform) {
+  function ($scope, $state, $firebaseArray,  $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform, facebookService) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
@@ -53,6 +53,35 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
         // $scope.currentUser.uid = UserInfo.getUser().uid;
       });
     });
+
+
+    $scope.facebookFuckery = function()
+    {
+      facebookConnectPlugin.appInvite(
+        {
+            url: "https://fb.me/705123973010130",
+            picture: "https://static1.squarespace.com/static/58001680d2b8579653e773bd/t/59446a67d2b8579c7609ea83/1507244341876/?format=1500w"
+        },
+        function(obj){
+            if(obj) {
+                if(obj.completionGesture == "cancel") {
+                    console.log("hit cancel");
+                } else {
+                    console.log("thanks for the invite!");
+                }
+            } else {
+                console.log("what did you do?");
+            }
+        },
+        function(obj){
+            // error
+            console.log(obj);
+        });
+
+    };
+
+
+
 
 
      $scope.$on('$ionicView.afterEnter', function () //before anything runs
@@ -137,6 +166,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
           $timeout(function()
           {
             //$scope.loadedOnce = false;
+            facebookService.getUserInfo($scope.currentUser);
             getFriends();
 
           },1000);

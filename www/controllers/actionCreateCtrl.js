@@ -1,5 +1,5 @@
-app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout','$firebaseObject','$ionicPopup',
-  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout, $firebaseObject,$ionicPopup) {
+app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout','$firebaseObject','$ionicPopup', 'EventInfo',
+  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout, $firebaseObject,$ionicPopup, EventInfo) {
 
 
     //------- AUTOCOMPLETE LOCATION ----------
@@ -240,6 +240,12 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
         showAlert("You must enter a description");
         return;
       }
+      if($scope.action.comply == null || $scope.action.comply == undefined
+         || $scope.action.comply == "" || $scope.action.comply == " ")
+      {
+        showAlert("You must agree to create the action");
+        return;
+      }
 
 
       //Store the tags
@@ -282,7 +288,8 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
         eventID: eventID,
         location: $scope.action.location,
         time: $scope.action.startTime,
-        name: $scope.action.name
+        name: $scope.action.name,
+        userID: $scope.currentUser.uid
       };
 
       userActionsRef.child(eventID).update(event);
@@ -320,7 +327,11 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       //---------- IF PRIVACY IS SET AS INVITE ONLY --------------
       else if ($scope.action.privacy == "invite")
       {
-        $state.go('invitePage', {actionObject: $scope.action, eventObject: event})
+        // console.log("invite event after user choose invite, as param");
+        // console.log(event);
+        // $state.go('invitePage', {eventObject: event})
+        EventInfo.setEventInfo(event);
+        $state.go('invitePage');
       }
 
     };
@@ -379,8 +390,6 @@ function initAutocomplete() {
         angular.element(container).on("click", function(){
             document.getElementById('searchBar').blur();
         });
-
-
 
         $scope.geolocate = function() {
             google.maps.event.addDomListener(window, 'load', initAutocomplete);

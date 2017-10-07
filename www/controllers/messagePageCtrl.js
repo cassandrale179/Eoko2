@@ -29,7 +29,7 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
             console.log("Error:", error);
           });
 
-        
+
       });
 
 
@@ -55,6 +55,13 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
           avatar: authUser.photoURL
 
         });
+
+        //Update last text in chat tab
+        var chatRef = firebase.database().ref(`Chats/${convoID}`);
+        chatRef.update({
+          lastText: $scope.data.messageText
+        })
+
         $scope.data.messageText = "";
         $ionicScrollDelegate.scrollBottom();
 

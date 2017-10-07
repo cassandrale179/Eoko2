@@ -1,18 +1,17 @@
-app.controller('invitePageCtrl', ['$scope', '$state', '$firebaseAuth', '$stateParams',
-function($scope, $state, $firebaseAuth, $stateParams){
+app.controller('invitePageCtrl', ['$scope', '$state', '$firebaseAuth', '$stateParams', 'EventInfo',
+function($scope, $state, $firebaseAuth, $stateParams, EventInfo){
 
   //----------------- LIST OF ARRAYS TO BE USED BY THIS CONTROLLER --------------
-  $scope.userFriendObject = []
-  $scope.splitArr = []
-  $scope.invitedPeople = []
-  var newArr = []
-  $scope.action = $stateParams.actionObject;
-  $scope.event = $stateParams.eventObject;
-  console.log($scope.action);
+  $scope.userFriendObject = [];
+  $scope.splitArr = [];
+  $scope.invitedPeople = [];
+  var newArr = [];
   console.log($scope.event);
 
-
-
+  $scope.$on('$ionicView.beforeEnter', function () //before anything runs
+  {
+   $scope.event = EventInfo.getEventInfo();
+  });
 
   //------------------- GET CURRENT USER UID -------------------
   firebase.auth().onAuthStateChanged(function(user){
@@ -44,6 +43,10 @@ function($scope, $state, $firebaseAuth, $stateParams){
       //---------------------- WHEN USER CLICK INVITE FRIENDS  -----------------------
       $scope.inviteFriend = function(id){
         var className = document.getElementById(id).className;
+        console.log("This is the id that is passed to inviteFriend");
+        console.log(id);
+
+        //------------ IF USER SELECT A PERSON, THEN CHANGE THE OPACITY --------------
         if (className == "opaque activated"){
           document.getElementById(id).className = "not-opaque activated";
           $scope.invitedPeople.push(id);
@@ -53,11 +56,36 @@ function($scope, $state, $firebaseAuth, $stateParams){
           toDeleteIndex = $scope.invitedPeople.indexOf(id);
           $scope.invitedPeople.splice(toDeleteIndex,1);
         }
-      }
+      };
 
 
       //---------------------- WHEN USER SUBMIT, EVENT ARE PUSHED UNDER THE FRIEND-----------------------
+      $scope.invitedSubmit = function(invitedPeople2){
+        for (var i = 0;  i < invitedPeople2.length; i++){
+          console.log("invitedpeople2");
+          console.log(invitedPeople2[i]);
+          var inviteRef = firebase.database().ref("users/" + invitedPeople2[i] + "/actions/inviteActions");
+          console.log("Invite process begin");
+          inviteRef.child($scope.event.eventID).update($scope.event);
+          console.log("This is the scope.event when it is passed");
+          console.log($scope.event);
+          console.log("Invite process done");
+        }
 
+        //----------------- DESELECT THE CSS ------------------
+        for (var j = 0; j < $scope.invitedPeople.length; j++){
+          document.getElementById($scope.invitedPeople[j]).className = "opaque activated";
+        }
+
+        //HARD RESET AN ARRAY
+        while ($scope.invitedPeople.length > 0) {
+          $scope.invitedPeople.pop();
+        }
+        console.log("Process reset array");
+        console.log($scope.invitedPeople);
+        $state.go('navController.notification');
+
+      };
     })
   });
 }])

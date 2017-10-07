@@ -105,17 +105,29 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
       $scope.tagSelect = $firebaseArray(tagsRef);
       $scope.tagSelect.$loaded(function(arr){
         console.log("taglist create", $scope.tagSelect);
+
+        //----------- CHECK FOR SIMILAR TAGS ------------------
+        for (var i = 0; i < $scope.action.tags.length; i++){
+          for (var j = 0; j < $scope.tagSelect.length; j++){
+            if ($scope.action.tags[i] == $scope.tagSelect[j].$value){
+              console.log($scope.tagSelect[j]);
+            }
+          }
+        }
+
+        // ------------ COLORING THE TAGS THAT ALREADY EXIST -------
+        for (var i = 0; i < $scope.action.tags.length; i++){
+          for (var j = 0; j < $scope.tagSelect.length; j++){
+            if ($scope.action.tags[i] == $scope.tagSelect[j].$value){
+              console.log("Some similar tag",$scope.action.tags[i] + 'create');
+              var idName = $scope.action.tags[i] + 'create';
+              document.getElementById('Networkingcreate').className = "eoko-horizontal-scroll-button-selected eoko-text-thin";
+            }
+          }
+        }
       });
 
 
-      //------------ COLORING THE TAGS THAT ALREADY EXIST -------
-      // for (var i = 0; i < $scope.action.tags.length; i++){
-      //   for (var j = 0; j < $scope.tagSelect.length; j++){
-      //     if ($scope.action.tags[i] == $scope.tagSelect[j].value){
-      //       console.log($scope.tagSelect[j]);
-      //     }
-      //   }
-      // }
 
 
       //------------- WHEN USER SELECT A TAG -----------------
@@ -149,6 +161,81 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
         console.log("searching",$scope.selectTagList);
         $timeout(function(){$scope.$apply();});
       };
+
+      //------------------------------google maps stuff-------------------
+      function initAutocomplete() {
+                $scope.autocomplete = new google.maps.places.Autocomplete(
+                    (document.getElementById('autocomplete')),
+                    {types: ['geocode','establishment']});
+
+                container = document.getElementsByClassName('pac-container');
+                  // disable ionic data tab
+                  angular.element(container).attr('data-tap-disabled', 'true');
+                  // leave input field if google-address-entry is selected
+                  angular.element(container).on("click", function(){
+                      document.getElementById('searchBar').blur();
+                  });
+
+                $scope.autocomplete.addListener('place_changed', fillInAddress);
+              }
+
+              function fillInAddress() {
+                var place = $scope.autocomplete.getPlace();
+                console.log("THE FUCKING PLACE IS", place.geometry);
+                $scope.action.address = place.formatted_address;
+
+                var addr = place.formatted_address;
+                addr = addr.replace(/,/g,'');
+                addr = addr.replace(/ /g,'+');
+
+
+               var url = "https://maps.googleapis.com/maps/api/geocode/json?address="+ addr
+               + "&key=AIzaSyCxi6Eah3dgixKG8oFO8DB6sMVN1v3mxuQ";
+
+                $http.get(url).then(function(response){
+                  console.log("SHATTY GOOGLE MAPS", response);
+
+                  var lat = response.data.results[0].geometry.location.lat;
+                  var long = response.data.results[0].geometry.location.lng;
+
+                   $scope.action.location = lat + ', ' + long;
+                },
+                function(err)
+                {
+                  console.log("Problem is probably CORS", err);
+                });
+
+              }
+
+              container = document.getElementsByClassName('pac-container');
+              // disable ionic data tab
+              angular.element(container).attr('data-tap-disabled', 'true');
+              // leave input field if google-address-entry is selected
+              angular.element(container).on("click", function(){
+                  document.getElementById('searchBar').blur();
+              });
+
+
+
+              $scope.geolocate = function() {
+                  google.maps.event.addDomListener(window, 'load', initAutocomplete);
+                  initAutocomplete();
+
+                if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(function(position) {
+                    var geolocation = {
+                      lat: position.coords.latitude,
+                      lng: position.coords.longitude
+                    };
+                    console.log("long lat", lng, lat);
+                    var circle = new google.maps.Circle({
+                      center: geolocation,
+                      radius: position.coords.accuracy
+                    });
+                    $scope.autocomplete.setBounds(circle.getBounds());
+                  });
+                }
+              };
 
 
         //--------- EDIT SUBMIT BUTTON ---------------
