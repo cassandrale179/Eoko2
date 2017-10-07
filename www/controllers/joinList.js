@@ -297,7 +297,7 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
                 }
                 if (activityTable.hasOwnProperty($scope.joinEventID[i])){
                   $scope.joinEvents.push(activityTable[$scope.joinEventID[i]]);
-                  activityTable[$scope.joinEvents[i]].eventid = $scope.joinEventID[i];
+                  // activityTable[$scope.joinEvents[i]].eventid = $scope.joinEventID[i];
                 }
             }
               console.log("List of created events");
