@@ -42,6 +42,7 @@ app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state'
                     $scope.authObj.$signInWithCredential(credential).then(function(firebaseUser) {
                       console.log("Credential signed in as:", firebaseUser.uid);
                       currentUserUid = firebaseUser.uid;
+                      console.log("ready?", geoPos.isReady());
 
 
 
