@@ -172,6 +172,8 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
     // ------------ THIS ALLOW USER TO MOVE BETWEEN TWO DIFFERENT SCREENS ON CREATE ACTION PAGE  --------
     $scope.description = 0;
+    $scope.privSelect = 'public';
+    $scope.action.privacy = 'public';
     //------------- THIS ALLOW USER TO SET PRIVACY OF ACTION ---------------------
     $scope.setPrivacy = function(privacy)
     {

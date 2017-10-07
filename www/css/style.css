@@ -12,10 +12,6 @@ A: LOGIN PAGE
   bottom: 0 !important;
 }
 
-.manual-ios-statusbar-padding{
-  padding-top: 5px;
-}
-
 .background{
    background: linear-gradient(
                      rgba(20,20,20, .6),
@@ -204,6 +200,49 @@ select{
 
 
 
+/* -------------------------------- CHECKBOX --------------------------- */
+ .eoko-text-field-checkbox-box {
+  position: relative;
+  display: inline-block;
+  bottom: 2px;
+  left: 0;
+  width: 25px;
+  height: 25px;
+  background: #e6e6e6;
+}
+
+/* Checked state */
+.eoko-label-text-field input:checked ~ .eoko-text-field-checkbox-box {
+  background: #F57C00;
+}
+
+/* Check mark */
+.eoko-text-field-checkbox-box:after {
+  position: relative;
+  display: none;
+  content: '';
+}
+
+/* Show check mark */
+.eoko-label-text-field input:checked ~ .eoko-text-field-checkbox-box:after {
+  display: block;
+}
+
+/* Checkbox tick */
+.eoko-text-field-checkbox .eoko-text-field-checkbox-box:after {
+  top: 2px;
+  left: 10px;
+  width: 5px;
+  height: 15px;
+  transform: rotate(45deg);
+  border: solid #FFFFFF;
+  border-width: 0 2px 2px 0;
+}
+
+.eoko-login-options {
+  margin-top: 15px;
+  text-align: center;
+}
 
 
 /* -------------------------------- NAVIGATION BAR --------------------------- */
@@ -301,7 +340,19 @@ select{
   right: 20px;
 }
 
-#B input, #B textarea, #N input{
+.eoko-input-field{
+  width: 90%;
+  border: none;
+  background: rgba(255,255,255,0.9);
+  color: grey;
+  font-family: 'San Francisco Display Regular', sans-serif;
+  display: block;
+  margin: 0 auto 10px auto;
+  border-radius: 5px;
+  /* box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3); */
+}
+
+#N input{
   width: 90%;
   border: none;
   background: rgba(255,255,255,0.9);
@@ -313,7 +364,6 @@ select{
   margin-bottom: 10px;
   border-radius: 5px;
   box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);
-
 }
 
 #B textarea{
@@ -346,11 +396,11 @@ select{
 }
 
 #B3 button, #submit{
-  margin-top: 5%;
+  margin-top: 0;
   width: 90%;
   color: white;
   border-radius: 20px;
-  background: rgba(230, 126, 34, 0.6);
+  background: rgba(230, 126, 34, 1);
 }
 
 #back{
@@ -377,6 +427,13 @@ select{
 
 #B4{
   text-align: center;
+  margin-bottom: 1vh;
+}
+
+#B4a{
+  position: relative;
+  bottom: 3px;
+  left: 20px;
 }
 
 
@@ -528,7 +585,7 @@ select{
 /* ---------------------------------------- EVENTS PAGE -------------------------------------- */
 
 #E{
-  margin: 15px 10px 20px 10px;
+  margin: 7px 10px 20px 10px;
 }
 
 #E1{
@@ -1150,12 +1207,8 @@ select{
 }
 
 #M5{
-  height: 135vw;
+  height: 129.5vw;
 }
-
-/* .input-cover {
-  position: static;
-} */
 
 #N button{
   border-radius: 20px;

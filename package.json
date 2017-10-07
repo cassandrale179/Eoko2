@@ -29,6 +29,7 @@
         "cordova-plugin-inappbrowser": "^1.7.1",
         "cordova-plugin-local-notifications": "git+https://github.com/katzer/cordova-plugin-local-notifications.git",
         "cordova-plugin-splashscreen": "^4.0.3",
+        "cordova-plugin-statusbar": "^2.2.3",
         "cordova-plugin-whitelist": "^1.3.2",
         "cordova-plugin-x-toast": "^2.6.0",
         "de.appplant.cordova.plugin.local-notification": "https://github.com/katzer/cordova-plugin-local-notifications",
@@ -63,7 +64,8 @@
                 "APP_ID": "694354544087073",
                 "APP_NAME": "Eoko"
             },
-            "ionic-plugin-keyboard": {}
+            "ionic-plugin-keyboard": {},
+            "cordova-plugin-statusbar": {}
         },
         "platforms": [
             "android"

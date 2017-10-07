@@ -1,22 +1,22 @@
 <ion-view hide-nav-bar="true">
-  <ion-content padding="false" class="innerbackground eoko-content" scroll="false" style="filter: blur({{blurry.behind}});">
-      
-    <img class="" src="img/setting_icon.png" ui-sref="settingPage" style="float: right; position: absolute;"/>
-    <img class="logo" src="img/eoko-logo.svg"/>
-    <img class="tagline" src="img/peoplenearyou.png"/>
+  <ion-content padding="false" class="manual-ios-statusbar-padding innerbackground eoko-content" scroll="false" style="filter: blur({{blurry.behind}});">
+    
+
+    <div style=" margin-top: 7px">
+      <img class="" src="img/setting_icon.png" ui-sref="settingPage" style="float: right; "/>        
+    </div>
+
+    <div>
+      <img class="logo" src="img/Eoko-logo.svg"/>
+      <img class="tagline" src="img/peoplenearyou.png"/>
+    </div>
 
 
 
 
     <!-- <button ng-click="facebookFuckery()">FUCKERY</button> -->
 
-
-
-
     <!-- ____________________  DISPLAY USER FRIENDS WITHIN 10 MILES  _________________  -->
-
-
-
     <ion-scroll id="C" overflow-scroll="false" style="height: calc(86% - 70px);">
 
       <ion-refresher on-refresh="doRefresh()"></ion-refresher>

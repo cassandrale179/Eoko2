@@ -10006,14 +10006,13 @@ a.button {
   font-size: 1.6em; }
 
 .eoko-input {
-  text-align: center;
-  padding-bottom: 10px;
-  background: none; }
+  text-align: left;
+}
 
 input[type="text"],
 input[type="date"],
 input[type="time"] {
-  margin: 0.3em;
+  margin-bottom: 10px;
   border-style: solid;
   border-bottom-width: 1px;
   border-bottom-color: rgba(255, 255, 255, 0.6);
@@ -10029,7 +10028,7 @@ input[type="time"] {
   resize: none; }
 
 input, textarea::-webkit-input-placeholder {
-  color: #FFFFFF;
+  color: grey;
   opacity: 0.6; }
 
 .eoko-bell-left {
@@ -10388,10 +10387,8 @@ input[type="search"],
 input[type="tel"],
 input[type="color"] {
   display: block;
-  padding-top: 2px;
-  padding-left: 0;
+  padding: 2%;
   height: 34px;
-  color: white;
-  vertical-align: middle;
+  color: grey;
   font-size: 14px;
   line-height: 16px; }
