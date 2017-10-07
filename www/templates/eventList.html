@@ -29,7 +29,15 @@
       <!-- _____________ CARDS OF EVENTS _______ -->
       <ion-scroll id="E2" overflow-scroll="false" style="height: calc(100% - 70px);">
         <ion-refresher on-refresh="doRefresh()"></ion-refresher>
-        <div id="E2A" ng-repeat="(key,x) in events | orderObjectBy:'distance' | filter: {display: true} | filter: searchEvent">
+        <div id="E2A"
+
+        ng-if="privacyFilter=='public' && x.info.privacy=='public' ||
+        privacyFilter=='private' && x.info.privacy=='private'&&userFriendsList[x.info.owner.id] ||
+        privacyFilter=='private' && x.info.privacy=='invite'&&inviteActions[x.info.$id]
+        "
+
+
+        ng-repeat="(key,x) in events | orderObjectBy:'distance' | filter: {display: true} | filter: searchEvent">
           <img ng-src="{{x.info.photoURL}}" />
           <div id="E2A1" ng-click="openPopover($event, x)">
             <div id="E2A11">{{x.info.name}}</div>

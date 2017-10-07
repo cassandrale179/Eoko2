@@ -2,23 +2,34 @@
   <ion-content padding="true" class="innerbackground eoko-content" scroll="false">
 
 
+
     <!-- ___________________ THIS DIV WILL DISPLAY THE EVENTS THAT YOU HAVE CREATED ________________ -->
     <div id="I1" ng-hide="show==2">
       <button ng-click="show=1"> Created </button>
       <button ng-click="show=3"> Joined </button>
       <i class="fa fa-trash-o" aria-hidden="true"></i>
     </div>
+  <ion-scroll>
     <div id="I" ng-show="show==1">
       <div id="error" ng-if="errorMessage != ''">
         {{errorMessage}}
       </div>
-      <div id="I2" ng-repeat="event in myEvents" ng-click="editAction(event.eventid)">
+      <!-- <div id="I2" ng-repeat="event in myEvents" ng-click="editAction(event.eventid)">
         <img ng-src="{{event.photoURL}}" />
         <div id="I2A">
           {{event.name}}
           <div id="I2B">
-            <!-- <button ng-click="editAction(event.eventid)"> Edit </button>
-            <button ng-click="deleteAction(event.eventid)"> Delete </button> -->
+          </div>
+        </div>
+      </div> -->
+      <div id="I2" ng-repeat="event in createdArray" ng-click="editAction(event.eventID)">
+        <img ng-src="{{event.photoURL}}" />
+        <div id="I2A">
+          {{event.name}}
+
+          <div id="I2B">
+              <!-- {{event.time}}
+              {{event.privacy}} -->
           </div>
         </div>
       </div>
@@ -64,13 +75,15 @@
       <div id="error" ng-if="errorMessage2 != ''">
         {{errorMessage2}}
       </div>
-      <div id="I2" ng-repeat="join in joinEvents">
+      <div id="I2" ng-repeat="join in joinArray">
         <img ng-src="{{join.photoURL}}" />
         <div id="I2A">
           {{join.name}}
         </div>
       </div>
     </div>
-</ion-content> -->
+  </ion-scroll>
+
+</ion-content>
 
 </ion-view>
