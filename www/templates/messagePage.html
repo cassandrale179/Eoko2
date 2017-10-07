@@ -1,17 +1,18 @@
 <ion-view hide-nav-bar="true">
-  <ion-content padding="false" class="innerbackground" scroll="false">
-      <!--spacer-->
-    <div class="spacer" style="height: 20px;"></div>
+  <ion-content id="messagePageContent" padding="false" class="innerbackground" overflow-scroll="true" scroll="false">
 
-    <div class="button-bar">
-      <a ui-sref="navController.chat" class="eoko-button-clear ion-chevron-left" native-transitions nav-direction="back"></a>
-     <!--  <img id="M" ng-src="{{userInfo.avatar}}"/>
-      <a class="M2">{{userInfo.avatar}}</a> -->
+    <!--spacer-->
+    <div class="spacer" style="height: 20px;"></div>
+    
+    <a ui-sref="navController.chat" class="eoko-button-clear ion-chevron-left" native-transitions nav-direction="back" style="float: left; position: absolute;" ng-click="resetElements()"></a>
+
+    <div id="M">  
+      <img id="M0a" ng-src="{{userInfo.avatar}}"/>
+      <h3 id="M0b">Insert Name of Conv.</a>
     </div>
 
     <div>
-
-      <ion-scroll style="height: 500px" on-swipe-down="onSwipeDown()" ng-click="dynamicChatBarTap()">
+      <ion-scroll id="M5" style="{{M5style}}" on-swipe-down="onSwipeDown()" ng-click="closeKeyboard()">
         <div ng-repeat="message in messages track by $index" ng-class="{other: message.userId == myId}" class="messages">
 
           <div id="M1" ng-class="{'slide-right': hideTime, '': !hideTime}" style="height:auto;">
@@ -30,10 +31,8 @@
               </div>
             </div>
 
-
             <div ng-if="message.userId == myId">
               <img id="Mm" src="{{message.avatar}}">
-
               <!--current user's message-->
               <div id="Mm2">
                 <div ng-if="message.userId == myId" class="eoko-text-ultralight time" ng-class="{'slide-right': hideTime, '': !hideTime}" style="display: block; float: right; margin-bottom: 2px;">
@@ -43,19 +42,17 @@
                   {{ message.text }}
                 </span>
               </div>
-
-
             </div>
           </div>
 
         </div>
       </ion-scroll>
 
-
-      <div class="chatBar" id="chatBar">
-        <input class="eoko-text-area" style="background-color: transparent; border-bottom: transparent; font-size: 17px; width: calc(100% - 3em)" type="text" placeholder="Text here..." ng-model="data.messageText" ng-click="dynamicChatBar()">
-        <a class="eoko-button-clear eoko-icon-send-message" style="margin-top: 6px;" ng-click="sendMessage()"></a>
-      </div>
+      <ion-footer-bar id="M4" style="{{M4style}}">
+          <input id="M4a" type="text" placeholder="Text here..." ng-model="data.messageText" ng-click="showKeyboard()" autofocus>
+          <a class="eoko-button-clear eoko-icon-send-message" style="margin-top: 6px;" ng-click="sendMessage()"></a>
+      </ion-footer-bar>
+      
     </div>
-</ion-content>
+  </ion-content>
 </ion-view>

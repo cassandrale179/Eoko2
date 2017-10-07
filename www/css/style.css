@@ -285,12 +285,12 @@ select{
 
 #B h1{
   color: white;
-  font-family: 'Roboto';
+  font-family: 'San Francisco Display Regular';
   text-align: center;
 }
 
 #B h4{
-  font-family: 'Roboto', sans-serif;
+  font-family: 'San Francisco Display Regular', sans-serif;
   color: white;
   position: fixed;
   bottom: 20px;
@@ -302,7 +302,7 @@ select{
   border: none;
   background: rgba(255,255,255,0.9);
   color: grey;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'San Francisco Display Regular', sans-serif;
   display: block;
   margin: auto;
   padding: 5%;
@@ -332,7 +332,7 @@ select{
 }
 #B2 button{
   color: white;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'San Francisco Display Regular', sans-serif;
   border: 1px rgba(255, 255, 255, 0.61) solid;
   background: none;
   margin: 5px;
@@ -351,7 +351,7 @@ select{
 
 #back{
   color: white;
-  font-family: 'Robot', sans-serif;
+  font-family: 'San Francisco Display Regular', sans-serif;
   position: fixed;
   top: 10px;
   font-size: 20px;
@@ -1042,13 +1042,20 @@ select{
 
 /* --------------------- CHAT PAGE DETAIL --------------- */
 #M{
+  text-align: center;
+}
+
+#M0a{
   border-radius: 50%;
-  float: left;
   object-fit: cover;
-  width: 50px;
-  height: 50px;
-  margin-top: 17px;
-  margin-right: 5px;
+  width: 17vw;
+  height: 17vw;
+}
+
+#M0b{
+  font-family: "San Francisco Display Regular", sans-serif;
+  color: white;
+  margin-top: 1vw;
 }
 
 #M1{
@@ -1117,6 +1124,22 @@ select{
   font-size: 17px;
 }
 
+#M4a{
+  background-color: transparent; 
+  border-bottom: transparent; 
+  font-size: 4.5vw; 
+  width: 82vw; 
+  float: left; 
+  color: black;
+}
+
+#M5{
+  height: 135vw;
+}
+
+/* .input-cover {
+  position: static;
+} */
 
 #N button{
   border-radius: 20px;

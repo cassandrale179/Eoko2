@@ -54,7 +54,6 @@
             "cordova-plugin-device": {},
             "cordova-plugin-splashscreen": {},
             "cordova-plugin-whitelist": {},
-            "ionic-plugin-keyboard": {},
             "de.appplant.cordova.plugin.local-notification": {},
             "cordova-plugin-inappbrowser": {},
             "cordova-plugin-firebase": {},
@@ -63,7 +62,8 @@
             "cordova-plugin-facebook4": {
                 "APP_ID": "694354544087073",
                 "APP_NAME": "Eoko"
-            }
+            },
+            "ionic-plugin-keyboard": {}
         },
         "platforms": [
             "android"
