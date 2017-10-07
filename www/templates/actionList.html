@@ -1,33 +1,40 @@
 <ion-view hide-nav-bar="true">
   <ion-content padding="false" class="innerbackground eoko-content" scroll="false" style="filter: blur({{blurry.behind}});">
+
     <img class="logo" src="./img/eoko-logo.svg" ui-sref="settingPage" />
     <img class="tagline" src="img/peoplenearyou.png"></img>
-    
-    <button ng-click="facebookFuckery()">FUCKERY</button> 
+
+
+
+
+    <!-- <button ng-click="facebookFuckery()">FUCKERY</button> -->
+
+
 
 
     <!-- ____________________  DISPLAY USER FRIENDS WITHIN 10 MILES  _________________  -->
 
 
-   
+
     <ion-scroll id="C" overflow-scroll="false" style="height: calc(86% - 70px);">
-      
+
       <ion-refresher on-refresh="doRefresh()"></ion-refresher>
-      
-      <div id="C1" ng-repeat="x in peopleList track by $index" ng-if="currentUser.uid != x.uid"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
-        <img ng-src="{{x.photoURL}}" ng-click="viewProfilePopover($event, x)"/>
+
+
+      <div id="C1" ng-repeat="(key,x) in people | orderObjectBy:'distance' " ng-if="currentUser.uid != x.info.uid && (peopleFilter=='public' && x.info.display=='public') || (peopleFilter=='private' && x.info.display=='private' && userFriendsList[x.info.uid])"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
+        <img ng-src="{{x.info.photoURL}}" ng-click="viewProfilePopover($event, x)"/>
         <div id="C1A" ng-click="viewProfilePopover($event, x)">
-          {{x.name}}
+          {{x.info.name}}
           <br />
 
-          <div ng-if="distList[$index].dist >= 0.1" id="C2">
-            {{distList[$index].dist | number:1}} miles
+          <div ng-if="x.distance >= 0.1" id="C2">
+            {{x.distance | number:1}} miles
           </div>
-          <div ng-if="distList[$index].dist < 0.1" id="C2">
-            {{distList[$index].dist * 5280  | number:1 }} feet
+          <div ng-if="x.distance < 0.1" id="C2">
+            {{x.distance * 5280  | number:1 }} feet
           </div>
 
-          
+
         </div>
 
 
@@ -56,15 +63,15 @@
           </div>
           <div id="D2">
             <div id="D2A">
-              <img ng-src="{{currentUser.photoURL}}" />
+              <img ng-src="{{currentUser.info.photoURL}}" />
               <h4> {{currentUser.displayName}} </h4>
             </div>
             <div id="D2B">
               <i class="fa fa-chevron-right" aria-hidden="true"></i>
             </div>
             <div id="D2C">
-              <img ng-src="{{otherUser.photoURL}}" />
-              <h4> {{otherUser.name}}</h4>
+              <img ng-src="{{otherUser.info.photoURL}}" />
+              <h4> {{otherUser.info.name}}</h4>
             </div>
           </div>
           <br>
@@ -80,22 +87,22 @@
             <!-- <i class="fa fa-times" aria-hidden="true" ng-click="hideEokoNudge()"></i> -->
           </div>
           <div id="D2">
-            <img style="margin: 0 auto;" ng-src="{{otherUser.photoURL}}" />
+            <img style="margin: 0 auto;" ng-src="{{otherUser.info.photoURL}}" />
           </div>
 
               <h5 style="color: white;text-align: center;">Active Actions</h5>
-                <ion-scroll overflow-scroll="false" style="max-height: 24vh;" ng-if="otherUser.actions.myActions">
+                <ion-scroll overflow-scroll="false" style="max-height: 24vh;" ng-if="otherUser.info.actions.myActions">
 
-                    <ion-item ng-repeat="action in otherUser.actions.myActions"
+                    <ion-item ng-repeat="action in otherUser.info.actions.myActions"
                     style="background-color: rgba(0,0,0,0);color: white"
                     ng-click="viewPersonAction(action.eventID, true)">
-             
+
                         <div class="activeActions">{{action.name}}</div>  <span style="float:right;">{{action.time}}</span>
-           
+
                     </ion-item>
 
                 </ion-scroll>
-                <h5 style="color: white" ng-if="!(otherUser.actions.myActions)">
+                <h5 style="color: white" ng-if="!(otherUser.info.actions.myActions)">
                 No active actions at this time</h5>
           <br>
           <br>
@@ -108,7 +115,7 @@
     </div>
   </script>
 
-  
+
 
 </ion-content>
 </ion-view>
