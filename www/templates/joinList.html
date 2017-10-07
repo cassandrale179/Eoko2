@@ -12,17 +12,6 @@
       <div id="error" ng-if="errorMessage != ''">
         {{errorMessage}}
       </div>
-
-      <ion-list can-swipe="true">
-        <ion-item ng-repeat="event in myEvents">
-          <img ng-src="{{event.photoURL}}" />
-                        {{event.name}}
-
-                        <ion-option-button class="button-assertive icon ion-trash-a"></ion-option-button>
-                        <ion-option-button class="button-light icon ion-edit"></ion-option-button>
-                    </ion-item>
-
-      </ion-list>
       <div id="I2" ng-repeat="event in myEvents" ng-click="editAction(event.eventid)">
         <img ng-src="{{event.photoURL}}" />
         <div id="I2A">
@@ -72,29 +61,16 @@
 
     <!-- ___________________ THIS DIV WILL DISPLAY THE EVENTS THAT YOU HAVE JOINED ----------->
     <div id="J" ng-show="show==3">
-
-        <ion-list can-swipe="true">
-          <ion-item ng-repeat="join in joinEvents" href="#">
-            <img ng-src="{{join.photoURL}}" />
-                          {{join.name}}
-                          <!-- <ion-option-button class="button-light icon ion-heart"></ion-option-button>
-                          <ion-option-button class="button-light icon ion-email"></ion-option-button> -->
-                          <ion-option-button class="button-assertive icon ion-trash-a"></ion-option-button>
-                      </ion-item>
-
-        </ion-list>
-
-
       <div id="error" ng-if="errorMessage2 != ''">
         {{errorMessage2}}
       </div>
-      <!-- <div id="I2" ng-repeat="join in joinEvents">
+      <div id="I2" ng-repeat="join in joinEvents">
         <img ng-src="{{join.photoURL}}" />
         <div id="I2A">
           {{join.name}}
         </div>
       </div>
-    </div> -->
+    </div>
 </ion-content> -->
 
 </ion-view>

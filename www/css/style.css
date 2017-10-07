@@ -843,14 +843,6 @@ select{
   border-right: 10px solid rgba(230, 126, 34, 0.9);
 }
 
-.item .item-content {
-  /*Style ion list here
-  */
-  border-right: 10px solid rgba(230, 126, 34, 0.9);
-  padding-left: 5%;
-  font-size: 18px;
-}
-
 
 #I2A {
   padding-left: 5%;
