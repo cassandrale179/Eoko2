@@ -12,6 +12,10 @@ A: LOGIN PAGE
   bottom: 0 !important;
 }
 
+.manual-ios-statusbar-padding{
+  padding-top: 5px;
+}
+
 .background{
    background: linear-gradient(
                      rgba(20,20,20, .6),
