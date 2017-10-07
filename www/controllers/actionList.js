@@ -12,15 +12,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
         var userRef = firebase.database().ref("users/"+$scope.currentUser.uid);
         userRef.on('value', function(snapshot){
           $scope.peopleFilter = snapshot.val().peopleFilter;
-          if ($scope.peopleFilter == 'public'){
-            $scope.publicFilter = true;
-            $scope.privateFilter = false;
-          }
-          if ($scope.peopleFilter == 'private'){
-            $scope.privateFilter = true;
-            $scope.publicFilter = false;
-          }
-          //Filter function
+
 
           //Friends list to filter private
           $scope.userFriendsList = snapshot.val().friends;
@@ -297,6 +289,22 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
         },$scope.distList);
 
        console.log("SCOPEFRIENDS",  $scope.friends);
+
+       console.log("friends list", $scope.userFriendsList);
+
+       if ($scope.peopleFilter=='private'){
+         $scope.privateFriendsList = [];
+         angular.forEach(x, function(value, key){
+           console.log("key", key);
+           console.log("value", value);
+           //If the person is a friend of the user
+           if ($scope.userFriendsList.hasOwnProperty(value.uid)){
+             $scope.privateFriendsList.push(value);
+           }
+         })
+       }
+       console.log("private friends: ", $scope.privateFriendsList);
+
 
          $scope.friends.$watch(function(event)
          { //watch the database for changes

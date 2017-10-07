@@ -14,7 +14,7 @@
 
       <ion-refresher on-refresh="doRefresh()"></ion-refresher>
 
-      <div id="C1" ng-repeat="x in peopleList | filter: (publicFilter || '') && {display: peopleFilter} | filter: privateFilter && {display: peopleFilter} track by $index" ng-if="currentUser.uid != x.uid"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
+      <div id="C1" ng-repeat="x in peopleList | filter: {display: 'public'} track by $index" ng-if="currentUser.uid != x.uid || peopleFilter=='public'"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
         <img ng-src="{{x.photoURL}}" ng-click="viewProfilePopover($event, x)"/>
         <div id="C1A" ng-click="viewProfilePopover($event, x)">
           {{x.name}}

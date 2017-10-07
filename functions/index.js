@@ -156,7 +156,7 @@ exports.sendNudgeNotification = functions.database.ref('/nudge/{userId}/{otherId
 
             const payload = {
                 notification: {
-                    title: "You have an Eoko nudge!",
+                    title: "You have an êoko nudge!",
                     body: body,
                     sound: "default"
 
@@ -172,9 +172,7 @@ exports.sendNudgeNotification = functions.database.ref('/nudge/{userId}/{otherId
             admin.messaging().sendToDevice(instanceId, payload)
                 .then(function (response) {
                     console.log("Successfully sent message:", response);
-                    if (response.results.error){
-                      console.log(response.results.error);
-                    }
+                    console.log(response.results[0]);
                     var ref = admin.database().ref(`/nudge/${userId}/${otherId}`);
                     ref.remove();
 
