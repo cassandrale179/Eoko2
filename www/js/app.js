@@ -7,7 +7,8 @@
 // 'eoko.controllers' is found in controllers.js
 
 angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.services', 'eoko.directives',
-'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngInstafeed', 'ngCordova', 'ngCordovaOauth', 'firebase', 'socialLogin', 'ngOpenFB','angularRangeSlider', 'ngStorage'])
+'ionic.ion.imageCacheFactory', 'ionic-native-transitions', 'ngInstafeed', 'ngCordova', 'ngCordovaOauth', 
+'firebase', 'socialLogin', 'ngOpenFB','angularRangeSlider', 'ngStorage'])
 
 
 .run(function($ionicPlatform, ngFB) {
@@ -24,6 +25,7 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
+      StatusBar.styleLightContent();
     }
   });
 })

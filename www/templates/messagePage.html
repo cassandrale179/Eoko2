@@ -1,5 +1,5 @@
 <ion-view hide-nav-bar="true">
-  <ion-content id="messagePageContent" padding="false" class="innerbackground" overflow-scroll="true" scroll="false">
+  <ion-content id="messagePageContent" padding="false" class="manual-ios-statusbar-padding innerbackground" overflow-scroll="true" scroll="false">
 
     <!--spacer-->
     <div class="spacer" style="height: 20px;"></div>
@@ -55,7 +55,7 @@
 
       <ion-footer-bar id="M4" style="{{M4style}}">
           <input id="M4a" type="text" placeholder="Text here..." ng-model="data.messageText" ng-click="showKeyboard()" autofocus>
-          <a class="eoko-button-clear eoko-icon-send-message" style="margin-top: 6px;" ng-click="sendMessage()"></a>
+          <a class="eoko-button-clear eoko-icon-send-message" style="margin-top: 6px;" ng-click="sendMessage(); closeKeyboard()"></a>
       </ion-footer-bar>
 
     </div>

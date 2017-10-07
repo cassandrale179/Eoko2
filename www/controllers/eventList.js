@@ -163,6 +163,13 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
           console.log("the thing is ", checkDone);
 
           //----------- IF YOU ARE ALREADY JOINED, THEN YOU CAN'T JOIN IT LOSER ------------
+          if(checkDone["owner"]["id"] == $scope.currentUser.uid)
+          {
+            console.log("you are the owner, returning");
+            $scope.isAlreadyJoined = true;
+            return;
+          }
+
           for(var i in checkDone["participants"])
           {
             if(checkDone["participants"][i].id == $scope.currentUser.uid)

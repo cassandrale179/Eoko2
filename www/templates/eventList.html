@@ -1,5 +1,5 @@
 <ion-view hide-nav-bar="true" >
-  <ion-content padding="false" class="innerbackground eoko-content" style="filter: blur({{blurry.behind}});" scroll="false">
+  <ion-content padding="false" class="manual-ios-statusbar-padding innerbackground eoko-content" style="filter: blur({{blurry.behind}});" scroll="false">
     <!-- <div id="E"> -->
       <!-- _____________ NAVIGATION BAR _______ -->
       <div id="E">
@@ -27,7 +27,7 @@
 
 
       <!-- _____________ CARDS OF EVENTS _______ -->
-      <ion-scroll id="E2" overflow-scroll="false" style="height: calc(100% - 70px);">
+      <ion-scroll id="E2" overflow-scroll="false" style="height: calc(100% - 25vh);">
         <ion-refresher on-refresh="doRefresh()"></ion-refresher>
         <div id="E2A"
 
@@ -51,7 +51,7 @@
         </div>
       </ion-scroll>
 
-      <div id="blur-nav-bar"></div>
+      <!-- <div id="blur-nav-bar"></div> -->
     <!-- </div> -->
 
     <script id="my-popover.html" type="text/ng-template">
@@ -85,7 +85,7 @@
 
         <!-- ___________ DISPLAY LIST OF PEOPLE WHO ARE JOINING IT _________________ -->
         <div id="F2">
-          <p>Going:</p>
+          <p>Going: </p><br>
           <p ng-if="!(currUser.info.participants)">Be the first to join!</p>
           <ion-scroll style="clear: both" direction="x" class="eoko-horizontal-scroll" scrollbar-x="false" scrollbar-y="false">
             <span style="float: left" ng-repeat="parts in currUser.info.participants">
