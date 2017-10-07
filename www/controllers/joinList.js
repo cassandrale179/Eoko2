@@ -251,62 +251,102 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
 
     //--------------------------- ACTION THAT YOU HAVE CREATE WILL BE CAPTURE HERE --------------------
     var actionRef = firebase.database().ref("users/" + $scope.currentUser.uid + "/actions/");
-    actionRef.on("value", function(snapshot){
-      if (snapshot.val() == undefined){
+    var myActions = firebase.database().ref(`users/${$scope.currentUser.uid}/actions/myActions`);
+    var joinActions = firebase.database().ref(`users/${$scope.currentUser.uid}/actions/joinActions`);
+    $scope.createdArray = $firebaseArray(myActions);
+    $scope.joinArray = $firebaseArray(joinActions);
+    var createdArrayPromise = $scope.createdArray.$loaded();
+    var joinArrayPromise = $scope.joinArray.$loaded();
+    var activityPromise = firebase.database().ref("activities").once("value");
+    Promise.all([createdArrayPromise, activityPromise, joinArrayPromise]).then(function(response){
+      //response[0] ==== all created actions of the user
+      //response[1].val() ==== all activities
+      //response[2] ==== all actions the user joins
+      $scope.createdArray = response[0];
+      var activityTable = response[1].val();
+
+      if ($scope.createdArray.length==0){
         $scope.errorMessage = "You have not created any action";
-        $scope.errorMessage2 = "You have not joined any action"
       }
-      else{
-        var createAction = snapshot.val().myActions;
-        var joinActions = snapshot.val().joinActions;
-        console.log("This is action you have created");
-        console.log(createAction);
 
-        if (createAction == undefined){
-          $scope.errorMessage = "You have not creatd any action";
-        }
-        if (joinActions == undefined){
-          $scope.errorMessage2 = "You have not joined any action";
-        }
-        if (createAction != undefined){
-          $scope.errorMessage = "";
-          $scope.myEventID = []
-          $scope.myEvents = []
-          $scope.photos = []
-
-          $scope.joinEventID = []
-          $scope.joinEvents = []
-          $scope.photos2 = []
-
-          for (var key in createAction){
-            $scope.myEventID.push(key)
-          }
-          for (var key2 in joinActions){
-            $scope.joinEventID.push(key2)
-          }
-
-          var activitiesRef = firebase.database().ref("activities/");
-          activitiesRef.on("value", function(activitySnap){
-            var activityTable = activitySnap.val();
-
-            //-------------------- ACTIVITY TABLE ----------------------
-            for (var i = 0; i < $scope.myEventID.length; i++){
-                if (activityTable.hasOwnProperty($scope.myEventID[i])){
-                  $scope.myEvents.push(activityTable[$scope.myEventID[i]]);
-                  activityTable[$scope.myEventID[i]].eventid = $scope.myEventID[i];
-                }
-                if (activityTable.hasOwnProperty($scope.joinEventID[i])){
-                  $scope.joinEvents.push(activityTable[$scope.joinEventID[i]]);
-                  // activityTable[$scope.joinEvents[i]].eventid = $scope.joinEventID[i];
-                }
-            }
-              console.log("List of created events");
-              console.log($scope.myEvents);
-              console.log("List of joined events");
-              console.log($scope.joinEvents)
-            })
-        }
+      if ($scope.joinArray.length==0){
+        $scope.errorMessage2 = "You have not joined any action";
       }
+
+      //Add photo URL for all created actions
+      angular.forEach($scope.createdArray, function(event){
+        event.photoURL = activityTable[event.eventID].photoURL;
+      })
+
+      //Add photo URL for all join actions
+      angular.forEach($scope.joinArray, function(event){
+        event.photoURL = activityTable[event.eventID].photoURL;
+      })
+
     })
+    // $scope.createdArray.$loaded().then(function(x){
+    //   //createdArray==x --> true
+    //
+    //
+    // })
+    // actionRef.on("value", function(snapshot){
+    //   if (snapshot.val() == undefined){
+    //     $scope.errorMessage = "You have not created any action";
+    //     $scope.errorMessage2 = "You have not joined any action"
+    //   }
+    //   else{
+    //     var createAction = snapshot.val().myActions;
+    //     var joinActions = snapshot.val().joinActions;
+    //     console.log("This is action you have created");
+    //     console.log(createAction);
+    //
+    //     if (createAction == undefined){
+    //       $scope.errorMessage = "You have not creatd any action";
+    //     }
+    //     if (joinActions == undefined){
+    //       $scope.errorMessage2 = "You have not joined any action";
+    //     }
+    //     if (createAction != undefined){
+    //       $scope.errorMessage = "";
+    //       $scope.myEventID = []
+    //       $scope.myEvents = []
+    //       $scope.photos = []
+    //
+    //       $scope.joinEventID = []
+    //       $scope.joinEvents = []
+    //       $scope.photos2 = []
+    //
+    //       for (var key in createAction){
+    //         $scope.myEventID.push(key)
+    //       }
+    //       for (var key2 in joinActions){
+    //         $scope.joinEventID.push(key2)
+    //       }
+    //
+    //       console.log('myEventID', $scope.myEventID);
+    //
+    //       var activitiesRef = firebase.database().ref("activities/");
+    //       activitiesRef.on("value", function(activitySnap){
+    //         var activityTable = activitySnap.val();
+    //
+    //         //-------------------- ACTIVITY TABLE ----------------------
+    //         for (var i = 0; i < $scope.myEventID.length; i++){
+    //             if (activityTable.hasOwnProperty($scope.myEventID[i])){
+    //               $scope.myEvents.push(activityTable[$scope.myEventID[i]]);
+    //               activityTable[$scope.myEventID[i]].eventid = $scope.myEventID[i];
+    //             }
+    //             if (activityTable.hasOwnProperty($scope.joinEventID[i])){
+    //               $scope.joinEvents.push(activityTable[$scope.joinEventID[i]]);
+    //               // activityTable[$scope.joinEvents[i]].eventid = $scope.joinEventID[i];
+    //             }
+    //         }
+    //           console.log("List of created events");
+    //           console.log($scope.myEvents);
+    //           console.log("List of joined events");
+    //           console.log($scope.joinEvents)
+    //         })
+    //     }
+    //   }
+    // })
   })
 }]);
