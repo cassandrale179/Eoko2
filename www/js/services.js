@@ -327,6 +327,7 @@ angular.module('eoko.services', [])
 
       loadChatData: function (chatKey)
       {
+        
         return chatData.$getRecord(chatKey);
       },
 
