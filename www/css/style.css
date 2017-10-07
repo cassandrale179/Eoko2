@@ -591,7 +591,7 @@ select{
 
 #E2 h5{
   font-family: 'San Francisco Display Thin', sans-serif;
-  font-size: 19px;
+  font-size: 4.5vw;
   display: inline-block;
   margin-top: 10px;
   margin-left: 5%;
@@ -654,10 +654,9 @@ select{
   border-radius: 35px;
 }
 
-#F1time{
-  float: left;
-  width: 7vw;
-  height:7vw;
+#F1icon{
+  width:4.5vw;
+  padding-top: 1vw;
 }
 
 #F h1{
@@ -677,7 +676,7 @@ select{
 #F h3{
   color: white;
   font-family: 'San Francisco Display Thin', sans-serif;
-  font-size: 20px;
+  font-size: 6vw;
   display: inline-block;
   margin-top: 0;
 }
@@ -709,6 +708,17 @@ select{
   margin-top: 10px;
 }
 
+#F1B1{
+  float:left;
+  width: 22%;
+  margin: auto;
+  padding: 0 0 0 5vw;
+}
+
+#F1B2{
+  width: 56%;
+  margin: auto;
+}
 
 #F2{
   padding-left: 5%;
