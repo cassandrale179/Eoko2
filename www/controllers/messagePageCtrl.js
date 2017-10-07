@@ -77,15 +77,18 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
 
     //KEYBOARD
     $scope.showKeyboard = function(){
-      console.log("keyboard height", $scope.keyboardHeight);
-      console.log("MessagePageCtrl.js ---- keyboard opens");
-      $scope.M4style = "margin-bottom: " + $scope.keyboardHeight + "px";
-      $scope.M5style = "height: calc(134vw - " + $scope.keyboardHeight + "px)";
-      $ionicScrollDelegate.scrollBottom();
-      
-      $timeout(function(){
-        $scope.$apply();
-      })
+        if(window.device.platform != 'Android')
+        {
+          console.log("keyboard height", $scope.keyboardHeight);
+          console.log("MessagePageCtrl.js ---- keyboard opens");
+          $scope.M4style = "margin-bottom: " + $scope.keyboardHeight + "px";
+          $scope.M5style = "height: calc(134vw - " + $scope.keyboardHeight + "px)";
+          $ionicScrollDelegate.scrollBottom();
+          
+          $timeout(function(){
+            $scope.$apply();
+          });
+      }
     };
 
     window.addEventListener('native.keyboardhide', keyboardHideHandler);
@@ -95,11 +98,16 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
     }
 
     $scope.closeKeyboard = function (){
-      console.log("MessagePageCtrl.js ---- keyboard closes");
-      $scope.M4style = "margin-bottom: 0px";
-      $scope.M5style = "height: 134vw";
-      $timeout(function(){
-        $scope.$apply();
-      })
-    }
+      if(window.device.platform != 'Android')
+      {
+        console.log("MessagePageCtrl.js ---- keyboard closes");
+        $scope.M4style = "margin-bottom: 0px";
+        $scope.M5style = "height: 134vw";
+        $timeout(function(){
+          $scope.$apply();
+        });
+      }
+    };
+
+    
   }]);
