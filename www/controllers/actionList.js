@@ -1,6 +1,6 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform', 'facebookService',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform', 'facebookService', '$localStorage',
 
-  function ($scope, $state, $firebaseArray,  $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform, facebookService) {
+  function ($scope, $state, $firebaseArray,  $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform, facebookService, $localStorage) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
@@ -243,6 +243,8 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
           var result = {};
           for(var i in $scope.peopleInfo)
             {
+              if ($localStorage)
+              console.log($scope.peopleInfo[i]);
               console.log("i is", $scope.peopleInfo[i].$id);
               var index = $scope.peopleInfo[i].$id;
               var dist = $scope.distFromPlayer($scope.peopleInfo[i].location);
@@ -252,6 +254,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
                 result[index] = {info: $scope.peopleInfo[i], distance: dist, display: true};
               }
             }
+            console.log('result', result);
             return result;
         }
 
@@ -280,7 +283,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
           {
             var peopleRef = firebase.database().ref("users");
             $scope.peopleInfo = $firebaseArray(peopleRef);
-            $scope.peopleInfo.$loaded().then(function(x) 
+            $scope.peopleInfo.$loaded().then(function(x)
             {
               $scope.loadedOnce = true;
               $scope.people = loadPeople();
@@ -424,7 +427,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
             //}
           };
 
-     
+
 
 
           //--------------------------------NUDGE FUNCTIONS-----------------------------------

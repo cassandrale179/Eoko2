@@ -152,11 +152,11 @@ exports.sendNudgeNotification = functions.database.ref('/nudge/{userId}/{otherId
             console.log("receiver uid: ", receiver);
             console.log("message token: ", instanceId);
             console.log('notifying ' + receiverUid + ' about nudge' + ' from ' + senderUid);
-            var body = sender.displayName + " just nudged you!";
+            var body = sender.displayName + " is close by!";
 
             const payload = {
                 notification: {
-                    title: "You have an Eoko nudge!",
+                    title: "You have an êoko nudge!",
                     body: body,
                     sound: "default"
 
