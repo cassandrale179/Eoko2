@@ -1,89 +1,38 @@
 <ion-view hide-nav-bar="true">
-  <ion-content padding="true" class="manual-ios-statusbar-padding innerbackground eoko-content" scroll="false">
+  <ion-content padding="true" class="manual-ios-statusbar-padding innerbackground eoko-content" scroll="false" style="filter: blur({{blurry.behind}});">
 
 
 
     <!-- ___________________ THIS DIV WILL DISPLAY THE EVENTS THAT YOU HAVE CREATED ________________ -->
-    <div id="I1" ng-hide="show==2">
+    <div id="I1">
       <button ng-click="show=1"> Created </button>
       <button ng-click="show=3"> Joined </button>
       <i class="fa fa-trash-o" aria-hidden="true"></i>
     </div>
-  <ion-scroll>
-    <div id="I" ng-show="show==1">
-      <div id="error" ng-if="errorMessage != ''">
-        {{errorMessage}}
-      </div>
-      <!-- <div id="I2" ng-repeat="event in myEvents" ng-click="editAction(event.eventid)">
+
+ <!--  <ion-scroll>
+    <ion-list show-delete="false" can-swipe="true" id="I" >
+      <p style="color: white;">Touch to edit. Swipe to delete.</p>
+      <ion-item id="I2" ng-repeat="event in createdArray" ng-click="editAction(event.eventID)">
         <img ng-src="{{event.photoURL}}" />
         <div id="I2A">
           {{event.name}}
-          <div id="I2B">
-          </div>
         </div>
-      </div> -->
-      <div id="I2" ng-repeat="event in createdArray" ng-click="editAction(event.eventID)">
+         <ion-option-button class="button-assertive icon ion-trash-a"></ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-scroll> -->
+
+  <ion-scroll id="I">
+    <ion-list show-delete="false" can-swipe="true" >
+      <p style="color: white;">Touch to edit. Swipe to delete.</p>
+      <ion-item ng-repeat="event in createdArray" ng-click="editAction(event.eventID)" class="I2">
         <img ng-src="{{event.photoURL}}" />
-        <div id="I2A">
-          {{event.name}}
-
-          <div id="I2B">
-              <!-- {{event.time}}
-              {{event.privacy}} -->
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="K" ng-show="show==2">
-      <i ng-click="return()" class="fa fa-chevron-left" aria-hidden="true"></i>
-      <h2>Edit Your Action </h2>
-      <div id="B">
-        <!-- _____________________________ PRIVACY SETTINGS ___________________________________ -->
-        <div id="B4">
-          <button ng-click="setPrivacy('public')" ng-style="publicStyle"> Public </button>
-          <button ng-click="setPrivacy('private')" ng-style="privateStyle"> Private </button>
-          <button ng-click="setPrivacy('invite')" ng-style="inviteStyle"> Invites Only </button>
-        </div>
-
-        <!-- _____________________________ OUTPUT PRIVACY MESSAGE ___________________________________ -->
-        <p ng-if="privSelect == 'public'">This will allow everyone to view and join your event</p>
-        <p ng-if="privSelect == 'private'">Only friends can view and join your event</p>
-        <p ng-if="privSelect == 'invite'">Only people you invite can view and join your event</p>
-        <input ng-model="action.name" type="text"/>
-
-        <!-- _____________________________ FORM TO EDIT ___________________________________ -->
-        <form>
-          <ion-scroll direction="x" class="eoko-horizontal-scroll" scrollbar-x="false" scrollbar-y="false" style="height: 46px;">
-            <button ng-repeat="tags in tagSelect" ng-click="selectionTag('{{tags.$value}}create')" id="{{tags.$value}}create" class="eoko-horizontal-scroll-button eoko-text-thin">
-              {{tags.$value}}
-            </button>
-          </ion-scroll>
-
-          <!-- _____________________________ INPUT FIELD ___________________________________ -->
-          <input id="autocomplete" type="text" placeholder="Location" select-on-click
-              class="eoko-input eoko-text-thin" value="{{action.address}}" ng-click="geolocate()" required="">
-          <input ng-model="action.startTime" type="time" placeholder="HH:mm:ss"/>
-          <textarea ng-model="action.description" placeholder="Description (Currently drinking coffee at Saxby. Anyone want to hangout?)"></textarea>
-        </form>
-        <button id="submit" ng-click="submit()"> EDIT AN EVENT </button>
-      </div>
-    </div>
-
-    <!-- ___________________ THIS DIV WILL DISPLAY THE EVENTS THAT YOU HAVE JOINED ----------->
-    <div id="J" ng-show="show==3">
-      <div id="error" ng-if="errorMessage2 != ''">
-        {{errorMessage2}}
-      </div>
-      <div id="I2" ng-repeat="join in joinArray">
-        <img ng-src="{{join.photoURL}}" />
-        <div id="I2A">
-          {{join.name}}
-        </div>
-      </div>
-    </div>
+          <div id="I2A">{{event.name}}</div>
+         <ion-option-button ng-click="deleteAction(event.eventID)" class="deleteButtonSwipe icon ion-trash-a"></ion-option-button>
+      </ion-item>
+    </ion-list>
   </ion-scroll>
 
 </ion-content>
-
 </ion-view>

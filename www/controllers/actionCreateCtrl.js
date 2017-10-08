@@ -1,5 +1,5 @@
-app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout','$firebaseObject','$ionicPopup', 'EventInfo',
-  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout, $firebaseObject,$ionicPopup, EventInfo) {
+app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http', '$window', 'ngFB','geoPos','$timeout','$firebaseObject','$ionicPopup', 'EventInfo','EditInfo',
+  function ($scope, $state, $firebaseArray, $http, $window, ngFB, geoPos, $timeout, $firebaseObject,$ionicPopup, EventInfo,EditInfo) {
 
 
     //------- AUTOCOMPLETE LOCATION ----------
@@ -9,54 +9,97 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
       $scope.selectTagList = [];
 
+
+      function newStartTime()
+      {
+        var d = new Date();
+        var hour = (d.getHours() < 10) ? '0' + d.getHours() : d.getHours();
+        var minute = (d.getMinutes() < 10) ? '0' + d.getMinutes() : d.getMinutes();
+
+        $scope.action.startTime = new Date(1970, 0, 1, hour, minute, 0);
+      }
+
+
        $scope.$on('$ionicView.afterEnter', function () //before anything runs
       {
-        try
-        {
-          var d = new Date();
-          var hour = (d.getHours() < 10) ? '0' + d.getHours() : d.getHours();
-          var minute = (d.getMinutes() < 10) ? '0' + d.getMinutes() : d.getMinutes();
+       
+       $scope.editing = EditInfo.isEditing();
 
-          $scope.action.startTime = new Date(1970, 0, 1, hour, minute, 0);
-
-          if($scope.tagSelect)
+       if($scope.editing == false)
+       {
+          try
           {
-            for(var i in $scope.tagSelect)
+            newStartTime();
+            if($scope.tagSelect)
             {
-              if($scope.tagSelect[i].$value != null)
+              for(var i in $scope.tagSelect)
               {
-                console.log("fucking reset you ass, ", $scope.tagSelect[i]);
-              $scope.selectionTag($scope.tagSelect[i].$value + 'create');
+                if($scope.tagSelect[i].$value != null)
+                {
+                  console.log("fucking reset you ass, ", $scope.tagSelect[i]);
+                $scope.selectionTag($scope.tagSelect[i].$value + 'create');
+                }
+
               }
+              $scope.selectTagList = [];
+            }
+
+            if(geoPos.isReady() == true)
+          {
+            initGeoLoc();
+          }
+
+            $scope.action.name = '';
+            $scope.action.description = '';
+            $scope.duration = {hours: '', minutes: ''};
+            $scope.action.comply = false;
+
+            if($scope.currentUser && $scope.thisUser)
+            {
+              $scope.action.photoURL = $scope.currentUser.photoURL;
+              $scope.setPrivacy($scope.thisUser.privacy);
+            }
+
 
             }
-            $scope.selectTagList = [];
-          }
-
-          if(geoPos.isReady() == true)
-        {
-          $scope.action.address = '';
-          initGeoLoc();
-        }
-
-          $scope.action.name = '';
-          $scope.action.description = '';
-          $scope.duration = {hours: '', minutes: ''};
-
-          if($scope.currentUser && $scope.thisUser)
+          catch(err)
           {
-            $scope.action.photoURL = $scope.currentUser.photoURL;
-            $scope.setPrivacy($scope.thisUser.privacy);
+            console.log("first time?", err);
           }
 
-
-          }
-        catch(err)
-        {
-          console.log("first time?", err);
         }
-        //startLoop();
+        else
+        {
+          $scope.action = EditInfo.getEditInfo();
+          $scope.setPrivacy($scope.action.privacy);
+          document.getElementById('autocomplete').value = $scope.action.address;
+          console.log("what do i get?", $scope.action);
+          var timeObj = $scope.action.startTime.split(' ');
+          var recTime = timeObj[0].split(':');
+          if(timeObj[1] == 'PM')
+          {
+            recTime[0] = parseInt(recTime[0]) + 12;
+          }
+          $scope.action.startTime = new Date(1970, 0, 1, recTime[0], parseInt(recTime[1]), 0);
+          $scope.duration = $scope.action.duration;
+          for(var i in $scope.action.tags)
+          {
+            console.log("tag is chosen", $scope.action.tags[i]);
+            $scope.selectionTag($scope.action.tags[i]+'create');
+          }
+        }
+       
       });
+
+        $scope.$on('$ionicView.afterLeave', function () //before anything runs
+      {
+        EditInfo.resetData();
+      });
+
+
+
+
+
 
 
     //--------TAGS -------------------------------------
@@ -99,7 +142,14 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
           console.log("activated");
           document.getElementById(elementId).className = "eoko-horizontal-scroll-button-selected eoko-text-thin";
           $scope.selectTagList.push(elementId.replace(/create/,''));
-        }else{
+        }
+        else if($scope.editing == true)
+        {
+          console.log("activated");
+          document.getElementById(elementId).className = "eoko-horizontal-scroll-button-selected eoko-text-thin";
+          $scope.selectTagList.push(elementId.replace(/create/,''));
+        }
+        else{
           console.log("not activated");
           document.getElementById(elementId).className = "eoko-horizontal-scroll-button eoko-text-thin";
           for(var i in $scope.selectTagList)
@@ -163,6 +213,9 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
           $http.get(url).then(function(response){
             console.log("Google maps response", response);
             $scope.action.address = response.data.results[0].formatted_address;
+            console.log("the address is", $scope.action.address);
+            document.getElementById('autocomplete').value = $scope.action.address;
+            $timeout(function(){$scope.$apply();});
           },
           function(err)
           {
@@ -204,50 +257,56 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
     };
 
     // ------------ WHEN USER CLICK SUBMIT, THIS FUNCTION WILL HAPPEN --------
-    $scope.submit = function(){
+
+
+
+
+
+    function verifySubmission()
+    {
       $scope.action.tags = $scope.selectTagList;
 
       if($scope.action.privacy == null || $scope.action.privacy == undefined
          || $scope.action.privacy == "" || $scope.action.privacy == " ")
       {
         showAlert("You must select public or private");
-        return;
+        return false;
       }
       if($scope.action.name == null || $scope.action.name == undefined
          || $scope.action.name == "" || $scope.action.name == " ")
       {
         showAlert("You must create a title");
-        return;
+        return false;
       }
       if($scope.action.tags == null || $scope.action.tags == undefined
          || $scope.action.tags == "" || $scope.action.tags == " ")
       {
         showAlert("You must press at least one tag");
-        return;
+        return false;
       }
       if($scope.action.address == null || $scope.action.address == undefined
          || $scope.action.address == "" || $scope.action.address == " ")
       {
         showAlert("You must enter an address");
-        return;
+        return false;
       }
       if($scope.action.startTime == null || $scope.action.startTime == undefined
          || $scope.action.startTime == "" || $scope.action.startTime == " ")
       {
         showAlert("You must enter a start time");
-        return;
+        return false;
       }
       if($scope.action.description == null || $scope.action.description == undefined
          || $scope.action.description == "" || $scope.action.description == " ")
       {
         showAlert("You must enter a description");
-        return;
+        return false;
       }
       if($scope.action.comply == null || $scope.action.comply == undefined
          || $scope.action.comply == "" || $scope.action.comply == " ")
       {
         showAlert("You must agree to create the action");
-        return;
+        return false;
       }
 
       if(($scope.duration.hours == null || $scope.duration.hours == undefined
@@ -256,7 +315,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
          || $scope.duration.minutes == "" || $scope.duration.minutes == " "))
       {
         showAlert("You must set a duration for your action");
-        return;
+        return false;
       }
 
       if($scope.duration.hours == '')
@@ -272,91 +331,171 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       //Store the tags
       $scope.action.duration = $scope.duration;
 
-      console.log($scope.action.tags);
-      console.log("current user uid: ", $scope.currentUser.uid);
-      var activitiesRef = firebase.database().ref('activities');
-      var userActionsRef = firebase.database().ref('users/' + $scope.currentUser.uid).child('actions/myActions');
+      return true;
+    }
 
-      $scope.action.startTime = $scope.action.startTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-      console.log("new time",$scope.action.startTime);
-      //List of friends for private Events
-      var friendsRef = firebase.database().ref('users/' + $scope.currentUser.uid + '/friends');
-      var friendsArray = $firebaseArray(friendsRef);
+        $scope.change = function()
+        {
+          if(verifySubmission() == true)
+          {
+            var eventID = EditInfo.getKey();
+            var activitiesRef = firebase.database().ref('activities').child(eventID);
+            var userActionsRef = firebase.database().ref('users/' + $scope.currentUser.uid).child('actions/myActions');
+            $scope.action.startTime = $scope.action.startTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+            var friendsRef = firebase.database().ref('users/' + $scope.currentUser.uid + '/friends');
+            var friendsArray = $firebaseArray(friendsRef);
 
-      //Create an event chat
-      var chatsRef = firebase.database().ref('Chats/');
-      var eventChatRef = chatsRef.push({
-        name: $scope.action.name,
-        photoURL: $scope.currentUser.photoURL
-      });
-      var eventChatID = {chatID: eventChatRef.key}
-      chatsRef.child(eventChatID.chatID + '/ids').push({
-        id: $scope.currentUser.uid,
-        name: $scope.currentUser.displayName,
-        avatar: $scope.currentUser.photoURL
-      })
+            activitiesRef.update($scope.action);
 
-      //Submit the event and get the event ID
-      $scope.action.chatID = eventChatID.chatID;
-      $scope.action.owner = {
-        id: $scope.currentUser.uid,
-        name: $scope.currentUser.displayName
-      }
-      eventRef = activitiesRef.push($scope.action);
-      eventID = eventRef.key;
+            var event = {
+              eventID: eventID,
+              location: $scope.action.location,
+              time: $scope.action.startTime,
+              name: $scope.action.name,
+              duration: $scope.duration,
+              userID: $scope.currentUser.uid
+            };
 
-      //Push the event under the user database
-      var event = {
-        eventID: eventID,
-        location: $scope.action.location,
-        time: $scope.action.startTime,
-        name: $scope.action.name,
-        duration: $scope.duration,
-        userID: $scope.currentUser.uid
-      };
+            userActionsRef.child(eventID).update(event);
 
-      userActionsRef.child(eventID).update(event);
+             //---------- IF PRIVACY IS SET AS PUBLIC --------------
+              if ($scope.action.privacy == "public")
+              {
+                console.log($scope.action);
+                newStartTime();
+                $state.go('navController.action');
+                return;
+              }
+
+              //---------- IF PRIVACY IS SET AS PRIVATE --------------
+              else if ($scope.action.privacy == "private")
+              {
+                console.log($scope.action);
+                friendsArray.$loaded(function(friendsArray){
+                  console.log(friendsArray);
+                  angular.forEach(friendsArray, function(friend){
+                    console.log("friend ID:", friend.$id);
+                    var ref = firebase.database().ref('users/' + friend.$id + '/actions/friendActions');
+                    ref.child(eventID).update(event);
+                  });
+                    newStartTime();
+                   $state.go('navController.action');
+                   return;
+                });
+              }
+
+              //---------- IF PRIVACY IS SET AS INVITE ONLY --------------
+              /*else if ($scope.action.privacy == "invite")
+              {
+                // console.log("invite event after user choose invite, as param");
+                // console.log(event);
+                // $state.go('invitePage', {eventObject: event})
+                EventInfo.setEventInfo(event);
+                $state.go('invitePage');
+              }*/
+          }
+
+        };
 
 
-      //Add chat id to the event creator (currentuser)
-      var userChatRef = firebase.database().ref('users/' + $scope.currentUser.uid).child('chat');
-      userChatRef.push(eventChatID);
 
 
-      //---------- IF PRIVACY IS SET AS PUBLIC --------------
-      if ($scope.action.privacy == "public")
+
+
+    $scope.submit = function(){
+      
+      if(verifySubmission() == true)
       {
-        console.log($scope.action);
-        $state.go('navController.action');
-        return;
-      }
+        console.log($scope.action.tags);
+        console.log("current user uid: ", $scope.currentUser.uid);
+        var activitiesRef = firebase.database().ref('activities');
+        var userActionsRef = firebase.database().ref('users/' + $scope.currentUser.uid).child('actions/myActions');
 
-      //---------- IF PRIVACY IS SET AS PRIVATE --------------
-      else if ($scope.action.privacy == "private")
-      {
-        console.log($scope.action);
-        friendsArray.$loaded(function(friendsArray){
-          console.log(friendsArray);
-          angular.forEach(friendsArray, function(friend){
-            console.log("friend ID:", friend.$id);
-            var ref = firebase.database().ref('users/' + friend.$id + '/actions/friendActions');
-            ref.child(eventID).update(event);
-          });
-           $state.go('navController.action');
-           return;
+        $scope.action.startTime = $scope.action.startTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+        console.log("new time",$scope.action.startTime);
+        //List of friends for private Events
+        var friendsRef = firebase.database().ref('users/' + $scope.currentUser.uid + '/friends');
+        var friendsArray = $firebaseArray(friendsRef);
+
+        //Create an event chat
+        var chatsRef = firebase.database().ref('Chats/');
+        var eventChatRef = chatsRef.push({
+          name: $scope.action.name,
+          photoURL: $scope.currentUser.photoURL
         });
-      }
+        var eventChatID = {chatID: eventChatRef.key}
+        chatsRef.child(eventChatID.chatID + '/ids').push({
+          id: $scope.currentUser.uid,
+          name: $scope.currentUser.displayName,
+          avatar: $scope.currentUser.photoURL
+        })
 
-      //---------- IF PRIVACY IS SET AS INVITE ONLY --------------
-      else if ($scope.action.privacy == "invite")
-      {
-        // console.log("invite event after user choose invite, as param");
-        // console.log(event);
-        // $state.go('invitePage', {eventObject: event})
-        EventInfo.setEventInfo(event);
-        $state.go('invitePage');
-      }
+        //Submit the event and get the event ID
+        $scope.action.chatID = eventChatID.chatID;
+        $scope.action.owner = {
+          id: $scope.currentUser.uid,
+          name: $scope.currentUser.displayName
+        }
+        eventRef = activitiesRef.push($scope.action);
+        eventID = eventRef.key;
 
+        //Push the event under the user database
+        var event = {
+          eventID: eventID,
+          location: $scope.action.location,
+          time: $scope.action.startTime,
+          name: $scope.action.name,
+          duration: $scope.duration,
+          userID: $scope.currentUser.uid,
+          photoURL: $scope.action.photoURL
+        };
+
+        userActionsRef.child(eventID).update(event);
+
+
+        //Add chat id to the event creator (currentuser)
+        var userChatRef = firebase.database().ref('users/' + $scope.currentUser.uid).child('chat');
+        userChatRef.push(eventChatID);
+
+
+        //---------- IF PRIVACY IS SET AS PUBLIC --------------
+        if ($scope.action.privacy == "public")
+        {
+          console.log($scope.action);
+          newStartTime();
+          $state.go('navController.action');
+          return;
+        }
+
+        //---------- IF PRIVACY IS SET AS PRIVATE --------------
+        else if ($scope.action.privacy == "private")
+        {
+          console.log($scope.action);
+          friendsArray.$loaded(function(friendsArray){
+            console.log(friendsArray);
+            angular.forEach(friendsArray, function(friend){
+              console.log("friend ID:", friend.$id);
+              var ref = firebase.database().ref('users/' + friend.$id + '/actions/friendActions');
+              ref.child(eventID).update(event);
+            });
+            newStartTime();
+             $state.go('navController.action');
+             return;
+          });
+        }
+
+        //---------- IF PRIVACY IS SET AS INVITE ONLY --------------
+        else if ($scope.action.privacy == "invite")
+        {
+          // console.log("invite event after user choose invite, as param");
+          // console.log(event);
+          // $state.go('invitePage', {eventObject: event})
+          EventInfo.setEventInfo(event);
+          newStartTime();
+          $state.go('invitePage');
+        }
+
+      }
     };
 
 
@@ -382,7 +521,7 @@ function initAutocomplete() {
           var place = $scope.autocomplete.getPlace();
           console.log("THE FUCKING PLACE IS", place.geometry);
           $scope.action.address = place.formatted_address;
-
+          document.getElementById('autocomplete').value = $scope.action.address;
           var addr = place.formatted_address;
           addr = addr.replace(/,/g,'');
           addr = addr.replace(/ /g,'+');

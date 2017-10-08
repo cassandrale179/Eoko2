@@ -457,7 +457,7 @@ select{
   padding: 3%;
 }
 
-#C1 img, #E2A img, #I2 img{
+#C1 img, #E2A img, .I2 img{
   object-fit: cover;
   width: 55px;
   height: 55px;
@@ -914,7 +914,7 @@ select{
 #I{
   padding-left: 5%;
   padding-right: 5%;
-  height: 530px;
+  height: 80vh;
   overflow: auto;
 }
 #I1{
@@ -941,14 +941,17 @@ select{
   margin-right: 2px;
 }
 
-#I2{
+.I2{
   border-right: 10px solid rgba(230, 126, 34, 0.9);
 }
 
 
 #I2A {
-  padding-left: 5%;
-  font-size: 18px;
+  padding-left: 0;
+  font-size: 4vw;
+  display: inline-block;
+  bottom: 20px;
+  margin: 0;
 }
 
 #I2 h3{
@@ -1303,3 +1306,8 @@ select{
     stroke: white;
     fill : white;
   }
+
+.deleteButtonSwipe{
+  background-color: rgba(230, 126, 34, 0.9);
+  border: 1px solid rgba(230, 126, 34, 0.9);
+}

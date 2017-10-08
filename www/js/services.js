@@ -177,6 +177,49 @@ angular.module('eoko.services', [])
 
     }])
 
+    .factory('EditInfo', [function () {
+      var editData = {};
+      var editing = false;
+      var key = '';
+
+      return {
+        setEditInfo: function (info) {
+          editData = info;
+          return true;
+        },
+
+        setEditing: function(setting){
+          editing = setting;
+          return true;
+        },
+
+        setKey: function(input){
+          key = input;
+          return true;
+        },
+
+        resetData: function(){
+          editData = {};
+          editing = false;
+          key = '';
+          return true;
+        },
+
+        getEditInfo: function () {
+          return editData;
+        },
+
+        getKey: function(){
+          return key;
+        },
+
+        isEditing: function(){
+          return editing;
+        }
+      };
+
+    }])
+
 
 /* ------------------------------- PROFILE PRESS FACTORY --------------------------- */
    .factory('ProfilePress', [function () {
