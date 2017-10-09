@@ -22,7 +22,9 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
         $scope.actionArray = $firebaseArray(actionRef);
 
         $scope.createdArray.$loaded();
-        $scope.joinArray.$loaded();
+        $scope.joinArray.$loaded().then(function(x){
+          console.log(x);
+        });
         $scope.actionArray.$loaded();
 
 
