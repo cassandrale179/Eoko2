@@ -502,10 +502,9 @@ select{
 
 /* ---------------------------------------- EOKO NUDGE -------------------------------------- */
 #D{
-  margin-top: 50px;
-  /*padding-top: 10%;*/
+  /*margin-top: 20px; */
+  padding-top: 10%;
   z-index: 900;
-  height: 400px;
 }
 
 #D h3{
@@ -583,6 +582,7 @@ select{
   height: 70px;
   border-radius: 40px;
 }
+
 
 /* ---------------------------------------- EVENTS PAGE -------------------------------------- */
 
@@ -929,8 +929,14 @@ select{
   margin-bottom: 20px;
 }
 
-#I1 button{
+#I1A, #I1B{
   width: 49%;
+}
+
+#I1 button{
+  display: block;
+  margin: auto;
+  width: auto;
   color: white;
   font-family: 'Roboto', sans-serif;
   font-size: 5.56vw;
@@ -1237,7 +1243,6 @@ select{
 /* --------------- MICHEAL ALRIGHT CSS (IT'S NOT THAT CRAP) ---------------- */
 .details{
     margin: 15% 10%;
-    height: 80%;
     background-color: #F27C22;
     width: 80%;
     opacity: 0.90;

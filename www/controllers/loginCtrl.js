@@ -60,8 +60,6 @@ app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state'
                         peopleFilter: "private",
                         privacy: "private"
                       });
-
-
                       $state.go('navController.people');
                     }).catch(function(error) {
                       console.error("Authentication failed:", error);

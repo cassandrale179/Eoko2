@@ -53,9 +53,9 @@
 
 <!-- ____________________  THIS IS THE NUDGE  _________________  -->
 <script id="my-popover.html" type="text/ng-template">
-    <div id="D" ng-click="checkHit($event)" class="popup-container popup-showing active">
+    <div ng-click="checkHit($event)" class="popup-container popup-showing active">
       <div class="details">
-        <div ng-if="pop == 'nudge'" id="D">
+        <div id="D" ng-if="pop == 'nudge'" style="height: 40vh ">
           <div id="D1">
             <h3>Send a Nudge!</h3>
             <!-- <i class="fa fa-times" aria-hidden="true" ng-click="hideEokoNudge()"></i> -->
@@ -73,15 +73,14 @@
               <img ng-src="{{otherUser.info.photoURL}}" />
               <h4> {{otherUser.info.name}}</h4>
             </div>
-          </div>
-          <br>
+          </div><br>
           <div id="D3">
             <button ng-click=sendNudge()> Send </button>
           </div>
         </div>
 
 
-        <div ng-if="pop == 'profile'" id="D">
+        <div id="D" ng-if="pop == 'profile'" style="height: 80vh">
           <div id="D1" >
             <h3>{{otherUser.name}}</h3>
             <!-- <i class="fa fa-times" aria-hidden="true" ng-click="hideEokoNudge()"></i> -->
