@@ -53,8 +53,13 @@ app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state'
                       //Store firebase UID in database
                       var ref = firebase.database().ref('users/'+currentUserUid);
                       ref.update({
-                        uid: currentUserUid
-                      })
+                        uid: currentUserUid,
+                        high: 100,
+                        low: 0,
+                        display: "private",
+                        peopleFilter: "private",
+                        privacy: "private"
+                      });
 
 
                       $state.go('navController.people');
