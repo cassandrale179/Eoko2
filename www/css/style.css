@@ -1047,6 +1047,10 @@ select{
   border-radius: 5px;
 }
 
+#I3 {
+  background-color: rgba(230, 126, 34, 0.9);
+}
+
 /* --------------------- EDIT PAGE --------------- */
 #K i{
   color: white;
