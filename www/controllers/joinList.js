@@ -52,7 +52,7 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
           });
         };
 
-        
+
 
 
         //----------------- ERROR HANDLING -------------------
@@ -137,7 +137,6 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
 
       //---------------------------------- EDIT AN ACTION -------------------------------------
       $scope.editAction = function(x){
-        //$scope.show = 2;
         console.log(x);
         var activity = firebase.database().ref("activities/" + x);
         activity.once("value", function(snapshot)

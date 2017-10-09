@@ -838,6 +838,12 @@ select{
   margin: auto;
 }
 
+#F1 p{
+  position: fixed;
+  float: left;
+  font-size: 6vw; 
+}
+
 #F2{
   padding-left: 5%;
 }
@@ -852,7 +858,7 @@ select{
 #F2 p{
   font-family: "San Francisco Display Thin", sans-serif;
   font-style: italic;
-  font-size: 5vw;
+  font-size: 6vw;
   margin-top: 1vw;
   float: left;
 }
