@@ -403,10 +403,26 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
         $scope.popover = popover;
       });
 
+      function makeEndTime()
+      {
+        console.log("the currentUser", $scope.currUser);
+        var timeObj = $scope.currUser.info.startTime.split(' ');
+          var recTime = timeObj[0].split(':');
+          if(timeObj[1] == 'PM')
+          {
+            recTime[0] = parseInt(recTime[0]) + 12;
+          }
+          $scope.currUser.info.endTime = new Date(1970, 0, 1, recTime[0] + $scope.currUser.info.duration.hours,
+           parseInt(recTime[1]) + $scope.currUser.info.duration.minutes, 0);
+
+          $scope.currUser.info.endTime = $scope.currUser.info.endTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+      }
+
       $scope.openPopover = function($event, user) {
         $scope.isAlreadyJoined = false;
         $scope.blurry.behind = "5px";
         $scope.currUser = user;
+         makeEndTime();
         //currUser is actually the action!!!!!!!!
         // $scope.joinAction($scope.currUser.info.$id, $scope.currUser);
         $scope.popover.show();

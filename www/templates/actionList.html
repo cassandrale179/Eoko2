@@ -27,7 +27,7 @@
       <ion-refresher on-refresh="doRefresh()"></ion-refresher>
 
 
-      <div id="C1" ng-repeat="(key,x) in people | orderObjectBy:'distance' | filter: searchPeople " ng-if="currentUser.uid != x.info.uid && (peopleFilter=='public' && x.info.display=='public') || (peopleFilter=='private' && (x.info.display=='private' || x.info.display=='public') && userFriendsList[x.info.uid])"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
+      <div id="C1" ng-repeat="(key,x) in people | orderObjectBy:'distance' | filter: searchPeople " ng-if="currentUser.uid != x.info.uid && (x.info.age >= low && x.info.age<=high) && (peopleFilter=='public' && x.info.display=='public') ||  (x.info.age >= low && x.info.age<=high) && (peopleFilter=='private' && (x.info.display=='private' || x.info.display=='public') && userFriendsList[x.info.uid])"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
         <img ng-src="{{x.info.photoURL}}" ng-click="viewProfilePopover($event, x)"/>
         <div id="C1A" ng-click="viewProfilePopover($event, x)">
           {{x.info.name}}

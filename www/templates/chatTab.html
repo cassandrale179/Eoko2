@@ -41,7 +41,8 @@
               <div id="L5" ng-if="chat.info.name.length>0">
                 {{chat.info.name}}
               </div>
-              <div id="L6">{{chat.info.lastText}}</div>
+              <div ng-if="!chat.info.lastText" id="L6"><i>No reponse yet...</i></div>
+              <div ng-if="chat.info.lastText" id="L6"><strong>{{chat.info.lastText.userFirstName}}</strong>: {{chat.info.lastText.messageText}}</div>
             </div>
           </ion-item>
 

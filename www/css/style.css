@@ -1137,11 +1137,13 @@ select{
 }
 
 #L6{
-  font-family: 'San Francisco Display', sans-serif;
-  font-weight: 100;
+  font-family: 'San Francisco Display UltraLight', sans-serif;
   color: white;
   font-size: 5vw;
   margin-bottom: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 
@@ -1230,15 +1232,23 @@ select{
   text-overflow: ellipsis;
   white-space: nowrap;
   position: relative;
+  color: white;
+  font-family: "San Francisco Display Thin", sans-serif;
 }
 
 #M3{
-  background: rgba(255,255,255,0.8);
+  background: rgba(230, 126, 34, 0.8);
+  display: block;
+  float:left;
+  clear:both;
   opacity: 0.9;
   border-radius: 7px;
-  box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);
+  /* box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3); */
   display: table-cell;
+  max-width: 300px;
+  white-space: initial;
   padding: 10px;
+  height: auto;
   font-size: 4.11vw;
 }
 
@@ -1262,6 +1272,7 @@ select{
   text-overflow: ellipsis;
   white-space: nowrap;
   position: relative;
+  font-family: "San Francisco Display Thin", sans-serif;
 }
 
 #Mm3{
@@ -1271,7 +1282,7 @@ select{
   clear:both;
   opacity: 0.9;
   border-radius: 7px;
-  box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);
+  /* box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3); */
   display: table-cell;
   max-width: 300px;
   white-space: initial;
@@ -1290,7 +1301,7 @@ select{
 }
 
 #M5{
-  height: 129.5vw;
+  height: 128.8vw;
 }
 
 #N button{
