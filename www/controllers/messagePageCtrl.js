@@ -62,7 +62,10 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
       //Update last text in chat tab
       var chatRef = firebase.database().ref(`Chats/${convoID}`);
       chatRef.update({
-        lastText: $scope.data.messageText
+        lastText: {
+          messageText: $scope.data.messageText,
+          userName: authUser.displayName.split(" ")[0]
+        }
       })
 
       $scope.data.messageText = "";
