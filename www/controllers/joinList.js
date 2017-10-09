@@ -19,16 +19,17 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
         joinActions = firebase.database().ref('users').child($scope.currentUser.uid).child('actions/joinActions');
         actionRef = firebase.database().ref('activities');
 
+        //----------------- LIST OF FIREBASE ARRAYS TO BE USED --------------
         $scope.createdArray = $firebaseArray(myActions);
         $scope.joinArray = $firebaseArray(joinActions);
         $scope.actionArray = $firebaseArray(actionRef);
         $scope.createdArray.$loaded();
 
-        //------------- LIST OF PROMISES TO BE WRITTEN -----------------
+        //------------------- LIST OF PROMISES TO BE WRITTEN -----------------
         var actionPromise = $scope.actionArray.$loaded();
         var joinPromise = $scope.joinArray.$loaded();
 
-        //-------------- THIS IS HOW YOU WROTE A FUCKING PROMISE -----------------
+        //---------- IF AN EVENT DOES NOT EXIST, GIVE A WARNING ---------------
         $scope.actionPopUp = function(x){
           console.log(x);
           $scope.show = 4;
@@ -44,9 +45,15 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
                   joinActions.child(x.eventID).remove();
                 }
               }
+              else{
+                $state.go('navController.action',{actionID: x.eventID, SJWTriggered: true});
+              }
             });
           });
-        }
+        };
+
+        //------------- REDIRECT TO THE EVENT INFORMATION PAGE IF AN EVENT EXIST ----------
+
 
         //----------------- ERROR HANDLING -------------------
         if (joinActions == undefined){
