@@ -75,30 +75,29 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
           console.log("chatData try", chatdata);
           var chatdata = chatFactory.loadChatData($scope.userInfo.chat[i].chatID);
           var chattitle = makeName(chatdata.ids);
+          console.log("chatdata: ", chatdata);
+          console.log("uid", $scope.currentUser.uid);
+  
+          //Add photo for one-on-one chat
+          if (chatdata.name==""){
+            angular.forEach(chatdata.ids, function(person){
+              if (person.id!=$scope.currentUser.uid){
+                chatdata.photoURL = person.avatar;
+                chatdata.title = person.name;
+              }
+            })
+          }
+          var obj = {
+            info: chatdata,
+            title: chattitle
+          };
+          $scope.chatData.push(obj);
         }catch(exception){
           console.log("EXCEPTIONS ", exception);
           console.log("chatData exception", chatdata);
           firebase.database().ref('users').child($scope.userInfo.uid + '/chat/' + i).remove();
         }
-      
-
-        console.log("chatdata: ", chatdata);
-        console.log("uid", $scope.currentUser.uid);
-
-        //Add photo for one-on-one chat
-        if (chatdata.name==""){
-          angular.forEach(chatdata.ids, function(person){
-            if (person.id!=$scope.currentUser.uid){
-              chatdata.photoURL = person.avatar;
-              chatdata.title = person.name;
-            }
-          })
-        }
-        var obj = {
-          info: chatdata,
-          title: chattitle
-        };
-        $scope.chatData.push(obj);
+    
       }
       console.log("chatData",$scope.chatData);
       $timeout(function(){$scope.$apply();});
