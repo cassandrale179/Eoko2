@@ -5,7 +5,7 @@
       <div id="E">
         <div id="E0" ng-show="searchBar==1">
           <a class="eoko-icon-search-black"></a>
-          <input placeholder="Search actions" ng-model="searchEvent"  />
+          <input placeholder="Search actions" ng-model="searchEvent.info.name"  />
           <button ng-click="searchBar = 2" >X</button>
         </div>
 
@@ -33,7 +33,8 @@
 
         ng-if="privacyFilter=='public' && x.info.privacy=='public' ||
         privacyFilter=='private' && x.info.privacy=='private'&&userFriendsList[x.info.owner.id] ||
-        privacyFilter=='private' && x.info.privacy=='invite'&&inviteActions[x.info.$id]
+        privacyFilter=='private' && x.info.privacy=='invite'&&inviteActions[x.info.$id] ||
+        x.info.owner.id==currentUser.uid
         "
 
 
@@ -78,7 +79,7 @@
             <img id="F1icon" src="./img/location_icon.png">
           </div>
           <div id="F1B2">
-            <h3 style="font-size: 4.5vw"ng-click="goToMaps(currUser.info.address)">{{currUser.info.address}}</h3>
+            <h3 style="font-size: 4.5vw; text-decoration: underline;"ng-click="goToMaps(currUser.info.address)">{{currUser.info.address}}</h3>
           </div>
           <ion-scroll id="F1A" overflow-scroll="false" class="descriptionArea">{{currUser.info.description}}</ion-scroll>
         </div>

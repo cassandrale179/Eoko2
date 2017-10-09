@@ -1,14 +1,15 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform', 'facebookService', '$localStorage',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform', 'facebookService', '$localStorage', '$ionicLoading',
 
-  function ($scope, $state, $firebaseArray,  $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform, facebookService, $localStorage) {
+  function ($scope, $state, $firebaseArray,  $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform, facebookService, $localStorage, $ionicLoading) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
-
+    $scope.searchBar = 2;
     $scope.$on('$ionicView.beforeEnter', function(){
       $scope.exitButton = 2;
       firebase.auth().onAuthStateChanged(function(firebaseUser){
         $scope.currentUser = firebaseUser;
+
         var userRef = firebase.database().ref("users/"+$scope.currentUser.uid);
         userRef.on('value', function(snapshot){
           $scope.peopleFilter = snapshot.val().peopleFilter;
@@ -97,6 +98,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
      $scope.$on('$ionicView.afterEnter', function () //before anything runs
     {
       makeblurry();
+      showLoadingIndicator();
     });
 
 
@@ -148,7 +150,11 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
          }
          else
          {
-          getPeople();
+          $ionicLoading.hide().then(function(){
+            console.log("loading is gone");
+            getPeople();
+          })
+
          }
        }
 
@@ -561,6 +567,17 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
         $scope.blurry.behind = "0px";
         // Execute action
       });
+
+
+      //------------------------LOADING INDICATOR --------------------------
+      //loading indicator
+     function showLoadingIndicator (){
+       $ionicLoading.show({
+         template: '<div class="loader"></div>',
+       }).then(function(){
+           startLoop();
+       });
+     }
 
 
 

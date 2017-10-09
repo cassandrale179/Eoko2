@@ -5,8 +5,6 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
     console.log("State of searchbar");
     console.log($scope.searchBar);
 
-
-
     //start the thing in case it starts here
     firebase.auth().onAuthStateChanged(function(user){
       if (user){
@@ -231,11 +229,13 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
           console.log("i is", $scope.eventInfo[i].$id);
           var index = $scope.eventInfo[i].$id;
           var dist = $scope.distFromPlayer($scope.eventInfo[i].location);
-          if(dist != false)
+          console.log("dist of this action: ", dist);
+          if(dist != 'false' )
           {
             result[index] = {info: $scope.eventInfo[i], distance: dist, display: true};
           }
         }
+        console.log("result", result);
         return result;
     }
 
