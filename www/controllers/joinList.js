@@ -52,7 +52,7 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
           });
         };
 
-        //------------- REDIRECT TO THE EVENT INFORMATION PAGE IF AN EVENT EXIST ----------
+        
 
 
         //----------------- ERROR HANDLING -------------------
@@ -98,7 +98,7 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
           if(res)
           {
             var messageRef = firebase.database().ref("Chats");
-            messageRef.child(chatIDToDelete).remove(); 
+            messageRef.child(chatIDToDelete).remove();
             $scope.blurry = {behind: "0px"};
             myActions.child(info).remove();
             actionRef.child(info).remove();
