@@ -85,13 +85,15 @@
           <div id="D2"><img ng-src="{{otherUser.info.photoURL}}" /></div>
 
           <!-- _____________________ THIS DISPLAY LIST OF THE ACTIONS OF AN USER __________________________ -->
-          <h5>Active Actions</h5>
-          <ion-scroll overflow-scroll="false" style="max-height: 24vh;" ng-if="otherUser.info.actions.myActions">
-            <ion-item ng-repeat="action in otherUser.info.actions.myActions" style="background-color: rgba(0,0,0,0);color: white" ng-click="viewPersonAction(action.eventID, true)">
-              <div class="activeActions">{{action.name}}</div>  <span style="float:right;">{{action.time}}</span>
-            </ion-item>
-          </ion-scroll>
-          <h5 ng-if="!(otherUser.info.actions.myActions)"> No active actions at this time</h5>
+          <div id="D4">
+            <h5>Active Actions</h5>
+            <ion-scroll overflow-scroll="false" style="max-height: 24vh;" ng-if="otherUser.info.actions.myActions">
+              <ion-item ng-repeat="action in otherUser.info.actions.myActions" style="background-color: rgba(0,0,0,0);color: white" ng-click="viewPersonAction(action.eventID, true)">
+                <div class="activeActions">{{action.name}}</div>  <span style="float:right;">{{action.time}}</span>
+              </ion-item>
+            </ion-scroll>
+            <h5 ng-if="!(otherUser.info.actions.myActions)"> No active actions at this time</h5>
+          </div>
 
           <!-- _____________________  THIS IS THE CLOSE BUTTON __________________________ -->
           <div id="D3">

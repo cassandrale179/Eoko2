@@ -52,13 +52,13 @@
               <p style="color:white; display: inline-block; width: 60%; margin-bottom: 8px">I agree to follow all applicable laws on or off the services.</p>
           </label>
         </div>
-
       </form>
 
+      <!-- _________________________________ CREATE BUTTON  __________________________________ -->
+      <button ng-if="editing == false" id="submit" ng-click="submit()"> CREATE </button>
+      <button ng-if="editing == true" id="submit" ng-click="change()"> SAVE CHANGES </button>
     </div>
 
-    <!-- _________________________________ CREATE BUTTON  __________________________________ -->
-    <button ng-if="editing == false" id="submit" ng-click="submit()"> CREATE </button>
-    <button ng-if="editing == true" id="submit" ng-click="change()"> SAVE CHANGES </button>
+
 
 </ion-view>

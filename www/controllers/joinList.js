@@ -1,8 +1,14 @@
 app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebaseObject', '$timeout','EditInfo','$ionicPopup',
   function ($scope, $state, $firebaseArray, $firebaseObject, $timeout,EditInfo,$ionicPopup) {
-  
+
+    //------------ PRESET SOME VARIABLES -------------
+    $scope.show = 1;
+    $scope.create = { 'border-bottom': '1px orange solid'};
+    $scope.errorMessage = "";
     var myActions, joinActions, actionRef;
-    //--------- CHECK IF USER IS LOG IN ---------
+
+
+    //--------------------------- CHECK IF USER IS LOG IN -------------------------
     firebase.auth().onAuthStateChanged(function(user){
       if (user){
         $scope.currentUser = user;
@@ -18,8 +24,14 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
         $scope.createdArray.$loaded();
         $scope.joinArray.$loaded();
         $scope.actionArray.$loaded();
-      }
 
+
+        //----------------- ERROR HANDLING -------------------
+        if (joinActions == undefined){
+          $scope.errorMessage = "You have joined any action yet";
+        }
+
+      }
     });
 
     $scope.blurry = {behind: "0px"};
@@ -53,7 +65,7 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
 
       //------------------ DELETE AN ACTION -----------------
       $scope.deleteAction = function(x){
-        showNotifyAlert("Are you sure you want to delete this Action?", x);       
+        showNotifyAlert("Are you sure you want to delete this Action?", x);
       };
 
       //---------------------------------- EDIT AN ACTION -------------------------------------
