@@ -64,24 +64,50 @@ app.controller('joinListCtrl', ['$scope', '$state', '$firebaseArray', '$firebase
 
     $scope.blurry = {behind: "0px"};
 
-     function showNotifyAlert(message, info) {
-        $scope.blurry = {behind: "5px"};
 
+    //----------- IF USER WANT TO DELETE A MESSAGE, THIS WILL APPEAR --------
+     function showNotifyAlert(message, info) {
+
+       //---------- GET THE CHAT TO ID IN ORDER TO DELETE IN THE DATABASE ---------
+       var chatIDToDelete = "";
+       var actionPromise = $scope.actionArray.$loaded();
+       Promise.all([actionPromise]).then(function(response){
+         var actionResponse = response[0];
+         angular.forEach(actionResponse, function(value, key){
+           var id = value.$id;
+           console.log(value);
+           if (info == id){
+             chatIDToDelete = value.chatID;
+           }
+         });
+         console.log("Chat to ID");
+         console.log(chatIDToDelete);
+       });
+
+
+        //------- POPUP TO ASK FOR USER CONFIRMATION --------
+        $scope.blurry = {behind: "5px"};
         var confirmPopup = $ionicPopup.confirm({
           title: 'Error',
           cssClass: 'eoko-alert-pop-up',
           template: message
         });
+
+        //------------- IF USER AGREES TO DELETE AN ACTION------
         confirmPopup.then(function(res) {
           if(res)
           {
+            var messageRef = firebase.database().ref("Chats");
+            messageRef.child(chatIDToDelete).remove(); 
             $scope.blurry = {behind: "0px"};
-             myActions.child(info).remove();
+            myActions.child(info).remove();
             actionRef.child(info).remove();
             console.log("Successfully delete event");
             console.log("redirect to message");
             return true;
           }
+
+          //----------- IF USER DID NOT WANT TO DELETE AN ACTION------
           else
           {
             $scope.blurry = {behind: "0px"};
