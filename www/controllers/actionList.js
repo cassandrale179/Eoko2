@@ -7,6 +7,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
     $scope.searchBar = 2;
     $scope.$on('$ionicView.beforeEnter', function(){
       $scope.exitButton = 2;
+      showLoadingIndicator();
       firebase.auth().onAuthStateChanged(function(firebaseUser){
         $scope.currentUser = firebaseUser;
 
@@ -154,10 +155,17 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
             console.log("loading is gone");
             getPeople();
           })
-
          }
        }
 
+      //loading indicator
+      function showLoadingIndicator (){
+        $ionicLoading.show({
+          template: '<div class="loader"></div>',
+        }).then(function(){
+            startLoop();
+        });
+      }
 
         $scope.doRefresh = function() {
 
