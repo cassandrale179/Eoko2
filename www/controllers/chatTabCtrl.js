@@ -1,5 +1,5 @@
-app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactory','$firebaseObject', '$state',
-  function ($scope, $firebaseArray, $timeout,chatFactory,$firebaseObject,$state) {
+app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactory','$firebaseObject', '$state','$ionicLoading',
+  function ($scope, $firebaseArray, $timeout,chatFactory,$firebaseObject,$state,$ionicLoading) {
 
 
     $scope.currentUser = firebase.auth().currentUser;
@@ -7,6 +7,7 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
     //before anything runs, get the list of all chats
     $scope.$on('$ionicView.afterEnter', function ()
     {
+      showLoadingIndicator();
       populateChats();
     });
 
@@ -28,13 +29,27 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
           if(event.event == "child_removed")
           {
             console.log("event",event.event);
-            populateChats();
+            $ionicLoading.hide().then(function(){
+              console.log("The loading indicator is now hidden");
+              populateChats();
+            });
           }
         });
-        populateChats();
+        $ionicLoading.hide().then(function(){
+          console.log("The loading indicator is now hidden");
+          populateChats();
+        });
       }
     }
 
+  //loading indicator
+  function showLoadingIndicator (){
+    $ionicLoading.show({
+      template: '<div class="loader"></div>',
+    }).then(function(){
+      chatLoop();
+    });
+  }
 
    function makeName(ids)
    {
