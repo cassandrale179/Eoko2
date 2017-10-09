@@ -4,12 +4,12 @@
 
 
     <!-- ___________________ THIS DIV WILL DISPLAY THE EVENTS THAT YOU HAVE CREATED ________________ -->
-  <ion-scroll id="I">
     <div ng-show="show==1">
       <div id="I1">
         <div id="I1A"><button ng-click="show=1" ng-style="create"> Created </button></div>
         <div id="I1B"><button ng-click="show=3"> Joined </button></div>
       </div>
+      <ion-scroll id="I">
       <ion-list show-delete="false" can-swipe="true" >
         <p>Touch to edit. Swipe to delete.</p>
         <ion-item class="I2" ng-repeat="event in createdArray" ng-click="editAction(event.eventID)">
@@ -19,12 +19,14 @@
         </ion-item>
       </ion-list>
     </div>
+  </ion-scroll>
 
     <div ng-show="show==3">
       <div id="I1">
         <div id="I1A"><button ng-click="show=1"> Created </button></div>
         <div id="I1B"><button ng-click="show=3" ng-style="create"> Joined </button></div>
       </div>
+      <ion-scroll id="I">
       <p ng-if="errorMessage==''">This is a list of actions you have joined </p>
       <p ng-if="errorMessage !=''">{{errorMessage}} </p>
       <ion-list>

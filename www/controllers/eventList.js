@@ -188,7 +188,9 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
             eventID: eventid,
             location: eventobject.info.location,
             name: eventobject.info.name,
-            time: eventobject.info.startTime
+            time: eventobject.info.startTime,
+            photoURL: eventobject.info.photoURL,
+            privacy: eventobject.info.privacy
           };
           userRefJoin.child(eventid).update(eventToPushUnderJoinList);
 
