@@ -830,6 +830,7 @@ select{
 
 
 /* -------------------------- SETTINGS PAGE --------------------------------- */
+
 #H p{
   color: white;
   font-family: 'Roboto', sans-serif;
@@ -911,6 +912,9 @@ select{
   border-radius: 10px;
 }
 
+#H4{
+  height: 13vh;
+}
 
 /* ---------------------------- STYLING FOR JOIN LIST PAGE --------------------- */
 #I{

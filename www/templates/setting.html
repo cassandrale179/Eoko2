@@ -1,16 +1,12 @@
 <ion-view title="Settings" hide-nav-bar="true" hide-back-button="true" id="page3">
-
-
-
   <ion-content padding="true" class="manual-ios-statusbar-padding innerbackground">
       <a ui-sref="navController.people" class="eoko-button-clear ion-chevron-left" native-transitions nav-direction="back" style="float: left; position: absolute;"></a>
-      
       <img class="logo" src="./img/Eoko-logo.svg">
       <img class="tagline" src="./img/peoplenearyou.png"></img>
-      
-      <ion-scroll>
+      <!-- <ion-scroll style="200vh"> -->
 
 
+      <!-- _____________ THIS IS THE AGE RANGE TO FILTER PEOPLE BY AGE ______________ -->
       <div id="G" style="margin:2%;padding:2%">
         <p>Age Range (filter people by age)</p>
         <div range-slider
@@ -24,51 +20,45 @@
       </div>
 
 
+      <!-- ____________ THIS IS THE SETTINGS VIEW FOR THE VIEW PART ____________ -->
       <div id="H">
-        <!-- THIS IS THE SETTINGS VIEW FOR THE VIEW PART -->
         <div id="H1A" ng-show="view">
 
-          <!-- OPTION BUTTONS -->
+          <!-- ________________ OPTION TO VIEW EVENTS PRIVACY  ________________________  -->
           <p>View public events or private events</p>
           <div id="H2">
             <button ng-click="setPublic()" ng-style="public"> PUBLIC </button>
             <button ng-click="setPrivate()" ng-style="private"> PRIVATE </button>
           </div>
 
-
-          <p>
-            View public or private people
-          </p>
+          <!-- ________________ OPTION TO VIEW PEOPLE PRIVACY   ________________________  -->
+          <p> View public or private people </p>
           <div id="H5">
             <button ng-click="peopleFilter('public')" ng-style="publicPeople">PUBLIC</button>
             <button ng-click="peopleFilter('private')" ng-style="privatePeople">PRIVATE</button>
           </div>
-          <p ng-if="!displayMessage">
-            Set your location setting
-          </p>
+
+          <!-- ________________ MESSAGE TO SET YOUR LOCATION PRIVACY  ________________________  -->
+          <p ng-if="!displayMessage"> Set your location setting </p>
           <p ng-if="displayMessage=='public'"> Everyone can view your location</p>
-          <p ng-if="displayMessage=='private'">
-            Only your friends can view your location
-          </p>
-          <p ng-if="displayMessage=='hidden'">
-            No one can view your location
-          </p>
+          <p ng-if="displayMessage=='private'"> Only your friends can view your location </p>
+          <p ng-if="displayMessage=='hidden'"> No one can view your location </p>
+
+
+          <!-- ________________ OPTION TO SET YOUR LOCATION PRIVACY  ________________________  -->
           <div id="H3">
             <button ng-click="displaySetting('public')" ng-style="public2"> PUBLIC </button>
             <button ng-click="displaySetting('private')" ng-style="private2"> PRIVATE </button>
             <button ng-click="displaySetting('hidden')" ng-style="hidden">HIDDEN</button>
           </div>
         </div>
-        <div id="H4">
-            <button  ng-click="signoutUser()">SIGN OUT</button>
+
+
+          <!-- ________________ OPTION TO SIGN OUT ________________________  -->
+        <div id="H4"><button  ng-click="signoutUser()">SIGN OUT</button>
         </div>
+
       </div>
-
-
-
-      </ion-scroll>
-
-
+    <!-- </ion-scroll> -->
   </ion-content>
-
 </ion-view>
