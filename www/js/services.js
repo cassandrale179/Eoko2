@@ -244,8 +244,8 @@ angular.module('eoko.services', [])
 
     var myloc,uid;
     var ready = false;
-   
-    navigator.geolocation.watchPosition(successPos, errorPos, {timeout:10000});
+    var tries = 1;
+    navigator.geolocation.watchPosition(successPos, errorPos, {timeout:10000 * tries});
 
     function showAlert(message) {
       //$scope.blurry = {behind: "5px"};
@@ -314,9 +314,10 @@ angular.module('eoko.services', [])
                 console.log("Location information is unavailable.");
                 break;
             case error.TIMEOUT:
+                tries += 1;
                 console.log("The request to get user location timed out.");
                 showAlert("Cannot currently get your location. Please check your location services");
-                navigator.geolocation.watchPosition(successPos, errorPos, {timeout:10000});
+                navigator.geolocation.watchPosition(successPos, errorPos, {timeout:10000 * tries});
                 break;
             case error.UNKNOWN_ERROR:
                 console.log("An unknown error occurred.");

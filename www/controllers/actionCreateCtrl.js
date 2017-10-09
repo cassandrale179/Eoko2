@@ -70,6 +70,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
         }
         else
         {
+          $scope.selectTagList = [];
           $scope.action = EditInfo.getEditInfo();
           $scope.setPrivacy($scope.action.privacy);
           document.getElementById('autocomplete').value = $scope.action.address;
@@ -85,7 +86,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
           for(var i in $scope.action.tags)
           {
             console.log("tag is chosen", $scope.action.tags[i]);
-            $scope.selectionTag($scope.action.tags[i]+'create');
+            $scope.initSelectionTag($scope.action.tags[i]+'create');
           }
         }
        
@@ -134,6 +135,39 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
    // $scope.selectTagList = [];
       //select filter
       $scope.selectionTag = function (elementId)
+      {
+        console.log("started select");
+      var elementClass = document.getElementById(elementId).className;
+        if(elementClass == "eoko-horizontal-scroll-button eoko-text-thin activated" || elementClass == "eoko-horizontal-scroll-button eoko-text-thin ng-binding activated")
+        {
+          console.log("activated");
+          document.getElementById(elementId).className = "eoko-horizontal-scroll-button-selected eoko-text-thin";
+          $scope.selectTagList.push(elementId.replace(/create/,''));
+        }
+        else{
+          console.log("not activated");
+          document.getElementById(elementId).className = "eoko-horizontal-scroll-button eoko-text-thin";
+          for(var i in $scope.selectTagList)
+          {
+            console.log("for loopin" , i);
+            if($scope.selectTagList[i] == elementId.replace(/create/,''))
+            {
+              console.log("splicin");
+                  $scope.selectTagList.splice(i, 1);
+            }
+          }
+        }
+        if($scope.selectTagList == [])
+        {
+          console.log("nuller than a null pointer");
+          $scope.selectTagList = null;
+        }
+        console.log("searching",$scope.selectTagList);
+        $timeout(function(){$scope.$apply();});
+      };
+
+
+      $scope.initSelectionTag = function (elementId)
       {
         console.log("started select");
       var elementClass = document.getElementById(elementId).className;
@@ -264,6 +298,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
     function verifySubmission()
     {
+      $scope.action.tags = [];
       $scope.action.tags = $scope.selectTagList;
 
       if($scope.action.privacy == null || $scope.action.privacy == undefined
