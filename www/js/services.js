@@ -391,13 +391,21 @@ angular.module('eoko.services', [])
 .factory('chatFactory', ['$firebaseArray',function ($firebaseArray) {
 
     var ref = firebase.database().ref("Chats");
+    
+    ref.orderByChild("/lastText/utcTime")
+        .on("value", function(snapshot){
+            console.log("snapshot",snapshot.val());
+          }, function (error){
+            console.log("errorrrr", error);
+        });
+
     var chatData = $firebaseArray(ref);
     var myChatLists = [];
     var ready = false;
 
     chatData.$loaded(function(x)
     {
-      //console.log("Chats Loaded",x);
+      console.log("Chats Loaded",x);
       ready = true;
     });
 

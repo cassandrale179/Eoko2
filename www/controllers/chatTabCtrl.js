@@ -71,8 +71,16 @@ app.controller('chatTabCtrl', ['$scope', '$firebaseArray','$timeout','chatFactor
       console.log("userInfo", $scope.userInfo);
       for(var i in $scope.userInfo.chat)
       {
-        var chatdata = chatFactory.loadChatData($scope.userInfo.chat[i].chatID);
-        var chattitle = makeName(chatdata.ids);
+        try{
+          console.log("chatData try", chatdata);
+          var chatdata = chatFactory.loadChatData($scope.userInfo.chat[i].chatID);
+          var chattitle = makeName(chatdata.ids);
+        }catch(exception){
+          console.log("EXCEPTIONS ", exception);
+          console.log("chatData exception", chatdata);
+          firebase.database().ref('users').child($scope.userInfo.uid + '/chat/' + i).remove();
+        }
+      
 
         console.log("chatdata: ", chatdata);
         console.log("uid", $scope.currentUser.uid);

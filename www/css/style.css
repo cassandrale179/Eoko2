@@ -1233,7 +1233,7 @@ select{
   white-space: nowrap;
   position: relative;
   color: white;
-  font-family: "San Francisco Display Thin", sans-serif;
+  font-family: "San Francisco Display Regular", sans-serif;
 }
 
 #M3{
@@ -1272,7 +1272,7 @@ select{
   text-overflow: ellipsis;
   white-space: nowrap;
   position: relative;
-  font-family: "San Francisco Display Thin", sans-serif;
+  font-family: "San Francisco Display Regular", sans-serif;
 }
 
 #Mm3{

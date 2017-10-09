@@ -56,16 +56,20 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
         text: $scope.data.messageText,
         time: d,
         avatar: authUser.photoURL
-
       });
 
       //Update last text in chat tab
       var chatRef = firebase.database().ref(`Chats/${convoID}`);
+
+      var utcTime = new Date().getTime();
+      console.log("UTC Time", utcTime);
+
       chatRef.update({
         lastText: {
           messageText: $scope.data.messageText,
           userId: authUser.uid,
-          userFirstName: authUser.displayName.split(" ")[0]
+          userFirstName: authUser.displayName.split(" ")[0],
+          utcTime: utcTime
         }
       })
 
@@ -73,16 +77,14 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
       $ionicScrollDelegate.scrollBottom();
     };
 
-
-    $scope.keyboardHeight = 271;
-
-    window.addEventListener('native.keyboardshow', keyboardShowHandler);
-
-    function keyboardShowHandler(e){
-        $scope.keyboardHeight = e.keyboardHeight;
-    }
-
+    
+    
     //KEYBOARD
+    $scope.keyboardHeight = 271;
+    
+    window.addEventListener('native.keyboardshow', keyboardShowHandler);
+    function keyboardShowHandler(e){$scope.keyboardHeight = e.keyboardHeight;}
+
     $scope.showKeyboard = function(){
         if(window.device.platform != 'Android')
         {
@@ -99,10 +101,7 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
     };
 
     window.addEventListener('native.keyboardhide', keyboardHideHandler);
-
-    function keyboardHideHandler(e){
-        // alert('Goodnight, sweet prince');
-    }
+    function keyboardHideHandler(e){console.log("good night baby")}
 
     $scope.closeKeyboard = function (){
       if(window.device.platform != 'Android')
