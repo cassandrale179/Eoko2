@@ -405,7 +405,8 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
         $scope.isAlreadyJoined = false;
         $scope.blurry.behind = "5px";
         $scope.currUser = user;
-        $scope.joinAction($scope.currUser.info.$id);
+        //currUser is actually the action!!!!!!!!
+        // $scope.joinAction($scope.currUser.info.$id, $scope.currUser);
         $scope.popover.show();
       };
       $scope.closePopover = function() {

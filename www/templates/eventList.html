@@ -94,7 +94,7 @@
             </span>
           </ion-scroll>
         </div>
-        <button ng-if="!isAlreadyJoined" ng-click="joinAction(currUser.info.$id)"> Join </button>
+        <button ng-if="!isAlreadyJoined" ng-click="joinAction(currUser.info.$id, currUser)"> Join </button>
         <button ng-if="isAlreadyJoined" style="background: rgba(255,255,255,0.5); color: rgba(230, 126, 34, 0.9); font-style: italic;"> Already Joined </button>
       </div>
       </div>
