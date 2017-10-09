@@ -88,7 +88,7 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
           console.log("keyboard height", $scope.keyboardHeight);
           console.log("MessagePageCtrl.js ---- keyboard opens");
           $scope.M4style = "margin-bottom: " + $scope.keyboardHeight + "px";
-          $scope.M5style = "height: calc(129.5vw - " + $scope.keyboardHeight + "px)";
+          $scope.M5style = "height: calc(128.8vw - " + $scope.keyboardHeight + "px)";
           $ionicScrollDelegate.scrollBottom();
 
           $timeout(function(){
@@ -108,7 +108,7 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
       {
         console.log("MessagePageCtrl.js ---- keyboard closes");
         $scope.M4style = "margin-bottom: 0px";
-        $scope.M5style = "height: 129.5vw";
+        $scope.M5style = "height: 128.8vw";
         $timeout(function(){
           $scope.$apply();
         });
