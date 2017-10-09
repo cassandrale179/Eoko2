@@ -72,6 +72,9 @@
             <img id="F1icon" src="./img/dateTime_icon.png">
             <h3>{{currUser.info.startTime}}</h3>
             <span id="spacer" style="padding: 0 1.618em;"></span>
+            <h3>{{currUser.info.endTime}}</h3>
+          </div>
+          <div>
             <img id="F1icon" src="./img/distance_icon.png">
             <h3 ng-if="currUser.distance >= 0.1">{{currUser.distance | number:1}} miles</h3>
             <h3 ng-if="currUser.distance < 0.1">{{currUser.distance * 5280 | number:1}} feet</h3>
