@@ -30,12 +30,21 @@
       <p ng-if="errorMessage==''">This is a list of actions you have joined </p>
       <p ng-if="errorMessage !=''">{{errorMessage}} </p>
       <ion-list>
-        <ion-item class="I2"ng-repeat="event in joinArray">
+        <ion-item class="I2" ng-repeat="event in joinArray" ng-click="actionPopUp(event)">
           <img ng-src="{{event.photoURL}}" />
           <div id="I2A" style="margin-top: 3vh">{{event.name}}</div>
+
+          <!-- __________________ EVENT INFORMATION POPUP _______________ -->
+          <div id="I3" ng-if="show==4">
+            This will appear about the information
+          </div>
+
         </ion-item>
       </ion-list>
     </div>
+
+
+
   </ion-scroll>
 
 </ion-content>
