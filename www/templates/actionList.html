@@ -1,14 +1,20 @@
 <ion-view hide-nav-bar="true">
   <ion-content padding="false" class="manual-ios-statusbar-padding innerbackground eoko-content" scroll="false" style="filter: blur({{blurry.behind}});">
 
-
-    <div style=" margin-top: 7px">
+      <div style=" margin-top: 7px">
       <img class="settingButton" src="img/setting_icon.png" ui-sref="settingPage" style="float: right; "/>
     </div>
 
     <div>
       <img class="logo" src="img/Eoko-logo.svg"/>
       <img class="tagline" src="img/peoplenearyou.png"/>
+    </div>
+
+    <!-- Search bar right here -->
+    <div id="C0" ng-show="searchBar==2">
+      <a class="eoko-icon-search-black"></a>
+      <input placeholder="Search people" ng-model="searchPeople.info.name"  />
+      <button ng-click="searchPeople.info.name=''" >X</button>
     </div>
 
 
@@ -21,7 +27,7 @@
       <ion-refresher on-refresh="doRefresh()"></ion-refresher>
 
 
-      <div id="C1" ng-repeat="(key,x) in people | orderObjectBy:'distance' " ng-if="currentUser.uid != x.info.uid && (peopleFilter=='public' && x.info.display=='public') || (peopleFilter=='private' && (x.info.display=='private' || x.info.display=='public') && userFriendsList[x.info.uid])"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
+      <div id="C1" ng-repeat="(key,x) in people | orderObjectBy:'distance' | filter: searchPeople " ng-if="currentUser.uid != x.info.uid && (peopleFilter=='public' && x.info.display=='public') || (peopleFilter=='private' && (x.info.display=='private' || x.info.display=='public') && userFriendsList[x.info.uid])"> <!-- ng-show="distList[$index].age > low && distList[$index].age < high"> -->
         <img ng-src="{{x.info.photoURL}}" ng-click="viewProfilePopover($event, x)"/>
         <div id="C1A" ng-click="viewProfilePopover($event, x)">
           {{x.info.name}}
@@ -63,7 +69,7 @@
           </div>
           <div id="D2">
             <div id="D2A">
-              <img ng-src="{{currentUser.info.photoURL}}" />
+              <img ng-src="{{currentUser.photoURL}}" />
               <h4> {{currentUser.displayName}} </h4>
             </div>
             <div id="D2B">
