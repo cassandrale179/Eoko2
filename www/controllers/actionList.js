@@ -142,11 +142,11 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
       {
          if(geoPos.isReady() == false)
          {
-          geoPos.isPromiseReady();
+          //geoPos.isPromiseReady();
           console.log("geoLoc not ready Yet");
           $timeout(function(){
                   startLoop();
-                },6000);
+                },1000);
          }
          else
          {

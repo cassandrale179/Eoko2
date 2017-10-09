@@ -240,18 +240,27 @@ angular.module('eoko.services', [])
 
 
 /* ------------------------------- GEO POS FACTORY --------------------------- */
-.factory('geoPos', [function () {
+.factory('geoPos', ['$ionicPopup', function ($ionicPopup) {
 
-    var myloc, watchId,uid;
+    var myloc,uid;
     var ready = false;
-    watchId = navigator.geolocation.watchPosition(success, error);
-    function error(err){
-      console.log("There's an error", err);
+   
+    navigator.geolocation.watchPosition(successPos, errorPos, {timeout:10000});
+
+    function showAlert(message) {
+      //$scope.blurry = {behind: "5px"};
+
+      var alertPopup = $ionicPopup.alert({
+        title: 'Location Issue',
+        cssClass: 'eoko-alert-pop-up',
+        template: message
+      });
+      alertPopup.then(function(res) {
+        //$scope.blurry = {behind: "0px"};
+      });
     }
-    function success(position) {
-      console.log("Success boi", position);
-    }
-    watchId = navigator.geolocation.watchPosition(function(position)
+
+      function successPos(position)
           {
             var latlng = position.coords.latitude + "," + position.coords.longitude;
                 console.log("Latlng under ionic platform: " + latlng);
@@ -292,7 +301,28 @@ angular.module('eoko.services', [])
                     ready = true;
                  }
                }
-          });
+          }
+
+          function errorPos(error)
+          {
+            switch(error.code) 
+            {
+            case error.PERMISSION_DENIED:
+                console.log("User denied the request for Geolocation.");
+                break;
+            case error.POSITION_UNAVAILABLE:
+                console.log("Location information is unavailable.");
+                break;
+            case error.TIMEOUT:
+                console.log("The request to get user location timed out.");
+                showAlert("Cannot currently get your location. Please check your location services");
+                navigator.geolocation.watchPosition(successPos, errorPos, {timeout:10000});
+                break;
+            case error.UNKNOWN_ERROR:
+                console.log("An unknown error occurred.");
+                break;
+            }
+          }
 
     return {
 
@@ -304,7 +334,7 @@ angular.module('eoko.services', [])
       getUserPosition: function ()
       {
         return myloc;
-      },
+      }/*,
       isPromiseReady: function()
       {
         return navigator.geolocation.watchPosition(success, error, {maximumAge: 300000, timeout: 5000, enableHighAccuracy: true});
@@ -317,7 +347,7 @@ angular.module('eoko.services', [])
             ready = true;
             return ready;
           }
-      }
+      }*/
     };
 
   }])
