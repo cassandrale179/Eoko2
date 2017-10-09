@@ -1,16 +1,15 @@
 <ion-view hide-nav-bar="true">
   <ion-content padding="false" class="manual-ios-statusbar-padding innerbackground eoko-content" scroll="false" style="filter: blur({{blurry.behind}});">
-    
+
 
     <div style=" margin-top: 7px">
-      <img class="settingButton" src="img/setting_icon.png" ui-sref="settingPage" style="float: right; "/>        
+      <img class="settingButton" src="img/setting_icon.png" ui-sref="settingPage" style="float: right; "/>
     </div>
 
     <div>
       <img class="logo" src="img/Eoko-logo.svg"/>
       <img class="tagline" src="img/peoplenearyou.png"/>
     </div>
-
 
 
 
@@ -52,10 +51,10 @@
       <div style="height:140px"></div>
     </ion-scroll>
 
+<!-- ____________________  THIS IS THE NUDGE  _________________  -->
 <script id="my-popover.html" type="text/ng-template">
-    <div ng-click="checkHit($event)" class="popup-container popup-showing active">
+    <div id="D" ng-click="checkHit($event)" class="popup-container popup-showing active">
       <div class="details">
-
         <div ng-if="pop == 'nudge'" id="D">
           <div id="D1">
             <h3>Send a Nudge!</h3>
