@@ -22,7 +22,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
        $scope.$on('$ionicView.afterEnter', function () //before anything runs
       {
-       
+
        $scope.editing = EditInfo.isEditing();
 
        if($scope.editing == false)
@@ -89,7 +89,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
             $scope.initSelectionTag($scope.action.tags[i]+'create');
           }
         }
-       
+
       });
 
         $scope.$on('$ionicView.afterLeave', function () //before anything runs
@@ -420,14 +420,14 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
               }
 
               //---------- IF PRIVACY IS SET AS INVITE ONLY --------------
-              /*else if ($scope.action.privacy == "invite")
+              else if ($scope.action.privacy == "invite")
               {
-                // console.log("invite event after user choose invite, as param");
-                // console.log(event);
-                // $state.go('invitePage', {eventObject: event})
+                console.log("invite event after user choose invite, as param");
+                //console.log(event);
                 EventInfo.setEventInfo(event);
+                console.log("dat shiet", event);
                 $state.go('invitePage');
-              }*/
+              }
           }
 
         };
@@ -438,7 +438,7 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
 
 
     $scope.submit = function(){
-      
+
       if(verifySubmission() == true)
       {
         console.log($scope.action.tags);
