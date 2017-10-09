@@ -5,6 +5,18 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
     $scope.searchBar = 2;
+
+    function calculateAge(birthday){
+      var today = new Date();
+      var birthday = new Date(birthday);
+      console.log('birthday Date', birthday);
+      var age = today.getFullYear() - birthday.getFullYear();
+      var m = today.getMonth() - birthday.getMonth();
+      if (m<0 || (m==0&&today.getDate() < birthday.getDate())){
+        age-=1;
+      }
+      return age;
+    }
     $scope.$on('$ionicView.beforeEnter', function(){
       $scope.exitButton = 2;
       showLoadingIndicator();
@@ -20,6 +32,14 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
           $scope.userFriendsList = snapshot.val().friends;
           console.log('friends List', $scope.userFriendsList)
           console.log('filter', $scope.peopleFilter);
+          var age = calculateAge(snapshot.val().birthday);
+          userRef.update({
+            age: age
+          })
+          $scope.low = snapshot.val().low;
+          $scope.high = snapshot.val().high;
+          console.log('low', $scope.low);
+          console.log('high', $scope.high);
         })
         window.FirebasePlugin.grantPermission();
         window.FirebasePlugin.getToken(function(token) {

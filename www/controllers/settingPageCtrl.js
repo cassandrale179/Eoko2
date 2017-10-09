@@ -8,6 +8,7 @@ function($scope, $state, $firebaseAuth, $localStorage){
     high: 80
   }
 
+
   //-------- CHECK IF CURRENT USER IS LOGGING IN --------------
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
