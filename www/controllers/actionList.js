@@ -66,10 +66,16 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
 
           window.FirebasePlugin.onNotificationOpen(function(notification) {
               console.log(notification);
-              if (notification.chatId && notification.wasTapped){
-                //redirect to chat here
+              if (notification.convoID && notification.tap){
+                console.log("message is activated!!!!");
 
-                $state.go('messagePage', {otherID: notification.senderID, convoID: notification.chatId})
+                //redirect to chat here
+                var receiverInfo = {
+                  name: notification.name,
+                  photoURL: notification.photoURL
+                }
+
+                $state.go('messagePage', {otherID: receiverInfo, convoID: notification.convoID})
 
               }
               if (notification.nudge){

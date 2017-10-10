@@ -4,14 +4,13 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
     var authUser = firebase.auth().currentUser;
       $scope.myId = authUser.uid;
       var ref = firebase.database().ref();
-      $scope.partnerID = $stateParams.otherID;
+      $scope.receiverInfo = $stateParams.otherID;
       var convoID = $stateParams.convoID;
-      $scope.chatInfo = $stateParams.chatInfo;
-      console.log('chatInfo', $scope.chatInfo);
+
 
       var currentnum = 0;
 
-      console.log("partnerObj", $scope.partnerID, "convoID", convoID);
+      console.log("partnerObj", $scope.receiverInfo, "convoID", convoID);
 
     $scope.getAvatar = function(id)
     {
@@ -77,11 +76,11 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
       $ionicScrollDelegate.scrollBottom();
     };
 
-    
-    
+
+
     //KEYBOARD
     $scope.keyboardHeight = 271;
-    
+
     window.addEventListener('native.keyboardshow', keyboardShowHandler);
     function keyboardShowHandler(e){$scope.keyboardHeight = e.keyboardHeight;}
 

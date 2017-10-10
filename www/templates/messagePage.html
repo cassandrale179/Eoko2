@@ -7,11 +7,11 @@
     <a ui-sref="navController.chat" class="eoko-button-clear ion-chevron-left" native-transitions nav-direction="back" style="float: left; position: absolute;" ng-click="closeKeyboard()"></a>
 
     <div id="M">
-      <img id="M0a" ng-src="{{chatInfo.photoURL}}"/>
+      <img id="M0a" ng-src="{{receiverInfo.photoURL}}"/>
 
-      <!-- I have no idea how this works even though the two ng-ifs are the same?? -->
-      <h3 id="M0b" ng-if="chatInfo.title!=''">{{chatInfo.title}}</h3>
-      <h3 id="M0b" ng-if="chatInfo.title!=''">{{chatInfo.name}}</h3>
+    
+      <h3 id="M0b">{{receiverInfo.title}}{{receiverInfo.name}}</h3>
+
 
 
     </div>
