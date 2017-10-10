@@ -5,6 +5,19 @@
       <img class="" src="img/setting_icon.png" ui-sref="settingPage" style="float: right; width: 9vw; margin-right: 5vw;"/>
     </div>
 
+    <i id="share" class="fa fa-user-plus" aria-hidden="true" ng-click="showLink()"></i>
+    <div id="sharelink" ng-if="link==1">
+        <div ng-if="android==1" ng-hide="android==0">
+          <a href="https://play.google.com/store/apps/details?id=com.eokoteam.eoko&hl=en"> Play Store </a>
+        </div>
+        <div ng-if="apple==1" ng-hide="apple==0">
+          <a href="https://play.google.com/store/apps/details?id=com.eokoteam.eoko&hl=en"> App Store </a>
+        </div>
+        <!-- _________________ share button ______ -->
+      <div data-href="https://itunes.apple.com/us/app/eoko/id1211065697?mt=8" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fitunes.apple.com%2Fus%2Fapp%2Feoko%2Fid1211065697%3Fmt%3D8&amp;src=sdkpreparse">Share On Wall</a></div>
+
+      </div>
+    </div>
     <div>
       <img style="margin-right: 18vw;" class="logo" src="img/Eoko-logo.svg"/>
       <img class="tagline" src="img/peoplenearyou.png"/>

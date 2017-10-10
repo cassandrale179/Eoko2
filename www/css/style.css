@@ -291,6 +291,17 @@ select{
   left: 0;
 }
 
+#share{
+  color: white;
+  font-size: 9vw;
+  padding-left: 5vw;
+}
+
+#sharelink a{
+  padding-left: 1vw; 
+  color: white !important;
+}
+
 
 /* -------------------------------- LOGIN SCREEN ----------------------------- */
 #A img{
@@ -841,7 +852,7 @@ select{
 #F1 p{
   position: fixed;
   float: left;
-  font-size: 6vw; 
+  font-size: 6vw;
 }
 
 #F2{

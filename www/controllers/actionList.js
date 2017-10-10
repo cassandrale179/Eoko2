@@ -5,6 +5,37 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;
     $scope.searchBar = 2;
+    $scope.android = 0;
+    $scope.link = 0;
+
+    $scope.showLink = function(){
+      if ($scope.link == 0){
+        $scope.link = 1;
+        console.log("Link is 1");
+      }
+      else{
+        $scope.link = 0;
+        console.log("Link is 0");
+      }
+
+      if(window.device.platform != 'Android'){
+        if ($scope.android == 0){
+          $scope.android = 1;
+        }
+        else{
+          $scope.android = 0;
+        }
+      }
+
+      else{
+        if ($scope.apple == 0){
+          $scope.apple = 1;
+        }
+        else{
+          $scope.apple = 0;
+        }
+      };
+    }
 
     function calculateAge(birthday){
       var today = new Date();
