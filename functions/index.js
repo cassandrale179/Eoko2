@@ -29,6 +29,7 @@ exports.sendInviteNotification = functions.database.ref('/users/{uid}/actions/in
         sound: "default"
       },
       data: {
+        invite: 'true',
         eventID: eventId,
         eventName: action.name,
         senderID: sender.uid
@@ -86,6 +87,11 @@ exports.sendMessageNotification = functions.database.ref('/Chats/{chatId}/messag
 
               const instanceId = res[0].val().messageToken;
               console.log("msg token: ", instanceId);
+              const receiverInfo = {
+                avatar: res[0].val().photoURL,
+                name: res[0].val().name
+              }
+              console.log("RECEIVER INFO IS: ", receiverInfo);
 
               const payload = {
                   notification: {
@@ -96,7 +102,10 @@ exports.sendMessageNotification = functions.database.ref('/Chats/{chatId}/messag
                   },
                   data: {
                     convoID: chatId,
-                    senderID: message.userId
+                    senderID: message.userId,
+                    photoURL: res[0].val().photoURL,
+                    name: res[0].val().name
+
                   }
               };
 
