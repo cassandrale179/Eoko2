@@ -373,6 +373,20 @@ angular.module('eoko.services', [])
 }])
 
 
+.filter('orderObjectByDescending', function() {
+  return function(items, field, reverse) {
+    var filtered = [];
+    angular.forEach(items, function(item) {
+      filtered.push(item);
+    });
+    filtered.sort(function (a, b) {
+      return (a[field] > b[field] ? 1 : -1);
+    });
+    if(reverse) filtered.reverse();
+    return filtered;
+  };
+})
+
  .directive('selectOnClick', ['$window', function ($window) {
     // Linker function
     return function (scope, element, attrs) {
@@ -390,16 +404,17 @@ angular.module('eoko.services', [])
 /* ---------------------------------- CHAT FACTORY ------------------------------- */
 .factory('chatFactory', ['$firebaseArray',function ($firebaseArray) {
 
-    var ref = firebase.database().ref("Chats");
-    
-    ref.orderByChild("/lastText/utcTime")
-        .on("value", function(snapshot){
-            console.log("snapshot",snapshot.val());
-          }, function (error){
-            console.log("errorrrr", error);
-        });
+    var ref = firebase.database().ref("Chats/");
+    var chatData = $firebaseArray(ref.orderByChild("utcTime"));
 
-    var chatData = $firebaseArray(ref);
+    // ref.orderByChild("utcTime")
+    //     .on("child_added", function(snapshot){
+    //         console.log("snapshot",snapshot.val());
+    //         chatData = snapshot;
+    //         ready = true;
+    //     });
+    
+    // var chatData = $firebaseArray(ref);
     var myChatLists = [];
     var ready = false;
 

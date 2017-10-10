@@ -67,9 +67,12 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
         lastText: {
           messageText: $scope.data.messageText,
           userId: authUser.uid,
-          userFirstName: authUser.displayName.split(" ")[0],
-          utcTime: utcTime
+          userFirstName: authUser.displayName.split(" ")[0]
         }
+      })
+
+      chatRef.update({
+        utcTime: 0 - utcTime
       })
 
       $scope.data.messageText = "";
