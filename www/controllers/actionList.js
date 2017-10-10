@@ -84,6 +84,12 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
                 showNotifyAlert(combined, notification);
               }
 
+              if(notification.invite)
+              {
+                var combined = notification.name + " sent you a invite! Go to the action?";
+                showInviteAlert(combined, notification);
+              }
+
           }, function(error) {
               console.error(error);
           });
@@ -135,7 +141,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
         $scope.blurry = {behind: "5px"};
 
         var confirmPopup = $ionicPopup.confirm({
-          title: 'Error',
+          title: 'Nudge',
           cssClass: 'eoko-alert-pop-up',
           template: message
         });
@@ -149,9 +155,43 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
             nudgeUser.$loaded().then(function(ss)
             {
               $scope.blurry = {behind: "0px"};
+              console.log("THIS IS THE NUDGEUSER", nudgeUser);
               $scope.newConversation(nudgeUser,true);
               return;
             });
+
+          }
+          else
+          {
+            $scope.blurry = {behind: "0px"};
+            return;
+          }
+
+        });
+      }
+
+      function showInviteAlert(message, info) {   //viewPersonAction(action.eventID, true)
+        $scope.blurry = {behind: "5px"};
+
+        var confirmPopup = $ionicPopup.confirm({
+          title: 'Invite',
+          cssClass: 'eoko-alert-pop-up',
+          template: message
+        });
+        confirmPopup.then(function(res) {
+          if(res)
+          {
+            $scope.blurry = {behind: "0px"};
+            //console.log("redirect to message");
+            $scope.viewPersonAction(info.eventID ,true);
+           /* var req = firebase.database().ref('users').child(info.uid);
+            var nudgeUser = $firebaseObject(req);
+            nudgeUser.$loaded().then(function(ss)
+            {
+              $scope.blurry = {behind: "0px"};
+              $scope.newConversation(nudgeUser,true);
+              return;
+            });*/
 
           }
           else
@@ -240,13 +280,15 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
                 for(var j in info.ids)
                 {
                   console.log("j interate", j, info.ids[j]);
-                  if(info.ids[j].id == other.info.uid)
+                  if(info.ids[j].id == other.uid)
                   {
                     console.log("FOUDN!!", $scope.userInfo.chat[i].chatID);
                     if(boo)
                     {
-                      // $state.go('messagePage',{otherID: other.info.uid, convoID: $scope.userInfo.chat[i].chatID});
-                      $state.go('chatTab');
+                      console.log("THE OTHER,", other);
+                      $state.go('messagePage',{otherID: {name: other.name, photoURL: other.photoURL},
+                       convoID: $scope.userInfo.chat[i].chatID});
+                      // $state.go('chatTab');
                     }
 
                     return;
@@ -494,6 +536,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
             console.log("nudge: ", $scope.nudge);
 
             $scope.otherUser = x;
+            $scope.otherUser.uid = $scope.otherUser.info.uid;
             console.log("the other person is: ", $scope.otherUser.info.uid);
             console.log($scope.currentUser);
           };
