@@ -245,7 +245,8 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
                     console.log("FOUDN!!", $scope.userInfo.chat[i].chatID);
                     if(boo)
                     {
-                      $state.go('messagePage',{otherID: other.info.uid, convoID: $scope.userInfo.chat[i].chatID});
+                      // $state.go('messagePage',{otherID: other.info.uid, convoID: $scope.userInfo.chat[i].chatID});
+                      $state.go('chatTab');
                     }
 
                     return;

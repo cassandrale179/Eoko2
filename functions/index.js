@@ -103,8 +103,8 @@ exports.sendMessageNotification = functions.database.ref('/Chats/{chatId}/messag
                   data: {
                     convoID: chatId,
                     senderID: message.userId,
-                    photoURL: res[0].val().photoURL,
-                    name: res[0].val().name
+                    photoURL: results[1].photoURL,
+                    name: senderName
 
                   }
               };
