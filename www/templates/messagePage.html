@@ -51,11 +51,14 @@
           </div>
 
         </div>
+        <div style="height:140px"></div>
       </ion-scroll>
 
       <ion-footer-bar id="M4" style="{{M4style}}">
+      <form ng-submit="sendMessage(); closeKeyboard()">
           <input id="M4a" type="text" placeholder="Text here..." ng-model="data.messageText" ng-click="showKeyboard()" autofocus>
           <a class="eoko-button-clear eoko-icon-send-message" style="margin-top: 6px;" ng-click="sendMessage(); closeKeyboard()"></a>
+          </form>
       </ion-footer-bar>
 
     </div>
