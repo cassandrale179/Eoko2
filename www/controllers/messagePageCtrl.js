@@ -102,7 +102,7 @@ app.controller('messagePageCtrl', ['$scope', '$stateParams', '$firebaseObject', 
     };
 
     window.addEventListener('native.keyboardhide', keyboardHideHandler);
-    function keyboardHideHandler(e){console.log("good night baby")}
+    function keyboardHideHandler(e){$scope.closeKeyboard()}
 
     $scope.closeKeyboard = function (){
       if(window.device.platform != 'Android')

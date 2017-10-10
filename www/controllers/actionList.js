@@ -559,7 +559,6 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
 
 
             ref.update({
-
               name: $scope.currentUser.displayName,
               senderUid: uid,
               receiverUid: $scope.otherUser.info.uid,
@@ -569,7 +568,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
             $scope.newConversation($scope.otherUser,false);
             $scope.closePopover();
 
-
+            $scope.nudgeAnimation = "C3animate";
 
           };
 

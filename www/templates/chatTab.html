@@ -31,7 +31,7 @@
           </span>
         </div>
 
-          <ion-item ng-repeat="chat in chatData | filter: search.text | orderObjectBy: 'chat.info.utcTime'" ng-if="chat.title != ''" id="L2">
+          <ion-item ng-repeat="chat in chatData | filter: search.text | orderObjectByDescending: 'chat.info.utcTime'" ng-if="chat.title != ''" id="L2">
               <!-- orderObjectByDescending: 'chatData':'chat.info.utcTime':true -->
 
             <img id="L4" ng-src="{{chat.info.photoURL}}"/>

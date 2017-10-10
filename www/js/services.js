@@ -414,7 +414,7 @@ angular.module('eoko.services', [])
     //         ready = true;
     //     });
     
-    // var chatData = $firebaseArray(ref);
+    var chatData = $firebaseArray(ref);
     var myChatLists = [];
     var ready = false;
 
