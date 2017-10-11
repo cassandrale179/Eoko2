@@ -272,6 +272,8 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
           console.log("started newconvo");
             for(var i in $scope.userInfo.chat)
             {
+              console.log("entering LOOOOOP");
+              console.log("The other person", other);
               console.log("dafuq is that,", $scope.userInfo.chat[i].chatID);
               var info = chatFactory.loadChatData($scope.userInfo.chat[i].chatID);
               console.log("length is ", Object.keys(info.ids).length);
@@ -280,10 +282,11 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
                 for(var j in info.ids)
                 {
                   console.log("j interate", j, info.ids[j]);
-                  if(info.ids[j].id == other.uid)
+                  if(info.ids[j].id == other.uid || info.ids[j].id==other.info.uid)
                   {
                     console.log("FOUDN!!", $scope.userInfo.chat[i].chatID);
                     console.log("THE OTHER UID HAS BEEN FOUND: ", other.uid);
+                    console.log("THE OTHER UID HAS BEEN FOUND: ", other.info.uid);
                     if(boo)
                     {
                       console.log("THE OTHER,", other);
@@ -292,7 +295,8 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
                       // $state.go('chatTab');
                     }
                     else{
-                      
+                      return;
+
                     }
 
 
