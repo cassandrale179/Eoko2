@@ -42,10 +42,12 @@
               <div id="L5" ng-if="chat.info.name.length>0">
                 {{chat.info.name}}
               </div>
-              <div ng-if="!chat.info.lastText" id="L6"><i>No reponse yet...</i></div>
+              <div ng-if="!chat.info.lastText" id="L6"><i>No messages yet...</i></div>
               <div ng-if="chat.info.lastText" id="L6"><strong>{{chat.info.lastText.userFirstName}}</strong>: {{chat.info.lastText.messageText}}</div>
             </div>
+             <ion-option-button ng-click="deleteChat(chat.info.$id)" class="deleteButtonSwipe icon ion-trash-a"></ion-option-button>
           </ion-item>
+
 
       </ion-list>
     </ion-scroll>

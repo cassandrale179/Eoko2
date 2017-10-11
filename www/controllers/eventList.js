@@ -14,7 +14,9 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
         ref.on("value", function(snapshot){
           $scope.privacyFilter = snapshot.val().privacy;
           $scope.userFriendsList = snapshot.val().friends;
-          $scope.inviteActions = snapshot.val().actions.inviteActions;
+          if (snapshot.val().actions.inviteActions){
+            $scope.inviteActions = snapshot.val().actions.inviteActions;
+          }
         })
         showLoadingIndicator();
       }

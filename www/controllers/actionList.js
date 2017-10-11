@@ -283,6 +283,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
                   if(info.ids[j].id == other.uid)
                   {
                     console.log("FOUDN!!", $scope.userInfo.chat[i].chatID);
+                    console.log("THE OTHER UID HAS BEEN FOUND: ", other.uid);
                     if(boo)
                     {
                       console.log("THE OTHER,", other);
@@ -290,8 +291,11 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
                        convoID: $scope.userInfo.chat[i].chatID});
                       // $state.go('chatTab');
                     }
+                    else{
+                      
+                    }
 
-                    return;
+
                   }
                 }
               }
