@@ -309,7 +309,7 @@ select{
   font-family: 'Roboto', sans-serif;
   background-color: rgba(255,255,255,0.3);
   color: white;
-  font-size: 150%;
+  font-size: 5vw;
   width: 75%;
 }
 
@@ -1324,7 +1324,7 @@ select{
   background-color: transparent;
   border-bottom: transparent;
   font-size: 4.5vw;
-  width: 82vw;
+  width: 79vw;
   float: left;
   color: black;
 }
