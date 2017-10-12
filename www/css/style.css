@@ -862,8 +862,8 @@ select{
 }
 
 #F1 p{
-  position: fixed;
-  float: left;
+  position: relative;
+  float: right;
   font-size: 6vw; 
 }
 

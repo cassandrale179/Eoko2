@@ -125,9 +125,7 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
     };
 
 
-
-
-
+    
      $scope.$on('$ionicView.afterEnter', function () //before anything runs
     {
       makeblurry();
@@ -159,6 +157,67 @@ app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$
               $scope.newConversation(nudgeUser,true);
               return;
             });
+
+          }
+          else
+          {
+            $scope.blurry = {behind: "0px"};
+            return;
+          }
+
+        });
+      }
+
+      function showAlert(message) {
+      $scope.blurry = {behind: "5px"};
+
+      var alertPopup = $ionicPopup.alert({
+        title: 'Success',
+        cssClass: 'eoko-alert-pop-up',
+        template: message
+      });
+      alertPopup.then(function(res) {
+        $scope.blurry = {behind: "0px"};
+      });
+    };
+
+      $scope.flagUser = function(user)
+      {
+        console.log("do we flag this guy?", user);
+        $scope.closePopover();
+        flagUserAlert("Are you sure you want to report this user?", user);
+      };
+
+
+      function flagUserAlert(message, user) {
+        $scope.blurry = {behind: "5px"};
+
+        var confirmPopup = $ionicPopup.confirm({
+          title: 'Flag User',
+          cssClass: 'eoko-alert-pop-up',
+          template: message
+        });
+        confirmPopup.then(function(res) {
+          if(res)
+          {
+            $scope.blurry = {behind: "0px"};
+            console.log("redirect to message");
+            var req = firebase.database().ref('admin').child('report').child('user').child(user.info.uid);
+            req.update({
+              uid: user.info.uid,
+              name: user.info.name,
+              photoURL: user.info.photoURL,
+              location: user.info.location,
+              messageToken: user.info.messageToken,
+              fbid: user.info.fbid,
+              age: user.info.age,
+              birthday: user.info.birthday,
+              gender: user.info.gender
+            }).then(function(x)
+              {
+                console.log('reporting successful');
+                showAlert("Your report has been submitted successfully.");
+              });
 
           }
           else

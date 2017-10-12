@@ -70,7 +70,7 @@
           <div id="D2">
             <div id="D2A">
               <img ng-src="{{currentUser.photoURL}}" />
-              <h4> {{currentUser.displayName}} </h4>
+              <h4> {{currentUser.info.displayName}} </h4>
             </div>
             <div id="D2B">
               <i class="fa fa-chevron-right" aria-hidden="true"></i>
@@ -88,9 +88,9 @@
 
       <!-- _____________________ THIS DISPLAY ACTIVE ACTIONS OF AN USER __________________________ -->
         <div id="D" ng-if="pop == 'profile'" style="height: 80vh">
-          <div id="D1" ><h3>{{otherUser.name}}</h3></div>
+          <i class="fa fa-flag" style="margin: 0 5vw;font-size: 5vw;color:#e33333;" ng-click="flagUser(otherUser)" aria-hidden="true"></i>
           <div id="D2"><img ng-src="{{otherUser.info.photoURL}}" /></div>
-
+          <div id="D1" ><h3>{{otherUser.info.name}}</h3></div>
           <!-- _____________________ THIS DISPLAY LIST OF THE ACTIONS OF AN USER __________________________ -->
           <div id="D4">
             <h5>Active Actions</h5>

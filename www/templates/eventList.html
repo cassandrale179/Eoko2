@@ -14,8 +14,10 @@
           <i ng-click="searchBar = 1" class="eoko-icon-search-white"></i>
           <div id="E1A" ui-sref="eventList"><button style="border-bottom: 0.1px solid rgb(230,126,34)">Action</button></div>
           <div id="E1B" ui-sref="actionCreate"><button ui-sref="actionCreate">Create</button></div>
+          <img class="" src="img/setting_icon.png" ui-sref="settingPage" style="float: right; width: 9vw; height: 9vw; margin-right: 2vw;"/>
         </div>
     </div>
+
 
 
       <ion-scroll direction="x" class="eoko-horizontal-scroll" scrollbar-x="false"
@@ -65,6 +67,7 @@
 
         <!-- ___________ DISPLAY USER INFORMATION, IMAGE AND EVENT NAME, TIME _________________ -->
         <div id="F1">
+          <i class="fa fa-flag" style="margin: 0 5vw 0 0;font-size: 5vw;color:#e33333;float: left" ng-click="flagAction(currUser)" aria-hidden="true"></i>
           <p>{{currUser.info.privacy}}</p>
           <img id="F1profile" ng-src={{currUser.info.photoURL}} />
           <h2>{{currUser.info.owner.name}}</h2>

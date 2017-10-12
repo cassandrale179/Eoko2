@@ -6,7 +6,12 @@ function($scope, $state, $firebaseAuth, $localStorage){
   $scope.age = {
     low: 20,
     high: 80
-  }
+  };
+
+  $scope.dbAgeRange = {
+    floor: 12,
+    ceil: 120
+  };
 
 
   //-------- CHECK IF CURRENT USER IS LOGGING IN --------------
@@ -15,6 +20,12 @@ function($scope, $state, $firebaseAuth, $localStorage){
       $scope.currentUser = user;
       console.log($scope.currentUser.uid);
       console.log("User currently signs in");
+      firebase.database().ref('admin').child('age').once('value',function(snapshot)
+      {
+        console.log("snapshot", snapshot.val());
+        $scope.dbAgeRange = snapshot.val();
+        
+      });
     }
     else{
       console.log("User is not signed in");
@@ -55,6 +66,10 @@ function($scope, $state, $firebaseAuth, $localStorage){
 
     //------------- THE TEXT WILL CHANGE COLOR ------------
     userRef.on("value", function(snapshot){
+      $scope.age = {
+        low: snapshot.val().low,
+        high: snapshot.val().high
+      };
       var privacy = snapshot.val().privacy;
       if (privacy == "private"){
         $scope.private = {

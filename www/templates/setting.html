@@ -8,10 +8,10 @@
 
       <!-- _____________ THIS IS THE AGE RANGE TO FILTER PEOPLE BY AGE ______________ -->
       <div id="G" style="margin:2%;padding:2%">
-        <p>Age Range (filter people by age)</p>
+        <p>Age Range (only view people within this range)</p>
         <div range-slider
-         floor="0"
-         ceiling="120"
+         floor="dbAgeRange.floor"
+         ceiling="dbAgeRange.ceil"
          dragstop="true"
          ng-model-low="age.low"
          ng-model-high="age.high">
@@ -33,7 +33,7 @@
           </div>
 
           <!-- ________________ OPTION TO VIEW PEOPLE PRIVACY   ________________________  -->
-          <p> View public or private people </p>
+          <p> View public or private people near me</p>
           <div id="H5">
             <button ng-click="peopleFilter('public')" ng-style="publicPeople">PUBLIC</button>
             <button ng-click="peopleFilter('private')" ng-style="privatePeople">PRIVATE</button>

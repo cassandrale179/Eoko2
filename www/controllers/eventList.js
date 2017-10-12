@@ -1,5 +1,5 @@
-app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover','$ionicLoading',
-  function ($scope,$stateParams, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover,$ionicLoading) {
+app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArray', '$http', '$timeout', 'geoPos','$filter','$firebaseObject','$ionicPopover','$ionicLoading','$ionicPopup',
+  function ($scope,$stateParams, $state, $firebaseArray, $http, $timeout, geoPos,$filter,$firebaseObject,$ionicPopover,$ionicLoading,$ionicPopup) {
     $scope.eventNudge = false;
     $scope.searchBar = 2;
     console.log("State of searchbar");
@@ -152,6 +152,72 @@ app.controller('eventListCtrl', ['$scope','$stateParams', '$state','$firebaseArr
         launchnavigator.navigate(address);
       };
 
+
+      function showAlert(message) {
+      $scope.blurry = {behind: "5px"};
+
+      var alertPopup = $ionicPopup.alert({
+        title: 'Success',
+        cssClass: 'eoko-alert-pop-up',
+        template: message
+      });
+      alertPopup.then(function(res) {
+        $scope.blurry = {behind: "0px"};
+      });
+    };
+
+      $scope.flagAction = function(user)
+      {
+        console.log("do we flag this action?", user);
+        $scope.closePopover();
+        flagActionAlert("Are you sure you want to report this action?", user);
+      };
+
+
+      function flagActionAlert(message, user) {
+        $scope.blurry = {behind: "5px"};
+
+        var confirmPopup = $ionicPopup.confirm({
+          title: 'Flag Action',
+          cssClass: 'eoko-alert-pop-up',
+          template: message
+        });
+        confirmPopup.then(function(res) {
+          if(res)
+          {
+            $scope.blurry = {behind: "0px"};
+            console.log("redirect to message");
+            var req = firebase.database().ref('admin').child('report').child('action').child(user.info.$id);
+            req.update({
+              uid: user.info.$id,
+              address: user.info.address,
+              chatID: user.info.chatID,
+              photoURL: user.info.photoURL,
+              location: user.info.location,
+              comply: user.info.comply,
+              description: user.info.description,
+              duration: user.info.duration,
+              startTime: user.info.startTime,
+              endTime: user.info.endTime,
+              privacy: user.info.privacy,
+              owner: user.info.owner,
+              tags: user.info.tags
+
+            }).then(function(x)
+              {
+                console.log('reporting successful');
+                showAlert("Your report has been submitted successfully.");
+              });
+
+          }
+          else
+          {
+            $scope.blurry = {behind: "0px"};
+            return;
+          }
+
+        });
+      }
 
       //-------------- ALLOW USER TO JOIN AN ACTION ON EOKO ------------------
       $scope.joinAction = function(eventid, eventobject){
