@@ -326,7 +326,7 @@ select{
 
 /* ---------------------------- INITIAL ACTION SCREEN ------------------------ */
 #B{
-  padding-bottom: 5vh;
+  height: 84vh;
 }
 
 #B h1{
