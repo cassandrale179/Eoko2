@@ -1,5 +1,5 @@
 <ion-view hide-nav-bar="true">
-  <ion-content padding="false" class="manual-ios-statusbar-padding innerbackground eoko-content" scroll="false" style="filter: blur({{blurry.behind}});">
+  <ion-content padding="false" class="manual-ios-statusbar-padding innerbackground eoko-content" style="filter: blur({{blurry.behind}});">
 
   <!-- _____________________________ FORM DIV ___________________________________ -->
     <div id="E">
@@ -10,14 +10,14 @@
       </div>
     </div>
 
-    <ion-scroll>
+    
       <div id="B" ng-show="description==0">
 
         <!-- _____________________________ PRIVACY SETTINGS ___________________________________ -->
         <div id="B4">
           <button ng-click="setPrivacy('public')" ng-style="publicStyle"> Public </button>
           <button ng-click="setPrivacy('private')" ng-style="privateStyle"> Private </button>
-          <button ng-click="setPrivacy('invite')" ng-style="inviteStyle"> Invites Only </button>
+          <button ng-click="setPrivacy('invite')" ng-style="inviteStyle"> Invites </button>
         </div>
 
         <!-- _____________________________ OUTPUT PRIVACY MESSAGE ___________________________________ -->
@@ -59,7 +59,9 @@
         <button ng-if="editing == false" id="submit" ng-click="submit()"> CREATE </button>
         <button ng-if="editing == true" id="submit" ng-click="change()"> SAVE CHANGES </button>
       </div>
-    </ion-scroll>
+    
+
+    </ion-content>
 
 
 </ion-view>

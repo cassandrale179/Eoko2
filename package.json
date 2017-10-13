@@ -16,6 +16,7 @@
         "cordova-background-geolocation-lt": "^2.8.5",
         "cordova-ios": "^4.4.0",
         "cordova-plugin-actionsheet": "^2.3.3",
+        "cordova-plugin-android-permissions": "^1.0.0",
         "cordova-plugin-app-event": "^1.2.1",
         "cordova-plugin-background-fetch": "^5.1.1",
         "cordova-plugin-cocoalumberjack": "0.0.4",
@@ -65,7 +66,8 @@
                 "APP_NAME": "Eoko"
             },
             "ionic-plugin-keyboard": {},
-            "cordova-plugin-statusbar": {}
+            "cordova-plugin-statusbar": {},
+            "cordova-plugin-android-permissions": {}
         },
         "platforms": [
             "android"

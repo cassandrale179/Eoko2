@@ -8,7 +8,22 @@ app.controller('actionCreateCtrl', ['$scope', '$state','$firebaseArray', '$http'
       $scope.action = {};
 
       $scope.selectTagList = [];
+      /*$scope.scrollable = 'false';
 
+      window.addEventListener('native.keyboardshow', keyboardShowHandler);
+        function keyboardShowHandler(e){
+          $scope.scrollable = 'true';
+          console.log("scrollin", $scope.scrollable);
+          
+        }
+
+        window.addEventListener('native.keyboardhide', keyboardHideHandler);
+        function keyboardHideHandler(e){
+          $scope.scrollable = 'false';
+          console.log("not scrollin", $scope.scrollable);
+        }*/
+
+     
 
       function newStartTime()
       {

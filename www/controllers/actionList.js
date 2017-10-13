@@ -1,6 +1,6 @@
-app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform', 'facebookService', '$localStorage', '$ionicLoading',
+app.controller('actionListCtrl', ['$scope', '$state','$firebaseArray','$http','$timeout', 'geoPos','$filter','chatFactory','$firebaseObject','$ionicPopover','$ionicPopup','$ionicPlatform', 'facebookService', '$localStorage', '$ionicLoading','termsOfService',
 
-  function ($scope, $state, $firebaseArray,  $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform, facebookService, $localStorage, $ionicLoading) {
+  function ($scope, $state, $firebaseArray,  $http, $timeout, geoPos,$filter,chatFactory,$firebaseObject, $ionicPopover, $ionicPopup, $ionicPlatform, facebookService, $localStorage, $ionicLoading,termsOfService) {
 
     //GET THE CURRENT USER WHO ARE USING THE APP
     $scope.nudge = 0;

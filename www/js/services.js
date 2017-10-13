@@ -115,6 +115,40 @@ angular.module('eoko.services', [])
   }])
 
 
+   .factory('termsOfService',['$state',function($state) {
+
+    var signed = true;
+    firebase.auth().onAuthStateChanged(function(user){
+     if (user){
+      fef = firebase.database().ref("users").child(user.uid);
+      fef.once('value',function(snap)
+      {
+        if(snap.val().signedTOS)
+        {
+          signed = true;
+        }
+        else
+        {
+          signed = false;
+          $state.go('login');
+        }
+      });
+     }
+      });
+    
+    
+    return {
+      checkService: function()
+      {
+        return signed;
+      }
+    };
+    
+   
+  }])
+
+
+
 /* ------------------------------- OTHER INFO FACTORY --------------------------- */
   .factory('OtherInfo', [function () {
     var userData = {
@@ -245,7 +279,9 @@ angular.module('eoko.services', [])
     var myloc,uid;
     var ready = false;
     var tries = 1;
-    navigator.geolocation.watchPosition(successPos, errorPos, {timeout:10000 * tries});
+    var options = {enableHighAccuracy: true, maximumAge: 5000, timeout:10000 * tries};
+
+    navigator.geolocation.watchPosition(successPos, errorPos, options);
 
     function showAlert(message) {
       //$scope.blurry = {behind: "5px"};
@@ -271,8 +307,6 @@ angular.module('eoko.services', [])
 
                 if (myloc){
                   console.log("we got myloc", myloc);
-
-
 
                  firebase.auth().onAuthStateChanged(function(user){
                   if (user){
@@ -305,24 +339,28 @@ angular.module('eoko.services', [])
 
           function errorPos(error)
           {
-            switch(error.code) 
+            if(uid)
             {
-            case error.PERMISSION_DENIED:
-                console.log("User denied the request for Geolocation.");
-                break;
-            case error.POSITION_UNAVAILABLE:
-                console.log("Location information is unavailable.");
-                break;
-            case error.TIMEOUT:
-                tries += 1;
-                console.log("The request to get user location timed out.");
-                showAlert("Cannot currently get your location. Please check your location services");
-                navigator.geolocation.watchPosition(successPos, errorPos, {timeout:10000 * tries});
-                break;
-            case error.UNKNOWN_ERROR:
-                console.log("An unknown error occurred.");
-                break;
+              switch(error.code) 
+              {
+              case error.PERMISSION_DENIED:
+                  console.log("User denied the request for Geolocation.");
+                  break;
+              case error.POSITION_UNAVAILABLE:
+                  console.log("Location information is unavailable.");
+                  break;
+              case error.TIMEOUT:
+                  tries += 1;
+                  console.log("The request to get user location timed out.");
+                  showAlert("Cannot currently get your location. Please check your location services");
+                  navigator.geolocation.watchPosition(successPos, errorPos, {timeout:10000 * tries});
+                  break;
+              case error.UNKNOWN_ERROR:
+                  console.log("An unknown error occurred.");
+                  break;
+              }
             }
+            
           }
 
     return {
@@ -335,20 +373,11 @@ angular.module('eoko.services', [])
       getUserPosition: function ()
       {
         return myloc;
-      }/*,
-      isPromiseReady: function()
+      },
+      initGeoPos: function()
       {
-        return navigator.geolocation.watchPosition(success, error, {maximumAge: 300000, timeout: 5000, enableHighAccuracy: true});
-          function error(err){
-            console.log("There's an error", err);
-            this.isPromiseReady();
-          }
-          function success(position) {
-            console.log("Success boi", position);
-            ready = true;
-            return ready;
-          }
-      }*/
+        navigator.geolocation.watchPosition(successPos, errorPos, options);
+      }
     };
 
   }])
@@ -518,3 +547,5 @@ return obj;
   .service('BlankService', [function () {
 
   }]);
+
+

@@ -80,6 +80,7 @@
         <variable name="LOCATION_WHEN_IN_USE_USAGE_DESCRIPTION" value="[CHANGEME] Background location-tracking is required" />
         <variable name="MOTION_USAGE_DESCRIPTION" value="[CHANGEME] Using the accelerometer increases battery-efficiency by intelligently toggling location-tracking only when the device is detected to be moving" />
     </plugin>
+    <plugin name="cordova-plugin-android-permissions" spec="^1.0.0" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.6" />
     <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
