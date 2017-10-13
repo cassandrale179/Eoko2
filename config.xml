@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.eokoteam.eoko" version="1.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.eoko.team" version="1.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>eoko</name>
     <description>A Social Network of Actions</description>
     <author email="geteoko@gmail.com" href="http://geteoko.com/">eoko Team</author>
@@ -85,7 +85,7 @@
     <plugin name="cordova-plugin-device" spec="^1.1.6" />
     <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
         <variable name="APP_ID" value="694354544087073" />
-        <variable name="APP_NAME" value="Eoko" />
+        <variable name="APP_NAME" value="eoko" />
     </plugin>
     <plugin name="cordova-plugin-firebase" spec="^0.1.24" />
     <plugin name="cordova-plugin-geolocation" spec="^2.4.3">

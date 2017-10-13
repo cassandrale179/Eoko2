@@ -61,13 +61,13 @@
             "cordova-plugin-firebase": {},
             "cordova-plugin-x-toast": {},
             "uk.co.workingedge.phonegap.plugin.launchnavigator": {},
-            "cordova-plugin-facebook4": {
-                "APP_ID": "694354544087073",
-                "APP_NAME": "Eoko"
-            },
             "ionic-plugin-keyboard": {},
             "cordova-plugin-statusbar": {},
-            "cordova-plugin-android-permissions": {}
+            "cordova-plugin-android-permissions": {},
+            "cordova-plugin-facebook4": {
+                "APP_ID": "694354544087073",
+                "APP_NAME": "eoko"
+            }
         },
         "platforms": [
             "android"

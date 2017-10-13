@@ -26,7 +26,7 @@ angular.module('eoko', ['ionic', 'ionicUIRouter', 'eoko.controllers', 'eoko.serv
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
       StatusBar.styleLightContent();
-    }
+    }  
   });
 })
 

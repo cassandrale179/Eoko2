@@ -74,7 +74,13 @@ app.controller('loginCtrl', ['$scope', '$cordovaOauth','$firebaseAuth', '$state'
 
   $scope.login = function()
   {
-    facebookConnectPlugin.login(['email, user_birthday, user_friends'],function(response)
+    facebookConnectPlugin.checkHasCorrectPermissions(['email', 'user_birthday', 'user_friends'], function(response){
+      console.log("success");
+    },
+    function(erre){
+      console.log("wrong permissions");
+    });
+    facebookConnectPlugin.login(['email', 'user_birthday', 'user_friends'],function(response)
     {
       if (response.status === 'connected') {
                 console.log('Facebook login succeeded');
